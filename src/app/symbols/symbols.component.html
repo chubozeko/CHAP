@@ -1,0 +1,14 @@
+<!-- 
+  *ngFor => gets the symbols from the SYMBOLS array stored in "symbol-list.ts" file
+  Symbol object stores the ID and TEXT of the symbol.
+  The <div> id is set to whatever the SYMBOL.id property is, to draw the shapes accordingly.
+    - <div> class is set to "draggable" to enable drag-and-drop capabilities.
+ -->
+
+<div id="symbols-div">
+  <ul>
+    <li *ngFor="let s of symbols">
+      <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag">{{s.text}}</div>
+    </li>
+  </ul>
+</div>
