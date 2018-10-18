@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 
 import 'libraries/scripts/menubareditor.js';
 import 'libraries/scripts/drag&drop.js';
@@ -13,6 +14,7 @@ export class HomePage {
   wsStyles: {};
   title = 'CHAP';
   fileName = 'Untitled Project';
+  symbols = SYMBOLS;
   
   zoomIn(){
     this.wsStyles = {

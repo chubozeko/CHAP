@@ -11,26 +11,27 @@
 <ion-content>
   <div class="wrapper">
     <div class="workspace">
-      <!-- <iframe name="editArea"> -->
-        <!-- <app-workspace [ngStyle]="wsStyles"></app-workspace> -->
-      <!-- </iframe> -->
+      workspace
     </div>
 
     <div class="sidebar">
         <div class="sideview">
-            <router-outlet></router-outlet>
-          </div>
-      <ion-segment>
+            <div id="symbols-div">
+                  <ion-card padding *ngFor="let s of symbols">
+                    <p>{{s.text}}</p>
+                    <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag"></div>
+                  </ion-card>
+              </div>
+        </div>
         
         <div class="tabs">
-          <ion-segment><a routerLink="/symbols" routerLinkActive="active-link">Symbols</a></ion-segment>
+          <!-- <ion-segment><a routerLink="/symbols" routerLinkActive="active-link">Symbols</a></ion-segment>
           <ion-segment><a routerLink="/variables" routerLinkActive="active-link">Variables</a></ion-segment>
-          <ion-segment><a routerLink="/console" routerLinkActive="active-link">Console</a></ion-segment>
-            <!-- <div><a routerLink="/symbols" routerLinkActive="active-link">Symbols</a></div>
+          <ion-segment><a routerLink="/console" routerLinkActive="active-link">Console</a></ion-segment> -->
+            <div><a routerLink="/symbols" routerLinkActive="active-link">Symbols</a></div>
             <div><a routerLink="/variables" routerLinkActive="active-link">Variables</a></div>
-            <div><a routerLink="/console" routerLinkActive="active-link">Console</a></div> -->
+            <div><a routerLink="/console" routerLinkActive="active-link">Console</a></div>
         </div>
-      </ion-segment>
       </div>
   </div>
 </ion-content>
