@@ -1,27 +1,40 @@
 <ion-header>
-  
 </ion-header>
 
-<ion-toolbar>
-    <ion-title>
-      CHAP
-    </ion-title>
-  </ion-toolbar>
+<ion-toolbar color="secondary">
+    <!-- <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button> -->
+ <ion-title>
+    <button ion-button menuToggle="right">
+      <ion-icon name="menu"></ion-icon>
+    </button> &nbsp;
+  <img style="width: 36px; height: 36px;" src="./assets/icon/chap_logo.png"/>
+  
+ </ion-title> 
+</ion-toolbar>
 
 <ion-content>
   <div class="wrapper">
     <div class="workspace">
-      workspace
+        <div id="s_start_stop" class="draggable" draggable="true" contenteditable="false" ondragstart="startDrag" ondragend="endDrag">Start</div>
+        <div id="s_start_stop" class="draggable" draggable="true" contenteditable="false" ondragstart="startDrag" ondragend="endDrag">Stop</div>
     </div>
 
     <div class="sidebar">
         <div class="sideview">
-            <div id="symbols-div">
-                  <ion-card padding *ngFor="let s of symbols">
-                    <p>{{s.text}}</p>
-                    <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag"></div>
-                  </ion-card>
+          <div id="symbols-div">
+              <ul>
+                  <li>
+                      <ion-card padding *ngFor="let s of symbols">
+                          <p>{{s.text}}</p>
+                          <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag"></div>
+                        </ion-card>
+                  </li>
+                </ul> 
               </div>
+         
+            
         </div>
         
         <div class="tabs">

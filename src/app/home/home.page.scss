@@ -1,23 +1,34 @@
 // SYMBOLS CSS
 ion-card{
-  float: left;
+  // $float: left;
   width: 120px;
   height: 120px;
-  display: inline-block;
+  padding-top: 0%;
+  background-color: #F8F8F8;
 }
 
 #symbols-div{ 
   width: 100%; 
-  height: 130px; 
-  overflow-y: hidden;
+  height: 130px;
+  background-color: rgba(187, 195, 199, 0.904);; 
+  overflow-y: none;
   overflow-x: scroll;
+  white-space: nowrap;
+  margin: 0;
 }
 
-ul{ list-style: none; padding-left: 0; }
+ul{ 
+   
+  list-style: none; 
+  padding-left: 0; 
+  float: left;
+}
 
 li{
-  padding: 15px;
+  display: inline;
+  padding: 0;
   margin: 0;
+  
 }
 
 #s_input, #s_output, #s_process, #s_decision, #s_start_stop{ 

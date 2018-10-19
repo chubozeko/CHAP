@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 
 import 'libraries/scripts/menubareditor.js';
 import 'libraries/scripts/drag&drop.js';
+import { Nav, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,11 @@ import 'libraries/scripts/drag&drop.js';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+
+  @ViewChild(Nav) nav: Nav;
+  rootPage = "DashboardTabsPage";
+
+
 
   wsStyles: {};
   title = 'CHAP';
@@ -33,7 +39,7 @@ export class HomePage {
 
   ngOnInit() {
     // Loading of external JavaScript libraries
-    this.loadScript('libraries/scripts/menubareditor.js');
+    // this.loadScript('libraries/scripts/menubareditor.js');
     // this.loadScript('libraries/scripts/drag&drop.js');
   }
 
