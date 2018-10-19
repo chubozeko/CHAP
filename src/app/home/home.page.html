@@ -2,36 +2,44 @@
 </ion-header>
 
 <ion-toolbar color="secondary">
-    <!-- <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button> -->
- <ion-title>
-    <button ion-button menuToggle="right">
-      <ion-icon name="menu"></ion-icon>
-    </button> &nbsp;
-  <img style="width: 36px; height: 36px;" src="./assets/icon/chap_logo.png"/>
-  
- </ion-title> 
+  <button menuToggle="right" style="background-color: #333;" >
+    <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/menu.png"/>
+  </button> &nbsp;
+  <img style="width: 36px; height: 36px;" src="./assets/icon/chap_logo.png"/> &nbsp;
+  <input type="text" id="fileName" placeholder="Untitled Sketch" value="{{fileName}}">
 </ion-toolbar>
 
 <ion-content>
   <div class="wrapper">
     <div class="workspace">
         <div id="s_start_stop" class="draggable" draggable="true" contenteditable="false" ondragstart="startDrag" ondragend="endDrag">Start</div>
+        <div id="arrow_link" class="dropzone"></div>
         <div id="s_start_stop" class="draggable" draggable="true" contenteditable="false" ondragstart="startDrag" ondragend="endDrag">Stop</div>
     </div>
 
     <div class="sidebar">
         <div class="sideview">
-          <div id="symbols-div">
-              <ul>
-                  <li>
-                      <ion-card padding *ngFor="let s of symbols">
+          <div class="symbols-div">
+
+              
+              <ion-grid>
+                  <ion-row >
+                    <ion-col *ngFor="let s of symbols">
+                        <ion-card padding >
                           <p>{{s.text}}</p>
                           <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag"></div>
-                        </ion-card>
+                          </ion-card>
+                    </ion-col>
+                  </ion-row>
+              </ion-grid>
+
+
+<!--                 
+              <ul>
+                  <li>
+                      
                   </li>
-                </ul> 
+                </ul>  -->
               </div>
          
             
@@ -41,9 +49,9 @@
           <!-- <ion-segment><a routerLink="/symbols" routerLinkActive="active-link">Symbols</a></ion-segment>
           <ion-segment><a routerLink="/variables" routerLinkActive="active-link">Variables</a></ion-segment>
           <ion-segment><a routerLink="/console" routerLinkActive="active-link">Console</a></ion-segment> -->
-            <div><a routerLink="/symbols" routerLinkActive="active-link">Symbols</a></div>
-            <div><a routerLink="/variables" routerLinkActive="active-link">Variables</a></div>
-            <div><a routerLink="/console" routerLinkActive="active-link">Console</a></div>
+            <div><a>Symbols</a></div>
+            <div><a>Variables</a></div>
+            <div><a>Console</a></div>
         </div>
       </div>
   </div>

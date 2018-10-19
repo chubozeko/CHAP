@@ -9,7 +9,7 @@ import 'libraries/scripts/drag&drop.js';
 @Component({
   selector: 'app-symbols',
   templateUrl: './symbols.component.html',
-  styleUrls: ['./symbols.css'],
+  // styleUrls: ['./symbols.css'],
 })
 export class SymbolsComponent implements OnInit {
 

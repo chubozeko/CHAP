@@ -19,7 +19,7 @@ export class HomePage {
 
   wsStyles: {};
   title = 'CHAP';
-  fileName = 'Untitled Project';
+  fileName = '';
   symbols = SYMBOLS;
   
   zoomIn(){

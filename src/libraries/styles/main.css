@@ -24,12 +24,15 @@
     grid-template-rows: repeat(2, 1fr);
 }
 #fileName{
-    background: #222; 
+    width: auto;
+    background: #333; 
     border: 0; 
     block-size: 2em; 
-    padding: 8px;
+    
+    margin: 0;
+    /* padding: 8px; */
     color: #ddd;
-    font-size: 10pt;
+    font-size: 12pt;
 }
 #toolbar, #lowerbar, #upperbar{ margin: 0; padding: 0; }
 
@@ -76,7 +79,7 @@
     background: #ddd;
 }
 
-ul{
+/* ul{
     height: 100%;
     margin: 0;
     padding-left: 0;
@@ -85,7 +88,7 @@ li{
     float: left;
     list-style-type: none;
     display: block; 
-}
+} */
 li a{ 
     display: block;
     background: #A9B1B4; 
