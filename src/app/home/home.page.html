@@ -10,21 +10,20 @@
 </ion-toolbar>
 
 <ion-content>
+    
   <div class="wrapper">
-    <div class="workspace">
-        <div id="s_start_stop" class="draggable" draggable="true" contenteditable="false" ondragstart="startDrag" ondragend="endDrag">Start</div>
-        <div id="arrow_link" class="dropzone"></div>
-        <div id="s_start_stop" class="draggable" draggable="true" contenteditable="false" ondragstart="startDrag" ondragend="endDrag">Stop</div>
+    <div id="workspace">
+        <div id="s_start_stop" class="draggable" style="font-size: 10pt;">START</div>
+        <div (click)="openModal($event)" class="branch-link dropzone" ></div>
+        <div id="s_start_stop" class="draggable" style="font-size: 10pt;">STOP</div>
     </div>
 
     <div class="sidebar">
         <div class="sideview">
           <div class="symbols-div">
-
-              
               <ion-grid>
-                  <ion-row >
-                    <ion-col *ngFor="let s of symbols">
+                <ion-row>
+                  <ion-col *ngFor="let s of symbols">
                         <ion-card padding >
                           <p>{{s.text}}</p>
                           <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag"></div>
@@ -33,15 +32,7 @@
                   </ion-row>
               </ion-grid>
 
-
-<!--                 
-              <ul>
-                  <li>
-                      
-                  </li>
-                </ul>  -->
-              </div>
-         
+            </div>
             
         </div>
         

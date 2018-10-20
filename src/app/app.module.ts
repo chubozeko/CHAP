@@ -12,6 +12,9 @@ import { SymbolsComponent } from './symbols/symbols.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { ConsoleComponent } from './console/console.component';
 import { VariablesComponent } from './variables/variables.component';
+import { DialogSymbolsPage } from './dialog-symbols/dialog-symbols.page';
+import { HomePage } from './home/home.page';
+import { EditorDirective } from './editor.directive';
 
 @NgModule({
   declarations: [
@@ -19,9 +22,11 @@ import { VariablesComponent } from './variables/variables.component';
     SymbolsComponent,
     WorkspaceComponent,
     ConsoleComponent,
-    VariablesComponent
+    VariablesComponent,
+    DialogSymbolsPage,
+    EditorDirective
   ],
-  entryComponents: [],
+  entryComponents: [DialogSymbolsPage],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,

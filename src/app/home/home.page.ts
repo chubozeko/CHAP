@@ -1,9 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, HostListener } from '@angular/core';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
-
 import 'libraries/scripts/menubareditor.js';
 import 'libraries/scripts/drag&drop.js';
-import { Nav, NavController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { DialogSymbolsPageModule } from '../dialog-symbols/dialog-symbols.module';
+import { DialogSymbolsPage } from '../dialog-symbols/dialog-symbols.page';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +13,22 @@ import { Nav, NavController } from '@ionic/angular';
 })
 export class HomePage {
 
-  @ViewChild(Nav) nav: Nav;
-  rootPage = "DashboardTabsPage";
+  constructor(public modal: ModalController){}
 
+  async openModal(event){
+    const myModal = await this.modal.create({
+      component: DialogSymbolsPage
+    });
 
+    let t = event.target || event.srcElement || event.currentTarget;
+    t.classList.add('active-branch');
+    //alert(t.className);
+
+    await myModal.present();
+  }
+
+  // @ViewChild(Nav) nav: Nav;
+  // rootPage = "DashboardTabsPage";
 
   wsStyles: {};
   title = 'CHAP';

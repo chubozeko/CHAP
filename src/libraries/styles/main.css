@@ -37,7 +37,7 @@
 #toolbar, #lowerbar, #upperbar{ margin: 0; padding: 0; }
 
 /* SIDEBAR */
-.wrapper > .workspace{ background: #ddd; padding: 1em; }
+.wrapper > #workspace{ background: #ddd; padding: 1em; }
 .wrapper{
     display: grid;
     grid-template-rows: 5fr 1fr;
@@ -101,7 +101,7 @@ li a{
 }
 li a:hover{ color: #039be5; } 
 
-.workspace > div{
+#workspace > div{
     margin: auto;
 }
 

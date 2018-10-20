@@ -1,0 +1,22 @@
+<ion-header>
+  
+</ion-header>
+
+<ion-toolbar color="secondary">
+    <ion-title>Symbols Palette</ion-title>
+    <ion-button (click)="dismiss($event)">Close</ion-button>
+  </ion-toolbar>
+
+<ion-content padding>
+    <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let s of symbols">
+            <ion-card padding (click)="addSymbol(s.id, s.text, $event)" >
+                    <!-- style="cursor: pointer;" -->
+                <p>{{s.text}}</p>
+                <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag"></div>
+                </ion-card>
+              </ion-col>
+          </ion-row>
+      </ion-grid>
+</ion-content>
