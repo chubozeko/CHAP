@@ -9,15 +9,15 @@
   <input type="text" id="fileName" placeholder="Untitled Sketch" value="{{fileName}}">
 </ion-toolbar>
 
-<ion-content>
+<ion-content >
     
-  <div class="wrapper">
-    <div id="workspace">
+  <div class="wrapper" >
+    <div id="workspace" appEditor>
         <div id="s_start_stop" class="draggable" style="font-size: 10pt;">START</div>
-        <div (click)="openModal($event)" class="branch-link dropzone" ></div>
+        <div id="arrow" class="branch-link dropzone"></div> 
         <div id="s_start_stop" class="draggable" style="font-size: 10pt;">STOP</div>
     </div>
-
+    <!-- (click)="openModal($event)" -->
     <div class="sidebar">
         <div class="sideview">
           <div class="symbols-div">
@@ -25,7 +25,7 @@
                 <ion-row>
                   <ion-col *ngFor="let s of symbols">
                         <ion-card padding >
-                          <p>{{s.text}}</p>
+                          <p>{{s.s_name}}</p>
                           <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag"></div>
                           </ion-card>
                     </ion-col>

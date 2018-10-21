@@ -1,4 +1,5 @@
 export class Symbol{
     id : string;
-    text : string;
+    cardID : string;
+    s_name : string;
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, ModalController } from '@ionic/angular';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
+import { EditorDirective } from '../editor.directive';
 //import { HomePage } from "../home/home.page";
 //import { prototype } from 'jasmine';
 
@@ -13,6 +14,7 @@ import { SYMBOLS } from "../symbol-list"; // importing the symbol array from sym
 export class DialogSymbolsPage implements OnInit {
 
   symbols = SYMBOLS;
+  workspace = document.getElementById("workspace");
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modal: ModalController) {
 
@@ -21,46 +23,63 @@ export class DialogSymbolsPage implements OnInit {
   ngOnInit() {
   }
 
-  addSymbol(id: string, text: string, event){
-    
+  // // Open Symbols Palette
+  // public async openModal(event){
+  //   let t = event.target || event.srcElement || event.currentTarget;
+  //   const myModal = await this.modal.create({
+  //     component: DialogSymbolsPage
+  //   });
 
-    // let symbol = document.createElement("div");
-    // symbol.id = id;
-    // symbol.className = "draggable";
+  //   // Make current Branch ACTIVE
+  //   t.classList.add('active-branch');
+
+  //   // Display Symbols Palette
+  //   await myModal.present();
+  // }
+
+  closeModal(event){
+    //this.workspace.addEventListener('click', (e) => EditorDirective.prototype.checkForNewBranches(e) );
+    //this.newSymbol = this.navParams.get("newSymbol");
+    let branches = document.getElementsByClassName("branch-link dropzone active-branch");
+    for(let i=0; i<branches.length; i++){
+      branches[i].classList.remove('active-branch');
+    }
+    //console.log(this.newSymbol);
+    this.modal.dismiss();
+  }
+
+  public addSymbol(id: string, event){
+    
+    let flowchart = document.getElementById("workspace");
 
     let temp = document.getElementById(id);
     let symbol = temp.cloneNode(true);
-
-    let flowchart = document.getElementById("workspace");
     let branches = document.getElementsByClassName("branch-link dropzone active-branch");
-    let branch = branches[0];
-    flowchart.insertBefore(symbol, branch.nextSibling);
+    let branch = branches[0].cloneNode(true);
 
-    let new_branch = branches[0].cloneNode(true);
+    this.navParams.data = { newSymbol: symbol, newBranch: branch };
+    console.log(this.navParams.get("newSymbol"));
+    //let flowchart = document.getElementById("workspace");
+    let tempSym = this.navParams.get("newSymbol");
+    let tempBranch = this.navParams.get("newBranch");
     
-    //new_branch //.classList.remove('active-branch');
-    //new_branch.innerHTML = '<div (click)="openModal($event)" id="branch1" ></div>'; //class="branch-link dropzone"
-    //new_branch.className = "branch-link dropzone";
-    //let temp = new_branch.content.firstChild;
-    //new_branch = "branch1";
+
+    flowchart.insertBefore(tempSym, branches[0].nextSibling);
+    flowchart.insertBefore(tempBranch, document.getElementById(id).nextSibling);
+
+    // branches = document.getElementsByClassName("branch-link dropzone active-branch");
+    // for(let i=0; i<branches.length; i++){
+    //   // branches[i].addEventListener('click', (e) => this.openModal(e) );
+    //   // checkForNewBranches();
+      
+    //   branches[i].classList.remove('active-branch');
+    // }
+
     
-    flowchart.insertBefore(new_branch, symbol.nextSibling);
 
-    branches = document.getElementsByClassName("branch-link dropzone active-branch");
-    for(let i=0; i<branches.length; i++){
-      branches[i].classList.remove('active-branch');
-    }
+    this.closeModal(event);
 
-    this.dismiss(event);
-    //alert('You have added a ' + text + ' symbol.');
-  }
-
-  dismiss(event){
-    let branches = document.getElementsByClassName("branch-link dropzone active-branch");
-    for(let i=0; i<branches.length; i++){
-      branches[i].classList.remove('active-branch');
-    }
-    this.modal.dismiss();
+    //flowchart.innerText = tempSym;
   }
 
 }
