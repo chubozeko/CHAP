@@ -3,8 +3,6 @@ import { NavController, NavParams, ModalController } from '@ionic/angular';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { EditorDirective } from '../editor.directive';
 //import { HomePage } from "../home/home.page";
-//import { prototype } from 'jasmine';
-
 
 @Component({
   selector: 'app-dialog-symbols',
@@ -16,12 +14,9 @@ export class DialogSymbolsPage implements OnInit {
   symbols = SYMBOLS;
   workspace = document.getElementById("workspace");
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modal: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modal: ModalController) {}
 
-  }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   // // Open Symbols Palette
   // public async openModal(event){
@@ -61,8 +56,7 @@ export class DialogSymbolsPage implements OnInit {
     console.log(this.navParams.get("newSymbol"));
     //let flowchart = document.getElementById("workspace");
     let tempSym = this.navParams.get("newSymbol");
-    let tempBranch = this.navParams.get("newBranch");
-    
+    let tempBranch = this.navParams.get("newBranch");    
 
     flowchart.insertBefore(tempSym, branches[0].nextSibling);
     flowchart.insertBefore(tempBranch, document.getElementById(id).nextSibling);
@@ -74,8 +68,6 @@ export class DialogSymbolsPage implements OnInit {
       
     //   branches[i].classList.remove('active-branch');
     // }
-
-    
 
     this.closeModal(event);
 
