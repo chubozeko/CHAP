@@ -17,7 +17,7 @@
     </div>
     <!-- (click)="openModal($event)" -->
     <div class="sidebar">
-      <div class="sideview">
+      <!-- <div class="sideview">
         <div class="symbols-div">
           <ion-grid>
             <ion-row>
@@ -30,13 +30,24 @@
             </ion-row>
           </ion-grid>
         </div>
-      </div>
+      </div> -->
         
-      <div class="tabs">
+      <!-- <div class="tabs">
         <div><a>Symbols</a></div>
         <div><a>Variables</a></div>
         <div><a>Console</a></div>
-      </div>
+      </div> -->
+
+      <ion-fab vertical="bottom" horizontal="start">
+        <ion-fab-button id="symbolsFAB" color="light" padding >
+          <img src="./assets/icon/symbols_icon.png" alt="">
+        </ion-fab-button>
+        <ion-fab-list side="top" >
+          <ion-card *ngFor="let s of symbols" id="fabSymbols">
+            <div id="{{s.id}}" class="draggable" (click)="addSymbol(s.id, event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
+          </ion-card>
+        </ion-fab-list>
+      </ion-fab>
     </div>
   </div>
 </ion-content>

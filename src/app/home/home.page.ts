@@ -2,7 +2,7 @@ import { Component, ViewChild, HostListener, SimpleChanges } from '@angular/core
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import 'libraries/scripts/menubareditor.js';
 import 'libraries/scripts/drag&drop.js';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController, NavParams, FabButton } from '@ionic/angular';
 import { DialogSymbolsPageModule } from '../dialog-symbols/dialog-symbols.module';
 import { DialogSymbolsPage } from '../dialog-symbols/dialog-symbols.page';
 
@@ -12,6 +12,8 @@ import { DialogSymbolsPage } from '../dialog-symbols/dialog-symbols.page';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+
+  @ViewChild('symbolsFAB') symbolsFAB: FabButton;
 
   // @ViewChild(Nav) nav: Nav;
   // rootPage = "DashboardTabsPage";
@@ -36,7 +38,7 @@ export class HomePage {
 
     let branches = document.getElementsByClassName("branch-link dropzone");
     for(let i=0; i<branches.length; i++){
-      branches[i].addEventListener('click', (e) => this.openModal(e) );
+      branches[i].addEventListener('click', (e) => this.openSymbolsFAB() );
     }
   }
 
@@ -67,6 +69,46 @@ export class HomePage {
     }
     //console.log(nav);
     this.modal.dismiss();
+  }
+
+  openSymbolsFAB(){
+    let symbolsFAB = document.getElementById("symbolsFAB");
+    if (!symbolsFAB.getAttribute("activated")){
+      
+      alert("symbolsFAB");
+    }
+  }
+
+  public addSymbol(id: string, event){
+    
+    let flowchart = document.getElementById("workspace");
+
+    let temp = document.getElementById(id);
+    let symbol = temp.cloneNode(true);
+    let branches = document.getElementsByClassName("branch-link dropzone active-branch");
+    let branch = branches[0].cloneNode(true);
+    branch.addEventListener('click', (e) => this.openSymbolsFAB() );
+
+    // this.navParams.data = { newSymbol: symbol, newBranch: branch };
+    // console.log(this.navParams.get("newSymbol"));
+    // //let flowchart = document.getElementById("workspace");
+    // let tempSym = this.navParams.get("newSymbol");
+    // let tempBranch = this.navParams.get("newBranch");    
+
+    flowchart.insertBefore(symbol, branches[0].nextSibling);
+    flowchart.insertBefore(branch, document.getElementById(id).nextSibling);
+
+    // branches = document.getElementsByClassName("branch-link dropzone active-branch");
+    // for(let i=0; i<branches.length; i++){
+    //   // branches[i].addEventListener('click', (e) => this.openModal(e) );
+    //   // checkForNewBranches();
+      
+    //   branches[i].classList.remove('active-branch');
+    // }
+
+    //this.closeModal(event);
+
+    //flowchart.innerText = tempSym;
   }
   
   zoomIn(){

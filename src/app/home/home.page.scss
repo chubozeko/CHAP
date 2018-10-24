@@ -8,6 +8,14 @@ ion-card{
   background-color: #F8F8F8;
 }
 
+#fabSymbols{
+  padding: 5px;
+  font-size: 8pt;
+  width: 80px;
+  height: 45px;
+  background-color: #F8F8F8;
+}
+
 ion-row{
   float: left;
   //flex-wrap: nowrap;
@@ -48,31 +56,31 @@ ion-row{
 }
 
 #s_output{
-  background: rgb(184, 222, 111);;
+  background: #b8de6f;
   -webkit-clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
   clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
 }
 
 #s_input{
-  background: rgb(1, 197, 196);
+  background: #01c5c4;
   -webkit-clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
   clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
 }
 
 #s_decision{
-  background: rgb(241, 225, 137);
+  background: #f1e189;
   -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 #s_process{
-  background: rgb(243, 146, 51);
+  background: #f39233;
   -webkit-clip-path: inset(0 0 0 0);
   clip-path: inset(0 0 0 0);
 }
 
 #s_start_stop{
-  background: rgb(254, 84, 123);
+  background: #fe547b;
   -webkit-clip-path: ellipse(50% 50% at 50% 50%);
   clip-path: ellipse(50% 50% at 50% 50%);
 }
