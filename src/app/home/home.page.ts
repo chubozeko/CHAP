@@ -2,7 +2,7 @@ import { Component, ViewChild, HostListener, SimpleChanges } from '@angular/core
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import 'libraries/scripts/menubareditor.js';
 import 'libraries/scripts/drag&drop.js';
-import { ModalController, NavParams, FabButton } from '@ionic/angular';
+import { ModalController, NavParams, FabButton, Fab } from '@ionic/angular';
 import { DialogSymbolsPageModule } from '../dialog-symbols/dialog-symbols.module';
 import { DialogSymbolsPage } from '../dialog-symbols/dialog-symbols.page';
 
@@ -13,7 +13,7 @@ import { DialogSymbolsPage } from '../dialog-symbols/dialog-symbols.page';
 })
 export class HomePage {
 
-  @ViewChild('symbolsFAB') symbolsFAB: FabButton;
+  @ViewChild('symbolsFAB') symbolsFAB: Fab;
 
   // @ViewChild(Nav) nav: Nav;
   // rootPage = "DashboardTabsPage";
@@ -33,13 +33,16 @@ export class HomePage {
     // this.loadScript('libraries/scripts/menubareditor.js');
     // this.loadScript('libraries/scripts/drag&drop.js');
 
-    // this.workspace = document.getElementById("workspace");
-    // this.workspace.addEventListener('click', (e) => this.checkForNewBranches(e) );
+    this.workspace = document.getElementById("workspace");
+    //this.workspace.addEventListener('click', (e) => this.checkActiveBranches(e) );
 
     let branches = document.getElementsByClassName("branch-link dropzone");
     for(let i=0; i<branches.length; i++){
-      branches[i].addEventListener('click', (e) => this.openSymbolsFAB() );
+      branches[i].addEventListener('click', (e) => this.openSymbolsFAB(e) );
     }
+
+    
+
   }
 
   // Open Symbols Palette
@@ -71,70 +74,67 @@ export class HomePage {
     this.modal.dismiss();
   }
 
-  openSymbolsFAB(){
+  openSymbolsFAB(event){
+
+    let t = event.target || event.srcElement || event.currentTarget;
+    t.classList.add('active-branch');
+
     let symbolsFAB = document.getElementById("symbolsFAB");
     if (!symbolsFAB.getAttribute("activated")){
-      
-      alert("symbolsFAB");
+      this.symbolsFAB.activated = true;
+      //alert("symbolsFAB");
     }
+
+    
   }
 
   public addSymbol(id: string, event){
-    
+
     let flowchart = document.getElementById("workspace");
 
     let temp = document.getElementById(id);
     let symbol = temp.cloneNode(true);
+    symbol.textContent = "";
     let branches = document.getElementsByClassName("branch-link dropzone active-branch");
     let branch = branches[0].cloneNode(true);
-    branch.addEventListener('click', (e) => this.openSymbolsFAB() );
-
-    // this.navParams.data = { newSymbol: symbol, newBranch: branch };
-    // console.log(this.navParams.get("newSymbol"));
-    // //let flowchart = document.getElementById("workspace");
-    // let tempSym = this.navParams.get("newSymbol");
-    // let tempBranch = this.navParams.get("newBranch");    
+    branch.addEventListener('click', (e) => this.openSymbolsFAB(e) );   
 
     flowchart.insertBefore(symbol, branches[0].nextSibling);
-    flowchart.insertBefore(branch, document.getElementById(id).nextSibling);
+    flowchart.insertBefore(branch, symbol.nextSibling);
 
-    // branches = document.getElementsByClassName("branch-link dropzone active-branch");
-    // for(let i=0; i<branches.length; i++){
-    //   // branches[i].addEventListener('click', (e) => this.openModal(e) );
-    //   // checkForNewBranches();
-      
-    //   branches[i].classList.remove('active-branch');
-    // }
-
-    //this.closeModal(event);
-
-    //flowchart.innerText = tempSym;
-  }
-  
-  zoomIn(){
-    this.wsStyles = {
-      'transform' : 'scale(1.5)',
-      'transform-origin' : '0 0'
-    };
-    alert('whatever');
-  }
-
-  zoomOut(){
-    this.wsStyles = {
-      'transform' : 'scale(0.5)',
-      'transform-origin' : '0 0'
+    branches = document.getElementsByClassName("branch-link dropzone active-branch");
+    for(let i=0; i<branches.length; i++){
+      branches[i].classList.remove('active-branch');
     }
+
   }
-
   
+  // zoomIn(){
+  //   this.wsStyles = {
+  //     'transform' : 'scale(1.5)',
+  //     'transform-origin' : '0 0'
+  //   };
+  //   alert('whatever');
+  // }
 
-  // public checkForNewBranches(e){
-  //   let branches = document.getElementsByClassName("branch-link dropzone");
-  //   for(let i=branches.length-1; i<branches.length; i++){
-  //     //branches[i].removeEventListener('click', (e) => this.openModal(e));
-  //     branches[i].addEventListener('click', (e) => this.openModal(e) );
+  // zoomOut(){
+  //   this.wsStyles = {
+  //     'transform' : 'scale(0.5)',
+  //     'transform-origin' : '0 0'
   //   }
   // }
+
+  
+
+  public checkActiveBranches(e){
+    if(this.symbolsFAB.activated){
+      let branches = document.getElementsByClassName("branch-link dropzone active-branch");
+      for(let i=branches.length-1; i<branches.length; i++){
+        branches[i].classList.remove('active-branch');
+      }
+    }
+    
+  }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
   public loadScript(url: string) {

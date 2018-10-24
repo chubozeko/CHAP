@@ -38,13 +38,13 @@
         <div><a>Console</a></div>
       </div> -->
 
-      <ion-fab vertical="bottom" horizontal="start">
-        <ion-fab-button id="symbolsFAB" color="light" padding >
+      <ion-fab vertical="bottom" horizontal="start" #symbolsFAB>
+        <ion-fab-button id="symbolsFAB" color="light" padding>
           <img src="./assets/icon/symbols_icon.png" alt="">
         </ion-fab-button>
         <ion-fab-list side="top" >
           <ion-card *ngFor="let s of symbols" id="fabSymbols">
-            <div id="{{s.id}}" class="draggable" (click)="addSymbol(s.id, event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
+            <div id="{{s.id}}" class="draggable" (click)="addSymbol(s.id,event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
           </ion-card>
         </ion-fab-list>
       </ion-fab>
