@@ -1,7 +1,5 @@
 // SYMBOLS CSS
 ion-card{
-  // $float: left;
-  // $display: inline;
   width: 105px;
   height: 105px;
   padding-top: 0%;
@@ -18,10 +16,8 @@ ion-card{
 
 ion-row{
   float: left;
-  //flex-wrap: nowrap;
   overflow-y: hidden;
   padding: 0;
-  //display: inline;
 }
 
 .symbols-div{ 
@@ -31,20 +27,6 @@ ion-row{
   overflow-x: hidden;
   margin: 0;
 }
-
-// ul{ 
-   
-//   list-style-type: none; 
-//   padding-left: 0; 
-//   // float: left;
-// }
-
-// #symbols-div ul li{
-//   display: inline;
-//   padding: 0;
-//   margin: 0;
-  
-// }
 
 #s_input, #s_output, #s_process, #s_decision, #s_start_stop, .branch-link{ 
   width: 70px;

@@ -12,21 +12,58 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var angular_1 = require("@ionic/angular");
 var symbol_list_1 = require("../symbol-list"); // importing the symbol array from symbol-list.ts
+//import { HomePage } from "../home/home.page";
 var DialogSymbolsPage = /** @class */ (function () {
     function DialogSymbolsPage(navCtrl, navParams, modal) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.modal = modal;
         this.symbols = symbol_list_1.SYMBOLS;
+        this.workspace = document.getElementById("workspace");
     }
-    DialogSymbolsPage.prototype.ngOnInit = function () {
-    };
-    DialogSymbolsPage.prototype.addSymbol = function (id, text) {
-        this.dismiss();
-        alert('You have added a ' + text + ' symbol.');
-    };
-    DialogSymbolsPage.prototype.dismiss = function () {
+    DialogSymbolsPage.prototype.ngOnInit = function () { };
+    // // Open Symbols Palette
+    // public async openModal(event){
+    //   let t = event.target || event.srcElement || event.currentTarget;
+    //   const myModal = await this.modal.create({
+    //     component: DialogSymbolsPage
+    //   });
+    //   // Make current Branch ACTIVE
+    //   t.classList.add('active-branch');
+    //   // Display Symbols Palette
+    //   await myModal.present();
+    // }
+    DialogSymbolsPage.prototype.closeModal = function (event) {
+        //this.workspace.addEventListener('click', (e) => EditorDirective.prototype.checkForNewBranches(e) );
+        //this.newSymbol = this.navParams.get("newSymbol");
+        var branches = document.getElementsByClassName("branch-link dropzone active-branch");
+        for (var i = 0; i < branches.length; i++) {
+            branches[i].classList.remove('active-branch');
+        }
+        //console.log(this.newSymbol);
         this.modal.dismiss();
+    };
+    DialogSymbolsPage.prototype.addSymbol = function (id, event) {
+        var flowchart = document.getElementById("workspace");
+        var temp = document.getElementById(id);
+        var symbol = temp.cloneNode(true);
+        var branches = document.getElementsByClassName("branch-link dropzone active-branch");
+        var branch = branches[0].cloneNode(true);
+        this.navParams.data = { newSymbol: symbol, newBranch: branch };
+        console.log(this.navParams.get("newSymbol"));
+        //let flowchart = document.getElementById("workspace");
+        var tempSym = this.navParams.get("newSymbol");
+        var tempBranch = this.navParams.get("newBranch");
+        flowchart.insertBefore(tempSym, branches[0].nextSibling);
+        flowchart.insertBefore(tempBranch, document.getElementById(id).nextSibling);
+        // branches = document.getElementsByClassName("branch-link dropzone active-branch");
+        // for(let i=0; i<branches.length; i++){
+        //   // branches[i].addEventListener('click', (e) => this.openModal(e) );
+        //   // checkForNewBranches();
+        //   branches[i].classList.remove('active-branch');
+        // }
+        this.closeModal(event);
+        //flowchart.innerText = tempSym;
     };
     DialogSymbolsPage = __decorate([
         core_1.Component({

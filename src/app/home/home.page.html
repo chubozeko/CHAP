@@ -15,28 +15,8 @@
       <div id="arrow" class="branch-link dropzone"></div> 
       <div id="s_start_stop" class="draggable" style="font-size: 10pt;">STOP</div>
     </div>
-    <!-- (click)="openModal($event)" -->
+    
     <div class="sidebar">
-      <!-- <div class="sideview">
-        <div class="symbols-div">
-          <ion-grid>
-            <ion-row>
-              <ion-col *ngFor="let s of symbols">
-                <ion-card padding >
-                  <p>{{s.s_name}}</p>
-                  <div id="{{s.id}}" class="draggable" draggable="true" contenteditable="true" ondragstart="startDrag" ondragend="endDrag"></div>
-                </ion-card>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </div>
-      </div> -->
-        
-      <!-- <div class="tabs">
-        <div><a>Symbols</a></div>
-        <div><a>Variables</a></div>
-        <div><a>Console</a></div>
-      </div> -->
 
       <ion-fab vertical="bottom" horizontal="start" #symbolsFAB>
         <ion-fab-button id="symbolsFAB" color="light" padding>
@@ -44,10 +24,11 @@
         </ion-fab-button>
         <ion-fab-list side="top" >
           <ion-card *ngFor="let s of symbols" id="fabSymbols">
-            <div id="{{s.id}}" class="draggable" (click)="addSymbol(s.id,event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
+            <div id="{{s.id}}" (click)="addSymbol(s.id,$event)" class="draggable" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
           </ion-card>
         </ion-fab-list>
       </ion-fab>
+
     </div>
   </div>
 </ion-content>

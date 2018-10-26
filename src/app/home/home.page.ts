@@ -1,10 +1,10 @@
-import { Component, ViewChild, HostListener, SimpleChanges } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { ModalController, Fab, ActionSheetController } from '@ionic/angular';
+import { ActionSheetOptions } from '@ionic/core';
+
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import 'libraries/scripts/menubareditor.js';
 import 'libraries/scripts/drag&drop.js';
-import { ModalController, NavParams, FabButton, Fab } from '@ionic/angular';
-import { DialogSymbolsPageModule } from '../dialog-symbols/dialog-symbols.module';
-import { DialogSymbolsPage } from '../dialog-symbols/dialog-symbols.page';
 
 @Component({
   selector: 'app-home',
@@ -15,18 +15,13 @@ export class HomePage {
 
   @ViewChild('symbolsFAB') symbolsFAB: Fab;
 
-  // @ViewChild(Nav) nav: Nav;
-  // rootPage = "DashboardTabsPage";
-  workspace = document.getElementById("workspace");
-  wsStyles: {};
+  workspace; branch; 
   title = 'CHAP';
   fileName = '';
   symbols = SYMBOLS;
   newSymbol: any;
 
-  constructor(public modal: ModalController){ //, public navParams: NavParams){
-    
-  }
+  constructor(public modal: ModalController, public symbolOptionsAS: ActionSheetController){}
 
   ngOnInit() {
     // Loading of external JavaScript libraries
@@ -34,106 +29,85 @@ export class HomePage {
     // this.loadScript('libraries/scripts/drag&drop.js');
 
     this.workspace = document.getElementById("workspace");
-    //this.workspace.addEventListener('click', (e) => this.checkActiveBranches(e) );
+    this.branch = document.getElementById("arrow");
+    this.branch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
 
     let branches = document.getElementsByClassName("branch-link dropzone");
     for(let i=0; i<branches.length; i++){
       branches[i].addEventListener('click', (e) => this.openSymbolsFAB(e) );
     }
 
-    
-
   }
 
-  // Open Symbols Palette
-  public async openModal(event){
-    let t = event.target || event.srcElement || event.currentTarget;
-    const myModal = await this.modal.create({
-      component: DialogSymbolsPage,
-      componentProps: { 
-        newSymbol: this.newSymbol, 
-        newBranch: document.getElementsByClassName("branch-link dropzone") 
-      }
-    });
+  async openSymbolsAS(event){
 
-    // Make current Branch ACTIVE
-    t.classList.add('active-branch');
+    let targetSymbol = event.target || event.srcElement || event.currentTarget;
+    targetSymbol.classList.add('active-symbol');
 
-    // Display Symbols Palette
-    await myModal.present();
-  }
-
-  closeModal(event){
-    //this.workspace.addEventListener('click', (e) => EditorDirective.prototype.checkForNewBranches(e) );
-    //this.newSymbol = this.navParams.get("newSymbol");
-    let branches = document.getElementsByClassName("branch-link dropzone active-branch");
-    for(let i=0; i<branches.length; i++){
-      branches[i].classList.remove('active-branch');
+    let options: ActionSheetOptions = {
+      // header: "",
+      // subHeader: "",
+      buttons: [
+        {
+          text: "Delete Symbol",
+          handler: () => {
+            let selectedSymbol = document.getElementsByClassName("draggable active-symbol");
+            let nextArrow = selectedSymbol[0].nextSibling;
+            this.workspace.removeChild(nextArrow);
+            selectedSymbol[0].remove();
+          }
+        }
+      ]
     }
-    //console.log(nav);
-    this.modal.dismiss();
+    const actionSheet = await this.symbolOptionsAS.create(options);
+    await actionSheet.present();
+
   }
 
   openSymbolsFAB(event){
 
     let t = event.target || event.srcElement || event.currentTarget;
-    t.classList.add('active-branch');
-
     let symbolsFAB = document.getElementById("symbolsFAB");
-    if (!symbolsFAB.getAttribute("activated")){
-      this.symbolsFAB.activated = true;
-      //alert("symbolsFAB");
+    let arrows = document.getElementsByClassName("branch-link dropzone active-branch");
+    if(arrows.length < 1){
+      t.classList.add('active-branch');
+      if (!symbolsFAB.getAttribute("activated")){
+        this.symbolsFAB.activated = true;
+      }
+    } else {
+      let branches = document.getElementsByClassName("branch-link dropzone active-branch");
+      for(let i=0; i<branches.length; i++){
+        branches[i].classList.remove('active-branch');
+      }
+      t.classList.add('active-branch');
+
+      if (!symbolsFAB.getAttribute("activated")){
+        this.symbolsFAB.activated = true;
+      }
     }
 
-    
   }
 
   public addSymbol(id: string, event){
-
-    let flowchart = document.getElementById("workspace");
 
     let temp = document.getElementById(id);
     let symbol = temp.cloneNode(true);
     symbol.textContent = "";
     let branches = document.getElementsByClassName("branch-link dropzone active-branch");
-    let branch = branches[0].cloneNode(true);
-    branch.addEventListener('click', (e) => this.openSymbolsFAB(e) );   
+    
+    let tempBranch = this.branch.cloneNode(true);
+    
+    tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );   
+    symbol.addEventListener('dblclick', (e) => this.openSymbolsAS(e) );
 
-    flowchart.insertBefore(symbol, branches[0].nextSibling);
-    flowchart.insertBefore(branch, symbol.nextSibling);
+    this.workspace.insertBefore(symbol, branches[0].nextSibling);
+    this.workspace.insertBefore(tempBranch, symbol.nextSibling);
 
     branches = document.getElementsByClassName("branch-link dropzone active-branch");
     for(let i=0; i<branches.length; i++){
       branches[i].classList.remove('active-branch');
     }
 
-  }
-  
-  // zoomIn(){
-  //   this.wsStyles = {
-  //     'transform' : 'scale(1.5)',
-  //     'transform-origin' : '0 0'
-  //   };
-  //   alert('whatever');
-  // }
-
-  // zoomOut(){
-  //   this.wsStyles = {
-  //     'transform' : 'scale(0.5)',
-  //     'transform-origin' : '0 0'
-  //   }
-  // }
-
-  
-
-  public checkActiveBranches(e){
-    if(this.symbolsFAB.activated){
-      let branches = document.getElementsByClassName("branch-link dropzone active-branch");
-      for(let i=branches.length-1; i<branches.length; i++){
-        branches[i].classList.remove('active-branch');
-      }
-    }
-    
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded

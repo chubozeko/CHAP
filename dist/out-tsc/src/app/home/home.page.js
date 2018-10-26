@@ -46,7 +46,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var symbol_list_1 = require("../symbol-list"); // importing the symbol array from symbol-list.ts
-//import { DialogSymbolsPage } from "../dialog-symbols/dialog-symbols.page";
 require("libraries/scripts/menubareditor.js");
 require("libraries/scripts/drag&drop.js");
 var angular_1 = require("@ionic/angular");
@@ -54,45 +53,117 @@ var dialog_symbols_page_1 = require("../dialog-symbols/dialog-symbols.page");
 var HomePage = /** @class */ (function () {
     function HomePage(modal) {
         this.modal = modal;
+        // @ViewChild(Nav) nav: Nav;
+        // rootPage = "DashboardTabsPage";
+        this.workspace = document.getElementById("workspace");
         this.title = 'CHAP';
         this.fileName = '';
         this.symbols = symbol_list_1.SYMBOLS;
     }
-    HomePage.prototype.openModal = function () {
+    HomePage.prototype.ngOnInit = function () {
+        // Loading of external JavaScript libraries
+        // this.loadScript('libraries/scripts/menubareditor.js');
+        // this.loadScript('libraries/scripts/drag&drop.js');
+        var _this = this;
+        this.workspace = document.getElementById("workspace");
+        //this.workspace.addEventListener('click', (e) => this.checkActiveBranches(e) );
+        var branches = document.getElementsByClassName("branch-link dropzone");
+        for (var i = 0; i < branches.length; i++) {
+            branches[i].addEventListener('click', function (e) { return _this.openSymbolsFAB(e); });
+        }
+    };
+    // Open Symbols Palette
+    HomePage.prototype.openModal = function (event) {
         return __awaiter(this, void 0, void 0, function () {
-            var myModal;
+            var t, myModal;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.modal.create({
-                            component: dialog_symbols_page_1.DialogSymbolsPage
-                        })];
+                    case 0:
+                        t = event.target || event.srcElement || event.currentTarget;
+                        return [4 /*yield*/, this.modal.create({
+                                component: dialog_symbols_page_1.DialogSymbolsPage,
+                                componentProps: {
+                                    newSymbol: this.newSymbol,
+                                    newBranch: document.getElementsByClassName("branch-link dropzone")
+                                }
+                            })];
                     case 1:
                         myModal = _a.sent();
+                        // Make current Branch ACTIVE
+                        t.classList.add('active-branch');
+                        // Display Symbols Palette
                         return [4 /*yield*/, myModal.present()];
                     case 2:
+                        // Display Symbols Palette
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    HomePage.prototype.zoomIn = function () {
-        this.wsStyles = {
-            'transform': 'scale(1.5)',
-            'transform-origin': '0 0'
-        };
-        alert('whatever');
+    HomePage.prototype.closeModal = function (event) {
+        //this.workspace.addEventListener('click', (e) => EditorDirective.prototype.checkForNewBranches(e) );
+        //this.newSymbol = this.navParams.get("newSymbol");
+        var branches = document.getElementsByClassName("branch-link dropzone active-branch");
+        for (var i = 0; i < branches.length; i++) {
+            branches[i].classList.remove('active-branch');
+        }
+        //console.log(nav);
+        this.modal.dismiss();
     };
-    HomePage.prototype.zoomOut = function () {
-        this.wsStyles = {
-            'transform': 'scale(0.5)',
-            'transform-origin': '0 0'
-        };
+    HomePage.prototype.openSymbolsFAB = function (event) {
+        var arrows = document.getElementsByClassName("branch-link dropzone active-branch");
+        if (arrows.length < 1) {
+            var t = event.target || event.srcElement || event.currentTarget;
+            t.classList.add('active-branch');
+            var symbolsFAB = document.getElementById("symbolsFAB");
+            if (!symbolsFAB.getAttribute("activated")) {
+                this.symbolsFAB.activated = true;
+                //alert("symbolsFAB");
+            }
+        }
+        else {
+            alert("Already active arrow!");
+        }
     };
-    HomePage.prototype.ngOnInit = function () {
-        // Loading of external JavaScript libraries
-        // this.loadScript('libraries/scripts/menubareditor.js');
-        // this.loadScript('libraries/scripts/drag&drop.js');
+    HomePage.prototype.addSymbol = function (id, event) {
+        //let t = event.target || event.srcElement || event.currentTarget;
+        //t.classList.add('active-branch');
+        var _this = this;
+        var flowchart = document.getElementById("workspace");
+        var temp = document.getElementById(id);
+        var symbol = temp.cloneNode(true);
+        symbol.textContent = "";
+        var branches = document.getElementsByClassName("branch-link dropzone active-branch");
+        var branch = branches[0].cloneNode(true);
+        branch.addEventListener('click', function (e) { return _this.openSymbolsFAB(e); });
+        flowchart.insertBefore(symbol, branches[0].nextSibling);
+        flowchart.insertBefore(branch, symbol.nextSibling);
+        branches = document.getElementsByClassName("branch-link dropzone active-branch");
+        for (var i = 0; i < branches.length; i++) {
+            branches[i].classList.remove('active-branch');
+        }
+    };
+    // zoomIn(){
+    //   this.wsStyles = {
+    //     'transform' : 'scale(1.5)',
+    //     'transform-origin' : '0 0'
+    //   };
+    //   alert('whatever');
+    // }
+    // zoomOut(){
+    //   this.wsStyles = {
+    //     'transform' : 'scale(0.5)',
+    //     'transform-origin' : '0 0'
+    //   }
+    // }
+    HomePage.prototype.checkActiveBranches = function (e) {
+        if (this.symbolsFAB.activated) {
+            var branches = document.getElementsByClassName("branch-link dropzone active-branch");
+            for (var i = branches.length - 1; i < branches.length; i++) {
+                branches[i].classList.remove('active-branch');
+            }
+        }
     };
     // To be able to use external JavaScript libraries with TypeScript, they must be loaded
     HomePage.prototype.loadScript = function (url) {
@@ -105,6 +176,10 @@ var HomePage = /** @class */ (function () {
         script.type = 'text/javascript';
         body.appendChild(script);
     };
+    __decorate([
+        core_1.ViewChild('symbolsFAB'),
+        __metadata("design:type", angular_1.Fab)
+    ], HomePage.prototype, "symbolsFAB", void 0);
     HomePage = __decorate([
         core_1.Component({
             selector: 'app-home',
