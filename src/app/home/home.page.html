@@ -17,8 +17,7 @@
     </div>
     
     <div class="sidebar">
-
-      <ion-fab vertical="bottom" horizontal="start" #symbolsFAB>
+      <div><ion-fab vertical="bottom" horizontal="start" #symbolsFAB>
         <ion-fab-button id="symbolsFAB" color="light" padding>
           <img src="./assets/icon/symbols_icon.png" alt="">
         </ion-fab-button>
@@ -27,8 +26,14 @@
             <div id="{{s.id}}" (click)="addSymbol(s.id,$event)" class="draggable" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
           </ion-card>
         </ion-fab-list>
-      </ion-fab>
-
+      </ion-fab></div>
+      
+      <div>
+        <textarea rows="5">{{consoleDefaultText}}       
+        </textarea>
+        <!-- <span class="blinking-cursor">_</span> -->
+      </div>
+      
     </div>
   </div>
 </ion-content>

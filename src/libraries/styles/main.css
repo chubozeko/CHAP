@@ -45,7 +45,7 @@
     height: 100%;
 }
 
-.sidebar{ background: #ddd; margin: 0; }
+.sidebar{ background: #bbb; margin: 0; }
 .sideview{ padding: 0; height: 100%; }
 
 .tabs a{ 
@@ -104,6 +104,57 @@ li a:hover{ color: #039be5; }
 #workspace > div{
     margin: auto;
 }
+
+.sidebar{
+    display: grid;
+    grid-template-columns: 1.5fr 4fr;
+}
+
+textarea{ 
+    width: 100%;  
+    padding: 5px;
+    float: right; 
+    background-color: #333; 
+    color: #ddd; 
+    font-family: Consolas, monaco, monospace; 
+    resize: none;
+}
+
+/* .blinking-cursor {
+    /* font-weight: 100;
+    font-size: 30px; 
+    color: #ddd;
+    -webkit-animation: 1s blink step-end infinite;
+    -moz-animation: 1s blink step-end infinite;
+    -ms-animation: 1s blink step-end infinite;
+    -o-animation: 1s blink step-end infinite;
+    animation: 1s blink step-end infinite;
+}
+  
+@keyframes blink {
+    from, to { color: transparent; }
+    50% { color: black; }
+}
+  
+@-moz-keyframes blink {
+    from, to { color: transparent; }
+    50% { color: black; }
+}
+  
+@-webkit-keyframes blink {
+    from, to { color: transparent; }
+    50% { color: black; }
+  }
+  
+@-ms-keyframes blink {
+    from, to { color: transparent; }
+    50% { color: black; }
+}
+  
+@-o-keyframes blink {
+    from, to { color: transparent; }
+    50% { color: black; }
+} */
 
 /*** DROP-DOWN MENU [placeholder styles] ***/
 #lowerbar {

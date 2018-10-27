@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalController, Fab, ActionSheetController } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
+import { ConsoleComponent } from '../console/console.component';
 
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import 'libraries/scripts/menubareditor.js';
@@ -18,10 +19,11 @@ export class HomePage {
   workspace; branch; 
   title = 'CHAP';
   fileName = '';
+  consoleDefaultText = '// Console Output\n>';
   symbols = SYMBOLS;
   newSymbol: any;
 
-  constructor(public modal: ModalController, public symbolOptionsAS: ActionSheetController){}
+  constructor(public symbolOptionsAS: ActionSheetController){}
 
   ngOnInit() {
     // Loading of external JavaScript libraries
