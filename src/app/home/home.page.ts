@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalController, Fab, ActionSheetController } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
-import { ConsoleComponent } from '../console/console.component';
 
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import 'libraries/scripts/menubareditor.js';
@@ -16,10 +15,11 @@ export class HomePage {
 
   @ViewChild('symbolsFAB') symbolsFAB: Fab;
 
-  workspace; branch; 
   title = 'CHAP';
   fileName = '';
-  consoleDefaultText = '// Console Output\n>';
+  consoleDefaultText = '// Console Output \n>';
+
+  workspace; branch; 
   symbols = SYMBOLS;
   newSymbol: any;
 
@@ -30,6 +30,7 @@ export class HomePage {
     // this.loadScript('libraries/scripts/menubareditor.js');
     // this.loadScript('libraries/scripts/drag&drop.js');
 
+    // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.workspace = document.getElementById("workspace");
     this.branch = document.getElementById("arrow");
     this.branch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
@@ -43,9 +44,11 @@ export class HomePage {
 
   async openSymbolsAS(event){
 
+    // Get the target symbol
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
     targetSymbol.classList.add('active-symbol');
 
+    // Create Symbol Options actionsheet
     let options: ActionSheetOptions = {
       // header: "",
       // subHeader: "",
@@ -61,6 +64,7 @@ export class HomePage {
         }
       ]
     }
+    // Create and Display Symbols Options actionsheet
     const actionSheet = await this.symbolOptionsAS.create(options);
     await actionSheet.present();
 
@@ -68,9 +72,13 @@ export class HomePage {
 
   openSymbolsFAB(event){
 
+    // Get the target arrow
     let t = event.target || event.srcElement || event.currentTarget;
+    // Get symbols FAB
     let symbolsFAB = document.getElementById("symbolsFAB");
+    // Get the active arrow/branch
     let arrows = document.getElementsByClassName("branch-link dropzone active-branch");
+    // Check if there are other active arrows/branches
     if(arrows.length < 1){
       t.classList.add('active-branch');
       if (!symbolsFAB.getAttribute("activated")){
@@ -82,7 +90,7 @@ export class HomePage {
         branches[i].classList.remove('active-branch');
       }
       t.classList.add('active-branch');
-
+      // Open symbols FAB
       if (!symbolsFAB.getAttribute("activated")){
         this.symbolsFAB.activated = true;
       }
@@ -92,19 +100,24 @@ export class HomePage {
 
   public addSymbol(id: string, event){
 
+    // Get and create a new symbol with given id from symbols FAB
     let temp = document.getElementById(id);
     let symbol = temp.cloneNode(true);
     symbol.textContent = "";
+
+    // Get the selected arrow/branch to append symbol after
     let branches = document.getElementsByClassName("branch-link dropzone active-branch");
-    
     let tempBranch = this.branch.cloneNode(true);
     
+    // Add buttonClick listeners to new Symbol & Arrow/Branch
     tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );   
     symbol.addEventListener('dblclick', (e) => this.openSymbolsAS(e) );
 
+    // Add symbol and corresponding arrow/branch to Workspace
     this.workspace.insertBefore(symbol, branches[0].nextSibling);
     this.workspace.insertBefore(tempBranch, symbol.nextSibling);
 
+    // Make all the arrows/branches on the Workspace inactive
     branches = document.getElementsByClassName("branch-link dropzone active-branch");
     for(let i=0; i<branches.length; i++){
       branches[i].classList.remove('active-branch');

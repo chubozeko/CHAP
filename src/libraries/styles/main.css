@@ -3,7 +3,6 @@
 .main{
     display: grid;
     grid-template-rows: 1fr 4fr;
-    /* grid-row-gap: 0.5em; */
     overflow: hidden;
     zoom: unset;
 }
@@ -28,9 +27,7 @@
     background: #333; 
     border: 0; 
     block-size: 2em; 
-    
     margin: 0;
-    /* padding: 8px; */
     color: #ddd;
     font-size: 12pt;
 }
@@ -44,10 +41,13 @@
     grid-column-gap: 0.25em;
     height: 100%;
 }
-
-.sidebar{ background: #bbb; margin: 0; }
+.sidebar{ 
+    background: #bbb; 
+    margin: 0; 
+    display: grid;
+    grid-template-columns: 1.5fr 4fr;
+}
 .sideview{ padding: 0; height: 100%; }
-
 .tabs a{ 
     display: block;
     background: #333333; 
@@ -60,10 +60,7 @@
     cursor: pointer; 
     text-align: center;
 }
-.tabs{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
+.tabs{ display: grid; grid-template-columns: repeat(3, 1fr); }
 .tabs a:hover{
     color: #ddd;
     background: #039be5;
@@ -78,17 +75,6 @@
     border-color: #039be5;
     background: #ddd;
 }
-
-/* ul{
-    height: 100%;
-    margin: 0;
-    padding-left: 0;
-}
-li{
-    float: left;
-    list-style-type: none;
-    display: block; 
-} */
 li a{ 
     display: block;
     background: #A9B1B4; 
@@ -100,16 +86,7 @@ li a{
     text-align: center;
 }
 li a:hover{ color: #039be5; } 
-
-#workspace > div{
-    margin: auto;
-}
-
-.sidebar{
-    display: grid;
-    grid-template-columns: 1.5fr 4fr;
-}
-
+#workspace > div{ margin: auto; }
 textarea{ 
     width: 100%;  
     padding: 5px;
@@ -120,54 +97,16 @@ textarea{
     resize: none;
 }
 
-/* .blinking-cursor {
-    /* font-weight: 100;
-    font-size: 30px; 
-    color: #ddd;
-    -webkit-animation: 1s blink step-end infinite;
-    -moz-animation: 1s blink step-end infinite;
-    -ms-animation: 1s blink step-end infinite;
-    -o-animation: 1s blink step-end infinite;
-    animation: 1s blink step-end infinite;
-}
-  
-@keyframes blink {
-    from, to { color: transparent; }
-    50% { color: black; }
-}
-  
-@-moz-keyframes blink {
-    from, to { color: transparent; }
-    50% { color: black; }
-}
-  
-@-webkit-keyframes blink {
-    from, to { color: transparent; }
-    50% { color: black; }
-  }
-  
-@-ms-keyframes blink {
-    from, to { color: transparent; }
-    50% { color: black; }
-}
-  
-@-o-keyframes blink {
-    from, to { color: transparent; }
-    50% { color: black; }
-} */
-
 /*** DROP-DOWN MENU [placeholder styles] ***/
 #lowerbar {
     overflow: hidden;
     background-color: #333;
     font-family: Arial, Helvetica, sans-serif;
 }
-
 .dropdown {
     float: left;
     overflow: hidden;
 }
-
 .dropdown .dropbtn {
     font-size: 12pt;    
     border: none;
@@ -179,13 +118,11 @@ textarea{
     margin: 0;
     display: block;
 }
-
 #lowerbar a:hover, .dropdown:hover .dropbtn {
     background-color: #ddd;
     color: #039be5;
     cursor: pointer;
 }
-
 .dropdown-content {
     display: none;
     position: absolute;
@@ -194,7 +131,6 @@ textarea{
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-
 .dropdown-content a {
     float: none;
     color: black;
@@ -203,11 +139,5 @@ textarea{
     display: block;
     text-align: left;
 }
-
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
+.dropdown-content a:hover { background-color: #ddd; }
+.dropdown:hover .dropdown-content { display: block; }

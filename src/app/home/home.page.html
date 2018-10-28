@@ -9,7 +9,8 @@
 </ion-toolbar>
 
 <ion-content>
-  <div class="wrapper" >
+  <div class="wrapper">
+
     <div id="workspace" appEditor>
       <div id="s_start_stop" class="draggable" style="font-size: 10pt;">START</div>
       <div id="arrow" class="branch-link dropzone"></div> 
@@ -17,23 +18,25 @@
     </div>
     
     <div class="sidebar">
-      <div><ion-fab vertical="bottom" horizontal="start" #symbolsFAB>
-        <ion-fab-button id="symbolsFAB" color="light" padding>
-          <img src="./assets/icon/symbols_icon.png" alt="">
-        </ion-fab-button>
-        <ion-fab-list side="top" >
-          <ion-card *ngFor="let s of symbols" id="fabSymbols">
-            <div id="{{s.id}}" (click)="addSymbol(s.id,$event)" class="draggable" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
-          </ion-card>
-        </ion-fab-list>
-      </ion-fab></div>
-      
+
       <div>
-        <textarea rows="5">{{consoleDefaultText}}       
-        </textarea>
-        <!-- <span class="blinking-cursor">_</span> -->
+        <ion-fab vertical="bottom" horizontal="start" #symbolsFAB>
+          <ion-fab-button id="symbolsFAB" color="light" padding>
+            <img src="./assets/icon/symbols_icon.png" alt="">
+          </ion-fab-button>
+          <ion-fab-list side="top" >
+            <ion-card *ngFor="let s of symbols" id="fabSymbols">
+              <div id="{{s.id}}" (click)="addSymbol(s.id,$event)" class="draggable" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
+            </ion-card>
+          </ion-fab-list>
+        </ion-fab>
       </div>
       
+      <div>
+        <textarea rows="5">{{consoleDefaultText}}</textarea>
+      </div>  
+      
     </div>
+
   </div>
 </ion-content>
