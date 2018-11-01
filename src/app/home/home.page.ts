@@ -35,7 +35,7 @@ export class HomePage {
     this.branch = document.getElementById("arrow");
     this.branch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
 
-    let branches = document.getElementsByClassName("branch-link dropzone");
+    let branches = document.getElementsByClassName("arrow dropzone");
     for(let i=0; i<branches.length; i++){
       branches[i].addEventListener('click', (e) => this.openSymbolsFAB(e) );
     }
@@ -56,7 +56,7 @@ export class HomePage {
         {
           text: "Delete Symbol",
           handler: () => {
-            let selectedSymbol = document.getElementsByClassName("draggable active-symbol");
+            let selectedSymbol = document.getElementsByClassName("symbol active-symbol");
             let nextArrow = selectedSymbol[0].nextSibling;
             this.workspace.removeChild(nextArrow);
             selectedSymbol[0].remove();
@@ -77,19 +77,19 @@ export class HomePage {
     // Get symbols FAB
     let symbolsFAB = document.getElementById("symbolsFAB");
     // Get the active arrow/branch
-    let arrows = document.getElementsByClassName("branch-link dropzone active-branch");
+    let arrows = document.getElementsByClassName("arrow dropzone active-arrow");
     // Check if there are other active arrows/branches
     if(arrows.length < 1){
-      t.classList.add('active-branch');
+      t.classList.add('active-arrow');
       if (!symbolsFAB.getAttribute("activated")){
         this.symbolsFAB.activated = true;
       }
     } else {
-      let branches = document.getElementsByClassName("branch-link dropzone active-branch");
+      let branches = document.getElementsByClassName("arrow dropzone active-arrow");
       for(let i=0; i<branches.length; i++){
-        branches[i].classList.remove('active-branch');
+        branches[i].classList.remove('active-arrow');
       }
-      t.classList.add('active-branch');
+      t.classList.add('active-arrow');
       // Open symbols FAB
       if (!symbolsFAB.getAttribute("activated")){
         this.symbolsFAB.activated = true;
@@ -106,7 +106,7 @@ export class HomePage {
     symbol.textContent = "";
 
     // Get the selected arrow/branch to append symbol after
-    let branches = document.getElementsByClassName("branch-link dropzone active-branch");
+    let branches = document.getElementsByClassName("arrow dropzone active-arrow");
     let tempBranch = this.branch.cloneNode(true);
     
     // Add buttonClick listeners to new Symbol & Arrow/Branch
@@ -118,9 +118,9 @@ export class HomePage {
     this.workspace.insertBefore(tempBranch, symbol.nextSibling);
 
     // Make all the arrows/branches on the Workspace inactive
-    branches = document.getElementsByClassName("branch-link dropzone active-branch");
+    branches = document.getElementsByClassName("arrow dropzone active-arrow");
     for(let i=0; i<branches.length; i++){
-      branches[i].classList.remove('active-branch');
+      branches[i].classList.remove('active-arrow');
     }
 
   }

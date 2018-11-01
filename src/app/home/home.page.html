@@ -12,9 +12,17 @@
   <div class="wrapper">
 
     <div id="workspace" appEditor>
-      <div id="s_start_stop" class="draggable" style="font-size: 10pt;">START</div>
-      <div id="arrow" class="branch-link dropzone"></div> 
-      <div id="s_start_stop" class="draggable" style="font-size: 10pt;">STOP</div>
+      <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
+      <div id="arrow" class="arrow dropzone"></div>
+      
+      <!-- <div id="left_arrows" class="arrow"></div>
+      <div id="right_arrow" class="arrows"></div>
+      <div id="left_down_arrow" class="arrows"></div>
+      <div id="right_down_arrow" class="arrows"></div>
+      <div id="left_up_arrow" class="arrows"></div>
+      <div id="right_up_arrow" class="arrows"></div> -->
+
+      <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
     </div>
     
     <div class="sidebar">
@@ -26,7 +34,7 @@
           </ion-fab-button>
           <ion-fab-list side="top" >
             <ion-card *ngFor="let s of symbols" id="fabSymbols">
-              <div id="{{s.id}}" (click)="addSymbol(s.id,$event)" class="draggable" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
+              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
             </ion-card>
           </ion-fab-list>
         </ion-fab>

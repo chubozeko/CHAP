@@ -1,4 +1,4 @@
-#symbols-div{ width: 100%; height: 100%; }
+/* #symbols-div{ width: 100%; height: 100%; }
 
 ul{ list-style: none; padding-left: 0; }
 
@@ -32,7 +32,7 @@ li{
   background: rgb(241, 225, 137);
   -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-}
+} 
 
 #s_process{
   background: rgb(243, 146, 51);
@@ -44,4 +44,4 @@ li{
   background: rgb(254, 84, 123);
   -webkit-clip-path: ellipse(50% 50% at 50% 50%);
   clip-path: ellipse(50% 50% at 50% 50%);
-}
+} */
