@@ -19,6 +19,7 @@ var workspace_component_1 = require("./workspace/workspace.component");
 var console_component_1 = require("./console/console.component");
 var variables_component_1 = require("./variables/variables.component");
 var dialog_symbols_page_1 = require("./dialog-symbols/dialog-symbols.page");
+var editor_directive_1 = require("./editor.directive");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -30,7 +31,8 @@ var AppModule = /** @class */ (function () {
                 workspace_component_1.WorkspaceComponent,
                 console_component_1.ConsoleComponent,
                 variables_component_1.VariablesComponent,
-                dialog_symbols_page_1.DialogSymbolsPage
+                dialog_symbols_page_1.DialogSymbolsPage,
+                editor_directive_1.EditorDirective
             ],
             entryComponents: [dialog_symbols_page_1.DialogSymbolsPage],
             imports: [platform_browser_1.BrowserModule, angular_1.IonicModule.forRoot(), app_routing_module_1.AppRoutingModule],

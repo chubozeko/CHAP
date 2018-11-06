@@ -1,19 +1,34 @@
 // SYMBOLS CSS
+#control_loop_list{ display: none; }
+
+.if_div, .for_div, .while_div, .do_while_div{
+  display: grid;
+  grid-template-columns: repeat(3, 70px);
+  align-items: center;
+  justify-content: center;
+  
+}
+
 ion-card{
-  // $float: left;
-  // $display: inline;
   width: 105px;
   height: 105px;
   padding-top: 0%;
+  margin: 0 0 5px 0;
+  background-color: #F8F8F8;
+}
+
+#fabSymbols{
+  padding: 5px;
+  font-size: 8pt;
+  width: 80px;
+  height: 45px;
   background-color: #F8F8F8;
 }
 
 ion-row{
   float: left;
-  //flex-wrap: nowrap;
   overflow-y: hidden;
   padding: 0;
-  //display: inline;
 }
 
 .symbols-div{ 
@@ -24,21 +39,14 @@ ion-row{
   margin: 0;
 }
 
-// ul{ 
-   
-//   list-style-type: none; 
-//   padding-left: 0; 
-//   // float: left;
-// }
+.arrows { 
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  color: #F8F8F8;
+}
 
-// #symbols-div ul li{
-//   display: inline;
-//   padding: 0;
-//   margin: 0;
-  
-// }
-
-#s_input, #s_output, #s_process, #s_decision, #s_start_stop, .branch-link{ 
+.symbol, .arrow{ 
   width: 70px;
   height: 35px;
   text-align: center;
@@ -47,38 +55,128 @@ ion-row{
   cursor: pointer;
 }
 
-#s_output{
-  background: rgb(184, 222, 111);;
-  -webkit-clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
-  clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
-}
-
-#s_input{
-  background: rgb(1, 197, 196);
-  -webkit-clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
-  clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
-}
-
-#s_decision{
-  background: rgb(241, 225, 137);
-  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-}
-
-#s_process{
-  background: rgb(243, 146, 51);
-  -webkit-clip-path: inset(0 0 0 0);
-  clip-path: inset(0 0 0 0);
-}
-
-#s_start_stop{
-  background: rgb(254, 84, 123);
+#s_start, #s_stop{
+  background: #fe547b;
   -webkit-clip-path: ellipse(50% 50% at 50% 50%);
   clip-path: ellipse(50% 50% at 50% 50%);
 }
+#s_declare{
+  background-image: url("/assets/icon/declare.png");
+  background-size: 70px 35px;
+  -webkit-clip-path: inset(0 0 0 0);
+  clip-path: inset(0 0 0 0);
+}
+#s_input{
+  background: #01c5c4;
+  -webkit-clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
+  clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
+}
+#s_output{
+  background: #b8de6f;
+  -webkit-clip-path: polygon(25% 0, 0 50%, 25% 100%, 100% 100%, 100% 0);
+  clip-path: polygon(25% 0, 0 50%, 25% 100%, 100% 100%, 100% 0);
+  border-radius: 0 25px 25px 0;
+}
+#s_operation{
+  background: #f39233;
+  -webkit-clip-path: inset(0 0 0 0);
+  clip-path: inset(0 0 0 0);
+}
+#s_if_case{
+  background: #f1e189;
+  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+#s_for_loop, #s_while_loop, #s_do_while_loop{
+  background: #9C93E2;
+  -webkit-clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
+  clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
+}
+#s_terminator{
+  background: #ffffff;
+  -webkit-clip-path: circle(50% at 50% 50%);
+  clip-path: circle(50% at 50% 50%);
+  width: 35px;
+  height: 35px;
+  margin: auto;
+}
+#s_comment{
+  background: #dddddd;
+  -webkit-clip-path: inset(0 0 0 0);
+  clip-path: inset(0 0 0 0);
+  border: 2px dashed #888888;
+  color: #888888;
+}
 
-.branch-link{
+// ARROWS
+.arrow{
   background: #000000;
   -webkit-clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
   clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
+}
+
+#arrow_up{
+  background: #000000;
+  -webkit-clip-path: polygon(50% 0, 35% 15%, 45% 15%, 45% 100%, 55% 100%, 55% 15%, 65% 15%);
+  clip-path: polygon(50% 0, 35% 15%, 45% 15%, 45% 100%, 55% 100%, 55% 15%, 65% 15%);
+}
+
+#arrow_left{
+  background: #000000;
+  -webkit-clip-path: polygon(0 50%, 15% 65%, 15% 55%, 100% 55%, 100% 45%, 15% 45%, 15% 35%);
+clip-path: polygon(0 50%, 15% 65%, 15% 55%, 100% 55%, 100% 45%, 15% 45%, 15% 35%);
+}
+
+#arrow_right{
+  background: #000000;
+  -webkit-clip-path: polygon(100% 50%, 85% 35%, 85% 45%, 0 45%, 0 55%, 85% 55%, 85% 65%);
+  clip-path: polygon(100% 50%, 85% 35%, 85% 45%, 0 45%, 0 55%, 85% 55%, 85% 65%);
+}
+
+#arrow_up_left{
+	background: #000000;
+	-webkit-clip-path: polygon(0 50%, 15% 65%, 15% 55%, 45% 55%, 45% 100%, 55% 100%, 55% 45%, 15% 45%, 15% 35%);
+	clip-path: polygon(0 50%, 15% 65%, 15% 55%, 45% 55%, 45% 100%, 55% 100%, 55% 45%, 15% 45%, 15% 35%);
+}
+
+#arrow_down_left{
+	background: #000000;
+	-webkit-clip-path: polygon(15% 35%, 0 50%, 15% 65%, 15% 55%, 55% 55%, 55% 0, 45% 0, 45% 45%, 15% 45%);
+	clip-path: polygon(15% 35%, 0 50%, 15% 65%, 15% 55%, 55% 55%, 55% 0, 45% 0, 45% 45%, 15% 45%);
+}
+
+#arrow_up_right {
+	background: #000000;
+	-webkit-clip-path: polygon(100% 50%, 85% 35%, 85% 45%, 45% 45%, 45% 100%, 55% 100%, 55% 55%, 85% 55%, 85% 65%);
+	clip-path: polygon(100% 50%, 85% 35%, 85% 45%, 45% 45%, 45% 100%, 55% 100%, 55% 55%, 85% 55%, 85% 65%);
+}
+
+#arrow_down_right {
+	background: #000000;
+	-webkit-clip-path: polygon(100% 50%, 85% 35%, 85% 45%, 55% 45%, 55% 0, 45% 0, 45% 55%, 85% 55%, 85% 65%);
+	clip-path: polygon(100% 50%, 85% 35%, 85% 45%, 55% 45%, 55% 0, 45% 0, 45% 55%, 85% 55%, 85% 65%);
+}
+
+#arrow_left_up {
+	background: #000000;
+	-webkit-clip-path: polygon(50% 0, 35% 15%, 45% 16%, 45% 55%, 100% 55%, 100% 45%, 55% 45%, 55% 15%, 65% 15%);
+  clip-path: polygon(50% 0, 35% 15%, 45% 16%, 45% 55%, 100% 55%, 100% 45%, 55% 45%, 55% 15%, 65% 15%);
+}
+
+#arrow_left_down {
+	background: #000000;
+	-webkit-clip-path: polygon(35% 85%, 50% 100%, 65% 85%, 55% 85%, 55% 55%, 100% 55%, 100% 45%, 45% 45%, 45% 85%);
+  clip-path: polygon(35% 85%, 50% 100%, 65% 85%, 55% 85%, 55% 55%, 100% 55%, 100% 45%, 45% 45%, 45% 85%);
+}
+
+#arrow_right_up {
+	background: #000000;
+	-webkit-clip-path: polygon(50% 0, 35% 15%, 45% 16%, 45% 45%, 0 45%, 0 55%, 55% 55%, 55% 15%, 65% 15%);
+  clip-path: polygon(50% 0, 35% 15%, 45% 16%, 45% 45%, 0 45%, 0 55%, 55% 55%, 55% 15%, 65% 15%);
+}
+
+#arrow_right_down {
+	background: #000000;
+	-webkit-clip-path: polygon(35% 85%, 50% 100%, 65% 85%, 55% 85%, 55% 45%, 0 45%, 0 55%, 45% 55%, 45% 85%);
+  clip-path: polygon(35% 85%, 50% 100%, 65% 85%, 55% 85%, 55% 45%, 0 45%, 0 55%, 45% 55%, 45% 85%);
 }

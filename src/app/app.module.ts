@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { IonicGestureConfig } from "./gestures/ionic-gesture-config";
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -12,9 +13,6 @@ import { SymbolsComponent } from './symbols/symbols.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { ConsoleComponent } from './console/console.component';
 import { VariablesComponent } from './variables/variables.component';
-import { DialogSymbolsPage } from './dialog-symbols/dialog-symbols.page';
-import { HomePage } from './home/home.page';
-import { EditorDirective } from './editor.directive';
 
 @NgModule({
   declarations: [
@@ -22,16 +20,15 @@ import { EditorDirective } from './editor.directive';
     SymbolsComponent,
     WorkspaceComponent,
     ConsoleComponent,
-    VariablesComponent,
-    DialogSymbolsPage,
-    EditorDirective
+    VariablesComponent
   ],
-  entryComponents: [DialogSymbolsPage],
+  entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
   ],
   bootstrap: [AppComponent]
 })

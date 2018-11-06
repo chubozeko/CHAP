@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import 'libraries/scripts/menubareditor.js';
-import 'libraries/scripts/drag&drop.js';
+//import 'libraries/scripts/drag&drop.js';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -26,7 +26,5 @@ export class AppComponent {
       this.splashScreen.hide();
     });
   }
-
-  
 
 }
