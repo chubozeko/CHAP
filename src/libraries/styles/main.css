@@ -87,6 +87,7 @@ li a{
 }
 li a:hover{ color: #039be5; } 
 #workspace > div{ margin: auto; }
+#workspace{ overflow: auto; }
 textarea{ 
     width: 100%;  
     padding: 5px;

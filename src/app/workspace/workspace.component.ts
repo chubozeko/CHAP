@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 // import 'src/assets/libraries/interact.js';
 // import 'src/assets/libraries/draganddrop.js';
 // import 'src/libraries/scripts/menubareditor.js';
-import 'libraries/scripts/drag&drop.js';
+//import 'libraries/scripts/drag&drop.js';
 
 @Component({
   selector: 'app-workspace',

@@ -2,9 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { ModalController, Fab, ActionSheetController } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 
+
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import 'libraries/scripts/menubareditor.js';
-import 'libraries/scripts/drag&drop.js';
+// import 'libraries/scripts/drag&drop.js';
 
 @Component({
   selector: 'app-home',
@@ -17,9 +18,10 @@ export class HomePage {
 
   title = 'CHAP';
   fileName = '';
-  consoleDefaultText = '// Console Output \n>';
+  consoleDefaultText = '// Console Output \n> ';
 
-  workspace; branch; 
+  workspace; branch; selectedSymbol;
+  mouseOffset = { x: 0, y: 0 }; isSymbolPressed = false;
   symbols = SYMBOLS;
   newSymbol: any;
 
@@ -29,18 +31,40 @@ export class HomePage {
     // Loading of external JavaScript libraries
     // this.loadScript('libraries/scripts/menubareditor.js');
     // this.loadScript('libraries/scripts/drag&drop.js');
+    console.log("hello world");
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.workspace = document.getElementById("workspace");
+    
     this.branch = document.getElementById("arrow");
     this.branch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
 
     let branches = document.getElementsByClassName("dropzone");
     for(let i=0; i<branches.length; i++){
       branches[i].addEventListener('click', (e) => this.openSymbolsFAB(e) );
+      branches[i].addEventListener("dragenter", (e) => this.dragEnter(e), false);
+      branches[i].addEventListener("dragleave", (e) => this.dragLeave(e), false);
+      branches[i].addEventListener("dragover", function(e){e.preventDefault();}, false);
+      branches[i].addEventListener("drop", (e) => this.dropped(e), false);
+      
+      //branches[i].addEventListener("touchcancel", handleCancel, false);
+      branches[i].addEventListener("touchleave", (e) => this.dragLeave(e), false);
+      branches[i].addEventListener("touchenter", (e) => this.dragEnter(e), false);
+    }
+
+    let shapes = document.getElementsByClassName('symbol');
+    for(var i=0; i<shapes.length; i++){
+      shapes[i].addEventListener("dragstart", (e) => this.startDrag(e), false);
+      shapes[i].addEventListener("dragend", (e) => this.endDrag(e), false);
+
+      shapes[i].addEventListener("touchstart", (e) => this.startDrag(e), false);
+      shapes[i].addEventListener("touchmove", (e) => this.moveDrag(e), false);
+      shapes[i].addEventListener("touchend", (e) => this.endDrag(e), false);
     }
 
   }
+
+  
 
   async openSymbolsAS(event){
 
@@ -149,6 +173,93 @@ export class HomePage {
       branches[i].classList.remove('active-arrow');
     }
 
+  }
+
+  public onPress(e){
+    
+    let item = e.target;
+    if(item.className == 'symbol'){
+      this.isSymbolPressed = true; 
+    }
+    // this.selectedSymbol = item;
+    item.style.position = "absolute";
+    // this.mouseOffset = { x: item.offsetLeft - e.clientX, y: item.offsetTop - e.clientY };
+    item.style.border = "2px solid #01c5c4";
+
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.append("touched\n");
+    console.log("press " + this.isSymbolPressed);
+  }
+
+  public onPressUp(e){
+    this.isSymbolPressed = false;
+    let item = e.target;
+    //item.style.position = "relative";
+    //item.style.backgroundColor = "#F44336";
+    item.style.border = "0";
+    console.log("press up");
+  }
+
+  public startDrag(e){
+    this.selectedSymbol = e.target.id;
+    e.dataTransfer.setData('id', this.selectedSymbol);
+
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.append("start drag\n> ");
+  }
+
+  public moveDrag(e){
+    e.preventDefault();
+    let item = e.target;
+    // if(this.isMouseDown){
+    //   // Move Item
+    //   item.style.left = e.clientX + this.mouseOffset.x + "px";
+    //   item.style.top = e.clientY + this.mouseOffset.y - 10 + "px";
+    // }
+
+    // If there's exactly one finger inside this element
+    if (e.targetTouches.length == 1){ // && this.isSymbolPressed) {
+      let touch = e.targetTouches[0];
+    // Place element where the finger is
+      item.style.left = e.clientX + touch.pageX + 'px';
+      item.style.top = e.clientY + touch.pageY + 'px';
+
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.append("touched\n");
+    //alert("touched");
+    }
+  }
+  
+  public endDrag(e){
+    console.log('end drag');
+
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.append("end drag\n> ");
+  }
+  
+  public dragEnter(e){
+    e.preventDefault();
+    e.target.classList.add('active-arrow');
+    e.target.style.background = "#9CDCFE";
+
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.append("drag enter\n> ");
+  }
+  
+  public dragLeave(e){
+    e.preventDefault();
+    e.target.classList.remove('active-arrow');
+    e.target.style.background = "#000000";
+
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.append("drag leave\n> ");
+  }
+  
+  public dropped(e){
+    e.preventDefault();
+    e.target.style.background = "#000000";
+    this.addSymbol(this.selectedSymbol, e);
+    console.log('dropped');
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded

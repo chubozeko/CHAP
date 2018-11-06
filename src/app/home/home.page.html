@@ -14,22 +14,22 @@
     <div id="workspace" appEditor>
       <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
 
-      <div id="arrow" class="arrow dropzone"></div>
+      <div id="arrow" class="arrow dropzone" ></div>
       <!-- <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div> -->
       
 
       <!-- <div id="s_comment" class="symbol" style="font-size: 8pt;">Comment</div> -->
       
       <!-- <div id="arrow_left" class="arrows"></div>
-      <div id="arrow_right" class="arrows"></div>
+      <div id="arrow_right" class="arrows"></div>   (dragenter)="dragEnter($event)" (dragleave)="dragLeave($event)"
 
       <div id="arrow_up_left" class="arrows"></div>
-      <div id="arrow_down_left" class="arrows"></div>
+      <div id="arrow_down_left" class="arrows"></div>   
       <div id="arrow_up_right" class="arrows"></div>
       <div id="arrow_down_right" class="arrows"></div>
 
       <div id="arrow_left_up" class="arrows"></div>
-      <div id="arrow_left_down" class="arrows"></div>
+      <div id="arrow_left_down" class="arrows"></div> (press)="onPress($event)" (pressup)="onPressUp($event)"
       <div id="arrow_right_up" class="arrows"></div>
       <div id="arrow_right_down" class="arrows"></div> -->
       
@@ -44,16 +44,19 @@
           <ion-fab-button id="symbolsFAB" color="light" padding>
             <img src="./assets/icon/symbols_icon.png" alt="">
           </ion-fab-button>
-          <ion-fab-list side="top" >
+          <ion-fab-list side="top" style="overflow-y: auto;">
             <ion-card *ngFor="let s of symbols" id="fabSymbols">
-              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div>
+              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)"  (dragstart)="startDrag($event)" (dragend)="endDrag($event)" draggable="true">
+                {{s.s_name}}
+              </div>
             </ion-card>
           </ion-fab-list>
+          
         </ion-fab>
       </div>
       
       <div>
-        <textarea rows="5">{{consoleDefaultText}}</textarea>
+        <textarea id="console" rows="5" readonly>{{consoleDefaultText}}</textarea>
       </div>  
       
     </div>

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 // import 'src/assets/libraries/interact.js';
 // import 'src/assets/libraries/draganddrop.js';
-import 'libraries/scripts/menubareditor.js';
-import 'libraries/scripts/drag&drop.js';
+// import 'libraries/scripts/menubareditor.js';
+// import 'libraries/scripts/drag&drop.js';
 
 
 @Component({
