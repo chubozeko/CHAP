@@ -161,6 +161,12 @@ export class HomePage {
     
     // Add buttonClick listeners to new Symbol & Arrow/Branch
     tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );   
+    tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
+    tempBranch.addEventListener("dragenter", (e) => this.dragEnter(e), false);
+    tempBranch.addEventListener("dragleave", (e) => this.dragLeave(e), false);
+    tempBranch.addEventListener("dragover", function(e){e.preventDefault();}, false);
+    tempBranch.addEventListener("drop", (e) => this.dropped(e), false);
+
     symbol.addEventListener('dblclick', (e) => this.openSymbolsAS(e) );
 
     // Add symbol and corresponding arrow/branch to Workspace
