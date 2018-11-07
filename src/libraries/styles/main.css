@@ -142,3 +142,9 @@ textarea{
 }
 .dropdown-content a:hover { background-color: #ddd; }
 .dropdown:hover .dropdown-content { display: block; }
+
+/*  SIDE MENU  */
+#sidemenu_list{
+    background-color: #A9B1B4;
+    color: #000000;
+}

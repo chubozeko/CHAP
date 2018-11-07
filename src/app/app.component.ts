@@ -27,4 +27,9 @@ export class AppComponent {
     });
   }
 
+
+  public clearWorkspace(){
+    alert("clear workspace");
+  }
+
 }

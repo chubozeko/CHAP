@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalController, Fab, ActionSheetController } from '@ionic/angular';
+import { ModalController, Fab, ActionSheetController, MenuController } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 
 
@@ -18,14 +18,13 @@ export class HomePage {
 
   title = 'CHAP';
   fileName = '';
-  consoleDefaultText = '// Console Output \n> ';
 
   workspace; branch; selectedSymbol;
   mouseOffset = { x: 0, y: 0 }; isSymbolPressed = false;
   symbols = SYMBOLS;
   newSymbol: any;
 
-  constructor(public symbolOptionsAS: ActionSheetController){}
+  constructor(public symbolOptionsAS: ActionSheetController, public menu: MenuController){}
 
   ngOnInit() {
     // Loading of external JavaScript libraries
@@ -64,7 +63,9 @@ export class HomePage {
 
   }
 
-  
+  public openMenu(){
+    this.menu.open();
+  }
 
   async openSymbolsAS(event){
 
@@ -100,7 +101,7 @@ export class HomePage {
 
   }
 
-  openSymbolsFAB(event){
+  public openSymbolsFAB(event){
 
     // Get the target arrow
     let t = event.target || event.srcElement || event.currentTarget;
@@ -181,6 +182,20 @@ export class HomePage {
 
   }
 
+  public consoleLog(lineOutput: string){
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.append(lineOutput + "\n");
+  }
+
+  public clearConsole(){
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.textContent = "";
+  }
+
+  public clearWorkspace(){
+    this.consoleLog("clear workspace");
+  }
+
   public onPress(e){
     
     let item = e.target;
@@ -210,8 +225,7 @@ export class HomePage {
     this.selectedSymbol = e.target.id;
     e.dataTransfer.setData('id', this.selectedSymbol);
 
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("start drag\n> ");
+    this.consoleLog("start drag");
   }
 
   public moveDrag(e){
@@ -230,17 +244,14 @@ export class HomePage {
       item.style.left = e.clientX + touch.pageX + 'px';
       item.style.top = e.clientY + touch.pageY + 'px';
 
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("touched\n");
-    //alert("touched");
+      this.consoleLog("touched");
     }
   }
   
   public endDrag(e){
     console.log('end drag');
 
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("end drag\n> ");
+    this.consoleLog("end drag");
   }
   
   public dragEnter(e){
@@ -248,8 +259,7 @@ export class HomePage {
     e.target.classList.add('active-arrow');
     e.target.style.background = "#9CDCFE";
 
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("drag enter\n> ");
+    this.consoleLog("drag enter");
   }
   
   public dragLeave(e){
@@ -257,15 +267,15 @@ export class HomePage {
     e.target.classList.remove('active-arrow');
     e.target.style.background = "#000000";
 
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("drag leave\n> ");
+    this.consoleLog("drag leave");
   }
   
   public dropped(e){
     e.preventDefault();
     e.target.style.background = "#000000";
     this.addSymbol(this.selectedSymbol, e);
-    console.log('dropped');
+
+    this.consoleLog("dropped");
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded

@@ -1,7 +1,7 @@
 <ion-header></ion-header>
 
 <ion-toolbar color="secondary">
-  <button menuToggle="right" style="background-color: #333;" >
+  <button menuToggle="right" style="background-color: #333;" (click)="openMenu()">
     <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/menu.png"/>
   </button> &nbsp;
   <img style="width: 36px; height: 36px;" src="./assets/icon/chap_logo.png"/> &nbsp;
@@ -9,39 +9,20 @@
 </ion-toolbar>
 
 <ion-content>
+
   <div class="wrapper">
 
     <div id="workspace" appEditor>
       <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
-
       <div id="arrow" class="arrow dropzone" ></div>
       <!-- <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div> -->
-      
-
-      <!-- <div id="s_comment" class="symbol" style="font-size: 8pt;">Comment</div> -->
-      
-      <!-- <div id="arrow_left" class="arrows"></div>
-      <div id="arrow_right" class="arrows"></div>   (dragenter)="dragEnter($event)" (dragleave)="dragLeave($event)"
-
-      <div id="arrow_up_left" class="arrows"></div>
-      <div id="arrow_down_left" class="arrows"></div>   
-      <div id="arrow_up_right" class="arrows"></div>
-      <div id="arrow_down_right" class="arrows"></div>
-
-      <div id="arrow_left_up" class="arrows"></div>
-      <div id="arrow_left_down" class="arrows"></div> (press)="onPress($event)" (pressup)="onPressUp($event)"
-      <div id="arrow_right_up" class="arrows"></div>
-      <div id="arrow_right_down" class="arrows"></div> -->
-      
-
       <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
     </div>
     
     <div class="sidebar">
-
       <div>
         <ion-fab vertical="bottom" horizontal="start" #symbolsFAB>
-          <ion-fab-button id="symbolsFAB" color="light" padding>
+          <ion-fab-button id="symbolsFAB" color="light" style="padding: 15px;">
             <img src="./assets/icon/symbols_icon.png" alt="">
           </ion-fab-button>
           <ion-fab-list side="top" style="overflow-y: auto;">
@@ -51,12 +32,17 @@
               </div>
             </ion-card>
           </ion-fab-list>
-          
         </ion-fab>
       </div>
       
       <div>
-        <textarea id="console" rows="5" readonly>{{consoleDefaultText}}</textarea>
+        <div>
+          <div style="padding: 3px 10px; background-color: #333; color: #ddd; float: left;">Console</div>
+          <div style="padding: 3px 10px; float: right; cursor: pointer; color: #ddd; background-color: #f04141;">
+            <a (click)="clearConsole()" >Clear</a>
+          </div>
+        </div>
+        <textarea id="console" rows="4" readonly></textarea>
       </div>  
       
     </div>
@@ -76,52 +62,51 @@
         </div>
       </li>
       <li>
-          <div class="for_div">
-              <div id="arrow_left_down" class="arrows"></div>
-              <div id="s_for_loop" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">For</div>
-              <div id="arrow_right_down" class="arrows dropzone"></div>
-              <div id="s_comment" class="symbol" style="font-size: 8pt;">// done</div>
-              <div id="arrow_up" class="arrow"></div>
-              <div id="s_comment" class="symbol" style="font-size: 8pt;">// next</div>
-              <div id="arrow" class="arrow"></div>
-              <div id="arrow_left_up" class="arrows"></div>
-              <div id="arrow_down_left" class="arrows"></div>
-              <div id="arrow_down_right" class="arrows"></div>
-              <div id="s_terminator"></div> <div></div> 
-            </div>
+        <div class="for_div">
+          <div id="arrow_left_down" class="arrows"></div>
+          <div id="s_for_loop" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">For</div>
+          <div id="arrow_right_down" class="arrows dropzone"></div>
+          <div id="s_comment" class="symbol" style="font-size: 8pt;">// done</div>
+          <div id="arrow_up" class="arrow"></div>
+          <div id="s_comment" class="symbol" style="font-size: 8pt;">// next</div>
+          <div id="arrow" class="arrow"></div>
+          <div id="arrow_left_up" class="arrows"></div>
+          <div id="arrow_down_left" class="arrows"></div>
+          <div id="arrow_down_right" class="arrows"></div>
+          <div id="s_terminator"></div> <div></div> 
+        </div>
         </li>
         <li>
-            <div class="while_div">
-                <div id="arrow_left_down" class="arrows"></div>
-                <div id="s_for_loop" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">While</div>
-                <div id="arrow_right_down" class="arrows dropzone"></div>
-                <div id="s_comment" class="symbol" style="font-size: 8pt;">// false</div>
-                <div id="arrow_up" class="arrow"></div>
-                <div id="s_comment" class="symbol" style="font-size: 8pt;">// true</div>
-                <div id="arrow" class="arrow"></div>
-                <div id="arrow_left_up" class="arrows"></div>
-                <div id="arrow_down_left" class="arrows"></div>
-                <div id="arrow_down_right" class="arrows"></div>
-                <div id="s_terminator"></div> <div></div> 
-              </div>
-          </li>
-          <li>
-              <div class="do_while_div">
-                  <div id="arrow_up_right" class="arrows"></div>
-                  <div id="s_terminator"></div>
-                  <div id="arrow_right_down" class="arrows dropzone"></div>
-                  <div id="s_comment" class="symbol" style="font-size: 8pt;">// true</div>
-                  <div></div>
-                  <div id="arrow" class="arrow dropzone"></div>
-                  <div id="arrow_left_up" class="arrows"></div>
-                  <div id="s_do_while_loop" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">Do</div>
-                  <div id="arrow_down_left" class="arrows"></div>
-                  <div></div> <div id="arrow" class="arrow dropzone"></div> <div></div>
-                  <div></div> <div id="s_comment" class="symbol" style="font-size: 8pt;">// false</div> <div></div>
-                  
-                </div>
-          </li>
+          <div class="while_div">
+            <div id="arrow_left_down" class="arrows"></div>
+            <div id="s_for_loop" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">While</div>
+            <div id="arrow_right_down" class="arrows dropzone"></div>
+            <div id="s_comment" class="symbol" style="font-size: 8pt;">// false</div>
+            <div id="arrow_up" class="arrow"></div>
+            <div id="s_comment" class="symbol" style="font-size: 8pt;">// true</div>
+            <div id="arrow" class="arrow"></div>
+            <div id="arrow_left_up" class="arrows"></div>
+            <div id="arrow_down_left" class="arrows"></div>
+            <div id="arrow_down_right" class="arrows"></div>
+            <div id="s_terminator"></div> <div></div> 
+          </div>
+        </li>
+        <li>
+          <div class="do_while_div">
+            <div id="arrow_up_right" class="arrows"></div>
+            <div id="s_terminator"></div>
+            <div id="arrow_right_down" class="arrows dropzone"></div>
+            <div id="s_comment" class="symbol" style="font-size: 8pt;">// true</div>
+            <div></div>
+            <div id="arrow" class="arrow dropzone"></div>
+            <div id="arrow_left_up" class="arrows"></div>
+            <div id="s_do_while_loop" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">Do</div>
+            <div id="arrow_down_left" class="arrows"></div>
+            <div></div> <div id="arrow" class="arrow dropzone"></div> <div></div>
+            <div></div> <div id="s_comment" class="symbol" style="font-size: 8pt;">// false</div> <div></div>        
+          </div>
+        </li>
     </ul>
-
   </div>
+
 </ion-content>
