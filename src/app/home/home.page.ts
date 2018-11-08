@@ -20,18 +20,12 @@ export class HomePage {
   fileName = '';
 
   workspace; branch; selectedSymbol;
-  mouseOffset = { x: 0, y: 0 }; isSymbolPressed = false;
   symbols = SYMBOLS;
   newSymbol: any;
 
   constructor(public symbolOptionsAS: ActionSheetController, public menu: MenuController){}
 
   ngOnInit() {
-    // Loading of external JavaScript libraries
-    // this.loadScript('libraries/scripts/menubareditor.js');
-    // this.loadScript('libraries/scripts/drag&drop.js');
-    console.log("hello world");
-
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.workspace = document.getElementById("workspace");
     
@@ -45,20 +39,13 @@ export class HomePage {
       branches[i].addEventListener("dragleave", (e) => this.dragLeave(e), false);
       branches[i].addEventListener("dragover", function(e){e.preventDefault();}, false);
       branches[i].addEventListener("drop", (e) => this.dropped(e), false);
-      
-      //branches[i].addEventListener("touchcancel", handleCancel, false);
-      branches[i].addEventListener("touchleave", (e) => this.dragLeave(e), false);
-      branches[i].addEventListener("touchenter", (e) => this.dragEnter(e), false);
     }
 
     let shapes = document.getElementsByClassName('symbol');
     for(var i=0; i<shapes.length; i++){
       shapes[i].addEventListener("dragstart", (e) => this.startDrag(e), false);
       shapes[i].addEventListener("dragend", (e) => this.endDrag(e), false);
-
-      shapes[i].addEventListener("touchstart", (e) => this.startDrag(e), false);
-      shapes[i].addEventListener("touchmove", (e) => this.moveDrag(e), false);
-      shapes[i].addEventListener("touchend", (e) => this.endDrag(e), false);
+      // shapes[i].addEventListener("dragmove", (e) => this.dragMove(e), false);
     }
 
   }
@@ -162,7 +149,6 @@ export class HomePage {
     
     // Add buttonClick listeners to new Symbol & Arrow/Branch
     tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );   
-    tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
     tempBranch.addEventListener("dragenter", (e) => this.dragEnter(e), false);
     tempBranch.addEventListener("dragleave", (e) => this.dragLeave(e), false);
     tempBranch.addEventListener("dragover", function(e){e.preventDefault();}, false);
@@ -196,61 +182,17 @@ export class HomePage {
     this.consoleLog("clear workspace");
   }
 
-  public onPress(e){
-    
-    let item = e.target;
-    if(item.className == 'symbol'){
-      this.isSymbolPressed = true; 
-    }
-    // this.selectedSymbol = item;
-    item.style.position = "absolute";
-    // this.mouseOffset = { x: item.offsetLeft - e.clientX, y: item.offsetTop - e.clientY };
-    item.style.border = "2px solid #01c5c4";
-
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("touched\n");
-    console.log("press " + this.isSymbolPressed);
-  }
-
-  public onPressUp(e){
-    this.isSymbolPressed = false;
-    let item = e.target;
-    //item.style.position = "relative";
-    //item.style.backgroundColor = "#F44336";
-    item.style.border = "0";
-    console.log("press up");
-  }
-
   public startDrag(e){
     this.selectedSymbol = e.target.id;
     e.dataTransfer.setData('id', this.selectedSymbol);
-
     this.consoleLog("start drag");
   }
 
   public moveDrag(e){
     e.preventDefault();
-    let item = e.target;
-    // if(this.isMouseDown){
-    //   // Move Item
-    //   item.style.left = e.clientX + this.mouseOffset.x + "px";
-    //   item.style.top = e.clientY + this.mouseOffset.y - 10 + "px";
-    // }
-
-    // If there's exactly one finger inside this element
-    if (e.targetTouches.length == 1){ // && this.isSymbolPressed) {
-      let touch = e.targetTouches[0];
-    // Place element where the finger is
-      item.style.left = e.clientX + touch.pageX + 'px';
-      item.style.top = e.clientY + touch.pageY + 'px';
-
-      this.consoleLog("touched");
-    }
   }
   
   public endDrag(e){
-    console.log('end drag');
-
     this.consoleLog("end drag");
   }
   

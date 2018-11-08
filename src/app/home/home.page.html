@@ -27,7 +27,7 @@
           </ion-fab-button>
           <ion-fab-list side="top" style="overflow-y: auto;">
             <ion-card *ngFor="let s of symbols" id="fabSymbols">
-              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)"  (dragstart)="startDrag($event)" (dragend)="endDrag($event)" draggable="true">
+              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">
                 {{s.s_name}}
               </div>
             </ion-card>
