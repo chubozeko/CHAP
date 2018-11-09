@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController, NavParams } from '@ionic/angular';
 
 @Component({
   selector: 'app-comment',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommentPage implements OnInit {
 
-  constructor() { }
+  sid;
+  constructor(public modal: ModalController, public navP: NavParams) { 
+    this.sid = navP.get('s_id');
+  }
 
   ngOnInit() {
+  }
+
+  public closeModal(){
+    this.modal.dismiss( this.sid );
   }
 
 }

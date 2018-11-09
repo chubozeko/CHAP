@@ -1,9 +1,22 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>while-loop</ion-title>
+<ion-toolbar style="padding: 5px; " color="secondary">
+    <div id="while_sym">While Loop</div>
+    <ion-title style="float: left;">While Loop Properties</ion-title>
   </ion-toolbar>
-</ion-header>
+  
+  <ion-content padding color="primary">
+  
+    <ion-item>
+      <ion-label>Enter a conditional expression: </ion-label>
+    </ion-item>
 
-<ion-content padding>
-
-</ion-content>
+    <ion-item>
+      <textarea id="while_expression" rows="5"></textarea>
+    </ion-item>
+  
+  </ion-content>
+  
+  <ion-footer id="while_modal_footer" color="dark">
+    <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+    <ion-button (click)="closeModal()" color="dark" full >Apply</ion-button>
+  </ion-footer>
+  
