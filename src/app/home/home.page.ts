@@ -1,10 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalController, Fab, ActionSheetController, MenuController } from '@ionic/angular';
+import { ModalController, Fab, ActionSheetController, MenuController, NavParams } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 
 
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import 'libraries/scripts/menubareditor.js';
+import { DeclarePage } from '../symbol-dialogs/declare/declare.page';
+import { InputPage } from '../symbol-dialogs/input/input.page';
+import { OutputPage } from '../symbol-dialogs/output/output.page';
+import { CommentPage } from '../symbol-dialogs/comment/comment.page';
+// import { ForLoopPage } from '../symbol-dialogs/for-loop/for-loop.page';
+import { WhileLoopPage } from '../symbol-dialogs/while-loop/while-loop.page';
+// import { DoWhileLoopPage } from '../symbol-dialogs/do-while-loop/do-while-loop.page';
+import { IfElsePage } from '../symbol-dialogs/if-else/if-else.page';
+import { ProcessPage } from '../symbol-dialogs/process/process.page';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -23,7 +32,12 @@ export class HomePage {
   symbols = SYMBOLS;
   newSymbol: any;
 
-  constructor(public symbolOptionsAS: ActionSheetController, public menu: MenuController){}
+  constructor(
+    public symbolOptionsAS: ActionSheetController, 
+    public menu: MenuController, 
+    public modalC: ModalController,
+    // public navParams: NavParams
+  ){}
 
   ngOnInit() {
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
@@ -53,6 +67,132 @@ export class HomePage {
   public openMenu(){
     this.menu.open();
   }
+
+  async openDeclareModal(id){
+    const modal = await this.modalC.create({
+      component: DeclarePage,
+      componentProps: { s_id: id }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openInputModal(id){
+    const modal = await this.modalC.create({
+      component: InputPage,
+      componentProps: { s_id: id }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openOutputModal(id){
+    const modal = await this.modalC.create({
+      component: OutputPage,
+      componentProps: { s_id: id }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openProcessModal(id){
+    const modal = await this.modalC.create({
+      component: ProcessPage,
+      componentProps: { s_id: id }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openCommentModal(id){
+    const modal = await this.modalC.create({
+      component: CommentPage,
+      componentProps: { s_id: id }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openIfModal(id){
+    const modal = await this.modalC.create({
+      component: IfElsePage,
+      componentProps: { s_id: id }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openWhileModal(id){
+    const modal = await this.modalC.create({
+      component: WhileLoopPage,
+      componentProps: { s_id: id }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  // async openForLoopModal(id){
+  //   const modal = await this.modalC.create({
+  //     component: ForLoopPage,
+  //     componentProps: { s_id: id }
+  //   });
+
+  //   modal.onDidDismiss().then((data) => {
+  //     this.consoleLog(data.data);
+  //     console.log(data.data);
+  //   });
+
+  //   await modal.present();
+  // }
+
+  // async openDoWhileModal(id){
+  //   const modal = await this.modalC.create({
+  //     component: DoWhileLoopPage,
+  //     componentProps: { s_id: id }
+  //   });
+
+  //   modal.onDidDismiss().then((data) => {
+  //     this.consoleLog(data.data);
+  //     console.log(data.data);
+  //   });
+
+  //   await modal.present();
+  // }
 
   async openSymbolsAS(event){
 
@@ -116,6 +256,29 @@ export class HomePage {
 
   }
 
+  public openSymbolDialog(event, id){
+    if(id == 's_declare'){
+      this.openDeclareModal(id);
+    } else if(id == 's_input'){
+      this.openInputModal(id);
+    } else if(id == 's_output'){
+      this.openOutputModal(id);
+    } else if(id == 's_comment'){
+      this.openCommentModal(id);
+    } else if(id == 's_process'){
+      this.openProcessModal(id);
+    } else if(id == 's_if_case'){
+      this.openIfModal(id);
+    } else if(id == 's_while_loop'){
+      this.openWhileModal(id);
+    }
+    // } else if(id == 's_for_loop'){
+    //   this.openForLoopModal(id);
+    // }  else if(id == 's_do_while_loop'){
+    //   this.openDoWhileModal(id);
+    // }
+  }
+
   public addSymbol(id: string, event){
 
     let symClass, temp, symbol;
@@ -154,6 +317,7 @@ export class HomePage {
     tempBranch.addEventListener("dragover", function(e){e.preventDefault();}, false);
     tempBranch.addEventListener("drop", (e) => this.dropped(e), false);
 
+    symbol.addEventListener('click', (e) => this.openSymbolDialog(e, id) );
     symbol.addEventListener('dblclick', (e) => this.openSymbolsAS(e) );
 
     // Add symbol and corresponding arrow/branch to Workspace
@@ -168,7 +332,7 @@ export class HomePage {
 
   }
 
-  public consoleLog(lineOutput: string){
+  public consoleLog(lineOutput){
     let consoleCHAP = document.getElementById("console");
     consoleCHAP.append(lineOutput + "\n");
   }
