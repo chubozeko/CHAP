@@ -1,31 +1,34 @@
-<ion-toolbar>
-  <ion-title>Declare Properties</ion-title>
+<ion-toolbar style="padding: 5px; " color="secondary">
+  <div id="declare_sym">Declare</div>
+  <ion-title style="float: left;">Declare Properties</ion-title>
 </ion-toolbar>
 
-<ion-content padding>
- <!-- {{sid}} -->
+<ion-content padding color="primary">
 
-  <ion-label>Variable Name: </ion-label>
-  <input type="text" value=""> <hr/>
+  <ion-item>
+    <ion-label>Variable Name: </ion-label>
+    <input id="declare_var_name" type="text" value="">
+  </ion-item>
 
-  <ion-label>Data Type: </ion-label>
-  <ion-select value="integer" ok-text="Okay" cancel-text="Dismiss">
-    <ion-select-option value="integer">Integer</ion-select-option>
-    <ion-select-option value="float">Float</ion-select-option>
-    <ion-select-option value="string">String</ion-select-option>
-    <ion-select-option value="boolean">Boolean</ion-select-option>
-  </ion-select> <hr/>
+  <ion-item>
+    <ion-label>Data Type: </ion-label>
+    <ion-select id="declare_data_type" value="integer" ok-text="Confirm" cancel-text="Cancel">
+      <ion-select-option value="integer">Integer</ion-select-option>
+      <ion-select-option value="float">Float</ion-select-option>
+      <ion-select-option value="string">String</ion-select-option>
+      <ion-select-option value="boolean">Boolean</ion-select-option>
+    </ion-select>
+  </ion-item>
 
-  <div >
-    <ion-checkbox style="float: left; margin-left: 10px;"></ion-checkbox> 
+  <ion-item>
+    <ion-checkbox id="declare_array_cb" style="float: left; margin-left: 10px;"></ion-checkbox> 
     <ion-label style="float: left; margin-left: 10px;">Array?</ion-label>
-  </div>
-  
-  
-  <input type="text" placeholder="Array Size" value="" style="float: left; margin-left: 10px;">
+    <input id="declare_array_size" type="text" placeholder="Array Size" value="" style="float: left; margin-left: 10px;">
+  </ion-item>
 
 </ion-content>
 
-<ion-footer>
-  <ion-button (click)="closeModal()">Close</ion-button>
+<ion-footer id="declare_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="closeModal()" color="dark" full >Apply</ion-button>
 </ion-footer>
