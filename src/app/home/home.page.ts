@@ -2,9 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ModalController, Fab, ActionSheetController, MenuController, NavParams } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 
-
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
-import 'libraries/scripts/menubareditor.js';
 import { DeclarePage } from '../symbol-dialogs/declare/declare.page';
 import { InputPage } from '../symbol-dialogs/input/input.page';
 import { OutputPage } from '../symbol-dialogs/output/output.page';
@@ -64,9 +62,7 @@ export class HomePage {
 
   }
 
-  public openMenu(){
-    this.menu.open();
-  }
+  public openMenu(){ this.menu.open(); }
 
   async openDeclareModal(id){
     const modal = await this.modalC.create({
@@ -317,9 +313,9 @@ export class HomePage {
     tempBranch.addEventListener("dragover", function(e){e.preventDefault();}, false);
     tempBranch.addEventListener("drop", (e) => this.dropped(e), false);
 
-    symbol.addEventListener('click', (e) => this.openSymbolDialog(e, id) );
-    symbol.addEventListener('dblclick', (e) => this.openSymbolsAS(e) );
-
+    symbol.addEventListener('dblclick', (e) => this.openSymbolDialog(e, id) );
+    symbol.addEventListener('rightclick', (e) => this.openSymbolsAS(e) );
+    
     // Add symbol and corresponding arrow/branch to Workspace
     this.workspace.insertBefore(symbol, branches[0].nextSibling);
     this.workspace.insertBefore(tempBranch, symbol.nextSibling);
@@ -342,23 +338,15 @@ export class HomePage {
     consoleCHAP.textContent = "";
   }
 
-  public clearWorkspace(){
-    this.consoleLog("clear workspace");
-  }
-
   public startDrag(e){
     this.selectedSymbol = e.target.id;
     e.dataTransfer.setData('id', this.selectedSymbol);
     this.consoleLog("start drag");
   }
 
-  public moveDrag(e){
-    e.preventDefault();
-  }
+  public moveDrag(e){ e.preventDefault(); }
   
-  public endDrag(e){
-    this.consoleLog("end drag");
-  }
+  public endDrag(e){ this.consoleLog("end drag"); }
   
   public dragEnter(e){
     e.preventDefault();
@@ -382,6 +370,11 @@ export class HomePage {
     this.addSymbol(this.selectedSymbol, e);
 
     this.consoleLog("dropped");
+  }
+
+  onPress(e){
+    e.target.style.border = "2px dashed #000";
+    this.openSymbolsAS(e);
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
