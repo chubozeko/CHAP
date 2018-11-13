@@ -5,7 +5,12 @@ export class Comment{
 
   commentText: string;
 
+  commentSymbol: any;
+
   constructor(){}
+
+  setCommentSymbol( symbol: any ){ this.commentSymbol = symbol; }
+  getCommentSymbol(){ return this.commentSymbol; }
 
   setCommentText(comment_text: string){ this.commentText = comment_text; }
   getCommentText(){ this.commentText; }

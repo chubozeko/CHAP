@@ -15,7 +15,7 @@
     <div id="workspace" appEditor>
       <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
       <div id="arrow" class="arrow dropzone" ></div>
-      <!-- <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">{{s.s_name}}</div> -->
+      <!-- <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" (press)="openSymbolsAS($event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">{{s.s_name}}</div> -->
       <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
     </div>
     
@@ -27,7 +27,7 @@
           </ion-fab-button>
           <ion-fab-list side="top" style="overflow-y: auto;">
             <ion-card *ngFor="let s of symbols" id="fabSymbols">
-              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" (press)="openSymbolsAS($event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">
+              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">
                 {{s.s_name}}
               </div>
             </ion-card>

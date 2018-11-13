@@ -5,10 +5,15 @@ export class Output{
 
   outputExp: string;
 
+  outputSymbol: any;
+
   constructor(){}
 
   setOutputExpression(exp: string){ this.outputExp = exp; }
   getOutputExpression(){ return this.outputExp; }
+
+  setOutputSymbol( symbol: any ){ this.outputSymbol = symbol; }
+  getOutputSymbol(){ return this.outputSymbol; }
 
   parseExpression(){
     // parse the output expression

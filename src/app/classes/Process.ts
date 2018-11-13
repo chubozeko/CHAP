@@ -6,7 +6,12 @@ export class Process{
   variableName: string;
   expression: string;
 
+  processSymbol: any;
+
   constructor(){}
+
+  setProcessSymbol( symbol: any ){ this.processSymbol = symbol; }
+  getProcessSymbol(){ return this.processSymbol; }
 
   setVariableName(var_name: string){ this.variableName = var_name; }
   getVariableName(){ return this.variableName; }

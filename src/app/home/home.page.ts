@@ -5,13 +5,20 @@ import { ActionSheetOptions } from '@ionic/core';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { DeclarePage } from '../symbol-dialogs/declare/declare.page';
 import { InputPage } from '../symbol-dialogs/input/input.page';
+import { ProcessPage } from '../symbol-dialogs/process/process.page';
 import { OutputPage } from '../symbol-dialogs/output/output.page';
 import { CommentPage } from '../symbol-dialogs/comment/comment.page';
-// import { ForLoopPage } from '../symbol-dialogs/for-loop/for-loop.page';
-import { WhileLoopPage } from '../symbol-dialogs/while-loop/while-loop.page';
-// import { DoWhileLoopPage } from '../symbol-dialogs/do-while-loop/do-while-loop.page';
 import { IfElsePage } from '../symbol-dialogs/if-else/if-else.page';
-import { ProcessPage } from '../symbol-dialogs/process/process.page';
+import { WhileLoopPage } from '../symbol-dialogs/while-loop/while-loop.page';
+// import { ForLoopPage } from '../symbol-dialogs/for-loop/for-loop.page';
+// import { DoWhileLoopPage } from '../symbol-dialogs/do-while-loop/do-while-loop.page';
+
+import { Declare } from '../classes/Declare';
+import { Input } from '../classes/Input';
+import { Output } from '../classes/Output';
+import { Process } from '../classes/Process';
+import { Comment } from '../classes/Comment';
+import { Flowchart } from '../classes/Flowchart';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -23,6 +30,7 @@ export class HomePage {
 
   @ViewChild('symbolsFAB') symbolsFAB: Fab;
 
+  flowchart: Flowchart;
   title = 'CHAP';
   fileName = '';
 
@@ -38,7 +46,9 @@ export class HomePage {
   ){}
 
   ngOnInit() {
+
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
+    this.flowchart = new Flowchart();
     this.workspace = document.getElementById("workspace");
     
     this.branch = document.getElementById("arrow");
@@ -64,13 +74,14 @@ export class HomePage {
 
   public openMenu(){ this.menu.open(); }
 
-  async openDeclareModal(id){
+  async openDeclareModal(id, e){
     const modal = await this.modalC.create({
       component: DeclarePage,
       componentProps: { s_id: id }
     });
 
     modal.onDidDismiss().then((data) => {
+      e.target.innerHTML = data.data;
       this.consoleLog(data.data);
       console.log(data.data);
     });
@@ -78,7 +89,7 @@ export class HomePage {
     await modal.present();
   }
 
-  async openInputModal(id){
+  async openInputModal(id, e){
     const modal = await this.modalC.create({
       component: InputPage,
       componentProps: { s_id: id }
@@ -92,7 +103,7 @@ export class HomePage {
     await modal.present();
   }
 
-  async openOutputModal(id){
+  async openOutputModal(id, e){
     const modal = await this.modalC.create({
       component: OutputPage,
       componentProps: { s_id: id }
@@ -106,7 +117,7 @@ export class HomePage {
     await modal.present();
   }
 
-  async openProcessModal(id){
+  async openProcessModal(id, e){
     const modal = await this.modalC.create({
       component: ProcessPage,
       componentProps: { s_id: id }
@@ -120,7 +131,7 @@ export class HomePage {
     await modal.present();
   }
 
-  async openCommentModal(id){
+  async openCommentModal(id, e){
     const modal = await this.modalC.create({
       component: CommentPage,
       componentProps: { s_id: id }
@@ -134,7 +145,7 @@ export class HomePage {
     await modal.present();
   }
 
-  async openIfModal(id){
+  async openIfModal(id, e){
     const modal = await this.modalC.create({
       component: IfElsePage,
       componentProps: { s_id: id }
@@ -148,7 +159,7 @@ export class HomePage {
     await modal.present();
   }
 
-  async openWhileModal(id){
+  async openWhileModal(id, e){
     const modal = await this.modalC.create({
       component: WhileLoopPage,
       componentProps: { s_id: id }
@@ -254,19 +265,19 @@ export class HomePage {
 
   public openSymbolDialog(event, id){
     if(id == 's_declare'){
-      this.openDeclareModal(id);
+      this.openDeclareModal(id, event);
     } else if(id == 's_input'){
-      this.openInputModal(id);
+      this.openInputModal(id, event);
     } else if(id == 's_output'){
-      this.openOutputModal(id);
+      this.openOutputModal(id, event);
     } else if(id == 's_comment'){
-      this.openCommentModal(id);
+      this.openCommentModal(id, event);
     } else if(id == 's_process'){
-      this.openProcessModal(id);
+      this.openProcessModal(id, event);
     } else if(id == 's_if_case'){
-      this.openIfModal(id);
+      this.openIfModal(id, event);
     } else if(id == 's_while_loop'){
-      this.openWhileModal(id);
+      this.openWhileModal(id, event);
     }
     // } else if(id == 's_for_loop'){
     //   this.openForLoopModal(id);
@@ -278,28 +289,56 @@ export class HomePage {
   public addSymbol(id: string, event){
 
     let symClass, temp, symbol;
-    if(id == 's_if_case'){
+    if(id == 's_declare'){
+      let dec = new Declare();
+      temp = document.getElementById(id);
+      dec.setDeclareSymbol( temp.cloneNode(true) );
+      symbol = dec.getDeclareSymbol();
+      symbol.innerHTML = "Declare";
+    } else if(id == 's_input'){
+      let input = new Input();
+      temp = document.getElementById(id);
+      input.setInputSymbol( temp.cloneNode(true) );
+      symbol = input.getInputSymbol();
+      symbol.innerHTML = "Input";
+    } else if(id == 's_output'){
+      let output = new Output();
+      temp = document.getElementById(id);
+      output.setOutputSymbol( temp.cloneNode(true) );
+      symbol = output.getOutputSymbol();
+      symbol.innerHTML = "Output";
+    } else if(id == 's_process'){
+      let proc = new Process();
+      temp = document.getElementById(id);
+      proc.setProcessSymbol( temp.cloneNode(true) );
+      symbol = proc.getProcessSymbol();
+      symbol.innerHTML = "Process";
+    } else if(id == 's_comment'){
+      let com = new Comment();
+      temp = document.getElementById(id);
+      com.setCommentSymbol( temp.cloneNode(true) );
+      symbol = com.getCommentSymbol();
+      symbol.innerHTML = "Comment";
+    } else if(id == 's_if_case'){
       symClass = "if_div";
-      temp = document.getElementsByClassName(symClass);
-      symbol = temp[0].cloneNode(true);
-    } else if(id == 's_for_loop'){
-      symClass = "for_div";
       temp = document.getElementsByClassName(symClass);
       symbol = temp[0].cloneNode(true);
     } else if(id == 's_while_loop'){
       symClass = "while_div";
       temp = document.getElementsByClassName(symClass);
       symbol = temp[0].cloneNode(true);
-    } else if(id == 's_do_while_loop'){
-      symClass = "do_while_div";
-      temp = document.getElementsByClassName(symClass);
-      symbol = temp[0].cloneNode(true);
-    } else {
-      temp = document.getElementById(id);
-      symbol = temp.cloneNode(true);
-      symbol.textContent = "";
-    }
+    } 
+    // else if(id == 's_for_loop'){
+    //   symClass = "for_div";
+    //   temp = document.getElementsByClassName(symClass);
+    //   symbol = temp[0].cloneNode(true);
+    // } else if(id == 's_do_while_loop'){
+    //   symClass = "do_while_div";
+    //   temp = document.getElementsByClassName(symClass);
+    //   symbol = temp[0].cloneNode(true);
+    // }
 
+    
     // Get and create a new symbol with given id from symbols FAB
 
     // Get the selected arrow/branch to append symbol after

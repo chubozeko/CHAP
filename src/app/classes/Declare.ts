@@ -9,7 +9,12 @@ export class Declare{
     isArray: boolean;
     arraySize: number;
 
+    declareSymbol: any;
+
     constructor(){}
+
+    setDeclareSymbol( symbol: any ){ this.declareSymbol = symbol; }
+    getDeclareSymbol(){ return this.declareSymbol; }
 
     setVariableName(var_name: string){ this.variableName = var_name; }
     getVariableName(){ return this.variableName; }
