@@ -1,10 +1,26 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalController, Fab, ActionSheetController } from '@ionic/angular';
+import { ModalController, Fab, ActionSheetController, MenuController, NavParams } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 
-
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
-import 'libraries/scripts/menubareditor.js';
+import { DeclarePage } from '../symbol-dialogs/declare/declare.page';
+import { InputPage } from '../symbol-dialogs/input/input.page';
+import { ProcessPage } from '../symbol-dialogs/process/process.page';
+import { OutputPage } from '../symbol-dialogs/output/output.page';
+import { CommentPage } from '../symbol-dialogs/comment/comment.page';
+import { IfElsePage } from '../symbol-dialogs/if-else/if-else.page';
+import { WhileLoopPage } from '../symbol-dialogs/while-loop/while-loop.page';
+// import { ForLoopPage } from '../symbol-dialogs/for-loop/for-loop.page';
+// import { DoWhileLoopPage } from '../symbol-dialogs/do-while-loop/do-while-loop.page';
+
+import { Declare } from '../classes/Declare';
+import { Input } from '../classes/Input';
+import { Output } from '../classes/Output';
+import { Process } from '../classes/Process';
+import { Comment } from '../classes/Comment';
+import { Flowchart } from '../classes/Flowchart';
+import { IfCase } from '../classes/IfCase';
+import { WhileLoop } from '../classes/WhileLoop';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -16,24 +32,25 @@ export class HomePage {
 
   @ViewChild('symbolsFAB') symbolsFAB: Fab;
 
+  flowchart: Flowchart = new Flowchart();
   title = 'CHAP';
   fileName = '';
-  consoleDefaultText = '// Console Output \n> ';
 
   workspace; branch; selectedSymbol;
-  mouseOffset = { x: 0, y: 0 }; isSymbolPressed = false;
   symbols = SYMBOLS;
   newSymbol: any;
 
-  constructor(public symbolOptionsAS: ActionSheetController){}
+  constructor(
+    public symbolOptionsAS: ActionSheetController, 
+    public menu: MenuController, 
+    public modalC: ModalController,
+    // public navParams: NavParams
+  ){}
 
   ngOnInit() {
-    // Loading of external JavaScript libraries
-    // this.loadScript('libraries/scripts/menubareditor.js');
-    // this.loadScript('libraries/scripts/drag&drop.js');
-    console.log("hello world");
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
+    this.flowchart = new Flowchart();
     this.workspace = document.getElementById("workspace");
     
     this.branch = document.getElementById("arrow");
@@ -46,25 +63,160 @@ export class HomePage {
       branches[i].addEventListener("dragleave", (e) => this.dragLeave(e), false);
       branches[i].addEventListener("dragover", function(e){e.preventDefault();}, false);
       branches[i].addEventListener("drop", (e) => this.dropped(e), false);
-      
-      //branches[i].addEventListener("touchcancel", handleCancel, false);
-      branches[i].addEventListener("touchleave", (e) => this.dragLeave(e), false);
-      branches[i].addEventListener("touchenter", (e) => this.dragEnter(e), false);
     }
 
     let shapes = document.getElementsByClassName('symbol');
     for(var i=0; i<shapes.length; i++){
       shapes[i].addEventListener("dragstart", (e) => this.startDrag(e), false);
       shapes[i].addEventListener("dragend", (e) => this.endDrag(e), false);
-
-      shapes[i].addEventListener("touchstart", (e) => this.startDrag(e), false);
-      shapes[i].addEventListener("touchmove", (e) => this.moveDrag(e), false);
-      shapes[i].addEventListener("touchend", (e) => this.endDrag(e), false);
+      // shapes[i].addEventListener("dragmove", (e) => this.dragMove(e), false);
     }
 
   }
 
-  
+  public openMenu(){ this.menu.open(); }
+
+  async openDeclareModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: DeclarePage,
+      componentProps: { symbol: symbol }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let dec = data.data as Declare;
+      e.target.innerHTML = dec.getDeclareExpression();
+      this.consoleLog(dec.getDeclareExpression());
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openInputModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: InputPage,
+      componentProps: { symbol: symbol }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let input = data.data as Input;
+      e.target.innerHTML = input.getInputExpression();
+      this.consoleLog(input.getInputExpression());
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openOutputModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: OutputPage,
+      componentProps: { symbol: symbol }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let output = data.data as Output;
+      e.target.innerHTML = output.getOutputExpression();
+      this.consoleLog(output.getOutputExpression());
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openProcessModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: ProcessPage,
+      componentProps: { symbol: symbol }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let proc = data.data as Process;
+      e.target.innerHTML = proc.getProcessExpression();
+      this.consoleLog(proc.getProcessExpression());
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openCommentModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: CommentPage,
+      componentProps: { symbol: symbol }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let com = data.data as Comment;
+      e.target.innerHTML = com.getCommentExpression();
+      this.consoleLog(com.getCommentExpression());
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openIfModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: IfElsePage,
+      componentProps: { symbol: symbol }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let ifcase = data.data as IfCase;
+      // e.target.innerHTML = ifcase.getIfCaseExpression();
+      // this.consoleLog(ifcase.getIfCaseExpression());
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  async openWhileModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: WhileLoopPage,
+      componentProps: { symbol: symbol }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let whileloop = data.data as WhileLoop;
+      // e.target.innerHTML = whileloop.getWhileExpression();
+      // this.consoleLog(whileloop.getWhileExpression());
+      this.consoleLog(data.data);
+      console.log(data.data);
+    });
+
+    await modal.present();
+  }
+
+  // async openForLoopModal(id){
+  //   const modal = await this.modalC.create({
+  //     component: ForLoopPage,
+  //     componentProps: { s_id: id }
+  //   });
+
+  //   modal.onDidDismiss().then((data) => {
+  //     this.consoleLog(data.data);
+  //     console.log(data.data);
+  //   });
+
+  //   await modal.present();
+  // }
+
+  // async openDoWhileModal(id){
+  //   const modal = await this.modalC.create({
+  //     component: DoWhileLoopPage,
+  //     componentProps: { s_id: id }
+  //   });
+
+  //   modal.onDidDismiss().then((data) => {
+  //     this.consoleLog(data.data);
+  //     console.log(data.data);
+  //   });
+
+  //   await modal.present();
+  // }
 
   async openSymbolsAS(event){
 
@@ -100,7 +252,7 @@ export class HomePage {
 
   }
 
-  openSymbolsFAB(event){
+  public openSymbolsFAB(event){
 
     // Get the target arrow
     let t = event.target || event.srcElement || event.currentTarget;
@@ -128,31 +280,132 @@ export class HomePage {
 
   }
 
-  public addSymbol(id: string, event){
+  public openSymbolDialog(event, id){
 
-    let symClass, temp, symbol;
-    if(id == 's_if_case'){
+    // Get the target symbol
+    let active_sym_index, tempSym;
+    let targetSymbol = event.target || event.srcElement || event.currentTarget;
+    if(targetSymbol.id == 's_if_case' || targetSymbol.id == 's_while_loop'){
+      targetSymbol.parentElement.classList.add('active-symbol');
+    } else {
+      targetSymbol.classList.add('active-symbol');
+    }
+    let syms = document.getElementsByClassName("symbol");
+    for (let i = 0; i < syms.length; i++) {
+      if( syms[i].className == 'symbol active-symbol' ){ active_sym_index = i; }
+    }
+
+    if(id == 's_declare'){
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openDeclareModal(tempSym, event);
+    } 
+    else if(id == 's_input'){
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openInputModal(tempSym, event);
+    } 
+    else if(id == 's_output'){
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openOutputModal(tempSym, event);
+    } 
+    else if(id == 's_comment'){
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openCommentModal(tempSym, event);
+    } 
+    else if(id == 's_process'){4
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openProcessModal(tempSym, event);
+    } 
+    else if(id == 's_if_case'){
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openIfModal(tempSym, event);
+    } 
+    else if(id == 's_while_loop'){
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openWhileModal(tempSym, event);
+    }
+    // } else if(id == 's_for_loop'){
+    //   this.openForLoopModal(id);
+    // }  else if(id == 's_do_while_loop'){
+    //   this.openDoWhileModal(id);
+    // }
+  }
+
+  public addSymbol(id: string, e){
+    
+    let symClass, temp, symbol, active_index;
+
+    let b = document.getElementsByClassName("arrow dropzone");
+    for(let i=0; i<b.length; i++){
+      if( b[i].className.endsWith('active-arrow') ){ active_index = i+1; }
+    }
+
+    if(id == 's_declare'){
+      let dec = new Declare();
+      temp = document.getElementById(id);
+      dec.setDeclareSymbol( temp.cloneNode(true) );
+      symbol = dec.getDeclareSymbol();
+      symbol.innerHTML = "Declare";
+      this.flowchart.addSymbolToFlowchart( dec, active_index );
+    } 
+    else if(id == 's_input'){
+      let input = new Input();
+      temp = document.getElementById(id);
+      input.setInputSymbol( temp.cloneNode(true) );
+      symbol = input.getInputSymbol();
+      symbol.innerHTML = "Input";
+      this.flowchart.addSymbolToFlowchart( input, active_index );
+    } 
+    else if(id == 's_output'){
+      let output = new Output();
+      temp = document.getElementById(id);
+      output.setOutputSymbol( temp.cloneNode(true) );
+      symbol = output.getOutputSymbol();
+      symbol.innerHTML = "Output";
+      this.flowchart.addSymbolToFlowchart( output, active_index );
+    } 
+    else if(id == 's_process'){
+      let proc = new Process();
+      temp = document.getElementById(id);
+      proc.setProcessSymbol( temp.cloneNode(true) );
+      symbol = proc.getProcessSymbol();
+      symbol.innerHTML = "Process";
+      this.flowchart.addSymbolToFlowchart( proc, active_index );
+    } 
+    else if(id == 's_comment'){
+      let com = new Comment();
+      temp = document.getElementById(id);
+      com.setCommentSymbol( temp.cloneNode(true) );
+      symbol = com.getCommentSymbol();
+      symbol.innerHTML = "Comment";
+      this.flowchart.addSymbolToFlowchart( com, active_index );
+    }
+    else if(id == 's_if_case'){
       symClass = "if_div";
       temp = document.getElementsByClassName(symClass);
       symbol = temp[0].cloneNode(true);
-    } else if(id == 's_for_loop'){
-      symClass = "for_div";
-      temp = document.getElementsByClassName(symClass);
-      symbol = temp[0].cloneNode(true);
-    } else if(id == 's_while_loop'){
+    } 
+    else if(id == 's_while_loop'){
       symClass = "while_div";
       temp = document.getElementsByClassName(symClass);
       symbol = temp[0].cloneNode(true);
-    } else if(id == 's_do_while_loop'){
-      symClass = "do_while_div";
-      temp = document.getElementsByClassName(symClass);
-      symbol = temp[0].cloneNode(true);
-    } else {
-      temp = document.getElementById(id);
-      symbol = temp.cloneNode(true);
-      symbol.textContent = "";
-    }
-
+    } 
+    // else if(id == 's_for_loop'){
+    //   symClass = "for_div";
+    //   temp = document.getElementsByClassName(symClass);
+    //   symbol = temp[0].cloneNode(true);
+    // } else if(id == 's_do_while_loop'){
+    //   symClass = "do_while_div";
+    //   temp = document.getElementsByClassName(symClass);
+    //   symbol = temp[0].cloneNode(true);
+    // }
+    
     // Get and create a new symbol with given id from symbols FAB
 
     // Get the selected arrow/branch to append symbol after
@@ -161,14 +414,14 @@ export class HomePage {
     
     // Add buttonClick listeners to new Symbol & Arrow/Branch
     tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );   
-    tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
     tempBranch.addEventListener("dragenter", (e) => this.dragEnter(e), false);
     tempBranch.addEventListener("dragleave", (e) => this.dragLeave(e), false);
     tempBranch.addEventListener("dragover", function(e){e.preventDefault();}, false);
     tempBranch.addEventListener("drop", (e) => this.dropped(e), false);
 
-    symbol.addEventListener('dblclick', (e) => this.openSymbolsAS(e) );
-
+    symbol.addEventListener('dblclick', (e) => this.openSymbolDialog(e, id) );
+    symbol.addEventListener('rightclick', (e) => this.openSymbolsAS(e) );
+    
     // Add symbol and corresponding arrow/branch to Workspace
     this.workspace.insertBefore(symbol, branches[0].nextSibling);
     this.workspace.insertBefore(tempBranch, symbol.nextSibling);
@@ -179,77 +432,36 @@ export class HomePage {
       branches[i].classList.remove('active-arrow');
     }
 
+    this.consoleLog('active arrow index: ' + active_index + '; symbol cnt: ' + this.flowchart.SYMBOLS.length);
+
   }
 
-  public onPress(e){
-    
-    let item = e.target;
-    if(item.className == 'symbol'){
-      this.isSymbolPressed = true; 
-    }
-    // this.selectedSymbol = item;
-    item.style.position = "absolute";
-    // this.mouseOffset = { x: item.offsetLeft - e.clientX, y: item.offsetTop - e.clientY };
-    item.style.border = "2px solid #01c5c4";
-
+  public consoleLog(lineOutput){
     let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("touched\n");
-    console.log("press " + this.isSymbolPressed);
+    consoleCHAP.append(lineOutput + "\n");
   }
 
-  public onPressUp(e){
-    this.isSymbolPressed = false;
-    let item = e.target;
-    //item.style.position = "relative";
-    //item.style.backgroundColor = "#F44336";
-    item.style.border = "0";
-    console.log("press up");
+  public clearConsole(){
+    let consoleCHAP = document.getElementById("console");
+    consoleCHAP.textContent = "";
   }
 
   public startDrag(e){
     this.selectedSymbol = e.target.id;
     e.dataTransfer.setData('id', this.selectedSymbol);
-
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("start drag\n> ");
+    this.consoleLog("start drag");
   }
 
-  public moveDrag(e){
-    e.preventDefault();
-    let item = e.target;
-    // if(this.isMouseDown){
-    //   // Move Item
-    //   item.style.left = e.clientX + this.mouseOffset.x + "px";
-    //   item.style.top = e.clientY + this.mouseOffset.y - 10 + "px";
-    // }
-
-    // If there's exactly one finger inside this element
-    if (e.targetTouches.length == 1){ // && this.isSymbolPressed) {
-      let touch = e.targetTouches[0];
-    // Place element where the finger is
-      item.style.left = e.clientX + touch.pageX + 'px';
-      item.style.top = e.clientY + touch.pageY + 'px';
-
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("touched\n");
-    //alert("touched");
-    }
-  }
+  public moveDrag(e){ e.preventDefault(); }
   
-  public endDrag(e){
-    console.log('end drag');
-
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("end drag\n> ");
-  }
+  public endDrag(e){ this.consoleLog("end drag"); }
   
   public dragEnter(e){
     e.preventDefault();
     e.target.classList.add('active-arrow');
     e.target.style.background = "#9CDCFE";
 
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("drag enter\n> ");
+    this.consoleLog("drag enter");
   }
   
   public dragLeave(e){
@@ -257,15 +469,24 @@ export class HomePage {
     e.target.classList.remove('active-arrow');
     e.target.style.background = "#000000";
 
-    let consoleCHAP = document.getElementById("console");
-    consoleCHAP.append("drag leave\n> ");
+    this.consoleLog("drag leave");
   }
   
   public dropped(e){
     e.preventDefault();
     e.target.style.background = "#000000";
     this.addSymbol(this.selectedSymbol, e);
-    console.log('dropped');
+
+    this.consoleLog("dropped");
+  }
+
+  onPress(e){
+    e.target.style.border = "2px dashed #000";
+    this.openSymbolsAS(e);
+  }
+
+  generatePseudoCode(){
+    this.consoleLog( this.flowchart.displayFlowchartPseudoCode() );
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded

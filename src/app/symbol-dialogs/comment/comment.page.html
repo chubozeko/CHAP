@@ -1,0 +1,21 @@
+<ion-toolbar style="padding: 5px; " color="secondary">
+  <div id="comment_sym">Comment</div>
+  <ion-title style="float: left;">Comment Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="primary">
+
+  <ion-item>
+    <ion-label>Enter any text as a comment: </ion-label>
+  </ion-item>
+
+  <ion-item>
+    <textarea id="comment_text" rows="10"></textarea>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer id="comment_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full >Apply</ion-button>
+</ion-footer>

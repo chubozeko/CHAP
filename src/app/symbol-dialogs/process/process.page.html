@@ -1,0 +1,25 @@
+<ion-toolbar style="padding: 5px; " color="secondary">
+  <div id="process_sym">Process</div>
+  <ion-title style="float: left;">Process Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="primary">
+
+  <ion-item>
+    <input id="process_var_name" type="text" placeholder="Variable" value="" />
+  </ion-item>
+
+  <ion-item>
+    <ion-label style="text-align: center;">=</ion-label>
+  </ion-item>
+  
+  <ion-item>
+    <input id="process_expression" type="text" placeholder="Expression" value="" style="float: left; " />
+  </ion-item>
+
+</ion-content>
+
+<ion-footer id="process_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full >Apply</ion-button>
+</ion-footer>

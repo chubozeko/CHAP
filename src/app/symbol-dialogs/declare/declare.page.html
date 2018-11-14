@@ -1,0 +1,39 @@
+<ion-toolbar style="padding: 5px; " color="secondary">
+  <div id="declare_sym">Declare</div>
+  <ion-title style="float: left;">Declare Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="primary">
+
+  <!-- <ion-item>
+    <ion-label>Variable Name: </ion-label>
+  </ion-item> -->
+  <ion-item>
+    <input id="declare_var_name" type="text" placeholder="Variable Name" value="" />
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Data Type: </ion-label>
+    <ion-select id="declare_data_type" value="" ok-text="Confirm" cancel-text="Cancel">
+      <ion-select-option value="Integer">Integer</ion-select-option>
+      <ion-select-option value="Real">Real</ion-select-option>
+      <ion-select-option value="String">String</ion-select-option>
+      <ion-select-option value="Boolean">Boolean</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-checkbox id="declare_array_cb" style="float: left;" color="secondary"></ion-checkbox> 
+    <ion-label style="float: left;">Array?</ion-label>
+  </ion-item>
+  
+  <ion-item>
+    <input id="declare_array_size" type="text" placeholder="Array Size" value="" style="float: left; " />
+  </ion-item>
+
+</ion-content>
+
+<ion-footer id="declare_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full >Apply</ion-button>
+</ion-footer>

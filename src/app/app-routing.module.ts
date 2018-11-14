@@ -12,7 +12,17 @@ const routes: Routes = [
   { path: 'symbols', loadChildren: './symbols/symbols.component#SymbolsComponent' },
   { path: 'workspace', loadChildren: './workspace/workspace.component#WorkspaceComponent' },
   { path: 'console', loadChildren: './console/console.component#ConsoleComponent' },
-  { path: 'variables', loadChildren: './variables/variables.component#VariablesComponent' }
+  { path: 'variables', loadChildren: './variables/variables.component#VariablesComponent' },
+  // { path: 'process', loadChildren: './symbol-dialogs/process/process.module#ProcessPageModule' },
+  // { path: 'declare', loadChildren: './symbol-dialogs/declare/declare.module#DeclarePageModule' },
+  // { path: 'input', loadChildren: './symbol-dialogs/input/input.module#InputPageModule' },
+  // { path: 'output', loadChildren: './symbol-dialogs/output/output.module#OutputPageModule' },
+  // { path: 'if-else', loadChildren: './symbol-dialogs/if-else/if-else.module#IfElsePageModule' },
+  // { path: 'for-loop', loadChildren: './symbol-dialogs/for-loop/for-loop.module#ForLoopPageModule' },
+  // { path: 'while-loop', loadChildren: './symbol-dialogs/while-loop/while-loop.module#WhileLoopPageModule' },
+  // { path: 'do-while-loop', loadChildren: './symbol-dialogs/do-while-loop/do-while-loop.module#DoWhileLoopPageModule' },
+  // { path: 'operation', loadChildren: './symbol-dialogs/operation/operation.module#OperationPageModule' },
+  // { path: 'comment', loadChildren: './symbol-dialogs/comment/comment.module#CommentPageModule' }
 ];
 
 @NgModule({

@@ -14,6 +14,17 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 import { ConsoleComponent } from './console/console.component';
 import { VariablesComponent } from './variables/variables.component';
 
+import { CommentPageModule } from './symbol-dialogs/comment/comment.module';
+import { DeclarePageModule } from './symbol-dialogs/declare/declare.module';
+// import { DoWhileLoopPageModule } from './symbol-dialogs/do-while-loop/do-while-loop.module';
+// import { ForLoopPageModule } from './symbol-dialogs/for-loop/for-loop.module';
+import { IfElsePageModule } from './symbol-dialogs/if-else/if-else.module';
+import { InputPageModule } from './symbol-dialogs/input/input.module';
+// import { OperationPageModule } from './symbol-dialogs/operation/operation.module';
+import { OutputPageModule } from './symbol-dialogs/output/output.module';
+import { WhileLoopPageModule } from './symbol-dialogs/while-loop/while-loop.module';
+import { ProcessPageModule } from './symbol-dialogs/process/process.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +34,20 @@ import { VariablesComponent } from './variables/variables.component';
     VariablesComponent
   ],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule,
+    CommentPageModule,
+    DeclarePageModule,
+    // DoWhileLoopPageModule,
+    // ForLoopPageModule,
+    IfElsePageModule,
+    InputPageModule,
+    ProcessPageModule,
+    OutputPageModule,
+    WhileLoopPageModule
+  ],
   providers: [
     StatusBar,
     SplashScreen,

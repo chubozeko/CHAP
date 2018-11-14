@@ -8,7 +8,7 @@ import { SYMBOLS } from "../symbol-list"; // importing the symbol array from sym
 
 @Component({
   selector: 'app-symbols',
-  templateUrl: './symbols.component.html',
+  templateUrl: './symbols.component.html'
   // styleUrls: ['./symbols.css'],
 })
 export class SymbolsComponent implements OnInit {
