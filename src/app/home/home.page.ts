@@ -30,7 +30,7 @@ export class HomePage {
 
   @ViewChild('symbolsFAB') symbolsFAB: Fab;
 
-  flowchart: Flowchart;
+  flowchart: Flowchart = new Flowchart();
   title = 'CHAP';
   fileName = '';
 
@@ -74,15 +74,16 @@ export class HomePage {
 
   public openMenu(){ this.menu.open(); }
 
-  async openDeclareModal(id, e){
+  async openDeclareModal(symbol, e){
     const modal = await this.modalC.create({
       component: DeclarePage,
-      componentProps: { s_id: id }
+      componentProps: { symbol: symbol }
     });
 
     modal.onDidDismiss().then((data) => {
-      e.target.innerHTML = data.data;
-      this.consoleLog(data.data);
+      let dec = data.data as Declare;
+      e.target.innerHTML = dec.getDeclareExpression(); // dec.getDataType() + ' ' + dec.getVariableName();
+      this.consoleLog(dec.getDeclareExpression()); //dec.getDataType() + ' ' + dec.getVariableName());
       console.log(data.data);
     });
 
@@ -264,19 +265,41 @@ export class HomePage {
   }
 
   public openSymbolDialog(event, id){
+
+    // Get the target symbol
+    let active_sym_index, tempSym;
+    let targetSymbol = event.target || event.srcElement || event.currentTarget;
+    if(targetSymbol.id == 's_if_case' || targetSymbol.id == 's_while_loop'){
+      targetSymbol.parentElement.classList.add('active-symbol');
+    } else {
+      targetSymbol.classList.add('active-symbol');
+    }
+    let syms = document.getElementsByClassName("symbol");
+    for (let i = 0; i < syms.length; i++) {
+      if( syms[i].className == 'symbol active-symbol' ){ active_sym_index = i-1; }
+    }
+
     if(id == 's_declare'){
-      this.openDeclareModal(id, event);
-    } else if(id == 's_input'){
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openDeclareModal(tempSym, event);
+    } 
+    else if(id == 's_input'){
       this.openInputModal(id, event);
-    } else if(id == 's_output'){
+    } 
+    else if(id == 's_output'){
       this.openOutputModal(id, event);
-    } else if(id == 's_comment'){
+    } 
+    else if(id == 's_comment'){
       this.openCommentModal(id, event);
-    } else if(id == 's_process'){
+    } 
+    else if(id == 's_process'){
       this.openProcessModal(id, event);
-    } else if(id == 's_if_case'){
+    } 
+    else if(id == 's_if_case'){
       this.openIfModal(id, event);
-    } else if(id == 's_while_loop'){
+    } 
+    else if(id == 's_while_loop'){
       this.openWhileModal(id, event);
     }
     // } else if(id == 's_for_loop'){
@@ -286,44 +309,61 @@ export class HomePage {
     // }
   }
 
-  public addSymbol(id: string, event){
+  public addSymbol(id: string, e){
+    
+    let symClass, temp, symbol, active_index;
 
-    let symClass, temp, symbol;
+    let b = document.getElementsByClassName("arrow dropzone");
+    for(let i=0; i<b.length; i++){
+      if( b[i].className.endsWith('active-arrow') ){ active_index = i; }
+    }
+
     if(id == 's_declare'){
       let dec = new Declare();
       temp = document.getElementById(id);
       dec.setDeclareSymbol( temp.cloneNode(true) );
       symbol = dec.getDeclareSymbol();
       symbol.innerHTML = "Declare";
-    } else if(id == 's_input'){
+      this.flowchart.addSymbolToFlowchart( dec, active_index );
+    } 
+    else if(id == 's_input'){
       let input = new Input();
       temp = document.getElementById(id);
       input.setInputSymbol( temp.cloneNode(true) );
       symbol = input.getInputSymbol();
       symbol.innerHTML = "Input";
-    } else if(id == 's_output'){
+      this.flowchart.addSymbolToFlowchart( input, active_index );
+    } 
+    else if(id == 's_output'){
       let output = new Output();
       temp = document.getElementById(id);
       output.setOutputSymbol( temp.cloneNode(true) );
       symbol = output.getOutputSymbol();
       symbol.innerHTML = "Output";
-    } else if(id == 's_process'){
+      this.flowchart.addSymbolToFlowchart( output, active_index );
+    } 
+    else if(id == 's_process'){
       let proc = new Process();
       temp = document.getElementById(id);
       proc.setProcessSymbol( temp.cloneNode(true) );
       symbol = proc.getProcessSymbol();
       symbol.innerHTML = "Process";
-    } else if(id == 's_comment'){
+      this.flowchart.addSymbolToFlowchart( proc, active_index );
+    } 
+    else if(id == 's_comment'){
       let com = new Comment();
       temp = document.getElementById(id);
       com.setCommentSymbol( temp.cloneNode(true) );
       symbol = com.getCommentSymbol();
       symbol.innerHTML = "Comment";
-    } else if(id == 's_if_case'){
+      this.flowchart.addSymbolToFlowchart( com, active_index );
+    }
+    else if(id == 's_if_case'){
       symClass = "if_div";
       temp = document.getElementsByClassName(symClass);
       symbol = temp[0].cloneNode(true);
-    } else if(id == 's_while_loop'){
+    } 
+    else if(id == 's_while_loop'){
       symClass = "while_div";
       temp = document.getElementsByClassName(symClass);
       symbol = temp[0].cloneNode(true);
@@ -337,7 +377,6 @@ export class HomePage {
     //   temp = document.getElementsByClassName(symClass);
     //   symbol = temp[0].cloneNode(true);
     // }
-
     
     // Get and create a new symbol with given id from symbols FAB
 
@@ -364,6 +403,8 @@ export class HomePage {
     for(let i=0; i<branches.length; i++){
       branches[i].classList.remove('active-arrow');
     }
+
+    this.consoleLog('active arrow index: ' + active_index + '; symbol cnt: ' + this.flowchart.SYMBOLS.length);
 
   }
 
