@@ -34,4 +34,13 @@ export class Flowchart{
     this.SYMBOLS = [ start, stop ];
   }
 
+  displayFlowchartPseudoCode(){
+    let pseudocode = '';
+    for (let i = 0; i < this.SYMBOLS.length; i++) {
+      const syms = this.SYMBOLS[i];
+      pseudocode = pseudocode + syms.toString();
+    }
+    return pseudocode;
+  }
+
 }

@@ -29,7 +29,7 @@ export class DeclarePage implements OnInit {
     arrayName.value = this.symbol.getArraySize().toString();
   }
 
-  public closeModal(){
+  public applyAndCloseModal(){
 
     let var_name = (document.getElementById("declare_var_name") as HTMLInputElement);
     this.symbol.setVariableName( var_name.value );
@@ -47,5 +47,7 @@ export class DeclarePage implements OnInit {
 
     this.modal.dismiss( this.symbol );
   }
+
+  public closeModal(){ this.modal.dismiss(); }
 
 }

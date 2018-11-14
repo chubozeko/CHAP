@@ -19,6 +19,8 @@ import { Output } from '../classes/Output';
 import { Process } from '../classes/Process';
 import { Comment } from '../classes/Comment';
 import { Flowchart } from '../classes/Flowchart';
+import { IfCase } from '../classes/IfCase';
+import { WhileLoop } from '../classes/WhileLoop';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -82,77 +84,88 @@ export class HomePage {
 
     modal.onDidDismiss().then((data) => {
       let dec = data.data as Declare;
-      e.target.innerHTML = dec.getDeclareExpression(); // dec.getDataType() + ' ' + dec.getVariableName();
-      this.consoleLog(dec.getDeclareExpression()); //dec.getDataType() + ' ' + dec.getVariableName());
+      e.target.innerHTML = dec.getDeclareExpression();
+      this.consoleLog(dec.getDeclareExpression());
       console.log(data.data);
     });
 
     await modal.present();
   }
 
-  async openInputModal(id, e){
+  async openInputModal(symbol, e){
     const modal = await this.modalC.create({
       component: InputPage,
-      componentProps: { s_id: id }
+      componentProps: { symbol: symbol }
     });
 
     modal.onDidDismiss().then((data) => {
-      this.consoleLog(data.data);
+      let input = data.data as Input;
+      e.target.innerHTML = input.getInputExpression();
+      this.consoleLog(input.getInputExpression());
       console.log(data.data);
     });
 
     await modal.present();
   }
 
-  async openOutputModal(id, e){
+  async openOutputModal(symbol, e){
     const modal = await this.modalC.create({
       component: OutputPage,
-      componentProps: { s_id: id }
+      componentProps: { symbol: symbol }
     });
 
     modal.onDidDismiss().then((data) => {
-      this.consoleLog(data.data);
+      let output = data.data as Output;
+      e.target.innerHTML = output.getOutputExpression();
+      this.consoleLog(output.getOutputExpression());
       console.log(data.data);
     });
 
     await modal.present();
   }
 
-  async openProcessModal(id, e){
+  async openProcessModal(symbol, e){
     const modal = await this.modalC.create({
       component: ProcessPage,
-      componentProps: { s_id: id }
+      componentProps: { symbol: symbol }
     });
 
     modal.onDidDismiss().then((data) => {
-      this.consoleLog(data.data);
+      let proc = data.data as Process;
+      e.target.innerHTML = proc.getProcessExpression();
+      this.consoleLog(proc.getProcessExpression());
       console.log(data.data);
     });
 
     await modal.present();
   }
 
-  async openCommentModal(id, e){
+  async openCommentModal(symbol, e){
     const modal = await this.modalC.create({
       component: CommentPage,
-      componentProps: { s_id: id }
+      componentProps: { symbol: symbol }
     });
 
     modal.onDidDismiss().then((data) => {
-      this.consoleLog(data.data);
+      let com = data.data as Comment;
+      e.target.innerHTML = com.getCommentExpression();
+      this.consoleLog(com.getCommentExpression());
       console.log(data.data);
     });
 
     await modal.present();
   }
 
-  async openIfModal(id, e){
+  async openIfModal(symbol, e){
     const modal = await this.modalC.create({
       component: IfElsePage,
-      componentProps: { s_id: id }
+      componentProps: { symbol: symbol }
     });
 
     modal.onDidDismiss().then((data) => {
+      let ifcase = data.data as IfCase;
+      // e.target.innerHTML = ifcase.getIfCaseExpression();
+      // this.consoleLog(ifcase.getIfCaseExpression());
       this.consoleLog(data.data);
       console.log(data.data);
     });
@@ -160,13 +173,16 @@ export class HomePage {
     await modal.present();
   }
 
-  async openWhileModal(id, e){
+  async openWhileModal(symbol, e){
     const modal = await this.modalC.create({
       component: WhileLoopPage,
-      componentProps: { s_id: id }
+      componentProps: { symbol: symbol }
     });
 
     modal.onDidDismiss().then((data) => {
+      let whileloop = data.data as WhileLoop;
+      // e.target.innerHTML = whileloop.getWhileExpression();
+      // this.consoleLog(whileloop.getWhileExpression());
       this.consoleLog(data.data);
       console.log(data.data);
     });
@@ -276,7 +292,7 @@ export class HomePage {
     }
     let syms = document.getElementsByClassName("symbol");
     for (let i = 0; i < syms.length; i++) {
-      if( syms[i].className == 'symbol active-symbol' ){ active_sym_index = i-1; }
+      if( syms[i].className == 'symbol active-symbol' ){ active_sym_index = i; }
     }
 
     if(id == 's_declare'){
@@ -285,22 +301,34 @@ export class HomePage {
       this.openDeclareModal(tempSym, event);
     } 
     else if(id == 's_input'){
-      this.openInputModal(id, event);
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openInputModal(tempSym, event);
     } 
     else if(id == 's_output'){
-      this.openOutputModal(id, event);
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openOutputModal(tempSym, event);
     } 
     else if(id == 's_comment'){
-      this.openCommentModal(id, event);
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openCommentModal(tempSym, event);
     } 
-    else if(id == 's_process'){
-      this.openProcessModal(id, event);
+    else if(id == 's_process'){4
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openProcessModal(tempSym, event);
     } 
     else if(id == 's_if_case'){
-      this.openIfModal(id, event);
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openIfModal(tempSym, event);
     } 
     else if(id == 's_while_loop'){
-      this.openWhileModal(id, event);
+      this.consoleLog('active symbol: ' + active_sym_index);
+      tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
+      this.openWhileModal(tempSym, event);
     }
     // } else if(id == 's_for_loop'){
     //   this.openForLoopModal(id);
@@ -315,7 +343,7 @@ export class HomePage {
 
     let b = document.getElementsByClassName("arrow dropzone");
     for(let i=0; i<b.length; i++){
-      if( b[i].className.endsWith('active-arrow') ){ active_index = i; }
+      if( b[i].className.endsWith('active-arrow') ){ active_index = i+1; }
     }
 
     if(id == 's_declare'){
@@ -455,6 +483,10 @@ export class HomePage {
   onPress(e){
     e.target.style.border = "2px dashed #000";
     this.openSymbolsAS(e);
+  }
+
+  generatePseudoCode(){
+    this.consoleLog( this.flowchart.displayFlowchartPseudoCode() );
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded

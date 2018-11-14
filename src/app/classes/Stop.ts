@@ -9,6 +9,8 @@ export class Stop{
   constructor(){}
 
   setStopSymbol( symbol: any ){ this.stopSymbol = symbol; }
-  getStopSymbol(){ return this.stopSymboll; }
+  getStopSymbol(){ return this.stopSymbol; }
+
+  toString(){ return 'End\n'; }
 
 }

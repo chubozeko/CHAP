@@ -8,17 +8,27 @@ import { ModalController, NavParams } from '@ionic/angular';
 })
 export class InputPage implements OnInit {
 
-  sid;
+  symbol;
 
   constructor(public modal: ModalController, public navP: NavParams) { 
-    this.sid = navP.get('s_id'); 
+    this.symbol = navP.get('symbol'); 
   }
 
   ngOnInit() {
+    let var_name = (document.getElementById("input_var_name") as HTMLInputElement);
+    var_name.value = this.symbol.getVariableName();
+  }
+
+  public applyAndCloseModal(){
+
+    let var_name = (document.getElementById("input_var_name") as HTMLInputElement);
+    this.symbol.setVariableName( var_name.value );
+
+    this.modal.dismiss( this.symbol );
   }
 
   public closeModal(){
-    this.modal.dismiss( this.sid );
+    this.modal.dismiss();
   }
 
 }

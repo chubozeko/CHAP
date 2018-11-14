@@ -3,8 +3,9 @@ export class Process{
   static id: string = 's_process';
   static s_name: string = 'Process';
 
-  variableName: string;
-  expression: string;
+  variableName: string = '';
+  expression: string = '';
+  processExpression: string = '';
 
   processSymbol: any;
 
@@ -19,7 +20,15 @@ export class Process{
   setExpression(exp: string){ this.expression = exp; }
   getExpression(){ return this.expression; }
 
+  getProcessExpression(){
+    this.processExpression = this.getVariableName() + ' = ' + this.getExpression();
+    return this.processExpression;
+  }
+
   parseExpression(){
     // parse the expression
   }
+
+  toString(){ return '\tProcess ' + this.getProcessExpression() + '\n'; }
+
 }

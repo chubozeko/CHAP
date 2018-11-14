@@ -3,7 +3,7 @@ export class Output{
   static id: string = 's_output';
   static s_name: string = 'Output';
 
-  outputExp: string;
+  outputExp: string = '';
 
   outputSymbol: any;
 
@@ -18,5 +18,7 @@ export class Output{
   parseExpression(){
     // parse the output expression
   }
+
+  toString(){ return '\tOutput ' + this.getOutputExpression() + '\n'; }
 
 }

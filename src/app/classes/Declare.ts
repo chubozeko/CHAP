@@ -40,4 +40,6 @@ export class Declare{
         return this.declareExpression;
     }
 
+    toString(){ return '\tDeclare ' + this.getDeclareExpression() + '\n'; }
+
 }

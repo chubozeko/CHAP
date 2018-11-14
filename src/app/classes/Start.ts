@@ -11,4 +11,6 @@ export class Start{
   setStartSymbol( symbol: any ){ this.startSymbol = symbol; }
   getStartSymbol(){ return this.startSymbol; }
 
+  toString(){ return 'Function Main\n'; }
+
 }
