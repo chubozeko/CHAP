@@ -21,6 +21,7 @@ import { Comment } from '../classes/Comment';
 import { Flowchart } from '../classes/Flowchart';
 import { IfCase } from '../classes/IfCase';
 import { WhileLoop } from '../classes/WhileLoop';
+import { CodeViewerPage } from '../code-viewer/code-viewer.page';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -48,6 +49,12 @@ export class HomePage {
   ){}
 
   ngOnInit() {
+
+    // Adding Click Listeners to Menu Items
+    let genCode = document.getElementById("btn_generateCode");
+    genCode.addEventListener('click', (e) => this.generatePseudoCode(e));
+    let clearWS = document.getElementById("btn_clearWorkspace");
+    clearWS.addEventListener('click', (e) => this.clearWorkspace());
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart();
@@ -446,6 +453,30 @@ export class HomePage {
     consoleCHAP.textContent = "";
   }
 
+  public clearWorkspace(){
+    this.menu.close();
+    let workspace = document.getElementById("workspace");
+    let wsSymbols = workspace.getElementsByClassName("symbol");
+    for (let i=0; i<wsSymbols.length; i++) {
+
+      if( wsSymbols[i].id != 's_start' && wsSymbols[i].id != 's_stop' ){
+        if(wsSymbols[i].id == 's_if_case' || wsSymbols[i].id == 's_for_loop'
+        || wsSymbols[i].id == 's_while_loop' || wsSymbols[i].id == 's_do_while_loop'){
+          let nextArrow = wsSymbols[i].parentElement.nextSibling;
+          workspace.removeChild(nextArrow);
+          workspace.removeChild(wsSymbols[i].parentNode);
+        } else {
+          let nextArrow = wsSymbols[i].nextSibling;
+          workspace.removeChild(nextArrow);
+          workspace.removeChild(wsSymbols[i]);  
+        }
+        i=0;
+      }
+      
+    }
+    this.flowchart = new Flowchart();
+  }
+
   public startDrag(e){
     this.selectedSymbol = e.target.id;
     e.dataTransfer.setData('id', this.selectedSymbol);
@@ -454,7 +485,10 @@ export class HomePage {
 
   public moveDrag(e){ e.preventDefault(); }
   
-  public endDrag(e){ this.consoleLog("end drag"); }
+  public endDrag(e){ 
+    e.preventDefault();
+    this.consoleLog("end drag");
+  }
   
   public dragEnter(e){
     e.preventDefault();
@@ -485,8 +519,23 @@ export class HomePage {
     this.openSymbolsAS(e);
   }
 
-  generatePseudoCode(){
-    this.consoleLog( this.flowchart.displayFlowchartPseudoCode() );
+  public generatePseudoCode(e){
+    this.openCodeViewer( this.flowchart, e );
+    // this.consoleLog( this.flowchart.displayFlowchartPseudoCode() );
+    this.menu.close();
+  }
+
+  async openCodeViewer(flowchart, e){
+    const modal = await this.modalC.create({
+      component: CodeViewerPage,
+      componentProps: { flowchart: flowchart }
+    });
+
+    // modal.onDidDismiss().then((data) => {
+    //   console.log(data.data);
+    // });
+
+    await modal.present();
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded

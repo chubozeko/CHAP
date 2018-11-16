@@ -20,5 +20,6 @@ export class Output{
   }
 
   toString(){ return '\tOutput ' + this.getOutputExpression() + '\n'; }
+  // toString(){ return '\tOutput \'' + this.getOutputExpression() + '\'\n'; }
 
 }

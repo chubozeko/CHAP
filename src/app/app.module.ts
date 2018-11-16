@@ -24,6 +24,7 @@ import { InputPageModule } from './symbol-dialogs/input/input.module';
 import { OutputPageModule } from './symbol-dialogs/output/output.module';
 import { WhileLoopPageModule } from './symbol-dialogs/while-loop/while-loop.module';
 import { ProcessPageModule } from './symbol-dialogs/process/process.module';
+import { CodeViewerPageModule } from './code-viewer/code-viewer.module';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ProcessPageModule } from './symbol-dialogs/process/process.module';
     InputPageModule,
     ProcessPageModule,
     OutputPageModule,
-    WhileLoopPageModule
+    WhileLoopPageModule,
+    CodeViewerPageModule
   ],
   providers: [
     StatusBar,

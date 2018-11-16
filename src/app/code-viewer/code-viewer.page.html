@@ -1,0 +1,24 @@
+<ion-toolbar style="padding: 5px; " color="secondary">
+  <ion-title style="float: left;">Code Viewer</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="primary">
+
+  <ion-item>
+    <ion-label>Language: </ion-label>
+    <ion-select id="declare_data_type" value="PseudoCode" ok-text="Confirm" cancel-text="Cancel">
+      <ion-select-option value="PseudoCode"> <img src="./assets/icon/pseudocode.png" alt="Pseudo Code"> Pseudo Code</ion-select-option>
+      <ion-select-option value="C++"> <img src="./assets/icon/cplusplus.png" alt="C++"> C++</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <p>{{pseudocode}}</p>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer id="code_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Close</ion-button>
+  <!-- <ion-button (click)="applyAndCloseModal()" color="dark" full >Apply</ion-button> -->
+</ion-footer>
