@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'workspace', loadChildren: './workspace/workspace.component#WorkspaceComponent' },
   { path: 'console', loadChildren: './console/console.component#ConsoleComponent' },
   { path: 'variables', loadChildren: './variables/variables.component#VariablesComponent' },  { path: 'CodeViewer', loadChildren: './code-viewer/code-viewer.module#CodeViewerPageModule' },
+  { path: 'About', loadChildren: './about/about.module#AboutPageModule' },
 
   // { path: 'process', loadChildren: './symbol-dialogs/process/process.module#ProcessPageModule' },
   // { path: 'declare', loadChildren: './symbol-dialogs/declare/declare.module#DeclarePageModule' },

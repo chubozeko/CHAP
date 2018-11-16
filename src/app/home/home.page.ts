@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ModalController, Fab, ActionSheetController, MenuController, NavParams } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 
-import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
+import { SYMBOLS } from "../symbol-list";   // importing the symbol array from symbol-list.ts
 import { DeclarePage } from '../symbol-dialogs/declare/declare.page';
 import { InputPage } from '../symbol-dialogs/input/input.page';
 import { ProcessPage } from '../symbol-dialogs/process/process.page';
@@ -22,7 +22,11 @@ import { Flowchart } from '../classes/Flowchart';
 import { IfCase } from '../classes/IfCase';
 import { WhileLoop } from '../classes/WhileLoop';
 import { CodeViewerPage } from '../code-viewer/code-viewer.page';
+import { AboutPage } from '../about/about.page';
 // import 'libraries/scripts/drag&drop.js';
+
+// Display an alert box after 3 seconds (3000 milliseconds):
+//  setTimeout(function(){ alert("Hello"); }, 3000);
 
 @Component({
   selector: 'app-home',
@@ -49,12 +53,14 @@ export class HomePage {
   ){}
 
   ngOnInit() {
-
+    
     // Adding Click Listeners to Menu Items
     let genCode = document.getElementById("btn_generateCode");
     genCode.addEventListener('click', (e) => this.generatePseudoCode(e));
     let clearWS = document.getElementById("btn_clearWorkspace");
     clearWS.addEventListener('click', (e) => this.clearWorkspace());
+    let aboutPg = document.getElementById("btn_aboutPage");
+    aboutPg.addEventListener('click', (e) => this.openAboutPage(e));
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart();
@@ -455,6 +461,7 @@ export class HomePage {
 
   public clearWorkspace(){
     this.menu.close();
+    this.clearConsole();
     let workspace = document.getElementById("workspace");
     let wsSymbols = workspace.getElementsByClassName("symbol");
     for (let i=0; i<wsSymbols.length; i++) {
@@ -531,9 +538,14 @@ export class HomePage {
       componentProps: { flowchart: flowchart }
     });
 
-    // modal.onDidDismiss().then((data) => {
-    //   console.log(data.data);
-    // });
+    await modal.present();
+  }
+
+  async openAboutPage(e){
+    this.menu.close();
+    const modal = await this.modalC.create({
+      component: AboutPage
+    });
 
     await modal.present();
   }
