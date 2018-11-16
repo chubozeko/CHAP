@@ -10,6 +10,7 @@ import { NavParams, ModalController } from '@ionic/angular';
 export class CodeViewerPage implements OnInit {
 
   pseudocode: string = '';
+  lineNumbers: string = '  ';
   flowchart: Flowchart;
 
   constructor(public modal: ModalController, public navP: NavParams) { 
@@ -17,6 +18,11 @@ export class CodeViewerPage implements OnInit {
   }
 
   ngOnInit() {
+    let code = this.flowchart.displayFlowchartPseudoCode();
+    let temp = code.split('\n');
+    for (let i = 0; i < temp.length; i++) {
+      this.lineNumbers += i+1 + '  \n  ';
+    }
     this.pseudocode = this.flowchart.displayFlowchartPseudoCode();
   }
 

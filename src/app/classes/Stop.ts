@@ -11,6 +11,6 @@ export class Stop{
   setStopSymbol( symbol: any ){ this.stopSymbol = symbol; }
   getStopSymbol(){ return this.stopSymbol; }
 
-  toString(){ return 'End\n'; }
+  toString(){ return 'End'; }
 
 }
