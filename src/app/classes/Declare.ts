@@ -10,6 +10,8 @@ export class Declare{
     arraySize: number = 0;
     declareExpression: string = '';
 
+    declareVar: any;
+
     declareSymbol: any;
 
     constructor(){}

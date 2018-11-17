@@ -10,9 +10,11 @@ import { Declare } from '../../classes/Declare';
 export class DeclarePage implements OnInit {
 
   symbol: Declare;
+  dataType: string = '';
 
   constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol');
+    this.dataType = this.symbol.getDataType();
   }
 
   ngOnInit() {
@@ -23,10 +25,26 @@ export class DeclarePage implements OnInit {
     datatype.value = this.symbol.getDataType();
 
     let arrayCB = (document.getElementById("declare_array_cb") as HTMLIonCheckboxElement);
-    arrayCB.checked = this.symbol.getIsArray();
-
     let arrayName = (document.getElementById("declare_array_size") as HTMLInputElement);
+
+    if( !arrayCB.checked ){
+      arrayName.disabled = true;
+    } else {
+      arrayName.disabled = false;
+    }
+    arrayCB.checked = this.symbol.getIsArray();
     arrayName.value = this.symbol.getArraySize().toString();
+  }
+
+  public toggleArraySize(){
+    let arrayCB = (document.getElementById("declare_array_cb") as HTMLIonCheckboxElement);
+    let arrayName = (document.getElementById("declare_array_size") as HTMLInputElement);
+
+    if( !arrayCB.checked ){
+      arrayName.disabled = true;
+    } else {
+      arrayName.disabled = false;
+    }
   }
 
   public applyAndCloseModal(){
