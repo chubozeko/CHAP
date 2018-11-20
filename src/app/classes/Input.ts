@@ -1,3 +1,5 @@
+import { Declare } from "./Declare";
+
 export class Input{
 
   static id: string = 's_input';
@@ -22,5 +24,9 @@ export class Input{
   }
 
   toString(){ return '\tInput ' + this.getInputExpression() + '\n'; }
+
+  parseInputExp( declare: Declare ){
+    return 'Enter a value of type ' + declare.getDataType() + ' for variable ' + declare.getVariableName(); 
+  }
   
 }

@@ -55,12 +55,17 @@ export class HomePage {
   ngOnInit() {
     
     // Adding Click Listeners to Menu Items
+    let debugP = document.getElementById("btn_debugProgram");
+    debugP.addEventListener('click', (e) => this.debugProgram(e));
     let genCode = document.getElementById("btn_generateCode");
     genCode.addEventListener('click', (e) => this.generatePseudoCode(e));
     let clearWS = document.getElementById("btn_clearWorkspace");
     clearWS.addEventListener('click', (e) => this.clearWorkspace());
     let aboutPg = document.getElementById("btn_aboutPage");
     aboutPg.addEventListener('click', (e) => this.openAboutPage(e));
+    let cons = document.getElementById("console");
+    //cons.addEventListener('keyup', (e) => );
+    
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart();
@@ -98,7 +103,7 @@ export class HomePage {
     modal.onDidDismiss().then((data) => {
       let dec = data.data as Declare;
       e.target.innerHTML = dec.getDeclareExpression();
-      this.consoleLog(dec.getDeclareExpression());
+      //this.consoleLog(dec.getDeclareExpression());
       console.log(data.data);
     });
 
@@ -114,7 +119,7 @@ export class HomePage {
     modal.onDidDismiss().then((data) => {
       let input = data.data as Input;
       e.target.innerHTML = input.getInputExpression();
-      this.consoleLog(input.getInputExpression());
+      //this.consoleLog(input.getInputExpression());
       console.log(data.data);
     });
 
@@ -130,7 +135,7 @@ export class HomePage {
     modal.onDidDismiss().then((data) => {
       let output = data.data as Output;
       e.target.innerHTML = output.getOutputExpression();
-      this.consoleLog(output.getOutputExpression());
+      //this.consoleLog(output.getOutputExpression());
       console.log(data.data);
     });
 
@@ -146,7 +151,7 @@ export class HomePage {
     modal.onDidDismiss().then((data) => {
       let proc = data.data as Process;
       e.target.innerHTML = proc.getProcessExpression();
-      this.consoleLog(proc.getProcessExpression());
+      //this.consoleLog(proc.getProcessExpression());
       console.log(data.data);
     });
 
@@ -162,7 +167,7 @@ export class HomePage {
     modal.onDidDismiss().then((data) => {
       let com = data.data as Comment;
       e.target.innerHTML = com.getCommentExpression();
-      this.consoleLog(com.getCommentExpression());
+      //this.consoleLog(com.getCommentExpression());
       console.log(data.data);
     });
 
@@ -179,7 +184,7 @@ export class HomePage {
       let ifcase = data.data as IfCase;
       // e.target.innerHTML = ifcase.getIfCaseExpression();
       // this.consoleLog(ifcase.getIfCaseExpression());
-      this.consoleLog(data.data);
+      //this.consoleLog(data.data);
       console.log(data.data);
     });
 
@@ -196,7 +201,7 @@ export class HomePage {
       let whileloop = data.data as WhileLoop;
       // e.target.innerHTML = whileloop.getWhileExpression();
       // this.consoleLog(whileloop.getWhileExpression());
-      this.consoleLog(data.data);
+      //this.consoleLog(data.data);
       console.log(data.data);
     });
 
@@ -309,37 +314,37 @@ export class HomePage {
     }
 
     if(id == 's_declare'){
-      this.consoleLog('active symbol: ' + active_sym_index);
+      //this.consoleLog('active symbol: ' + active_sym_index);
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openDeclareModal(tempSym, event);
     } 
     else if(id == 's_input'){
-      this.consoleLog('active symbol: ' + active_sym_index);
+      //this.consoleLog('active symbol: ' + active_sym_index);
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openInputModal(tempSym, event);
     } 
     else if(id == 's_output'){
-      this.consoleLog('active symbol: ' + active_sym_index);
+     // this.consoleLog('active symbol: ' + active_sym_index);
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openOutputModal(tempSym, event);
     } 
     else if(id == 's_comment'){
-      this.consoleLog('active symbol: ' + active_sym_index);
+      //this.consoleLog('active symbol: ' + active_sym_index);
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openCommentModal(tempSym, event);
     } 
     else if(id == 's_process'){4
-      this.consoleLog('active symbol: ' + active_sym_index);
+      //this.consoleLog('active symbol: ' + active_sym_index);
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openProcessModal(tempSym, event);
     } 
     else if(id == 's_if_case'){
-      this.consoleLog('active symbol: ' + active_sym_index);
+      //this.consoleLog('active symbol: ' + active_sym_index);
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openIfModal(tempSym, event);
     } 
     else if(id == 's_while_loop'){
-      this.consoleLog('active symbol: ' + active_sym_index);
+      //this.consoleLog('active symbol: ' + active_sym_index);
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openWhileModal(tempSym, event);
     }
@@ -445,7 +450,7 @@ export class HomePage {
       branches[i].classList.remove('active-arrow');
     }
 
-    this.consoleLog('active arrow index: ' + active_index + '; symbol cnt: ' + this.flowchart.SYMBOLS.length);
+    //this.consoleLog('active arrow index: ' + active_index + '; symbol cnt: ' + this.flowchart.SYMBOLS.length);
 
   }
 
@@ -457,6 +462,7 @@ export class HomePage {
   public clearConsole(){
     let consoleCHAP = document.getElementById("console");
     consoleCHAP.textContent = "";
+    //consoleCHAP.removeAttribute("readonly");
   }
 
   public clearWorkspace(){
@@ -487,14 +493,14 @@ export class HomePage {
   public startDrag(e){
     this.selectedSymbol = e.target.id;
     e.dataTransfer.setData('id', this.selectedSymbol);
-    this.consoleLog("start drag");
+    //this.consoleLog("start drag");
   }
 
   public moveDrag(e){ e.preventDefault(); }
   
   public endDrag(e){ 
     e.preventDefault();
-    this.consoleLog("end drag");
+   // this.consoleLog("end drag");
   }
   
   public dragEnter(e){
@@ -502,7 +508,7 @@ export class HomePage {
     e.target.classList.add('active-arrow');
     e.target.style.background = "#9CDCFE";
 
-    this.consoleLog("drag enter");
+   // this.consoleLog("drag enter");
   }
   
   public dragLeave(e){
@@ -510,7 +516,7 @@ export class HomePage {
     e.target.classList.remove('active-arrow');
     e.target.style.background = "#000000";
 
-    this.consoleLog("drag leave");
+    //this.consoleLog("drag leave");
   }
   
   public dropped(e){
@@ -518,12 +524,21 @@ export class HomePage {
     e.target.style.background = "#000000";
     this.addSymbol(this.selectedSymbol, e);
 
-    this.consoleLog("dropped");
+    //this.consoleLog("dropped");
   }
 
   onPress(e){
     e.target.style.border = "2px dashed #000";
     this.openSymbolsAS(e);
+  }
+
+  public debugProgram(e){
+    this.menu.close();
+    this.consoleLog('Debugging...');
+    console.log( this.flowchart.SYMBOLS );
+    console.log( this.flowchart.variables );
+
+    console.log( this.flowchart.validateFlowchart() );
   }
 
   public generatePseudoCode(e){
