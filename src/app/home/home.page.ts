@@ -535,6 +535,7 @@ export class HomePage {
 
   public debugProgram(e){
     this.menu.close();
+    this.clearConsole();
     this.consoleLog('Debugging...');
     console.log( this.flowchart.SYMBOLS );
     console.log( this.flowchart.variables );

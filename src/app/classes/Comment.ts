@@ -15,14 +15,10 @@ export class Comment{
   setCommentText(comment_text: string){ this.commentText = comment_text; }
   getCommentText(){ return this.commentText; }
 
-  getCommentExpression(){
-    return '// ' + this.commentText;
-  }
+  getCommentExpression(){ return '// ' + this.commentText; }
 
   pseudoCode(){ return '\t' + this.getCommentExpression() + '\n'; }
   
-  cplusplusCode(){
-    return '\t/*' + this.commentText + '*/\n';
-  }
+  cplusplusCode(){ return '\t/*' + this.commentText + '*/\n'; }
 
 }

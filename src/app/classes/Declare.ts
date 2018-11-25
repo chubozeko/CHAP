@@ -1,3 +1,5 @@
+import { Variable } from "./Variable";
+
 export class Declare{
 
     static id: string = 's_declare';
@@ -40,7 +42,7 @@ export class Declare{
     }
 
     parseDeclareExp(){
-
+        let var1 = new Variable();
         if( !this.getIsArray() ){
             switch ( this.getDataType() ) {
                 case 'Integer': this.declareVar as number;  break;
@@ -60,7 +62,9 @@ export class Declare{
             }
             
         } 
-        return this;
+        var1.name = this.getVariableName();
+        var1.dataType = this.getDataType();
+        return var1;
     }
 
     pseudoCode(){ return '\tDeclare ' + this.getDeclareExpression() + '\n'; }

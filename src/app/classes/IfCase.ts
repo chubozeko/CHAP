@@ -4,8 +4,12 @@ export class IfCase{
   static s_name: string = 'If';
 
   ifStatement: string;
+
   trueExpression: string;
+  trueBlock: any[];
+
   falseExpression: string;
+  falseBlock: any[];
 
   constructor(){}
 

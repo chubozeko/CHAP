@@ -7,6 +7,7 @@ import { Input } from "./Input";
 import { Comment } from "./Comment";
 import { IfCase } from "./IfCase";
 import { WhileLoop } from "./WhileLoop";
+import { Variable } from "@angular/compiler/src/render3/r3_ast";
 
 export class Flowchart{
 
@@ -15,7 +16,7 @@ export class Flowchart{
   variables: any[];
   comments: string[];
 
-  consoleLog;
+  consoleLog; //: HTMLTextAreaElement;
 
   constructor(){
     let defaultSymbols = document.getElementsByClassName('symbols');
@@ -29,6 +30,7 @@ export class Flowchart{
     this.variables = [];
 
     this.consoleLog = document.getElementById("console") as HTMLTextAreaElement;
+    //document.getElementById("console").addEventListener('keyup', (e) => this.enterPressedOnConsole(e) );
   }
 
   addSymbolToFlowchart( symbol: any, position: number){ this.SYMBOLS.splice(position, 0, symbol); }
@@ -65,34 +67,34 @@ export class Flowchart{
     this.variables.splice( pos, 0, declareSymbol.parseDeclareExp() );
   }
 
-  enterPressedOnConsole(e){
+  enterPressedOnConsole(e, var1: Variable){
     e.preventDefault();
-    if (e.keyCode === 13) {
+    if (e.keyCode == 13) {
       let cons = document.getElementById("console") as HTMLTextAreaElement;  
-      cons.disabled = true;
-      cons.contentEditable = 'false';
 
+      // Get the last line from the Console: variable_value
       let conStr = cons.value.split('\n');
       let var_val = conStr[conStr.length-2];
-      console.log( var_val );
 
-      // Checking the data type of an entered variable into the console
+      // Checking the data type of an entered variable into the Console
       let var_value1: any;
-      if( parseInt(var_val) != NaN ){ var_value1 = parseInt(var_val); }
-      else if( parseFloat(var_val) != NaN ){ var_value1 = parseFloat(var_val); }
+      if( !isNaN( parseInt(var_val) ) ){ var_value1 = parseInt(var_val); }
+      else if( !isNaN( parseFloat(var_val) ) ){ var_value1 = parseFloat(var_val); }
       else if( var_val == "true" ){ var_value1 = true; }
       else if( var_val == "false" ){ var_value1 = false; }
       else { var_value1 = var_val.toString(); }
 
-      if(typeof var_value1 == 'number'){
-        console.log( var_value1 + ' is a number' );
-      } else if(typeof var_value1 == 'number'){
-        console.log( var_value1 + ' is a real number' );
-      } else if(typeof var_value1 == 'string'){
-        console.log( var_value1 + ' is a string' );
-      } else if(typeof var_value1 == 'boolean' ){
-        console.log( var_value1 + ' is a boolean' );
-      }
+      // if(typeof var_value1 == 'number'){ console.log( var_value1 + ' is a number' ); } 
+      // else if(typeof var_value1 == 'number'){ console.log( var_value1 + ' is a real number' ); } 
+      // else if(typeof var_value1 == 'string'){ console.log( var_value1 + ' is a string' ); } 
+      // else if(typeof var_value1 == 'boolean' ){ console.log( var_value1 + ' is a boolean' ); }
+
+      var1.value = var_value1;
+
+      console.log(this.variables);
+
+      cons.disabled = true;
+      cons.contentEditable = 'false';
     }
   }
 
@@ -107,21 +109,24 @@ export class Flowchart{
 
         let isVarDeclared = false;
         for( let j=0; j<this.variables.length; j++){
-          if( this.SYMBOLS[i].getVariableName() == this.variables[j].getVariableName() ){
+          if( this.SYMBOLS[i].getVariableName() == this.variables[j].getName() ){
             isVarDeclared = true;
+
+            // Enable Console for editing
             this.consoleLog.disabled = false;
             this.consoleLog.contentEditable = 'true';
+
+            // Display Input prompt
             this.consoleLog.append( this.SYMBOLS[i].parseInputExp( this.variables[j] ) + "\n");
-            this.consoleLog.addEventListener("keyup", (e) => this.enterPressedOnConsole(e) );
+            this.consoleLog.addEventListener("keyup", (e) => this.enterPressedOnConsole(e, this.variables[j]) );
+
           }
         }
         if(!isVarDeclared){
           alert('Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
         } else { 
           console.log('carry on...'); 
-
           //this.consoleLog.append( this.SYMBOLS[i].parseInputExp(  ) + "\n>");
-          
         }
 
         // return 'Enter a value of type ' + 
@@ -147,9 +152,7 @@ export class Flowchart{
         this.SYMBOLS[i].parseOutputExp();
       }
 
-      if( this.SYMBOLS[i] instanceof Comment ){
-        // this.SYMBOLS[i].parseCommentExp();
-      }
+      if( this.SYMBOLS[i] instanceof Comment ){ break; }
 
       if( this.SYMBOLS[i] instanceof IfCase ){
         this.SYMBOLS[i].parseIfCaseExp();

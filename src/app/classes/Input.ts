@@ -1,4 +1,5 @@
 import { Declare } from "./Declare";
+import { Variable } from "./Variable";
 
 export class Input{
 
@@ -24,8 +25,8 @@ export class Input{
     return this.inputExpression;
   }
 
-  parseInputExp( declare: Declare ){
-    this.inputPrompt = 'Enter a value of type ' + declare.getDataType() + ' for variable ' + declare.getVariableName(); 
+  parseInputExp( variable: Variable ){
+    this.inputPrompt = 'Enter a value of type ' + variable.getDataType() + ' for variable ' + variable.getName(); 
     return this.inputPrompt;
   }
 
