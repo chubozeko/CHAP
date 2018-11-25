@@ -19,6 +19,10 @@ export class Comment{
     return '// ' + this.commentText;
   }
 
-  toString(){ return '\t' + this.getCommentExpression() + '\n'; }
+  pseudoCode(){ return '\t' + this.getCommentExpression() + '\n'; }
+  
+  cplusplusCode(){
+    return '\t/*' + this.commentText + '*/\n';
+  }
 
 }

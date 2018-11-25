@@ -11,6 +11,10 @@ export class Start{
   setStartSymbol( symbol: any ){ this.startSymbol = symbol; }
   getStartSymbol(){ return this.startSymbol; }
 
-  toString(){ return 'Function Main\n'; }
+  pseudoCode(){ return 'Start\n'; }
+
+  cplusplusCode(){ 
+    return '#include <iostream> \n#include <cstdlib>\n#include <string> \n\nusing namespace std;\n\nint main(void)\n{ \n';
+  }
 
 }

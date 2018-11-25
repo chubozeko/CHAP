@@ -47,13 +47,53 @@ export class Flowchart{
     let pseudocode = '';
     for (let i = 0; i < this.SYMBOLS.length; i++) {
       const syms = this.SYMBOLS[i];
-      pseudocode = pseudocode + syms.toString();
+      pseudocode = pseudocode + syms.pseudoCode();
     }
     return pseudocode;
   }
 
+  displayCPlusPlusCode(){
+    let cppcode = '';
+    for (let i = 0; i < this.SYMBOLS.length; i++) {
+      const syms = this.SYMBOLS[i];
+      cppcode = cppcode + syms.cplusplusCode();
+    }
+    return cppcode;
+  }
+
   declareVariable( declareSymbol: Declare, pos: number ){
     this.variables.splice( pos, 0, declareSymbol.parseDeclareExp() );
+  }
+
+  enterPressedOnConsole(e){
+    e.preventDefault();
+    if (e.keyCode === 13) {
+      let cons = document.getElementById("console") as HTMLTextAreaElement;  
+      cons.disabled = true;
+      cons.contentEditable = 'false';
+
+      let conStr = cons.value.split('\n');
+      let var_val = conStr[conStr.length-2];
+      console.log( var_val );
+
+      // Checking the data type of an entered variable into the console
+      let var_value1: any;
+      if( parseInt(var_val) != NaN ){ var_value1 = parseInt(var_val); }
+      else if( parseFloat(var_val) != NaN ){ var_value1 = parseFloat(var_val); }
+      else if( var_val == "true" ){ var_value1 = true; }
+      else if( var_val == "false" ){ var_value1 = false; }
+      else { var_value1 = var_val.toString(); }
+
+      if(typeof var_value1 == 'number'){
+        console.log( var_value1 + ' is a number' );
+      } else if(typeof var_value1 == 'number'){
+        console.log( var_value1 + ' is a real number' );
+      } else if(typeof var_value1 == 'string'){
+        console.log( var_value1 + ' is a string' );
+      } else if(typeof var_value1 == 'boolean' ){
+        console.log( var_value1 + ' is a boolean' );
+      }
+    }
   }
 
   validateFlowchart(){
@@ -69,21 +109,10 @@ export class Flowchart{
         for( let j=0; j<this.variables.length; j++){
           if( this.SYMBOLS[i].getVariableName() == this.variables[j].getVariableName() ){
             isVarDeclared = true;
-            // this.SYMBOLS[i].parseInputExp(  )
             this.consoleLog.disabled = false;
             this.consoleLog.contentEditable = 'true';
             this.consoleLog.append( this.SYMBOLS[i].parseInputExp( this.variables[j] ) + "\n");
-
-            // this.consoleLog.removeAttribute("readonly");
-            this.consoleLog.addEventListener("keyup", function(e) {
-              e.preventDefault();
-              let cons = document.getElementById("console") as HTMLTextAreaElement;
-              if (e.keyCode === 13) {
-                alert( cons.innerHTML );
-                cons.disabled = true;
-                cons.contentEditable = 'false';
-              }
-          });
+            this.consoleLog.addEventListener("keyup", (e) => this.enterPressedOnConsole(e) );
           }
         }
         if(!isVarDeclared){

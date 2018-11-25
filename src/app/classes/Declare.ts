@@ -39,8 +39,6 @@ export class Declare{
         return this.declareExpression;
     }
 
-    toString(){ return '\tDeclare ' + this.getDeclareExpression() + '\n'; }
-
     parseDeclareExp(){
 
         if( !this.getIsArray() ){
@@ -63,6 +61,23 @@ export class Declare{
             
         } 
         return this;
+    }
+
+    pseudoCode(){ return '\tDeclare ' + this.getDeclareExpression() + '\n'; }
+
+    cplusplusCode(){
+        let exp = '';
+        switch ( this.getDataType() ) {
+            case 'Integer': exp = exp + 'int ';  break;
+            case 'Real': exp = exp + 'double ';     break;
+            case 'String': exp = exp + 'string ';   break;
+            case 'Boolean': exp = exp + 'bool '; break;
+            default: exp = exp + '';            break;
+        }
+        exp = exp + this.getVariableName();
+        if( this.isArray ){ exp = exp + '[' + this.getArraySize() + ']'; }
+        else { exp = exp + ''; }
+        return '\t' + exp + ';\n';
     }
 
 }

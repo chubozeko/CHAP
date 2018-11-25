@@ -29,6 +29,10 @@ export class Process{
     // parse the expression
   }
 
-  toString(){ return '\tProcess ' + this.getProcessExpression() + '\n'; }
+  pseudoCode(){ return '\tProcess ' + this.getProcessExpression() + '\n'; }
+
+  cplusplusCode(){
+    return '\t' + this.getProcessExpression() + ';\n';
+  }
 
 }

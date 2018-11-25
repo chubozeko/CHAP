@@ -7,6 +7,7 @@ export class Input{
 
   variableName: string = '';
   inputExpression: string = '';
+  inputPrompt: string = '';
 
   inputSymbol: any;
 
@@ -23,10 +24,15 @@ export class Input{
     return this.inputExpression;
   }
 
-  toString(){ return '\tInput ' + this.getInputExpression() + '\n'; }
-
   parseInputExp( declare: Declare ){
-    return 'Enter a value of type ' + declare.getDataType() + ' for variable ' + declare.getVariableName(); 
+    this.inputPrompt = 'Enter a value of type ' + declare.getDataType() + ' for variable ' + declare.getVariableName(); 
+    return this.inputPrompt;
+  }
+
+  pseudoCode(){ return '\tInput ' + this.getInputExpression() + '\n'; }
+
+  cplusplusCode(){
+    return '\tcin>>' + this.getVariableName() + ';\n';
   }
   
 }

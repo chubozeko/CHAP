@@ -36,6 +36,7 @@ import { AboutPage } from '../about/about.page';
 export class HomePage {
 
   @ViewChild('symbolsFAB') symbolsFAB: Fab;
+  @ViewChild('tutorialFAB') tutorialFAB: Fab;
 
   flowchart: Flowchart = new Flowchart();
   title = 'CHAP';
