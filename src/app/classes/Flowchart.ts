@@ -7,7 +7,7 @@ import { Input } from "./Input";
 import { Comment } from "./Comment";
 import { IfCase } from "./IfCase";
 import { WhileLoop } from "./WhileLoop";
-import { Variable } from "@angular/compiler/src/render3/r3_ast";
+import { Variable } from "./Variable";
 
 export class Flowchart{
 
@@ -15,6 +15,8 @@ export class Flowchart{
 
   variables: any[];
   comments: string[];
+
+  isProgramRunning: boolean = false;
 
   consoleLog; //: HTMLTextAreaElement;
 
@@ -28,6 +30,8 @@ export class Flowchart{
     let stop = new Stop();
     this.SYMBOLS = [ start, stop ];
     this.variables = [];
+
+    console.log(this.SYMBOLS.length);
 
     this.consoleLog = document.getElementById("console") as HTMLTextAreaElement;
     //document.getElementById("console").addEventListener('keyup', (e) => this.enterPressedOnConsole(e) );
@@ -84,14 +88,21 @@ export class Flowchart{
       else if( var_val == "false" ){ var_value1 = false; }
       else { var_value1 = var_val.toString(); }
 
+      if ( var1.getDataType() == 'Integer' && typeof var_value1 == 'number' ){ var1.value = var_value1; }
+      else if ( var1.getDataType() == 'Real' && typeof var_value1 == 'number' ){ var1.value = var_value1; }
+      else if ( var1.getDataType() == 'String' && typeof var_value1 == 'string' ){ var1.value = var_value1; }
+      else if ( var1.getDataType() == 'Boolean' && typeof var_value1 == 'boolean' ){ var1.value = var_value1; }
+      else {
+        alert('Invalid datatype entered!');
+      }
       // if(typeof var_value1 == 'number'){ console.log( var_value1 + ' is a number' ); } 
       // else if(typeof var_value1 == 'number'){ console.log( var_value1 + ' is a real number' ); } 
       // else if(typeof var_value1 == 'string'){ console.log( var_value1 + ' is a string' ); } 
       // else if(typeof var_value1 == 'boolean' ){ console.log( var_value1 + ' is a boolean' ); }
 
-      var1.value = var_value1;
+      
 
-      console.log(this.variables);
+      // console.log(this.variables);
 
       cons.disabled = true;
       cons.contentEditable = 'false';
@@ -99,7 +110,14 @@ export class Flowchart{
   }
 
   validateFlowchart(){
-    for(let i=1; i<this.SYMBOLS.length; i++){
+    this.variables = [];
+
+    for(let i=0; i<this.SYMBOLS.length; i++){
+
+      if( this.SYMBOLS[i] instanceof Start ){
+        console.log( 'Start Program' );
+        this.isProgramRunning = true;
+      } 
 
       if( this.SYMBOLS[i] instanceof Declare ){
         this.variables.splice(this.variables.length, 0, this.SYMBOLS[i].parseDeclareExp() );
@@ -161,7 +179,15 @@ export class Flowchart{
       if( this.SYMBOLS[i] instanceof WhileLoop ){
         this.SYMBOLS[i].parseWhileLoopExp();
       }
+
+      if( this.SYMBOLS[i] instanceof Stop ){
+        console.log( 'End Program' );
+        this.isProgramRunning = false;
+        // this.consoleLog.append("End of Debugging\n");
+      }
     }
+
+    
     // return 'no declare';
   }
 

@@ -12,7 +12,6 @@ import { IfElsePage } from '../symbol-dialogs/if-else/if-else.page';
 import { WhileLoopPage } from '../symbol-dialogs/while-loop/while-loop.page';
 // import { ForLoopPage } from '../symbol-dialogs/for-loop/for-loop.page';
 // import { DoWhileLoopPage } from '../symbol-dialogs/do-while-loop/do-while-loop.page';
-
 import { Declare } from '../classes/Declare';
 import { Input } from '../classes/Input';
 import { Output } from '../classes/Output';
@@ -24,9 +23,6 @@ import { WhileLoop } from '../classes/WhileLoop';
 import { CodeViewerPage } from '../code-viewer/code-viewer.page';
 import { AboutPage } from '../about/about.page';
 // import 'libraries/scripts/drag&drop.js';
-
-// Display an alert box after 3 seconds (3000 milliseconds):
-//  setTimeout(function(){ alert("Hello"); }, 3000);
 
 @Component({
   selector: 'app-home',
@@ -54,7 +50,6 @@ export class HomePage {
   ){}
 
   ngOnInit() {
-    
     // Adding Click Listeners to Menu Items
     let debugP = document.getElementById("btn_debugProgram");
     debugP.addEventListener('click', (e) => this.debugProgram(e));
@@ -64,14 +59,10 @@ export class HomePage {
     clearWS.addEventListener('click', (e) => this.clearWorkspace());
     let aboutPg = document.getElementById("btn_aboutPage");
     aboutPg.addEventListener('click', (e) => this.openAboutPage(e));
-    let cons = document.getElementById("console");
-    //cons.addEventListener('keyup', (e) => );
-    
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart();
     this.workspace = document.getElementById("workspace");
-    
     this.branch = document.getElementById("arrow");
     this.branch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
 
@@ -90,7 +81,6 @@ export class HomePage {
       shapes[i].addEventListener("dragend", (e) => this.endDrag(e), false);
       // shapes[i].addEventListener("dragmove", (e) => this.dragMove(e), false);
     }
-
   }
 
   public openMenu(){ this.menu.open(); }
@@ -98,114 +88,149 @@ export class HomePage {
   async openDeclareModal(symbol, e){
     const modal = await this.modalC.create({
       component: DeclarePage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol as Declare }
     });
 
     modal.onDidDismiss().then((data) => {
-      let dec = data.data as Declare;
-      e.target.innerHTML = dec.getDeclareExpression();
-      //this.consoleLog(dec.getDeclareExpression());
-      console.log(data.data);
-    });
+      let s = document.getElementsByClassName("symbol active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
 
+      try {
+        let dec = data.data as Declare; 
+        e.target.innerHTML = dec.getDeclareExpression();
+        console.log(data.data);
+      } catch (error) { console.log(error); }
+    });
     await modal.present();
   }
 
   async openInputModal(symbol, e){
     const modal = await this.modalC.create({
       component: InputPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol as Input }
     });
 
     modal.onDidDismiss().then((data) => {
-      let input = data.data as Input;
-      e.target.innerHTML = input.getInputExpression();
-      //this.consoleLog(input.getInputExpression());
-      console.log(data.data);
-    });
+      let s = document.getElementsByClassName("symbol active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
 
+      try {
+        let input = data.data as Input;
+        e.target.innerHTML = input.getInputExpression();
+        console.log(data.data);
+      } catch (error) { console.log(error); }
+    });
     await modal.present();
   }
 
   async openOutputModal(symbol, e){
     const modal = await this.modalC.create({
       component: OutputPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol as Output }
     });
 
     modal.onDidDismiss().then((data) => {
-      let output = data.data as Output;
-      e.target.innerHTML = output.getOutputExpression();
-      //this.consoleLog(output.getOutputExpression());
-      console.log(data.data);
-    });
+      let s = document.getElementsByClassName("symbol active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
 
+      try {
+        let output = data.data as Output;
+        e.target.innerHTML = output.getOutputExpression();
+        console.log(data.data);
+      } catch (error) { console.log(error); }
+    });
     await modal.present();
   }
 
   async openProcessModal(symbol, e){
     const modal = await this.modalC.create({
       component: ProcessPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol as Process }
     });
 
     modal.onDidDismiss().then((data) => {
-      let proc = data.data as Process;
-      e.target.innerHTML = proc.getProcessExpression();
-      //this.consoleLog(proc.getProcessExpression());
-      console.log(data.data);
-    });
+      let s = document.getElementsByClassName("symbol active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
 
+      try {
+        let proc = data.data as Process;
+        e.target.innerHTML = proc.getProcessExpression();
+        console.log(data.data);
+      } catch (error) { console.log(error); }
+    });
     await modal.present();
   }
 
   async openCommentModal(symbol, e){
     const modal = await this.modalC.create({
       component: CommentPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol as Comment }
     });
 
     modal.onDidDismiss().then((data) => {
-      let com = data.data as Comment;
-      e.target.innerHTML = com.getCommentExpression();
-      //this.consoleLog(com.getCommentExpression());
-      console.log(data.data);
-    });
+      let s = document.getElementsByClassName("symbol active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
 
+      try {
+        let com = data.data as Comment;
+        e.target.innerHTML = com.getCommentExpression();
+        console.log(data.data);
+      } catch (error) { console.log(error); }
+    });
     await modal.present();
   }
 
   async openIfModal(symbol, e){
     const modal = await this.modalC.create({
       component: IfElsePage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol as IfCase }
     });
 
     modal.onDidDismiss().then((data) => {
-      let ifcase = data.data as IfCase;
+      let s = document.getElementsByClassName("symbol active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
+
+      try {
+        let ifcase = data.data as IfCase;
       // e.target.innerHTML = ifcase.getIfCaseExpression();
       // this.consoleLog(ifcase.getIfCaseExpression());
-      //this.consoleLog(data.data);
-      console.log(data.data);
+      console.log(data.data); 
+      } catch (error) { console.log(error); }
     });
-
     await modal.present();
   }
 
   async openWhileModal(symbol, e){
     const modal = await this.modalC.create({
       component: WhileLoopPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol as WhileLoop }
     });
 
     modal.onDidDismiss().then((data) => {
-      let whileloop = data.data as WhileLoop;
+      let s = document.getElementsByClassName("symbol active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
+
+      try {
+        let whileloop = data.data as WhileLoop;
       // e.target.innerHTML = whileloop.getWhileExpression();
       // this.consoleLog(whileloop.getWhileExpression());
-      //this.consoleLog(data.data);
       console.log(data.data);
+      } catch (error) { console.log(error); }
     });
-
     await modal.present();
   }
 
@@ -214,12 +239,10 @@ export class HomePage {
   //     component: ForLoopPage,
   //     componentProps: { s_id: id }
   //   });
-
   //   modal.onDidDismiss().then((data) => {
   //     this.consoleLog(data.data);
   //     console.log(data.data);
   //   });
-
   //   await modal.present();
   // }
 
@@ -228,20 +251,17 @@ export class HomePage {
   //     component: DoWhileLoopPage,
   //     componentProps: { s_id: id }
   //   });
-
   //   modal.onDidDismiss().then((data) => {
   //     this.consoleLog(data.data);
   //     console.log(data.data);
   //   });
-
   //   await modal.present();
   // }
 
   async openSymbolsAS(event){
 
-    // Get the target symbol
+    // Get the target symbol & make it active
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
-
     if(targetSymbol.id == 's_if_case' || targetSymbol.id == 's_for_loop'
       || targetSymbol.id == 's_while_loop' || targetSymbol.id == 's_do_while_loop'){
       targetSymbol.parentElement.classList.add('active-symbol');
@@ -251,8 +271,6 @@ export class HomePage {
 
     // Create Symbol Options actionsheet
     let options: ActionSheetOptions = {
-      // header: "",
-      // subHeader: "",
       buttons: [
         {
           text: "Delete Symbol",
@@ -268,11 +286,9 @@ export class HomePage {
     // Create and Display Symbols Options actionsheet
     const actionSheet = await this.symbolOptionsAS.create(options);
     await actionSheet.present();
-
   }
 
   public openSymbolsFAB(event){
-
     // Get the target arrow
     let t = event.target || event.srcElement || event.currentTarget;
     // Get symbols FAB
@@ -296,12 +312,17 @@ export class HomePage {
         this.symbolsFAB.activated = true;
       }
     }
+  }
 
+  public openTutorialFAB(event){
+    let tutorialFAB = document.getElementById("tutorialFAB");
+    if (!tutorialFAB.getAttribute("activated")){
+      this.tutorialFAB.activated = true;
+    }
   }
 
   public openSymbolDialog(event, id){
-
-    // Get the target symbol
+    // Get the target symbol & make it active
     let active_sym_index, tempSym;
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
     if(targetSymbol.id == 's_if_case' || targetSymbol.id == 's_while_loop'){
@@ -313,39 +334,32 @@ export class HomePage {
     for (let i = 0; i < syms.length; i++) {
       if( syms[i].className == 'symbol active-symbol' ){ active_sym_index = i; }
     }
-
-    if(id == 's_declare'){
-      //this.consoleLog('active symbol: ' + active_sym_index);
+    // Checking the Symbol type and opening corresponding Properties Dialog Modals
+    if(targetSymbol.id == 's_declare'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openDeclareModal(tempSym, event);
     } 
-    else if(id == 's_input'){
-      //this.consoleLog('active symbol: ' + active_sym_index);
+    else if(targetSymbol.id == 's_input'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openInputModal(tempSym, event);
     } 
-    else if(id == 's_output'){
-     // this.consoleLog('active symbol: ' + active_sym_index);
+    else if(targetSymbol.id == 's_output'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openOutputModal(tempSym, event);
     } 
-    else if(id == 's_comment'){
-      //this.consoleLog('active symbol: ' + active_sym_index);
+    else if(targetSymbol.id == 's_comment'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openCommentModal(tempSym, event);
     } 
-    else if(id == 's_process'){4
-      //this.consoleLog('active symbol: ' + active_sym_index);
+    else if(targetSymbol.id == 's_process'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openProcessModal(tempSym, event);
     } 
-    else if(id == 's_if_case'){
-      //this.consoleLog('active symbol: ' + active_sym_index);
+    else if(targetSymbol.id == 's_if_case'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openIfModal(tempSym, event);
     } 
-    else if(id == 's_while_loop'){
-      //this.consoleLog('active symbol: ' + active_sym_index);
+    else if(targetSymbol.id == 's_while_loop'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openWhileModal(tempSym, event);
     }
@@ -357,9 +371,7 @@ export class HomePage {
   }
 
   public addSymbol(id: string, e){
-    
     let symClass, temp, symbol, active_index;
-
     let b = document.getElementsByClassName("arrow dropzone");
     for(let i=0; i<b.length; i++){
       if( b[i].className.endsWith('active-arrow') ){ active_index = i+1; }
@@ -424,8 +436,6 @@ export class HomePage {
     //   temp = document.getElementsByClassName(symClass);
     //   symbol = temp[0].cloneNode(true);
     // }
-    
-    // Get and create a new symbol with given id from symbols FAB
 
     // Get the selected arrow/branch to append symbol after
     let branches = document.getElementsByClassName("arrow dropzone active-arrow");
@@ -437,7 +447,6 @@ export class HomePage {
     tempBranch.addEventListener("dragleave", (e) => this.dragLeave(e), false);
     tempBranch.addEventListener("dragover", function(e){e.preventDefault();}, false);
     tempBranch.addEventListener("drop", (e) => this.dropped(e), false);
-
     symbol.addEventListener('dblclick', (e) => this.openSymbolDialog(e, id) );
     symbol.addEventListener('rightclick', (e) => this.openSymbolsAS(e) );
     
@@ -450,9 +459,6 @@ export class HomePage {
     for(let i=0; i<branches.length; i++){
       branches[i].classList.remove('active-arrow');
     }
-
-    //this.consoleLog('active arrow index: ' + active_index + '; symbol cnt: ' + this.flowchart.SYMBOLS.length);
-
   }
 
   public consoleLog(lineOutput){
@@ -462,8 +468,7 @@ export class HomePage {
 
   public clearConsole(){
     let consoleCHAP = document.getElementById("console");
-    consoleCHAP.textContent = "";
-    //consoleCHAP.removeAttribute("readonly");
+    consoleCHAP.innerText = "";
   }
 
   public clearWorkspace(){
@@ -472,7 +477,6 @@ export class HomePage {
     let workspace = document.getElementById("workspace");
     let wsSymbols = workspace.getElementsByClassName("symbol");
     for (let i=0; i<wsSymbols.length; i++) {
-
       if( wsSymbols[i].id != 's_start' && wsSymbols[i].id != 's_stop' ){
         if(wsSymbols[i].id == 's_if_case' || wsSymbols[i].id == 's_for_loop'
         || wsSymbols[i].id == 's_while_loop' || wsSymbols[i].id == 's_do_while_loop'){
@@ -486,7 +490,6 @@ export class HomePage {
         }
         i=0;
       }
-      
     }
     this.flowchart = new Flowchart();
   }
@@ -494,7 +497,7 @@ export class HomePage {
   public startDrag(e){
     this.selectedSymbol = e.target.id;
     e.dataTransfer.setData('id', this.selectedSymbol);
-    //this.consoleLog("start drag");
+    this.consoleLog("start drag");
   }
 
   public moveDrag(e){ e.preventDefault(); }
@@ -508,7 +511,6 @@ export class HomePage {
     e.preventDefault();
     e.target.classList.add('active-arrow');
     e.target.style.background = "#9CDCFE";
-
    // this.consoleLog("drag enter");
   }
   
@@ -516,7 +518,6 @@ export class HomePage {
     e.preventDefault();
     e.target.classList.remove('active-arrow');
     e.target.style.background = "#000000";
-
     //this.consoleLog("drag leave");
   }
   
@@ -524,11 +525,10 @@ export class HomePage {
     e.preventDefault();
     e.target.style.background = "#000000";
     this.addSymbol(this.selectedSymbol, e);
-
     //this.consoleLog("dropped");
   }
 
-  onPress(e){
+  public onPress(e){
     e.target.style.border = "2px dashed #000";
     this.openSymbolsAS(e);
   }
@@ -537,15 +537,11 @@ export class HomePage {
     this.menu.close();
     this.clearConsole();
     this.consoleLog('Debugging...');
-    console.log( this.flowchart.SYMBOLS );
-    console.log( this.flowchart.variables );
-
-    console.log( this.flowchart.validateFlowchart() );
+    this.flowchart.validateFlowchart();
   }
 
   public generatePseudoCode(e){
     this.openCodeViewer( this.flowchart, e );
-    // this.consoleLog( this.flowchart.displayFlowchartPseudoCode() );
     this.menu.close();
   }
 
@@ -554,7 +550,6 @@ export class HomePage {
       component: CodeViewerPage,
       componentProps: { flowchart: flowchart }
     });
-
     await modal.present();
   }
 
@@ -563,7 +558,6 @@ export class HomePage {
     const modal = await this.modalC.create({
       component: AboutPage
     });
-
     await modal.present();
   }
 

@@ -14,15 +14,15 @@
 <ion-content>
 
   <!--Tutorial menu bar start-->
-  <div style="float: right">
-      <ion-fab vertical="top" horizontal="end" #tutorialFAB>
-        <ion-fab-button id="symbolsFAB" color="light" >
+  <div>
+      <ion-fab vertical="top" horizontal="end" slot="fixed" #tutorialFAB>
+        <ion-fab-button id="tutorialFAB" color="light" (click)="openTutorialFAB($event)">
           <img src="./assets/icon/tutorial.png" alt="">
-          <ion-fab-list side="bottom">
-            <button ion-fab><ion-icon name="logo-facebook"></ion-icon></button>
-            <button ion-fab><ion-icon name="logo-twitter"></ion-icon></button>
-            <button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>
-            <button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>
+          <ion-fab-list side="bottom" style="overflow-y: auto;"> 
+            <ion-card ><div class="symbol" style="font-size: 10pt;">START</div></ion-card>
+            <ion-card ><div class="symbol" style="font-size: 10pt;">UJFDK</div></ion-card>
+            <ion-card ><div class="symbol" style="font-size: 10pt;">PWOEK</div></ion-card>
+            <ion-card ><div class="symbol" style="font-size: 10pt;">MBNDK</div></ion-card>
           </ion-fab-list>
         </ion-fab-button>
       </ion-fab>
