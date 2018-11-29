@@ -17,8 +17,10 @@ export class Flowchart{
   comments: string[];
 
   isProgramRunning: boolean = false;
+  inputPromptStatement: string = '';
 
-  consoleLog; //: HTMLTextAreaElement;
+  consoleLog: HTMLTextAreaElement;
+  consoleInput: HTMLInputElement;
 
   constructor(){
     let defaultSymbols = document.getElementsByClassName('symbols');
@@ -34,6 +36,7 @@ export class Flowchart{
     console.log(this.SYMBOLS.length);
 
     this.consoleLog = document.getElementById("console") as HTMLTextAreaElement;
+    this.consoleInput = document.getElementById("consoleInput") as HTMLInputElement;
     //document.getElementById("console").addEventListener('keyup', (e) => this.enterPressedOnConsole(e) );
   }
 
@@ -74,11 +77,12 @@ export class Flowchart{
   enterPressedOnConsole(e, var1: Variable){
     e.preventDefault();
     if (e.keyCode == 13) {
-      let cons = document.getElementById("console") as HTMLTextAreaElement;  
+      //let cons = document.getElementById("consoleInput") as HTMLInputElement;  
 
       // Get the last line from the Console: variable_value
-      let conStr = cons.value.split('\n');
-      let var_val = conStr[conStr.length-2];
+      let var_val = this.consoleInput.value;
+      // let conStr = cons.value.split('\n');
+      // let var_val = conStr[conStr.length-2];
 
       // Checking the data type of an entered variable into the Console
       let var_value1: any;
@@ -93,19 +97,12 @@ export class Flowchart{
       else if ( var1.getDataType() == 'String' && typeof var_value1 == 'string' ){ var1.value = var_value1; }
       else if ( var1.getDataType() == 'Boolean' && typeof var_value1 == 'boolean' ){ var1.value = var_value1; }
       else {
-        alert('Invalid datatype entered!');
+        this.consoleLog.value += 'Invalid datatype entered! ';
+        this.consoleLog.value += this.inputPromptStatement;
       }
-      // if(typeof var_value1 == 'number'){ console.log( var_value1 + ' is a number' ); } 
-      // else if(typeof var_value1 == 'number'){ console.log( var_value1 + ' is a real number' ); } 
-      // else if(typeof var_value1 == 'string'){ console.log( var_value1 + ' is a string' ); } 
-      // else if(typeof var_value1 == 'boolean' ){ console.log( var_value1 + ' is a boolean' ); }
 
+      this.consoleInput.value = '';
       
-
-      // console.log(this.variables);
-
-      cons.disabled = true;
-      cons.contentEditable = 'false';
     }
   }
 
@@ -114,15 +111,18 @@ export class Flowchart{
 
     for(let i=0; i<this.SYMBOLS.length; i++){
 
+      // START
       if( this.SYMBOLS[i] instanceof Start ){
         console.log( 'Start Program' );
         this.isProgramRunning = true;
       } 
 
+      // DECLARE
       if( this.SYMBOLS[i] instanceof Declare ){
         this.variables.splice(this.variables.length, 0, this.SYMBOLS[i].parseDeclareExp() );
       } 
 
+      // INPUT
       if( this.SYMBOLS[i] instanceof Input ){
 
         let isVarDeclared = false;
@@ -130,13 +130,14 @@ export class Flowchart{
           if( this.SYMBOLS[i].getVariableName() == this.variables[j].getName() ){
             isVarDeclared = true;
 
-            // Enable Console for editing
-            this.consoleLog.disabled = false;
-            this.consoleLog.contentEditable = 'true';
+            // Enable Console Input for editing
+            this.consoleInput.disabled = false;
+            this.consoleInput.contentEditable = 'true';
 
             // Display Input prompt
-            this.consoleLog.append( this.SYMBOLS[i].parseInputExp( this.variables[j] ) + "\n");
-            this.consoleLog.addEventListener("keyup", (e) => this.enterPressedOnConsole(e, this.variables[j]) );
+            this.inputPromptStatement = this.SYMBOLS[i].parseInputExp( this.variables[j] ) + "\n";
+            this.consoleLog.value += this.inputPromptStatement;
+            this.consoleInput.addEventListener("keyup", (e) => this.enterPressedOnConsole(e, this.variables[j]) );
 
           }
         }
@@ -151,6 +152,7 @@ export class Flowchart{
         
       }
 
+      // PROCESS
       if( this.SYMBOLS[i] instanceof Process ){
 
         let isVarDeclared = false;
@@ -166,20 +168,25 @@ export class Flowchart{
         // this.SYMBOLS[i].parseProcessExp();
       }
 
+      // OUTPUT
       if( this.SYMBOLS[i] instanceof Output ){
         this.SYMBOLS[i].parseOutputExp();
       }
 
+      // COMMENT
       if( this.SYMBOLS[i] instanceof Comment ){ break; }
 
+      // IF CASE
       if( this.SYMBOLS[i] instanceof IfCase ){
         this.SYMBOLS[i].parseIfCaseExp();
       }
 
+      // WHILE LOOP
       if( this.SYMBOLS[i] instanceof WhileLoop ){
         this.SYMBOLS[i].parseWhileLoopExp();
       }
 
+      // STOP
       if( this.SYMBOLS[i] instanceof Stop ){
         console.log( 'End Program' );
         this.isProgramRunning = false;

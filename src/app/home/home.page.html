@@ -6,27 +6,24 @@
   </button> &nbsp;
   <img style="width: 36px; height: 36px;" src="./assets/icon/chap_logo.png"/> &nbsp;
   <input type="text" id="fileName" placeholder="Untitled Sketch" value="{{fileName}}">
-
-  
-
 </ion-toolbar>
 
 <ion-content>
 
   <!--Tutorial menu bar start-->
-  <div>
+  <!-- <div>
       <ion-fab vertical="top" horizontal="end" slot="fixed" #tutorialFAB>
         <ion-fab-button id="tutorialFAB" color="light" (click)="openTutorialFAB($event)">
           <img src="./assets/icon/tutorial.png" alt="">
           <ion-fab-list side="bottom" style="overflow-y: auto;"> 
-            <ion-card ><div class="symbol" style="font-size: 10pt;">START</div></ion-card>
-            <ion-card ><div class="symbol" style="font-size: 10pt;">UJFDK</div></ion-card>
-            <ion-card ><div class="symbol" style="font-size: 10pt;">PWOEK</div></ion-card>
-            <ion-card ><div class="symbol" style="font-size: 10pt;">MBNDK</div></ion-card>
+            <ion-card ><div style="font-size: 10pt;">START</div></ion-card>
+            <ion-card ><div style="font-size: 10pt;">UJFDK</div></ion-card>
+            <ion-card ><div style="font-size: 10pt;">PWOEK</div></ion-card>
+            <ion-card ><div style="font-size: 10pt;">MBNDK</div></ion-card>
           </ion-fab-list>
         </ion-fab-button>
       </ion-fab>
-    </div>
+    </div> -->
 
   <div class="wrapper">
 
@@ -60,7 +57,9 @@
             <a (click)="clearConsole()" >Clear</a>
           </div>
         </div>
-        <textarea id="console" rows="4" disabled="true" contenteditable="false"></textarea>
+        
+        <textarea id="console" rows="4" disabled="true" contenteditable="false" style="color: #ddd;"></textarea>
+        <input id="consoleInput" type="text" disabled="true" contenteditable="false">
       </div>  
       
     </div>
