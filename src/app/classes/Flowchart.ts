@@ -8,7 +8,6 @@ import { Comment } from "./Comment";
 import { IfCase } from "./IfCase";
 import { WhileLoop } from "./WhileLoop";
 import { Variable } from "./Variable";
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 export class Flowchart{
 
@@ -139,9 +138,15 @@ export class Flowchart{
     // return this.isInputEntered;
   }
 
+  validateProcess(symbol: Process, varIndex: number){
+    
+    this.variables[varIndex].value = symbol.parseExpression( this.variables[varIndex].getDataType() );
+    
+  }
+
   validateOutput(varIndex: number){
     if (varIndex == -1){
-      let str2 = this.outputStatement.slice(1, -1);
+      let str2 = this.outputStatement.replace(/"/g,'');
       
       // Display Output string statement
       this.consoleLog.value += str2; //this.outputStatement;
@@ -190,13 +195,17 @@ export class Flowchart{
 
         let isVarDeclared = false;
         for( let j=0; j<this.variables.length; j++){
-          if( this.SYMBOLS[i].getVariableName() == this.variables[j] ){
+          if( this.SYMBOLS[i].getVariableName() == this.variables[j].getName() ){
             isVarDeclared = true;
+            varIndex = j;
           }
         }
         if(!isVarDeclared){
           alert('Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
-        } else { console.log('carry on...'); }
+        } else {
+          console.log('process variable declared. carry on...');
+          this.validateProcess( this.SYMBOLS[i], varIndex );
+        }
 
         // this.SYMBOLS[i].parseProcessExp();
       }
