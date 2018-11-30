@@ -540,7 +540,7 @@ export class HomePage {
   public debugProgram(e){
     this.menu.close();
     this.clearConsole();
-    this.consoleLog('Debugging...');
+    // this.consoleLog('Debugging...');
     this.flowchart.validateFlowchart();
   }
 

@@ -8,6 +8,7 @@ import { Comment } from "./Comment";
 import { IfCase } from "./IfCase";
 import { WhileLoop } from "./WhileLoop";
 import { Variable } from "./Variable";
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 export class Flowchart{
 
@@ -18,6 +19,8 @@ export class Flowchart{
 
   isProgramRunning: boolean = false;
   inputPromptStatement: string = '';
+  isInputEntered: boolean;
+  outputStatement: string = '';
 
   consoleLog: HTMLTextAreaElement;
   consoleInput: HTMLInputElement;
@@ -77,12 +80,8 @@ export class Flowchart{
   enterPressedOnConsole(e, var1: Variable){
     e.preventDefault();
     if (e.keyCode == 13) {
-      //let cons = document.getElementById("consoleInput") as HTMLInputElement;  
-
       // Get the last line from the Console: variable_value
       let var_val = this.consoleInput.value;
-      // let conStr = cons.value.split('\n');
-      // let var_val = conStr[conStr.length-2];
 
       // Checking the data type of an entered variable into the Console
       let var_value1: any;
@@ -92,22 +91,69 @@ export class Flowchart{
       else if( var_val == "false" ){ var_value1 = false; }
       else { var_value1 = var_val.toString(); }
 
-      if ( var1.getDataType() == 'Integer' && typeof var_value1 == 'number' ){ var1.value = var_value1; }
-      else if ( var1.getDataType() == 'Real' && typeof var_value1 == 'number' ){ var1.value = var_value1; }
-      else if ( var1.getDataType() == 'String' && typeof var_value1 == 'string' ){ var1.value = var_value1; }
-      else if ( var1.getDataType() == 'Boolean' && typeof var_value1 == 'boolean' ){ var1.value = var_value1; }
+      if ( var1.getDataType() == 'Integer' && typeof var_value1 == 'number' ){ 
+        var1.value = var_value1; 
+        this.consoleInput.disabled = false;
+        this.consoleInput.contentEditable = 'true';
+        this.isInputEntered = true;
+      }
+      else if ( var1.getDataType() == 'Real' && typeof var_value1 == 'number' ){ 
+        var1.value = var_value1; 
+        this.consoleInput.disabled = false;
+        this.consoleInput.contentEditable = 'true';
+        this.isInputEntered = true;
+      }
+      else if ( var1.getDataType() == 'String' && typeof var_value1 == 'string' ){ 
+        var1.value = var_value1; 
+        this.consoleInput.disabled = false;
+        this.consoleInput.contentEditable = 'true';
+        this.isInputEntered = true;
+      }
+      else if ( var1.getDataType() == 'Boolean' && typeof var_value1 == 'boolean' ){ 
+        var1.value = var_value1; 
+        this.consoleInput.disabled = false;
+        this.consoleInput.contentEditable = 'true';
+        this.isInputEntered = true;
+      }
       else {
         this.consoleLog.value += 'Invalid datatype entered! ';
         this.consoleLog.value += this.inputPromptStatement;
       }
 
       this.consoleInput.value = '';
-      
+      console.log(this.variables);
+
+      //return 'input done';
     }
   }
 
-  validateFlowchart(){
+  async validateInput(varIndex: number){
+    // Enable Console Input for editing
+    this.consoleInput.disabled = false;
+    this.consoleInput.contentEditable = 'true';
+    // Display Input prompt
+    this.inputPromptStatement = Input.prototype.parseInputExp( this.variables[varIndex] ) + "\n";
+    this.consoleLog.value += this.inputPromptStatement;
+    this.consoleInput.addEventListener("keyup", (e) => this.enterPressedOnConsole(e, this.variables[varIndex]) );
+
+    // return this.isInputEntered;
+  }
+
+  validateOutput(varIndex: number){
+    if (varIndex == -1){
+      let str2 = this.outputStatement.slice(1, -1);
+      
+      // Display Output string statement
+      this.consoleLog.value += str2; //this.outputStatement;
+    } else {
+      // Display Output variable statement
+      this.consoleLog.value += this.variables[varIndex].value;
+    }
+  }
+
+  async validateFlowchart(){
     this.variables = [];
+    let varIndex = 0;
 
     for(let i=0; i<this.SYMBOLS.length; i++){
 
@@ -124,32 +170,19 @@ export class Flowchart{
 
       // INPUT
       if( this.SYMBOLS[i] instanceof Input ){
-
         let isVarDeclared = false;
-        for( let j=0; j<this.variables.length; j++){
+        for( let j=0; j<this.variables.length; j++ ){
           if( this.SYMBOLS[i].getVariableName() == this.variables[j].getName() ){
             isVarDeclared = true;
-
-            // Enable Console Input for editing
-            this.consoleInput.disabled = false;
-            this.consoleInput.contentEditable = 'true';
-
-            // Display Input prompt
-            this.inputPromptStatement = this.SYMBOLS[i].parseInputExp( this.variables[j] ) + "\n";
-            this.consoleLog.value += this.inputPromptStatement;
-            this.consoleInput.addEventListener("keyup", (e) => this.enterPressedOnConsole(e, this.variables[j]) );
-
+            varIndex = j;
           }
         }
         if(!isVarDeclared){
           alert('Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
         } else { 
-          console.log('carry on...'); 
-          //this.consoleLog.append( this.SYMBOLS[i].parseInputExp(  ) + "\n>");
+          console.log('input variable declared! carry on...');
+          this.validateInput(varIndex);
         }
-
-        // return 'Enter a value of type ' + 
-        
       }
 
       // PROCESS
@@ -170,7 +203,32 @@ export class Flowchart{
 
       // OUTPUT
       if( this.SYMBOLS[i] instanceof Output ){
-        this.SYMBOLS[i].parseOutputExp();
+        let isVarDeclared, hasQuotes; // = false;
+        let outputStr: string = this.SYMBOLS[i].getOutputExpression();
+        if( outputStr.indexOf("\"") == -1 ){
+          console.log("No quote");
+          hasQuotes = false;
+          for( let j=0; j<this.variables.length; j++){
+            if( this.SYMBOLS[i].getOutputExpression() == this.variables[j].getName() ){
+              isVarDeclared = true;
+              varIndex = j;
+            }
+          }
+        } else {
+          hasQuotes = true;
+          this.outputStatement = outputStr;
+          console.log("Quote");
+        }
+        if( !isVarDeclared && !hasQuotes ){
+          alert('Variable is not declared!'); // \"' + this.SYMBOLS[i].getVariableName() + '\"
+        } else if( isVarDeclared && !hasQuotes ){
+          // Output variable
+          console.log('output variable declared! carry on...'); 
+          this.validateOutput(varIndex);
+        } else if( hasQuotes ){
+          // Output String expression
+          this.validateOutput(-1);
+        }
       }
 
       // COMMENT
@@ -194,6 +252,7 @@ export class Flowchart{
       }
     }
 
+    console.log(this.variables);
     
     // return 'no declare';
   }
