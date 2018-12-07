@@ -12,7 +12,9 @@ const routes: Routes = [
   { path: 'symbols', loadChildren: './symbols/symbols.component#SymbolsComponent' },
   { path: 'workspace', loadChildren: './workspace/workspace.component#WorkspaceComponent' },
   { path: 'console', loadChildren: './console/console.component#ConsoleComponent' },
-  { path: 'variables', loadChildren: './variables/variables.component#VariablesComponent' },
+  { path: 'variables', loadChildren: './variables/variables.component#VariablesComponent' },  { path: 'CodeViewer', loadChildren: './code-viewer/code-viewer.module#CodeViewerPageModule' },
+  { path: 'About', loadChildren: './about/about.module#AboutPageModule' },
+
   // { path: 'process', loadChildren: './symbol-dialogs/process/process.module#ProcessPageModule' },
   // { path: 'declare', loadChildren: './symbol-dialogs/declare/declare.module#DeclarePageModule' },
   // { path: 'input', loadChildren: './symbol-dialogs/input/input.module#InputPageModule' },

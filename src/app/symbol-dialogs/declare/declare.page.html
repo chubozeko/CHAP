@@ -5,16 +5,13 @@
 
 <ion-content padding color="primary">
 
-  <!-- <ion-item>
-    <ion-label>Variable Name: </ion-label>
-  </ion-item> -->
   <ion-item>
     <input id="declare_var_name" type="text" placeholder="Variable Name" value="" />
   </ion-item>
 
   <ion-item>
     <ion-label>Data Type: </ion-label>
-    <ion-select id="declare_data_type" value="" ok-text="Confirm" cancel-text="Cancel">
+    <ion-select id="declare_data_type" [value]="" [(ngModel)]="dataType" ok-text="Confirm" cancel-text="Cancel" >
       <ion-select-option value="Integer">Integer</ion-select-option>
       <ion-select-option value="Real">Real</ion-select-option>
       <ion-select-option value="String">String</ion-select-option>
@@ -23,12 +20,12 @@
   </ion-item>
 
   <ion-item>
-    <ion-checkbox id="declare_array_cb" style="float: left;" color="secondary"></ion-checkbox> 
+    <ion-checkbox id="declare_array_cb" style="float: left;" color="secondary" (ionChange)="toggleArraySize()"></ion-checkbox> 
     <ion-label style="float: left;">Array?</ion-label>
   </ion-item>
   
   <ion-item>
-    <input id="declare_array_size" type="text" placeholder="Array Size" value="" style="float: left; " />
+    <input id="declare_array_size" type="text" placeholder="Array Size" value="" style="float: left;" disabled="false" />
   </ion-item>
 
 </ion-content>

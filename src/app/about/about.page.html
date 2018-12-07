@@ -1,0 +1,16 @@
+<ion-toolbar style="padding: 5px; " color="secondary">
+  <img style="float: left; width: 24px; height: 24px; margin-left: 0;" src="./assets/icon/info-white.png"/>
+  <ion-title>About</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="primary">
+
+  <img style="display: block; width: 100px; height: 100px; margin: auto;" src="./assets/icon/chap_logo.png"/>
+
+  <p id="p_about">{{aboutText}}</p>
+
+</ion-content>
+
+<ion-footer id="about_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Close</ion-button>
+</ion-footer>

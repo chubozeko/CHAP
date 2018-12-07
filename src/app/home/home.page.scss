@@ -1,3 +1,9 @@
+#consoleInput{
+  background-color: #333; color: #ddd; 
+  font-family: Consolas, monaco, monospace; 
+  resize: none; width: 100%; padding: 2px;
+}
+
 // SYMBOLS CSS
 #control_loop_list{ display: none; }
 
@@ -6,7 +12,6 @@
   grid-template-columns: repeat(3, 70px);
   align-items: center;
   justify-content: center;
-  
 }
 
 ion-card{

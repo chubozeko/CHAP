@@ -11,6 +11,10 @@ export class Stop{
   setStopSymbol( symbol: any ){ this.stopSymbol = symbol; }
   getStopSymbol(){ return this.stopSymbol; }
 
-  toString(){ return 'End\n'; }
+  pseudoCode(){ return 'Stop'; }
+
+  cplusplusCode(){
+    return '\treturn 0;\n}';
+  }
 
 }

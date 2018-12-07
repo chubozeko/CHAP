@@ -19,6 +19,11 @@ export class Output{
     // parse the output expression
   }
 
-  toString(){ return '\tOutput ' + this.getOutputExpression() + '\n'; }
+  pseudoCode(){ return '\tOutput ' + this.getOutputExpression() + '\n'; }
+  // toString(){ return '\tOutput \'' + this.getOutputExpression() + '\'\n'; }
+
+  cplusplusCode(){
+    return '\tcout<<' + this.getOutputExpression() + '<<endl;\n';
+  }
 
 }

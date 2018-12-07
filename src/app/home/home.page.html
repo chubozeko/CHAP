@@ -10,6 +10,21 @@
 
 <ion-content>
 
+  <!--Tutorial menu bar start-->
+  <!-- <div>
+      <ion-fab vertical="top" horizontal="end" slot="fixed" #tutorialFAB>
+        <ion-fab-button id="tutorialFAB" color="light" (click)="openTutorialFAB($event)">
+          <img src="./assets/icon/tutorial.png" alt="">
+          <ion-fab-list side="bottom" style="overflow-y: auto;"> 
+            <ion-card ><div style="font-size: 10pt;">START</div></ion-card>
+            <ion-card ><div style="font-size: 10pt;">UJFDK</div></ion-card>
+            <ion-card ><div style="font-size: 10pt;">PWOEK</div></ion-card>
+            <ion-card ><div style="font-size: 10pt;">MBNDK</div></ion-card>
+          </ion-fab-list>
+        </ion-fab-button>
+      </ion-fab>
+    </div> -->
+
   <div class="wrapper">
 
     <div id="workspace" appEditor>
@@ -40,10 +55,11 @@
           <div style="padding: 3px 10px; background-color: #333; color: #ddd; float: left;">Console</div>
           <div style="padding: 3px 10px; float: right; cursor: pointer; color: #ddd; background-color: #f04141;">
             <a (click)="clearConsole()" >Clear</a>
-            <a (click)="generatePseudoCode()" >Pseudo</a>
           </div>
         </div>
-        <textarea id="console" rows="4" readonly></textarea>
+        
+        <textarea id="console" rows="4" disabled="true" contenteditable="false" style="color: #ddd;"></textarea>
+        <input id="consoleInput" type="text" disabled="true" contenteditable="false">
       </div>  
       
     </div>

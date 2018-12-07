@@ -1,3 +1,6 @@
+import { Declare } from "./Declare";
+import { Variable } from "./Variable";
+
 export class Input{
 
   static id: string = 's_input';
@@ -5,6 +8,7 @@ export class Input{
 
   variableName: string = '';
   inputExpression: string = '';
+  inputPrompt: string = '';
 
   inputSymbol: any;
 
@@ -21,6 +25,15 @@ export class Input{
     return this.inputExpression;
   }
 
-  toString(){ return '\tInput ' + this.getInputExpression() + '\n'; }
+  parseInputExp( variable: Variable ){
+    this.inputPrompt = 'Enter a value of type ' + variable.getDataType() + ' for variable ' + variable.getName(); 
+    return this.inputPrompt;
+  }
+
+  pseudoCode(){ return '\tInput ' + this.getInputExpression() + '\n'; }
+
+  cplusplusCode(){
+    return '\tcin>>' + this.getVariableName() + ';\n';
+  }
   
 }

@@ -4,8 +4,12 @@ export class WhileLoop{
   static s_name: string = 'While';
 
   whileExpression: string;
+
   trueExpression: string;
+  trueLoopBlock: any[];
+
   falseExpression: string;
+  falseLoopBlock: any[];
 
   constructor(){}
 

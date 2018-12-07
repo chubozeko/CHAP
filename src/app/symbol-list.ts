@@ -8,7 +8,7 @@ export const SYMBOLS: Symbol[] = [
     // { id: 's_for_loop', cardID: 'card_for_loop', s_name: "For" },
     { id: 's_if_case', cardID: 'card_if_case', s_name: "If" },
     { id: 's_process', cardID: 'card_process', s_name: "Process" },
-    { id: 's_declare', cardID: 'card_declare', s_name: "Declare" },
     { id: 's_output', cardID: 'card_output', s_name: "Output" },
-    { id: 's_input', cardID: 'card_input', s_name: "Input" }
+    { id: 's_input', cardID: 'card_input', s_name: "Input" },
+    { id: 's_declare', cardID: 'card_declare', s_name: "Declare" }
 ];
