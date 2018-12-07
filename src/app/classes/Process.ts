@@ -28,41 +28,21 @@ export class Process{
   }
 
   parseExpression( dataType: string ){
-    // parse the expression
-    let str = [], strX = [], values = [], operators = [], parsedValues = [];
+    
+    let strSplit = [], values = [], operators = [], parsedValues = [];
 
-    if( this.expression.indexOf(' ') != -1 ){
-      str = this.expression.split(' ');
-    } else if( this.expression.indexOf('\"') != -1){
-      str[0] = this.expression.replace(/"/g,'');
-    } else {
-      str = this.expression.split('');
-      // // Check for operators
-      // if( (this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
-      //     (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) ){ 
-      //   strX[0] = this.expression;
-      // } else { }
+    // Check for operators
+    if( (this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
+    (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) ){ 
+      // Split expression by operators
+      strSplit = this.expression.split(/[\+\-\*\/]+/g);
+      // Stored operators in an Array called "operators"
+      operators = this.expression.match(/[\+\-\*\/]+/g);
+      // Store operands in an Array called "values"
+      for (let i = 0; i < strSplit.length; i++) { values[i] = strSplit[i].trim(); }
+    } else { 
+      // Make this.expression = this.variables[index].value 
     }
-
-    let si = 0;
-    for (let i=0; i<this.expression.length; i++) {
-      let char = this.expression[i];
-      if( (char == '+') || (char == '-') || (char == '*') || (char == '/') ){
-        operators.splice( operators.length, 0, char );
-        let x = this.expression.substring(si, i);
-        values.splice( values.length, 0, x.trim() );
-        si = i+1;
-      }
-      
-    }
-
-    // for(let i=0; i<str.length; i++){
-    //   if( str[i] == '+' ){ operators.splice( operators.length, 0, str[i] ); }
-    //   else if( str[i] == '-' ){ operators.splice( operators.length, 0, str[i] ); }
-    //   else if( str[i] == '*' ){ operators.splice( operators.length, 0, str[i] ); }
-    //   else if( str[i] == '/' ){ operators.splice( operators.length, 0, str[i] ); }
-    //   else { values.splice( values.length, 0, str[i] ); }
-    // }
 
     switch(dataType){
       case 'Integer': 
@@ -83,12 +63,14 @@ export class Process{
       default: break;
     }
 
-    console.log(str);
+    
+
+    //console.log(strSplit);
     console.log(values);
     console.log(operators);
+    console.log(parsedValues);
 
-    return parsedValues[0];
-    
+    return; // parsedValues[0];
     
   }
 
