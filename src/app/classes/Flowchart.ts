@@ -138,10 +138,8 @@ export class Flowchart{
     // return this.isInputEntered;
   }
 
-  validateProcess(symbol: Process, varIndex: number){
-    
-    this.variables[varIndex].value = symbol.parseExpression( this.variables[varIndex].getDataType() );
-    
+  validateProcess(symbol: Process, varIndex: number){ 
+    this.variables[varIndex].value = symbol.parseExpression( this.variables, this.variables[varIndex].getDataType() );
   }
 
   validateOutput(varIndex: number){
@@ -207,7 +205,6 @@ export class Flowchart{
           this.validateProcess( this.SYMBOLS[i], varIndex );
         }
 
-        // this.SYMBOLS[i].parseProcessExp();
       }
 
       // OUTPUT

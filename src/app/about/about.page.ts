@@ -19,8 +19,7 @@ export class AboutPage implements OnInit {
     Additionally, users can generate the corresponding Pseudo Code of their created flowcharts, along with the source code of a few conventional programming languages, such as C++. \n\n
     Developed by:
     Chubo Zeko
-    Hasan Tuncel Çoban
-    Penondjira Tjahuha-Kakujaha \n\n
+    Hasan Tuncel Çoban \n\n
     EPR402 - Capstone Project - 2018`;
   }
 

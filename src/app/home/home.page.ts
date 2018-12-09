@@ -22,6 +22,7 @@ import { IfCase } from '../classes/IfCase';
 import { WhileLoop } from '../classes/WhileLoop';
 import { CodeViewerPage } from '../code-viewer/code-viewer.page';
 import { AboutPage } from '../about/about.page';
+import { TutorialPage } from '../tutorial/tutorial.page';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -59,6 +60,8 @@ export class HomePage {
     clearWS.addEventListener('click', (e) => this.clearWorkspace());
     let aboutPg = document.getElementById("btn_aboutPage");
     aboutPg.addEventListener('click', (e) => this.openAboutPage(e));
+    let tutorPg = document.getElementById("btn_tutorialPage");
+    tutorPg.addEventListener('click', (e) => this.openTutorialPage(e));
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart();
@@ -561,6 +564,14 @@ export class HomePage {
     this.menu.close();
     const modal = await this.modalC.create({
       component: AboutPage
+    });
+    await modal.present();
+  }
+
+  async openTutorialPage(e){
+    this.menu.close();
+    const modal = await this.modalC.create({
+      component: TutorialPage
     });
     await modal.present();
   }

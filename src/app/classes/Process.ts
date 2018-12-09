@@ -27,7 +27,7 @@ export class Process{
     return this.processExpression;
   }
 
-  parseExpression( dataType: string ){
+  parseExpression( variables: any[], dataType: string ){
     
     let strSplit = [], values = [], operators = [], parsedValues = [];
     let op = '', oper1, oper2, result, j = 0;
@@ -42,7 +42,19 @@ export class Process{
       // Store operands in an Array called "values"
       for (let i = 0; i < strSplit.length; i++) { values[i] = strSplit[i].trim(); }
     } else { 
-      // Make this.expression = this.variables[index].value 
+      values.splice( values.length, 0, this.expression.trim() );
+        // T: add variable.value to values[]
+        // F: alert('Variable not declared in expression')
+      // Make this.expression = this.variables[index].value
+    }
+
+    // Check if it is a variable name
+    for (let i = 0; i < values.length; i++) {
+      for (let j = 0; j < variables.length; j++) {
+        if( variables[j].getName() == values[i] ){
+          values.splice( i, 1, variables[j].value );
+        }
+      }
     }
 
     // Convert "values[]" to desired data type

@@ -26,6 +26,7 @@ import { WhileLoopPageModule } from './symbol-dialogs/while-loop/while-loop.modu
 import { ProcessPageModule } from './symbol-dialogs/process/process.module';
 import { CodeViewerPageModule } from './code-viewer/code-viewer.module';
 import { AboutPageModule } from './about/about.module';
+import { TutorialPageModule } from './tutorial/tutorial.module';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AboutPageModule } from './about/about.module';
     OutputPageModule,
     WhileLoopPageModule,
     CodeViewerPageModule,
-    AboutPageModule
+    AboutPageModule,
+    TutorialPageModule
   ],
   providers: [
     StatusBar,
