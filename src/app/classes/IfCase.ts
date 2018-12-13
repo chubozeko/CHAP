@@ -4,6 +4,7 @@ export class IfCase{
   static s_name: string = 'If';
 
   ifStatement: string;
+  ifcaseSymbol: any;
 
   trueExpression: string;
   trueBlock: any[];
@@ -15,6 +16,9 @@ export class IfCase{
 
   setIfStatement(if_exp: string){ this.ifStatement = if_exp; }
   getIfStatement(){ return this.ifStatement; }
+
+  setIfCaseSymbol(ifSym: any){ this.ifcaseSymbol = ifSym; }
+  getIfCaseSymbol(){ return this.ifcaseSymbol; }
 
   parseIfStatement(){
     // parse if-statement into True & False

@@ -1,7 +1,12 @@
+canvas {
+  width: 100px;
+  height: 100px;
+}
+
 #consoleInput{
   background-color: #333; color: #ddd; 
   font-family: Consolas, monaco, monospace; 
-  resize: none; width: 100%; padding: 2px;
+  resize: none; width: 100%; padding: 2px; float: left;
 }
 
 // SYMBOLS CSS
@@ -46,7 +51,7 @@ ion-row{
 
 .arrows { 
   width: 70px;
-  height: 70px;
+  height: 35px;
   cursor: pointer;
   color: #F8F8F8;
 }
@@ -164,26 +169,22 @@ clip-path: polygon(0 50%, 15% 65%, 15% 55%, 100% 55%, 100% 45%, 15% 45%, 15% 35%
 	clip-path: polygon(100% 50%, 85% 35%, 85% 45%, 55% 45%, 55% 0, 45% 0, 45% 55%, 85% 55%, 85% 65%);
 }
 
-#arrow_left_up {
-	background: #000000;
-	-webkit-clip-path: polygon(50% 0, 35% 15%, 45% 16%, 45% 55%, 100% 55%, 100% 45%, 55% 45%, 55% 15%, 65% 15%);
-  clip-path: polygon(50% 0, 35% 15%, 45% 16%, 45% 55%, 100% 55%, 100% 45%, 55% 45%, 55% 15%, 65% 15%);
+#arrow_left_up { background: #000000;
+	-webkit-clip-path: polygon(50% 0, 40% 15%, 45% 15%, 45% 60%, 100% 60%, 100% 40%, 55% 40%, 55% 15%, 60% 15%);
+  clip-path: polygon(50% 0, 40% 15%, 45% 15%, 45% 60%, 100% 60%, 100% 40%, 55% 40%, 55% 15%, 60% 15%);
 }
 
-#arrow_left_down {
-	background: #000000;
-	-webkit-clip-path: polygon(35% 85%, 50% 100%, 65% 85%, 55% 85%, 55% 55%, 100% 55%, 100% 45%, 45% 45%, 45% 85%);
-  clip-path: polygon(35% 85%, 50% 100%, 65% 85%, 55% 85%, 55% 55%, 100% 55%, 100% 45%, 45% 45%, 45% 85%);
+#arrow_left_down { background: #000000;
+	-webkit-clip-path: polygon(40% 85%, 50% 100%, 60% 85%, 55% 85%, 55% 60%, 100% 60%, 100% 40%, 45% 40%, 45% 85%);
+  clip-path: polygon(40% 85%, 50% 100%, 60% 85%, 55% 85%, 55% 60%, 100% 60%, 100% 40%, 45% 40%, 45% 85%);
 }
 
-#arrow_right_up {
-	background: #000000;
-	-webkit-clip-path: polygon(50% 0, 35% 15%, 45% 16%, 45% 45%, 0 45%, 0 55%, 55% 55%, 55% 15%, 65% 15%);
-  clip-path: polygon(50% 0, 35% 15%, 45% 16%, 45% 45%, 0 45%, 0 55%, 55% 55%, 55% 15%, 65% 15%);
+#arrow_right_up { background: #000000;
+	-webkit-clip-path: polygon(50% 0, 40% 15%, 45% 15%, 45% 40%, 0 40%, 0 60%, 55% 60%, 55% 15%, 60% 15%);
+  clip-path: polygon(50% 0, 40% 15%, 45% 15%, 45% 40%, 0 40%, 0 60%, 55% 60%, 55% 15%, 60% 15%);
 }
 
-#arrow_right_down {
-	background: #000000;
-	-webkit-clip-path: polygon(35% 85%, 50% 100%, 65% 85%, 55% 85%, 55% 45%, 0 45%, 0 55%, 45% 55%, 45% 85%);
-  clip-path: polygon(35% 85%, 50% 100%, 65% 85%, 55% 85%, 55% 45%, 0 45%, 0 55%, 45% 55%, 45% 85%);
+#arrow_right_down {	background: #000000;
+	-webkit-clip-path: polygon(40% 85%, 50% 100%, 60% 85%, 55% 85%, 55% 40%, 0 40%, 0 60%, 45% 60%, 45% 85%);
+  clip-path: polygon(40% 85%, 50% 100%, 60% 85%, 55% 85%, 55% 40%, 0 40%, 0 60%, 45% 60%, 45% 85%); 
 }

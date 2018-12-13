@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalController, Fab, ActionSheetController, MenuController, NavParams } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
+import html2canvas from 'html2canvas';
 
 import { SYMBOLS } from "../symbol-list";   // importing the symbol array from symbol-list.ts
 import { DeclarePage } from '../symbol-dialogs/declare/declare.page';
@@ -62,6 +63,10 @@ export class HomePage {
     aboutPg.addEventListener('click', (e) => this.openAboutPage(e));
     let tutorPg = document.getElementById("btn_tutorialPage");
     tutorPg.addEventListener('click', (e) => this.openTutorialPage(e));
+    let newProj = document.getElementById("btn_newProject");
+    newProj.addEventListener('click', (e) => this.newProject());
+    let saveProj = document.getElementById("btn_saveProject");
+    saveProj.addEventListener('click', (e) => this.saveProject());
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart();
@@ -200,16 +205,16 @@ export class HomePage {
     });
 
     modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
+      let s = document.getElementsByClassName("active-symbol");
       for(let i=0; i<s.length; i++){
         s[i].classList.remove('active-symbol');
       }
 
       try {
         let ifcase = data.data as IfCase;
-      // e.target.innerHTML = ifcase.getIfCaseExpression();
-      // this.consoleLog(ifcase.getIfCaseExpression());
-      console.log(data.data); 
+        e.target.innerHTML = ifcase.getIfStatement();
+        this.consoleLog(ifcase.getIfStatement());
+        console.log(data.data);
       } catch (error) { console.log(error); }
     });
     await modal.present();
@@ -222,7 +227,7 @@ export class HomePage {
     });
 
     modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
+      let s = document.getElementsByClassName("active-symbol");
       for(let i=0; i<s.length; i++){
         s[i].classList.remove('active-symbol');
       }
@@ -421,14 +426,20 @@ export class HomePage {
       this.flowchart.addSymbolToFlowchart( com, active_index );
     }
     else if(id == 's_if_case'){
+      let ifcase = new IfCase();
       symClass = "if_div";
       temp = document.getElementsByClassName(symClass);
-      symbol = temp[0].cloneNode(true);
+      ifcase.setIfCaseSymbol( temp[0].cloneNode(true) );
+      symbol = ifcase.getIfCaseSymbol();
+      this.flowchart.addSymbolToFlowchart( ifcase, active_index );
     } 
     else if(id == 's_while_loop'){
+      let whileloop = new WhileLoop();
       symClass = "while_div";
       temp = document.getElementsByClassName(symClass);
-      symbol = temp[0].cloneNode(true);
+      whileloop.setWhileSymbol( temp[0].cloneNode(true) );
+      symbol = whileloop.getWhileSymbol();
+      this.flowchart.addSymbolToFlowchart( whileloop, active_index );
     } 
     // else if(id == 's_for_loop'){
     //   symClass = "for_div";
@@ -538,6 +549,22 @@ export class HomePage {
   public onPress(e){
     e.target.style.border = "2px dashed #000";
     this.openSymbolsAS(e);
+  }
+
+  public newProject(){
+    let fileN = document.getElementById("fileName") as HTMLInputElement;
+    fileN.value = '';
+    this.clearWorkspace();
+  }
+
+  public saveProject(){
+    html2canvas(document.querySelector("#workspace")).then(canvas => {
+      let can = canvas as HTMLCanvasElement;
+      can.width = 100;
+      can.height = 100;
+      document.getElementById("workspace").appendChild(can);
+    });
+    alert('Screenshot');
   }
 
   public debugProgram(e){
