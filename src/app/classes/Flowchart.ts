@@ -141,11 +141,12 @@ export class Flowchart{
     // Enable Console Input for editing
     this.consoleInput.disabled = false;
     this.consoleInput.contentEditable = 'true';
+    this.consoleInput.focus();
     // Display Input prompt
     this.inputPromptStatement = Input.prototype.parseInputExp( this.variables[varIndex] ) + "\n";
     this.consoleLog.value += this.inputPromptStatement;
     this.consoleInput.addEventListener("keyup", (e) => this.enterPressedOnConsole(e, this.variables[varIndex]) );
-
+    // this.consoleInput.value = await undefined;
     // return this.isInputEntered;
   }
 
@@ -167,7 +168,10 @@ export class Flowchart{
 
       // DECLARE
       if( this.SYMBOLS[i] instanceof Declare ){
-        this.variables.splice(this.variables.length, 0, this.SYMBOLS[i].parseDeclareExp() );
+        let vars = this.SYMBOLS[i].parseDeclareExp();
+        for (let a = 0; a < vars.length; a++) {
+          this.variables.splice(this.variables.length, 0, vars[a] ); 
+        }
       } 
 
       // INPUT

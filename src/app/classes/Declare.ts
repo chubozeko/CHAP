@@ -42,29 +42,34 @@ export class Declare{
     }
 
     parseDeclareExp(){
-        let var1 = new Variable();
-        if( !this.getIsArray() ){
-            switch ( this.getDataType() ) {
-                case 'Integer': this.declareVar as number;  break;
-                case 'Real': this.declareVar as number;     break;
-                case 'String': this.declareVar as string;   break;
-                case 'Boolean': this.declareVar as boolean; break;
-                default: this.declareVar as any;            break;
-            }
-            
-        } else {
-            switch ( this.getDataType() ) {
-                case 'Integer': this.declareVar = new Array( this.getArraySize() ) as number[];     break;
-                case 'Real': this.declareVar = new Array( this.getArraySize() ) as number[];        break;
-                case 'String': this.declareVar = new Array( this.getArraySize() ) as string[];      break;
-                case 'Boolean': this.declareVar = new Array( this.getArraySize() ) as boolean[];    break;
-                default: this.declareVar = new Array( this.getArraySize() ) as any[];               break;
-            }
-            
-        } 
-        var1.name = this.getVariableName();
-        var1.dataType = this.getDataType();
-        return var1;
+        let vars: Variable[] = [];
+
+        let varNames = this.getVariableName().split(",");
+        for (let i = 0; i < varNames.length; i++) {
+            let var1 = new Variable();
+            if( !this.getIsArray() ){
+                switch ( this.getDataType() ) {
+                    case 'Integer': this.declareVar as number;  break;
+                    case 'Real': this.declareVar as number;     break;
+                    case 'String': this.declareVar as string;   break;
+                    case 'Boolean': this.declareVar as boolean; break;
+                    default: this.declareVar as any;            break;
+                }    
+            } else {
+                switch ( this.getDataType() ) {
+                    case 'Integer': this.declareVar = new Array( this.getArraySize() ) as number[];     break;
+                    case 'Real': this.declareVar = new Array( this.getArraySize() ) as number[];        break;
+                    case 'String': this.declareVar = new Array( this.getArraySize() ) as string[];      break;
+                    case 'Boolean': this.declareVar = new Array( this.getArraySize() ) as boolean[];    break;
+                    default: this.declareVar = new Array( this.getArraySize() ) as any[];               break;
+                }    
+            } 
+            var1.name = varNames[i].trim(); //this.getVariableName();
+            var1.dataType = this.getDataType();
+            vars.splice(vars.length, 0, var1 );
+        }
+        
+        return vars;
     }
 
     pseudoCode(){ return '\tDeclare ' + this.getDeclareExpression() + '\n'; }
