@@ -142,18 +142,6 @@ export class Flowchart{
     this.variables[varIndex].value = symbol.parseExpression( this.variables, this.variables[varIndex].getDataType() );
   }
 
-  validateOutput(varIndex: number){
-    if (varIndex == -1){
-      let str2 = this.outputStatement.replace(/"/g,'');
-      
-      // Display Output string statement
-      this.consoleLog.value += str2; //this.outputStatement;
-    } else {
-      // Display Output variable statement
-      this.consoleLog.value += this.variables[varIndex].value;
-    }
-  }
-
   async validateFlowchart(){
     this.variables = [];
     let varIndex = 0;
@@ -209,32 +197,61 @@ export class Flowchart{
 
       // OUTPUT
       if( this.SYMBOLS[i] instanceof Output ){
-        let isVarDeclared, hasQuotes; // = false;
+        let isVarDeclared, hasQuotes = 0, outputS = ''; 
         let outputStr: string = this.SYMBOLS[i].getOutputExpression();
-        if( outputStr.indexOf("\"") == -1 ){
-          console.log("No quote");
-          hasQuotes = false;
-          for( let j=0; j<this.variables.length; j++){
-            if( this.SYMBOLS[i].getOutputExpression() == this.variables[j].getName() ){
-              isVarDeclared = true;
-              varIndex = j;
+        let str = outputStr.split('&');
+        for (let k = 0; k < str.length; k++) {
+          let s1 = str[k].trim();
+          if( s1.indexOf("\"") == -1 ){
+            console.log("No quotes");
+            for( let j=0; j<this.variables.length; j++){
+              if( s1 == this.variables[j].getName() ){
+                isVarDeclared = true;
+                varIndex = j;
+              }
+            }
+          } else {
+            hasQuotes++;
+            this.outputStatement = outputStr;
+            console.log("Quotes");
+          }
+        }
+
+        if( !isVarDeclared && hasQuotes==0 ){
+          alert('Variable is not declared!');
+        } else if( isVarDeclared && hasQuotes==0 ){
+          // Output variable
+          console.log('output variable declared! carry on...');
+          let s1 = this.SYMBOLS[i].getOutputExpression();
+          let s2 = s1.split('&');
+          for (let i = 0; i < s2.length; i++) {
+            let str = s2[i].trim();
+            for( let l=0; l<this.variables.length; l++){
+              if( str == this.variables[l].getName() ){
+                outputS += this.variables[l].value;
+              }
             }
           }
-        } else {
-          hasQuotes = true;
-          this.outputStatement = outputStr;
-          console.log("Quote");
-        }
-        if( !isVarDeclared && !hasQuotes ){
-          alert('Variable is not declared!'); // \"' + this.SYMBOLS[i].getVariableName() + '\"
-        } else if( isVarDeclared && !hasQuotes ){
-          // Output variable
-          console.log('output variable declared! carry on...'); 
-          this.validateOutput(varIndex);
-        } else if( hasQuotes ){
+        } else if( hasQuotes>0 ){
           // Output String expression
-          this.validateOutput(-1);
+          let s1 = this.SYMBOLS[i].getOutputExpression();
+          let s2 = s1.split('&');
+          for (let i = 0; i < s2.length; i++) {
+            let str = s2[i].trim();
+            if( str.indexOf("\"") != -1 ){
+              let str2 = str.replace(/"/g,'');
+              outputS += str2;
+            } else {
+              for( let l=0; l<this.variables.length; l++){
+                if( str == this.variables[l].getName() ){
+                  outputS += this.variables[l].value;
+                }
+              }
+            }
+          }
         }
+
+        this.consoleLog.value += outputS;
       }
 
       // COMMENT

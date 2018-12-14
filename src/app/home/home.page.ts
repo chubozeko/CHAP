@@ -462,7 +462,7 @@ export class HomePage {
     tempBranch.addEventListener("dragover", function(e){e.preventDefault();}, false);
     tempBranch.addEventListener("drop", (e) => this.dropped(e), false);
     symbol.addEventListener('dblclick', (e) => this.openSymbolDialog(e, id) );
-    symbol.addEventListener('rightclick', (e) => this.openSymbolsAS(e) );
+    symbol.addEventListener('contextmenu', (e) => this.openSymbolsAS(e) );
     
     // Add symbol and corresponding arrow/branch to Workspace
     this.workspace.insertBefore(symbol, branches[0].nextSibling);
@@ -515,7 +515,7 @@ export class HomePage {
   public startDrag(e){
     this.selectedSymbol = e.target.id;
     e.dataTransfer.setData('id', this.selectedSymbol);
-    this.consoleLog("start drag");
+    // console.log("start drag");
   }
 
   public moveDrag(e){ e.preventDefault(); }
@@ -564,13 +564,12 @@ export class HomePage {
       can.height = 100;
       document.getElementById("workspace").appendChild(can);
     });
-    alert('Screenshot');
+    //alert('Screenshot');
   }
 
   public debugProgram(e){
     this.menu.close();
     this.clearConsole();
-    // this.consoleLog('Debugging...');
     this.flowchart.validateFlowchart();
   }
 
