@@ -7,10 +7,10 @@ export class IfCase{
   ifcaseSymbol: any;
 
   trueExpression: string;
-  trueBlock: any[];
+  trueBlockSymbols: any[];
 
   falseExpression: string;
-  falseBlock: any[];
+  falseBlockSymbols: any[];
 
   constructor(){}
 

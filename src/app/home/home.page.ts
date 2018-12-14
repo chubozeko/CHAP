@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 import html2canvas from 'html2canvas';
+//import interact from 'interactjs';
+const interact = require('interactjs');
 
 import { SYMBOLS } from "../symbol-list";   // importing the symbol array from symbol-list.ts
 import { DeclarePage } from '../symbol-dialogs/declare/declare.page';
@@ -43,6 +45,7 @@ export class HomePage {
   workspace; branch; selectedSymbol;
   symbols = SYMBOLS;
   newSymbol: any;
+  dupSymbol: any;
 
   constructor(
     public symbolOptionsAS: ActionSheetController, 
@@ -90,6 +93,37 @@ export class HomePage {
       shapes[i].addEventListener("dragend", (e) => this.endDrag(e), false);
       // shapes[i].addEventListener("dragmove", (e) => this.dragMove(e), false);
     }
+
+    // interact('.symbol')
+    //   .on('tap', function (e) {
+    //     e.currentTarget.classList.toggle('switch-bg');
+    //     e.preventDefault();
+    //   })
+    //   .on('doubletap', function (e) {
+    //     e.currentTarget.classList.toggle('large');
+    //     e.currentTarget.classList.remove('rotate');
+    //     e.preventDefault();
+    //   })
+    //   .draggable({
+    //     inertia: {
+    //       resistance: 10,
+    //       minSpeed: 500,
+    //       endSpeed: 50
+    //     },
+    //     restrict: {
+    //       restriction: this.workspace,
+    //       endOnly: true,
+    //       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+    //     },
+    //     autoScroll: true,
+    //     onstart: this.startDrag,
+    //     onmove: this.moveDrag,
+    //     onend: this.endDrag
+    //   })
+    //   .on('hold', function (event) {
+    //     event.currentTarget.classList.toggle('rotate');
+    //     event.currentTarget.classList.remove('large');
+    //   });
   }
 
   public openMenu(){ this.menu.open(); }
@@ -356,6 +390,9 @@ export class HomePage {
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openOutputModal(tempSym, event);
     } 
+    else if(targetSymbol.id == 's_comment' && targetSymbol.className == 'arrow dropzone active-symbol'){
+      this.showAlert('','Please click here to add symbols to conditional statement blocks.');
+    }
     else if(targetSymbol.id == 's_comment'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
       this.openCommentModal(tempSym, event);
@@ -465,15 +502,38 @@ export class HomePage {
     symbol.addEventListener('dblclick', (e) => this.openSymbolDialog(e, id) );
     symbol.addEventListener('contextmenu', (e) => this.openSymbolsAS(e) );
     
-    // Add symbol and corresponding arrow/branch to Workspace
-    this.workspace.insertBefore(symbol, branches[0].nextSibling);
-    this.workspace.insertBefore(tempBranch, symbol.nextSibling);
+    if( branches[0].parentElement.id == 'ifFalseBlock' || branches[0].parentElement.id == 'ifTrueBlock' ){
+      
+      let selectedSymbol = document.getElementsByClassName("arrow dropzone active-arrow");
+      if(selectedSymbol[0].id == 's_comment'){
+        branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
+        branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
+        selectedSymbol[0].remove();
+      } else {
+        branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
+        branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
+      }
+      
+    } else {
+      // Add symbol and corresponding arrow/branch to Workspace
+      this.workspace.insertBefore(symbol, branches[0].nextSibling);
+      this.workspace.insertBefore(tempBranch, symbol.nextSibling);
+    }
 
     // Make all the arrows/branches on the Workspace inactive
     branches = document.getElementsByClassName("arrow dropzone active-arrow");
     for(let i=0; i<branches.length; i++){
       branches[i].classList.remove('active-arrow');
     }
+
+    let dz = document.getElementsByClassName("arrow dropzone");
+      for(let i=0; i<dz.length; i++){
+        dz[i].addEventListener('click', (e) => this.openSymbolsFAB(e) );
+        dz[i].addEventListener("dragenter", (e) => this.dragEnter(e), false);
+        dz[i].addEventListener("dragleave", (e) => this.dragLeave(e), false);
+        dz[i].addEventListener("dragover", function(e){e.preventDefault();}, false);
+        dz[i].addEventListener("drop", (e) => this.dropped(e), false);
+      }
 
     console.log( this.flowchart.SYMBOLS );
   }
@@ -523,12 +583,35 @@ export class HomePage {
   }
 
   public startDrag(e){
-    this.selectedSymbol = e.target.id;
-    e.dataTransfer.setData('id', this.selectedSymbol);
-    // console.log("start drag");
+    // let t = e.target || e.srcElement || e.currentTarget,
+    //   x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
+    //   y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
+    // this.dupSymbol = t.cloneNode(true);
+    // document.body.appendChild( this.dupSymbol );
+    // this.dupSymbol.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    
+    // e.target = this.dupSymbol;
+    //e.dataTransfer.setData('id', this.selectedSymbol);
+    console.log("start drag" + e.target);
   }
 
-  public moveDrag(e){ e.preventDefault(); }
+  public moveDrag(e){ 
+    e.preventDefault(); 
+    let target = e.target || e.srcElement || e.currentTarget,
+      // keep the dragged position in the data-x/data-y attributes
+      x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx,
+      y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy;
+
+    // translate the element
+    target.style.zIndex = '-1';
+    target.style.webkitTransform =
+    target.style.transform =
+      'translate(' + x + 'px, ' + y + 'px)';
+
+    // update the position attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+  }
   
   public endDrag(e){ 
     e.preventDefault();
@@ -558,7 +641,8 @@ export class HomePage {
 
   public onPress(e){
     e.target.style.border = "2px dashed #000";
-    this.openSymbolsAS(e);
+    //this.openSymbolsAS(e);
+    this.consoleLog("press");
   }
 
   public newProject(){

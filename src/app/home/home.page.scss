@@ -1,3 +1,22 @@
+.symbol {
+  touch-action: none;
+  transition: all 0.3s;
+}
+
+.symbol.switch-bg {
+  border: #f40;
+}
+
+.symbol.large {
+  -webkit-transform: scale(1.25);
+  transform: scale(1.25);
+}
+
+.rotate {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
 canvas {
   width: 100px;
   height: 100px;

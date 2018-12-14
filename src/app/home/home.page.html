@@ -70,9 +70,13 @@
           <div id="arrow_left_down" class="arrows dropzone"></div>
           <div id="s_if_case" class="symbol" (click)="addSymbol('s_if_case',$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">If</div>
           <div id="arrow_right_down" class="arrows dropzone"></div>
-          <div id="s_comment" class="symbol" style="font-size: 8pt;">// false</div>
+          <div id="ifFalseBlock">
+            <div id="s_comment" class="arrow dropzone" style="font-size: 8pt;">// False</div>
+          </div>
           <div></div>
-          <div id="s_comment" class="symbol" style="font-size: 8pt;">// true</div>
+          <div id="ifTrueBlock">
+            <div id="s_comment" class="arrow dropzone" style="font-size: 8pt;">// True</div>
+          </div>
           <div id="arrow_down_right" class="arrows"></div>
           <div id="s_terminator"></div>
           <div id="arrow_down_left" class="arrows"></div>
