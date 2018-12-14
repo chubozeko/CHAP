@@ -8,6 +8,7 @@ import { Comment } from "./Comment";
 import { IfCase } from "./IfCase";
 import { WhileLoop } from "./WhileLoop";
 import { Variable } from "./Variable";
+import { AlertController } from "@ionic/angular";
 
 export class Flowchart{
 
@@ -23,8 +24,9 @@ export class Flowchart{
 
   consoleLog: HTMLTextAreaElement;
   consoleInput: HTMLInputElement;
+  //alertC: AlertController;
 
-  constructor(){
+  constructor(public alertC: AlertController){
     let defaultSymbols = document.getElementsByClassName('symbols');
     for (let i = 0; i < defaultSymbols.length; i++) {
       this.SYMBOLS.splice( i, 0, defaultSymbols[i] );
@@ -40,6 +42,15 @@ export class Flowchart{
     this.consoleLog = document.getElementById("console") as HTMLTextAreaElement;
     this.consoleInput = document.getElementById("consoleInput") as HTMLInputElement;
     //document.getElementById("console").addEventListener('keyup', (e) => this.enterPressedOnConsole(e) );
+  }
+
+  async showAlert(alertTitle: string, alertMsg: string) {
+    const alert = await this.alertC.create({
+      header: alertTitle,
+      message: alertMsg,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
   addSymbolToFlowchart( symbol: any, position: number){ this.SYMBOLS.splice(position, 0, symbol); }
@@ -169,7 +180,7 @@ export class Flowchart{
           }
         }
         if(!isVarDeclared){
-          alert('Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
+          this.showAlert('Invalid Statement at \'Input\'','Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
         } else { 
           console.log('input variable declared! carry on...');
           this.validateInput(varIndex);
@@ -187,7 +198,7 @@ export class Flowchart{
           }
         }
         if(!isVarDeclared){
-          alert('Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
+          this.showAlert('Invalid Statement at \'Process\'','Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
         } else {
           console.log('process variable declared. carry on...');
           this.validateProcess( this.SYMBOLS[i], varIndex );
@@ -218,7 +229,7 @@ export class Flowchart{
         }
 
         if( !isVarDeclared && hasQuotes==0 ){
-          alert('Variable is not declared!');
+          this.showAlert('Invalid Statement at \'Output\'','Variable is not declared!');
         } else if( isVarDeclared && hasQuotes==0 ){
           // Output variable
           console.log('output variable declared! carry on...');

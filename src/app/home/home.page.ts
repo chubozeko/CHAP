@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalController, Fab, ActionSheetController, MenuController, NavParams } from '@ionic/angular';
+import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 import html2canvas from 'html2canvas';
 
@@ -36,7 +36,7 @@ export class HomePage {
   @ViewChild('symbolsFAB') symbolsFAB: Fab;
   @ViewChild('tutorialFAB') tutorialFAB: Fab;
 
-  flowchart: Flowchart = new Flowchart();
+  flowchart: Flowchart = new Flowchart(this.alertC);
   title = 'CHAP';
   fileName = '';
 
@@ -48,6 +48,7 @@ export class HomePage {
     public symbolOptionsAS: ActionSheetController, 
     public menu: MenuController, 
     public modalC: ModalController,
+    public alertC: AlertController
     // public navParams: NavParams
   ){}
 
@@ -69,7 +70,7 @@ export class HomePage {
     saveProj.addEventListener('click', (e) => this.saveProject());
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
-    this.flowchart = new Flowchart();
+    this.flowchart = new Flowchart(this.alertC);
     this.workspace = document.getElementById("workspace");
     this.branch = document.getElementById("arrow");
     this.branch.addEventListener('click', (e) => this.openSymbolsFAB(e) );
@@ -482,6 +483,15 @@ export class HomePage {
     consoleCHAP.value = consoleCHAP.value + lineOutput + "\n";
   }
 
+  async showAlert(alertTitle: string, alertMsg: string) {
+    const alert = await this.alertC.create({
+      header: alertTitle,
+      message: alertMsg,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   public clearConsole(){
     let consoleCHAP = document.getElementById("console") as HTMLTextAreaElement;
     consoleCHAP.value = "";
@@ -509,7 +519,7 @@ export class HomePage {
         i=0;
       }
     }
-    this.flowchart = new Flowchart();
+    this.flowchart = new Flowchart(this.alertC);
   }
 
   public startDrag(e){
