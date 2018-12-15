@@ -84,7 +84,8 @@ export class Process{
     console.log(parsedValues);
 
     while( operators.length != 0 ){
-      if( operators.indexOf('/') != -1 ){ j = operators.indexOf('/'); } 
+      if( operators.indexOf('%') != -1 ){ j = operators.indexOf('%'); }
+      else if( operators.indexOf('/') != -1 ){ j = operators.indexOf('/'); } 
       else if( operators.indexOf('*') != -1 ){ j = operators.indexOf('*'); }
       else if( operators.indexOf('+') != -1 ){ j = operators.indexOf('+'); }
       else if( operators.indexOf('-') != -1 ){ j = operators.indexOf('-'); }
@@ -120,7 +121,8 @@ export class Process{
 		  case '+':	result = num1 + num2;	break;
 		  case '-':	result = num1 - num2;	break;
 		  case '*':	result = num1 * num2;	break;
-		  case '/':	result = num1 / num2;	break;
+      case '/':	result = num1 / num2;	break;
+      case '%':	result = num1 % num2;	break;
 		  default:	break;
 	  }
 	  return result;
@@ -132,7 +134,8 @@ export class Process{
 		  case '+':	result = num1 + num2;	break;
 		  case '-':	result = num1 - num2;	break;
 		  case '*':	result = num1 * num2;	break;
-		  case '/':	result = num1 / num2;	break;
+      case '/':	result = num1 / num2;	break;
+      case '%':	result = num1 % num2;	break;
 		  default:	break;
 	  }
 	  return result;

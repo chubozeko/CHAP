@@ -274,9 +274,9 @@ export class Flowchart{
 
       // IF CASE
       if( this.SYMBOLS[i] instanceof IfCase ){
-        let ifState = this.SYMBOLS[i].getIfStatement();
-        
-        this.SYMBOLS[i].parseIfCaseExp();
+        //let ifState = this.SYMBOLS[i].getIfStatement();
+        let ifBlock = this.SYMBOLS[i].parseIfCaseExpression();
+        // Add ifBlock symbols to Flowchart instead of IfCase
       }
 
       // WHILE LOOP
