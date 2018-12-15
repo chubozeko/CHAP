@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
+import { IfCase } from '../../classes/IfCase';
 
 @Component({
   selector: 'app-if-else',
@@ -8,20 +9,19 @@ import { ModalController, NavParams } from '@ionic/angular';
 })
 export class IfElsePage implements OnInit {
 
-  symbol;
-
+  symbol: IfCase;
   constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol'); 
   }
 
   ngOnInit() {
-    // let ifexp = (document.getElementById("if_expression") as HTMLTextAreaElement);
-    // ifexp.value = this.symbol.getIfStatement();
+    let ifexp = (document.getElementById("if_expression") as HTMLInputElement);
+    ifexp.value = this.symbol.getIfStatement();
   }
 
   public applyAndCloseModal(){
 
-    let ifexp = (document.getElementById("if_expression") as HTMLTextAreaElement);
+    let ifexp = (document.getElementById("if_expression") as HTMLInputElement);
     this.symbol.setIfStatement( ifexp.value );
 
     this.modal.dismiss( this.symbol );

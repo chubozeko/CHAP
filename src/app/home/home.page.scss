@@ -1,26 +1,7 @@
-.symbol {
-  touch-action: none;
-  transition: all 0.3s;
-}
-
-.symbol.switch-bg {
-  border: #f40;
-}
-
-.symbol.large {
-  -webkit-transform: scale(1.25);
-  transform: scale(1.25);
-}
-
-.rotate {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-
-canvas {
-  width: 100px;
-  height: 100px;
-}
+.symbol { touch-action: none; transition: all 0.3s; }
+.symbol.switch-bg { border: #f40; }
+.symbol.large { -webkit-transform: scale(1.25); transform: scale(1.25); }
+.rotate { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
 
 #consoleInput{
   background-color: #333; color: #ddd; 
@@ -31,59 +12,43 @@ canvas {
 // SYMBOLS CSS
 #control_loop_list{ display: none; }
 
-.if_div, .for_div, .while_div, .do_while_div{
+.if_div, .while_div{
   display: grid;
-  grid-template-columns: repeat(3, 70px);
+  grid-template-columns: repeat(5, 70px);
   align-items: center;
   justify-content: center;
 }
 
 ion-card{
-  width: 105px;
-  height: 105px;
-  padding-top: 0%;
-  margin: 0 0 5px 0;
+  width: 105px; height: 105px;
+  padding-top: 0%; margin: 0 0 5px 0;
   background-color: #F8F8F8;
 }
 
 #fabSymbols{
-  padding: 5px;
-  font-size: 8pt;
-  width: 80px;
-  height: 45px;
+  padding: 5px; font-size: 8pt;
+  width: 80px; height: 45px;
   background-color: #F8F8F8;
 }
 
-ion-row{
-  float: left;
-  overflow-y: hidden;
-  padding: 0;
-}
+ion-row{ float: left; overflow-y: hidden; padding: 0; }
 
 .symbols-div{ 
-  width: 100%; 
-  height: 120px;
+  width: 100%; height: 120px;
   background-color: rgba(187, 195, 199, 0.904);
-  overflow-x: hidden;
-  margin: 0;
+  overflow-x: hidden; margin: 0;
 }
 
 .arrows { 
-  width: 70px;
-  height: 35px;
-  cursor: pointer;
-  color: #F8F8F8;
+  width: 70px; height: 35px;
+  cursor: pointer; color: #F8F8F8;
 }
 
 .symbol, .arrow{ 
-  width: 70px;
-  height: 35px;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 35px;
-  font-size: 8pt;
-  color: #000000;
-  cursor: pointer;
+  width: 70px; height: 35px;
+  text-align: center; vertical-align: middle;
+  line-height: 35px; font-size: 8pt;
+  color: #000000; cursor: pointer;
 }
 
 #s_start, #s_stop{
@@ -125,18 +90,13 @@ ion-row{
 }
 #s_terminator{
   background: #ffffff;
-  -webkit-clip-path: circle(50% at 50% 50%);
-  clip-path: circle(50% at 50% 50%);
-  width: 35px;
-  height: 35px;
-  margin: auto;
+  -webkit-clip-path: circle(50% at 50% 50%); clip-path: circle(50% at 50% 50%);
+  width: 35px; height: 35px; margin: auto;
 }
 #s_comment{
   background: #dddddd;
-  -webkit-clip-path: inset(0 0 0 0);
-  clip-path: inset(0 0 0 0);
-  border: 2px dashed #888888;
-  color: #888888;
+  -webkit-clip-path: inset(0 0 0 0); clip-path: inset(0 0 0 0);
+  border: 2px dashed #888888; color: #888888;
 }
 
 // ARROWS

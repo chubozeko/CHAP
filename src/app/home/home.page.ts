@@ -234,13 +234,15 @@ export class HomePage {
   }
 
   async openIfModal(symbol, e){
+    console.log(symbol);
+    
     const modal = await this.modalC.create({
       component: IfElsePage,
       componentProps: { symbol: symbol }
     });
 
     modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("active-symbol");
+      let s = document.getElementsByClassName("symbol active-symbol");
       for(let i=0; i<s.length; i++){
         s[i].classList.remove('active-symbol');
       }
@@ -248,8 +250,10 @@ export class HomePage {
       try {
         let ifcase = data.data as IfCase;
         e.target.innerHTML = ifcase.getIfStatement();
-        this.consoleLog(ifcase.getIfStatement());
+        //this.consoleLog(ifcase.getIfStatement());
         console.log(data.data);
+        //console.log(ifcase.getIfStatement());
+        
       } catch (error) { console.log(error); }
     });
     await modal.present();
@@ -369,14 +373,16 @@ export class HomePage {
     let active_sym_index, tempSym;
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
     if(targetSymbol.id == 's_if_case' || targetSymbol.id == 's_while_loop'){
-      targetSymbol.parentElement.classList.add('active-symbol');
+      targetSymbol.classList.add('active-symbol');
     } else {
       targetSymbol.classList.add('active-symbol');
     }
     let syms = document.getElementsByClassName("symbol");
     for (let i = 0; i < syms.length; i++) {
-      if( syms[i].className == 'symbol active-symbol' ){ active_sym_index = i; }
+      if( syms[i].classList.contains('active-symbol') ){ active_sym_index = i; }
     }
+    console.log(active_sym_index);
+    
     // Checking the Symbol type and opening corresponding Properties Dialog Modals
     if(targetSymbol.id == 's_declare'){
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
@@ -467,8 +473,9 @@ export class HomePage {
       let ifcase = new IfCase();
       symClass = "if_div";
       temp = document.getElementsByClassName(symClass);
-      ifcase.setIfCaseSymbol( temp[0].cloneNode(true) );
-      symbol = ifcase.getIfCaseSymbol();
+      let t1 = document.getElementById("s_if_case");
+      ifcase.setIfCaseSymbol( t1 ); // temp[0].cloneNode(true) );
+      symbol = temp[0].cloneNode(true); //ifcase.getIfCaseSymbol();
       this.flowchart.addSymbolToFlowchart( ifcase, active_index );
     } 
     else if(id == 's_while_loop'){

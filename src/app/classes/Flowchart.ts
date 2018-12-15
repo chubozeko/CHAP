@@ -274,6 +274,8 @@ export class Flowchart{
 
       // IF CASE
       if( this.SYMBOLS[i] instanceof IfCase ){
+        let ifState = this.SYMBOLS[i].getIfStatement();
+        
         this.SYMBOLS[i].parseIfCaseExp();
       }
 
@@ -286,13 +288,11 @@ export class Flowchart{
       if( this.SYMBOLS[i] instanceof Stop ){
         console.log( 'End Program' );
         this.isProgramRunning = false;
-        // this.consoleLog.append("End of Debugging\n");
       }
     }
 
     console.log(this.variables);
     
-    // return 'no declare';
   }
 
 }
