@@ -25,9 +25,11 @@ export class IfCase{
 
   addSymbolToTrueBlock( symbol: any, position: number){ this.trueBlockSymbols.splice(position, 0, symbol); }
   getSymbolFromTrueBlock( index: number ){ return this.trueBlockSymbols[index]; }
+  removeSymbolFromTrueBlock( position: number ){ this.trueBlockSymbols.splice(position, 1); }
 
   addSymbolToFalseBlock( symbol: any, position: number){ this.falseBlockSymbols.splice(position, 0, symbol); }
   getSymbolFromFalseBlock( index: number ){ return this.falseBlockSymbols[index]; }
+  removeSymbolFromFalseBlock( position: number ){ this.falseBlockSymbols.splice(position, 1); }
 
   parseIfCaseExpression( variables: any[] ){
 

@@ -323,10 +323,43 @@ export class HomePage {
         {
           text: "Delete Symbol",
           handler: () => {
-            let selectedSymbol = document.getElementsByClassName("active-symbol");
-            let nextArrow = selectedSymbol[0].nextSibling;
-            this.workspace.removeChild(nextArrow);
-            selectedSymbol[0].remove();
+            let asi;
+            let selectedSymbol = document.getElementById("workspace").getElementsByClassName("active-symbol");
+            let actSym = document.getElementById("workspace").getElementsByClassName("symbol");
+            if( selectedSymbol[0].parentElement.id == 'ifTrueBlock' ){
+              let syms = selectedSymbol[0].parentElement.getElementsByClassName("symbol");
+              for (let i = 0; i < syms.length; i++) { if( syms[i].classList.contains('active-symbol') ){ asi = i; } }
+              for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                if( this.flowchart.SYMBOLS[l] instanceof IfCase){ this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock( asi ); }
+              }
+
+              let nextArrow = syms[asi].nextSibling;
+              syms[asi].parentElement.removeChild(nextArrow);
+              syms[asi].remove();
+            } else if( selectedSymbol[0].parentElement.id == 'ifFalseBlock' ){
+              let syms = selectedSymbol[0].parentElement.getElementsByClassName("symbol");
+              for (let i = 0; i < syms.length; i++) { if( syms[i].classList.contains('active-symbol') ){ asi = i; } }
+              for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                if( this.flowchart.SYMBOLS[l] instanceof IfCase){ this.flowchart.SYMBOLS[l].removeSymbolFromFalseBlock( asi ); }
+              }
+
+              let nextArrow = syms[asi].nextSibling;
+              syms[asi].parentElement.removeChild(nextArrow);
+              syms[asi].remove();
+            } else {
+              let syms = document.getElementById("workspace").getElementsByClassName("symbol");
+              for (let i = 0; i < syms.length; i++) { if( syms[i].classList.contains('active-symbol') ){ asi = i-1; } }
+              this.flowchart.removeSymbolFromFlowchart( asi );
+
+              let nextArrow = selectedSymbol[0].nextSibling;
+              this.workspace.removeChild(nextArrow);
+              selectedSymbol[0].remove();
+            }
+            // let nextArrow = selectedSymbol[0].nextSibling;
+            // this.workspace.removeChild(nextArrow);
+            // selectedSymbol[0].remove();
+            console.log(this.flowchart.SYMBOLS);
+            
           }
         }
       ]

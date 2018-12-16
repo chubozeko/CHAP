@@ -55,7 +55,7 @@ export class Flowchart{
 
   addSymbolToFlowchart( symbol: any, position: number){ this.SYMBOLS.splice(position, 0, symbol); }
 
-  removeSymbolFromFlowchart( symbol: any, position: number ){ this.SYMBOLS.splice(position, 1, symbol); }
+  removeSymbolFromFlowchart( position: number ){ this.SYMBOLS.splice(position, 1); }
 
   getSymbolFromFlowchart( index: number ){ return this.SYMBOLS[index]; }
 
