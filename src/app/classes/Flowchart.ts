@@ -34,7 +34,7 @@ export class Flowchart{
 
     let start = new Start();
     let stop = new Stop();
-    this.SYMBOLS = [ start, stop ];
+    this.SYMBOLS = [ ]; //start, stop ];
     this.variables = [];
 
     console.log(this.SYMBOLS.length);

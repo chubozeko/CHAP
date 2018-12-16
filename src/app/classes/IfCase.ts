@@ -12,13 +12,22 @@ export class IfCase{
   falseExpression: string;
   falseBlockSymbols: any[];
 
-  constructor(){}
+  constructor(){
+    this.trueBlockSymbols = [];
+    this.falseBlockSymbols = [];
+  }
 
   setIfStatement(if_exp: string){ this.ifStatement = if_exp; }
   getIfStatement(){ return this.ifStatement; }
 
   setIfCaseSymbol(ifSym: any){ this.ifcaseSymbol = ifSym; }
   getIfCaseSymbol(){ return this.ifcaseSymbol; }
+
+  addSymbolToTrueBlock( symbol: any, position: number){ this.trueBlockSymbols.splice(position, 0, symbol); }
+  getSymbolFromTrueBlock( index: number ){ return this.trueBlockSymbols[index]; }
+
+  addSymbolToFalseBlock( symbol: any, position: number){ this.falseBlockSymbols.splice(position, 0, symbol); }
+  getSymbolFromFalseBlock( index: number ){ return this.falseBlockSymbols[index]; }
 
   parseIfCaseExpression( variables: any[] ){
 
