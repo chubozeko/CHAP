@@ -79,129 +79,137 @@ export class IfCase{
             if( variables[j] == "true" ) exps.splice( i, 1, true );
             if( variables[j] == "false" ) exps.splice( i, 1, false );
           }
+        } else {
+          let v = exps[i];
+          let temp: any;
+          if ( !isNaN(parseInt(v)) || !isNaN(parseFloat(v)) ){
+            let a = v.split('.');
+            if( a.length>1 ) temp = parseFloat(v); else temp = parseInt(v);
+          } else if( v=='true' ){ temp = true; } 
+          else if( v=='false' ){ temp = false; } 
+          else { temp = v.toString(); }
+          exps.splice( i, 1, temp );
         }
       }
     }
 
-    // while( operators.length != 0 ){
-    //   if( operators.indexOf('/') != -1 ){ j = operators.indexOf('/'); } 
-    //   else if( operators.indexOf('*') != -1 ){ j = operators.indexOf('*'); }
-    //   else if( operators.indexOf('+') != -1 ){ j = operators.indexOf('+'); }
-    //   else if( operators.indexOf('-') != -1 ){ j = operators.indexOf('-'); }
+    // Calculate expression
+    while( opers.length != 0 ){
+      if( opers.indexOf('%') != -1 ){ j = opers.indexOf('%'); }
+      else if( opers.indexOf('/') != -1 ){ j = opers.indexOf('/'); }
+      else if( opers.indexOf('*') != -1 ){ j = opers.indexOf('*'); }
+      else if( opers.indexOf('+') != -1 ){ j = opers.indexOf('+'); }
+      else if( opers.indexOf('-') != -1 ){ j = opers.indexOf('-'); }
+      else if( opers.indexOf('<') != -1 ){ j = opers.indexOf('<'); }
+      else if( opers.indexOf('<=') != -1 ){ j = opers.indexOf('<='); }
+      else if( opers.indexOf('>') != -1 ){ j = opers.indexOf('>'); }
+      else if( opers.indexOf('>=') != -1 ){ j = opers.indexOf('>='); }
+      else if( opers.indexOf('==') != -1 ){ j = opers.indexOf('=='); }
+      else if( opers.indexOf('!=') != -1 ){ j = opers.indexOf('!='); }
+      else if( opers.indexOf('&&') != -1 ){ j = opers.indexOf('&&'); }
+      else if( opers.indexOf('||') != -1 ){ j = opers.indexOf('||'); }
 
-    //   op = operators[j];
-    //   oper1 = parsedValues[j];
-    //   oper2 = parsedValues[j+1];
+      op = opers[j];
+      oper1 = exps[j];
+      oper2 = exps[j+1];
   
-    //   switch(dataType){
-    //     case 'Integer': result = this.calculateIntegerExpression(oper1, oper2, op); break;
-    //     case 'Real': result = this.calculateRealExpression(oper1, oper2, op); break;
-    //     case 'String': result = this.calculateStringExpression(oper1, oper2, op); break;
-    //     case 'Boolean': result = this.calculateBooleanExpression(oper1, oper2, op); break;
-    //     default: break;
-    //   }
+      switch(typeof(oper1)){
+        case "number": result = this.calculateIntegerExpression(oper1, oper2, op); break;
+        //case "number": result = this.calculateRealExpression(oper1, oper2, op); break;
+        case "string": result = this.calculateStringExpression(oper1, oper2, op); break;
+        case "boolean": result = this.calculateBooleanExpression(oper1, oper2, op); break;
+        default: break;
+      }
     
-    //   operators.splice( j, 1 );
-    //   parsedValues.splice( j, 2, result );
+      opers.splice( j, 1 );
+      exps.splice( j, 2, result );
   
-    //   console.log('Values: ');
-    //   console.log(parsedValues);
-    //   console.log('Operators: ');
-    //   console.log(operators);
-    // } 
+      console.log('Values: ');
+      console.log(parsedValues);
+      console.log('Operators: ');
+      console.log(opers);
+    } 
 
     console.log(exps);
     console.log(opers);
-    console.log(conds);
-    console.log(condOps);
-    console.log(conState);
-    console.log(conStateOps);
-    
-    
-    
-    
+    return exps[0];   
+  }
 
-    // // Check for operators
-    // if( (this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
-    // (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) ){ 
-    //   // Split expression by operators
-    //   strSplit = this.expression.split(/[\+\-\*\/]+/g);
-    //   // Stored operators in an Array called "operators"
-    //   operators = this.expression.match(/[\+\-\*\/]+/g);
-    //   // Store operands in an Array called "values"
-    //   for (let i = 0; i < strSplit.length; i++) { values[i] = strSplit[i].trim(); }
-    // } else { 
-    //   values.splice( values.length, 0, this.expression.trim() );
-    //     // T: add variable.value to values[]
-    //     // F: alert('Variable not declared in expression')
-    //   // Make this.expression = this.variables[index].value
-    // }
+  calculateIntegerExpression( num1: number, num2: number, operator: string ){
+    let result: any;
+	  switch (operator){
+		  case '+':	result = num1 + num2;	break;
+		  case '-':	result = num1 - num2;	break;
+		  case '*':	result = num1 * num2;	break;
+      case '/':	result = num1 / num2;	break;
+      case '%':	result = num1 % num2;	break;
+      case '<':	result = num1 < num2;	break;
+      case '>':	result = num1 > num2;	break;
+      case '<=':	result = num1 <= num2;	break;
+      case '>=':	result = num1 >= num2; break;
+      case '!=':	result = num1 != num2;	break;
+      case '==':	result = num1 == num2;	break;
+      case '&&':	result = num1 && num2;	break;
+      case '||':	result = num1 || num2;	break;
+		  default:	break;
+    }
+    if (typeof(result) == "number") return Math.floor(result);
+    else return result;
+  }
 
-    // // Check if it is a variable name
-    // for (let i = 0; i < values.length; i++) {
-    //   for (let j = 0; j < variables.length; j++) {
-    //     if( variables[j].getName() == values[i] ){
-    //       values.splice( i, 1, variables[j].value );
-    //     }
-    //   }
-    // }
+  calculateRealExpression( num1: number, num2: number, operator: string ){
+    let result: any;
+	  switch (operator){
+		  case '+':	result = num1 + num2;	break;
+		  case '-':	result = num1 - num2;	break;
+		  case '*':	result = num1 * num2;	break;
+      case '/':	result = num1 / num2;	break;
+      case '%':	result = num1 % num2;	break;
+      case '<':	result = num1 < num2;	break;
+      case '>':	result = num1 > num2;	break;
+      case '<=':	result = num1 <= num2;	break;
+      case '>=':	result = num1 >= num2; break;
+      case '!=':	result = num1 != num2;	break;
+      case '==':	result = num1 == num2;	break;
+      case '&&':	result = num1 && num2;	break;
+      case '||':	result = num1 || num2;	break;
+		  default:	break;
+    }
+    return result;
+  }
 
-    // // Convert "values[]" to desired data type
-    // switch(dataType){
-    //   case 'Integer': 
-    //     for (let i = 0; i < values.length; i++) { parsedValues.splice( parsedValues.length, 0, parseInt(values[i]) ); }
-    //   break;
-    //   case 'Real': 
-    //     for (let i = 0; i < values.length; i++) { parsedValues.splice( parsedValues.length, 0, parseFloat(values[i]) ); }
-    //   break;
-    //   case 'String': 
-    //     for (let i = 0; i < values.length; i++) { parsedValues.splice( parsedValues.length, 0, values[i].toString() ); }
-    //   break;
-    //   case 'Boolean': 
-    //     for (let i = 0; i < values.length; i++) {
-    //       if( values[i] == "true" ) parsedValues.splice( parsedValues.length, 0, true );
-    //       if( values[i] == "false" ) parsedValues.splice( parsedValues.length, 0, false );
-    //     }
-    //   break;
-    //   default: break;
-    // }
+  calculateBooleanExpression( bool1: boolean, bool2: boolean, operator: string ){
+    let result: any;
+	  switch (operator){
+      case '!=':	result = bool1 != bool2;	break;
+      case '==':	result = bool1 == bool2;	break;
+      case '&&':	result = bool1 && bool2;	break;
+      case '||':	result = bool1 || bool2;	break;
+		  default: console.log('Invalid expression for Booleans!'); break;
+    }
+    return result;
+  }
 
-    // console.log('Operators: ');
-    // console.log(operators);
+  calculateStringExpression( str1: string, str2: string, operator: string ){
+    let result: any;
+	  switch (operator){
+      case '<':	result = str1 < str2;	break;
+      case '>':	result = str1 > str2;	break;
+      case '<=':	result = str1 <= str2;	break;
+      case '>=':	result = str1 >= str2; break;
+      case '!=':	result = str1 != str2;	break;
+      case '==':	result = str1 == str2;	break;
+      case '&&':	result = str1 && str2;	break;
+      case '||':	result = str1 || str2;	break;
+		  default: console.log('Invalid expression for Strings!');	break;
+    }
+    return result;
+  }
 
-    // console.log('Values: ');
-    // console.log(parsedValues);
+  pseudoCode(){ return '\tIf ' + this.getIfStatement() + '\n'; }
 
-    // while( operators.length != 0 ){
-    //   if( operators.indexOf('/') != -1 ){ j = operators.indexOf('/'); } 
-    //   else if( operators.indexOf('*') != -1 ){ j = operators.indexOf('*'); }
-    //   else if( operators.indexOf('+') != -1 ){ j = operators.indexOf('+'); }
-    //   else if( operators.indexOf('-') != -1 ){ j = operators.indexOf('-'); }
-
-    //   op = operators[j];
-    //   oper1 = parsedValues[j];
-    //   oper2 = parsedValues[j+1];
-  
-    //   switch(dataType){
-    //     case 'Integer': result = this.calculateIntegerExpression(oper1, oper2, op); break;
-    //     case 'Real': result = this.calculateRealExpression(oper1, oper2, op); break;
-    //     case 'String': result = this.calculateStringExpression(oper1, oper2, op); break;
-    //     case 'Boolean': result = this.calculateBooleanExpression(oper1, oper2, op); break;
-    //     default: break;
-    //   }
-    
-    //   operators.splice( j, 1 );
-    //   parsedValues.splice( j, 2, result );
-  
-    //   console.log('Values: ');
-    //   console.log(parsedValues);
-    //   console.log('Operators: ');
-    //   console.log(operators);
-    // }  
-    
-    // console.log(parsedValues);
-    // return parsedValues[0];
-    
+  cplusplusCode(){
+    return '\t' + this.getIfStatement() + ';\n';
   }
 
 }
