@@ -34,11 +34,11 @@ export class Process{
 
     // Check for operators
     if( (this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
-    (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) ){ 
+    (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) || (this.expression.indexOf('%') != -1) ){ 
       // Split expression by operators
-      strSplit = this.expression.split(/[\+\-\*\/]+/g);
+      strSplit = this.expression.split(/[\+\-\*\/\%]+/g);
       // Stored operators in an Array called "operators"
-      operators = this.expression.match(/[\+\-\*\/]+/g);
+      operators = this.expression.match(/[\+\-\*\/\%]+/g);
       // Store operands in an Array called "values"
       for (let i = 0; i < strSplit.length; i++) { values[i] = strSplit[i].trim(); }
     } else { 
@@ -125,7 +125,7 @@ export class Process{
       case '%':	result = num1 % num2;	break;
 		  default:	break;
 	  }
-	  return result;
+	  return Math.floor(result);
   }
 
   calculateRealExpression( num1: number, num2: number, operator: string ){
