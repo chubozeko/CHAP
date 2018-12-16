@@ -141,7 +141,9 @@ export class IfCase{
 
     console.log(exps);
     console.log(opers);
-    return exps[0];   
+
+    if( exps[0] == true ) return this.trueBlockSymbols;
+    else if( exps[0] == false ) return this.falseBlockSymbols;   
   }
 
   calculateIntegerExpression( num1: number, num2: number, operator: string ){

@@ -277,6 +277,13 @@ export class Flowchart{
         //let ifState = this.SYMBOLS[i].getIfStatement();
         let ifBlock = this.SYMBOLS[i].parseIfCaseExpression( this.variables );
         // Add ifBlock symbols to Flowchart instead of IfCase
+        this.SYMBOLS.splice( i, 1 );
+        for (let k = 0; k < ifBlock.length; k++) {
+          this.SYMBOLS.splice( i+k, 0, ifBlock[k] );
+        }
+        //this.SYMBOLS.splice( i, 1, ifBlock );
+        console.log(this.SYMBOLS);
+        
       }
 
       // WHILE LOOP
