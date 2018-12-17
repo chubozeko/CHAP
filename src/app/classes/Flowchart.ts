@@ -133,7 +133,7 @@ export class Flowchart{
       this.consoleInput.value = '';
       console.log(this.variables);
 
-      //return 'input done';
+      //return this.variables;
     }
   }
 
@@ -146,12 +146,20 @@ export class Flowchart{
     this.inputPromptStatement = Input.prototype.parseInputExp( this.variables[varIndex] ) + "\n";
     this.consoleLog.value += this.inputPromptStatement;
     this.consoleInput.addEventListener("keyup", (e) => this.enterPressedOnConsole(e, this.variables[varIndex]) );
-    // this.consoleInput.value = await undefined;
-    // return this.isInputEntered;
+    //await this.variables[varIndex].value != undefined;
+    return this.variables[varIndex].value != undefined; //this.isInputEntered;
   }
 
   validateProcess(symbol: Process, varIndex: number){ 
     this.variables[varIndex].value = symbol.parseExpression( this.variables, this.variables[varIndex].getDataType() );
+  }
+
+  checkIsInputEntered(){
+    if( this.isInputEntered == false ){
+      window.setTimeout(this.checkIsInputEntered, 100);
+    } else {
+      return true;
+    }
   }
 
   async validateFlowchart(){
@@ -164,7 +172,7 @@ export class Flowchart{
       if( this.SYMBOLS[i] instanceof Start ){
         console.log( 'Start Program' );
         this.isProgramRunning = true;
-      } 
+      } else
 
       // DECLARE
       if( this.SYMBOLS[i] instanceof Declare ){
@@ -172,7 +180,7 @@ export class Flowchart{
         for (let a = 0; a < vars.length; a++) {
           this.variables.splice(this.variables.length, 0, vars[a] ); 
         }
-      } 
+      } else
 
       // INPUT
       if( this.SYMBOLS[i] instanceof Input ){
@@ -187,9 +195,11 @@ export class Flowchart{
           this.showAlert('Invalid Statement at \'Input\'','Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
         } else { 
           console.log('input variable declared! carry on...');
-          this.validateInput(varIndex);
+          await this.validateInput(varIndex) == true;
+          //this.validateInput(varIndex);
+          //await this.checkIsInputEntered() == true;
         }
-      }
+      } else
 
       // PROCESS
       if( this.SYMBOLS[i] instanceof Process ){
@@ -208,7 +218,7 @@ export class Flowchart{
           this.validateProcess( this.SYMBOLS[i], varIndex );
         }
 
-      }
+      } else
 
       // OUTPUT
       if( this.SYMBOLS[i] instanceof Output ){
@@ -267,10 +277,10 @@ export class Flowchart{
         }
 
         this.consoleLog.value += outputS;
-      }
+      } else
 
       // COMMENT
-      if( this.SYMBOLS[i] instanceof Comment ){ break; }
+      if( this.SYMBOLS[i] instanceof Comment ){ break; } else
 
       // IF CASE
       if( this.SYMBOLS[i] instanceof IfCase ){
@@ -284,12 +294,12 @@ export class Flowchart{
         //this.SYMBOLS.splice( i, 1, ifBlock );
         console.log(this.SYMBOLS);
         
-      }
+      } else
 
       // WHILE LOOP
       if( this.SYMBOLS[i] instanceof WhileLoop ){
         this.SYMBOLS[i].parseWhileLoopExp();
-      }
+      } else
 
       // STOP
       if( this.SYMBOLS[i] instanceof Stop ){
