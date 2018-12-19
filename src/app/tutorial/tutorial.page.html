@@ -1,10 +1,10 @@
-<ion-toolbar style="padding: 5px; " color="secondary">
+<ion-toolbar style="padding: 5px; " color="primary">
   <img style="float: left; width: 24px; height: 24px; margin-left: 0;" src="./assets/icon/help_white.png"/>
   <ion-title>Tutorial</ion-title>
   <ion-button (click)="closeModal()" color="dark" full style="float: right;">Close</ion-button>
 </ion-toolbar>
 
-<ion-content padding>
+<ion-content padding color="secondary">
 
     <ion-slides id="tutorSlides" pager="true" [options]="slideOpts">
       <ion-slide>
@@ -20,7 +20,7 @@
 
 </ion-content>
 
-<ion-footer id="tutor_modal_footer" color="secondary">
+<ion-footer id="tutor_modal_footer" color="primary">
   <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> &lt; </ion-button>
   <ion-button (click)="nextSlide()" color="dark" full style="float: right;"> &gt; </ion-button>
 </ion-footer>
