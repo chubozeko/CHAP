@@ -67,19 +67,23 @@ export class Flowchart{
 
   displayFlowchartPseudoCode(){
     let pseudocode = '';
+    pseudocode += new Start().pseudoCode();
     for (let i = 0; i < this.SYMBOLS.length; i++) {
       const syms = this.SYMBOLS[i];
       pseudocode = pseudocode + syms.pseudoCode();
     }
+    pseudocode += new Stop().pseudoCode();
     return pseudocode;
   }
 
   displayCPlusPlusCode(){
     let cppcode = '';
+    cppcode += new Start().cplusplusCode();
     for (let i = 0; i < this.SYMBOLS.length; i++) {
       const syms = this.SYMBOLS[i];
       cppcode = cppcode + syms.cplusplusCode();
     }
+    cppcode += new Stop().cplusplusCode();
     return cppcode;
   }
 

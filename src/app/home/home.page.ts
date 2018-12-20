@@ -27,6 +27,7 @@ import { CodeViewerPage } from '../code-viewer/code-viewer.page';
 import { AboutPage } from '../about/about.page';
 import { TutorialPage } from '../tutorial/tutorial.page';
 import { Stop } from '../classes/Stop';
+import { Start } from '../classes/Start';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -95,26 +96,24 @@ export class HomePage {
       // shapes[i].addEventListener("dragmove", (e) => this.dragMove(e), false);
     }
 
-    // interact('.symbol')
-    //   .on('tap', )
-    //   .on('doubletap', )
-    //   .draggable({
-    //     inertia: {
-    //       resistance: 10,
-    //       minSpeed: 500,
-    //       endSpeed: 50
-    //     },
-    //     restrict: {
-    //       restriction: this.workspace,
-    //       endOnly: true,
-    //       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-    //     },
-    //     autoScroll: true,
-    //     onstart: this.startDrag,
-    //     onmove: this.moveDrag,
-    //     onend: this.endDrag
-    //   })
-    //   .on('hold', );
+    interact('.symbol')
+      // .draggable({
+      //   ignoreFrom: '#s_start, #s_stop',
+      //   inertia: {
+      //     resistance: 10,
+      //     minSpeed: 500,
+      //     endSpeed: 50
+      //   },
+      //   restrict: {
+      //     restriction: '.wrapper',
+      //     endOnly: true,
+      //     elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+      //   },
+      //   autoScroll: true,
+      //   onstart: this.startDrag,
+      //   onmove: this.moveDrag,
+      //   onend: this.endDrag
+      // });
   }
 
   public openMenu(){ this.menu.open(); }
@@ -618,7 +617,7 @@ export class HomePage {
       //     endSpeed: 50
       //   },
       //   restrict: {
-      //     restriction: this.workspace,
+      //     restriction: '.wrapper',
       //     endOnly: true,
       //     elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
       //   },
@@ -715,11 +714,12 @@ export class HomePage {
     
     // e.target = this.dupSymbol;
     //e.dataTransfer.setData('id', this.selectedSymbol);
+    //e.target.parentElement = document.getElementById('workspace');
     console.log("start drag" + e.target);
   }
 
   public moveDrag(e){ 
-    e.preventDefault(); 
+    e.preventDefault();
     let target = e.target || e.srcElement || e.currentTarget,
       // keep the dragged position in the data-x/data-y attributes
       x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx,
@@ -799,6 +799,9 @@ export class HomePage {
     const modal = await this.modalC.create({
       component: CodeViewerPage,
       componentProps: { flowchart: flowchart }
+    });
+    modal.onDidDismiss().then((data) => {
+      let fc = data.data as Flowchart;
     });
     await modal.present();
   }

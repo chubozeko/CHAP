@@ -14,7 +14,7 @@ export class DeclarePage implements OnInit {
 
   constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol');
-    // this.dataType = this.symbol.getDataType();
+    this.dataType = this.symbol.getDataType();
   }
 
   ngOnInit() {
