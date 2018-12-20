@@ -96,7 +96,15 @@ export class HomePage {
       // shapes[i].addEventListener("dragmove", (e) => this.dragMove(e), false);
     }
 
-    interact('.symbol')
+    interact('.dropzone').dropzone({
+      accept: '.symbol',
+      overlap: 0.75,
+      ondragenter: this.dragEnter,
+      ondragleave: this.dragLeave,
+      ondrop: this.dropped,
+    });
+
+    // interact('.symbol')
       // .draggable({
       //   ignoreFrom: '#s_start, #s_stop',
       //   inertia: {
@@ -483,7 +491,6 @@ export class HomePage {
       symbol = dec.getDeclareSymbol();
       symbol.innerHTML = "Declare";
       symComponent = dec;
-      //this.flowchart.addSymbolToFlowchart( dec, active_index );
     } 
     else if(id == 's_input'){
       let input = new Input();
@@ -492,7 +499,6 @@ export class HomePage {
       symbol = input.getInputSymbol();
       symbol.innerHTML = "Input";
       symComponent = input;
-      //this.flowchart.addSymbolToFlowchart( input, active_index );
     } 
     else if(id == 's_output'){
       let output = new Output();
@@ -501,7 +507,6 @@ export class HomePage {
       symbol = output.getOutputSymbol();
       symbol.innerHTML = "Output";
       symComponent = output;
-      //this.flowchart.addSymbolToFlowchart( output, active_index );
     } 
     else if(id == 's_process'){
       let proc = new Process();
@@ -510,7 +515,6 @@ export class HomePage {
       symbol = proc.getProcessSymbol();
       symbol.innerHTML = "Process";
       symComponent =  proc;
-      //this.flowchart.addSymbolToFlowchart( proc, active_index );
     } 
     else if(id == 's_comment'){
       let com = new Comment();
@@ -519,7 +523,6 @@ export class HomePage {
       symbol = com.getCommentSymbol();
       symbol.innerHTML = "Comment";
       symComponent = com;
-      //this.flowchart.addSymbolToFlowchart( com, active_index );
     }
     else if(id == 's_if_case'){
       let ifcase = new IfCase();
@@ -529,7 +532,6 @@ export class HomePage {
       ifcase.setIfCaseSymbol( t1 );
       symbol = temp[0].cloneNode(true); 
       symComponent = ifcase;
-      //this.flowchart.addSymbolToFlowchart( ifcase, active_index );
     } 
     else if(id == 's_while_loop'){
       let whileloop = new WhileLoop();
@@ -538,7 +540,6 @@ export class HomePage {
       whileloop.setWhileSymbol( temp[0].cloneNode(true) );
       symbol = whileloop.getWhileSymbol();
       symComponent = whileloop;
-      //this.flowchart.addSymbolToFlowchart( whileloop, active_index );
     } 
     // else if(id == 's_for_loop'){
     //   symClass = "for_div";
@@ -554,13 +555,6 @@ export class HomePage {
     let branches = document.getElementsByClassName("arrow dropzone active-arrow");
     let tempBranch = this.branch.cloneNode(true);
     //tempBranch.classList.remove('active-arrow');
-    
-    // Add buttonClick listeners to new Symbol & Arrow/Branch
-    tempBranch.addEventListener('click', (e) => this.openSymbolsFAB(e) );   
-    tempBranch.addEventListener("dragenter", (e) => this.dragEnter(e), false);
-    tempBranch.addEventListener("dragleave", (e) => this.dragLeave(e), false);
-    tempBranch.addEventListener("dragover", function(e){e.preventDefault();}, false);
-    tempBranch.addEventListener("drop", (e) => this.dropped(e), false);
     
     if( branches[0].parentElement.id == 'ifTrueBlock' ){
 
@@ -602,8 +596,6 @@ export class HomePage {
       let ai, totalAD = 0;
       let b1 = this.workspace.getElementsByClassName("arrow dropzone");
 
-      //symbol.addEventListener('dblclick', (e) => this.openSymbolDialog(e, id) );
-      //symbol.addEventListener('contextmenu', (e) => this.openSymbolsAS(e) );
       interact(symbol)
       .gesturable({
         hold: 1500
@@ -649,13 +641,20 @@ export class HomePage {
     }
 
     let dz = document.getElementsByClassName("arrow dropzone");
-      for(let i=0; i<dz.length; i++){
-        dz[i].addEventListener('click', (e) => this.openSymbolsFAB(e) );
-        dz[i].addEventListener("dragenter", (e) => this.dragEnter(e), false);
-        dz[i].addEventListener("dragleave", (e) => this.dragLeave(e), false);
-        dz[i].addEventListener("dragover", function(e){e.preventDefault();}, false);
-        dz[i].addEventListener("drop", (e) => this.dropped(e), false);
-      }
+    for(let i=0; i<dz.length; i++){
+      dz[i].addEventListener('click', (e) => this.openSymbolsFAB(e) );
+      dz[i].addEventListener("dragenter", (e) => this.dragEnter(e), false);
+      dz[i].addEventListener("dragleave", (e) => this.dragLeave(e), false);
+      dz[i].addEventListener("dragover", function(e){e.preventDefault();}, false);
+      dz[i].addEventListener("drop", (e) => this.dropped(e), false);
+    }
+    interact('.dropzone').dropzone({
+      accept: '.symbol',
+      overlap: 0.75,
+      ondragenter: this.dragEnter,
+      ondragleave: this.dragLeave,
+      ondrop: this.dropped,
+    });
 
     console.log( this.flowchart.SYMBOLS );
   }
@@ -705,14 +704,15 @@ export class HomePage {
   }
 
   public startDrag(e){
-    // let t = e.target || e.srcElement || e.currentTarget,
-    //   x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
-    //   y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
+    let t = e.target || e.srcElement || e.currentTarget,
+      x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
+      y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
     // this.dupSymbol = t.cloneNode(true);
     // document.body.appendChild( this.dupSymbol );
     // this.dupSymbol.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
     
     // e.target = this.dupSymbol;
+    this.selectedSymbol = t.id;
     //e.dataTransfer.setData('id', this.selectedSymbol);
     //e.target.parentElement = document.getElementById('workspace');
     console.log("start drag" + e.target);
