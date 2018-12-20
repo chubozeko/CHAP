@@ -66,8 +66,8 @@ export class HomePage {
     clearWS.addEventListener('click', (e) => this.clearWorkspace());
     let aboutPg = document.getElementById("btn_aboutPage");
     aboutPg.addEventListener('click', (e) => this.openAboutPage(e));
-    // let tutorPg = document.getElementById("btn_tutorialPage");
-    // tutorPg.addEventListener('click', (e) => this.openTutorialPage(e));
+    let tutorPg = document.getElementById("btn_tutorialPage");
+    tutorPg.addEventListener('click', (e) => this.openTutorialPage(e));
     let newProj = document.getElementById("btn_newProject");
     newProj.addEventListener('click', (e) => this.newProject());
     // let saveProj = document.getElementById("btn_saveProject");
@@ -96,15 +96,8 @@ export class HomePage {
     }
 
     // interact('.symbol')
-    //   .on('tap', function (e) {
-    //     e.currentTarget.classList.toggle('switch-bg');
-    //     e.preventDefault();
-    //   })
-    //   .on('doubletap', function (e) {
-    //     e.currentTarget.classList.toggle('large');
-    //     e.currentTarget.classList.remove('rotate');
-    //     e.preventDefault();
-    //   })
+    //   .on('tap', )
+    //   .on('doubletap', )
     //   .draggable({
     //     inertia: {
     //       resistance: 10,
@@ -121,10 +114,7 @@ export class HomePage {
     //     onmove: this.moveDrag,
     //     onend: this.endDrag
     //   })
-    //   .on('hold', function (event) {
-    //     event.currentTarget.classList.toggle('rotate');
-    //     event.currentTarget.classList.remove('large');
-    //   });
+    //   .on('hold', );
   }
 
   public openMenu(){ this.menu.open(); }
@@ -613,8 +603,31 @@ export class HomePage {
       let ai, totalAD = 0;
       let b1 = this.workspace.getElementsByClassName("arrow dropzone");
 
-      symbol.addEventListener('dblclick', (e) => this.openSymbolDialog(e, id) );
-      symbol.addEventListener('contextmenu', (e) => this.openSymbolsAS(e) );
+      //symbol.addEventListener('dblclick', (e) => this.openSymbolDialog(e, id) );
+      //symbol.addEventListener('contextmenu', (e) => this.openSymbolsAS(e) );
+      interact(symbol)
+      .gesturable({
+        hold: 1500
+      })
+      .on('tap', (e) => function(){e.preventDefault();} )
+      .on('doubletap', (e) => this.openSymbolDialog(e, id) )
+      // .draggable({
+      //   inertia: {
+      //     resistance: 10,
+      //     minSpeed: 500,
+      //     endSpeed: 50
+      //   },
+      //   restrict: {
+      //     restriction: this.workspace,
+      //     endOnly: true,
+      //     elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+      //   },
+      //   autoScroll: true,
+      //   onstart: this.startDrag,
+      //   onmove: this.moveDrag,
+      //   onend: this.endDrag
+      // })
+      .on('hold', (e) => this.openSymbolsAS(e));
       
       for (let l = 0; l < b1.length; l++) {
         if (b1[l].parentElement.id == 'ifTrueBlock' || b1[l].parentElement.id == 'ifFalseBlock'){ totalAD++; }

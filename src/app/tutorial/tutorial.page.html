@@ -1,26 +1,35 @@
 <ion-toolbar style="padding: 5px; " color="primary">
-  <img style="float: left; width: 24px; height: 24px; margin-left: 0;" src="./assets/icon/help_white.png"/>
+  <img style="float: left; width: 24px; height: 24px; margin-left: 5px;" src="./assets/icon/help_white.png"/>
   <ion-title>Tutorial</ion-title>
-  <ion-button (click)="closeModal()" color="dark" full style="float: right;">Close</ion-button>
+  <ion-button (click)="closeModal()" color="dark" slot="end" >Close</ion-button>
 </ion-toolbar>
 
-<ion-content padding color="secondary">
+<ion-content padding color="light">
 
-    <ion-slides id="tutorSlides" pager="true" [options]="slideOpts">
+    <ion-slides id="tutorSlides" [options]="slideOpts" scrollbar="true">
       <ion-slide>
-        <h1>Slide 1</h1>
+        <div>
+          <img width="80px" height="80px" style="padding: 2px;" src="./assets/icon/tut_d&d.png"/>
+          <h3>Tap on an Arrow to add Symbols OR use the Drag-and-Drop feature</h3>
+        </div>
       </ion-slide>
       <ion-slide>
-        <h1>Slide 2</h1>
+        <div>
+          <img width="100px" height="50px" style="padding: 2px;" src="./assets/icon/tut_doubletap.png"/>
+          <h3>Double-Tap on a Symbol to open their Properties </h3>
+        </div>
       </ion-slide>
       <ion-slide>
-        <h1>Slide 3</h1>
+        <div>
+          <img width="100px" height="100px" style="padding: 2px;" src="./assets/icon/tut_hold.png"/>
+          <h3>Press and Hold a Symbol to Delete the Symbol</h3>
+        </div>
       </ion-slide>
     </ion-slides>
 
 </ion-content>
 
-<ion-footer id="tutor_modal_footer" color="primary">
-  <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> &lt; </ion-button>
+<!-- <ion-footer id="tutor_modal_footer" color="primary">
+  <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> &lt; </ion-button> 
   <ion-button (click)="nextSlide()" color="dark" full style="float: right;"> &gt; </ion-button>
-</ion-footer>
+</ion-footer> -->
