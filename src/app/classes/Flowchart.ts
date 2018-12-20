@@ -34,7 +34,7 @@ export class Flowchart{
 
     let start = new Start();
     let stop = new Stop();
-    this.SYMBOLS = [ ]; //start, stop ];
+    this.SYMBOLS = []; //start, stop ];
     this.variables = [];
 
     console.log(this.SYMBOLS.length);
@@ -297,7 +297,7 @@ export class Flowchart{
         }
         //this.SYMBOLS.splice( i, 1, ifBlock );
         console.log(this.SYMBOLS);
-        
+        i = 0;
       } else
 
       // WHILE LOOP
