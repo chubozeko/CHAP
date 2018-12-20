@@ -268,7 +268,7 @@ export class Flowchart{
           for (let i = 0; i < s2.length; i++) {
             let str = s2[i].trim();
             if( str.indexOf("\"") != -1 ){
-              let str2 = str.replace(/"/g,'');
+              let str2 = str.replace(/\"/g,'');
               outputS += str2;
             } else {
               for( let l=0; l<this.variables.length; l++){

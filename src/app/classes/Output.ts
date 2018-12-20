@@ -19,11 +19,13 @@ export class Output{
     // parse the output expression
   }
 
-  pseudoCode(){ return '\tOutput ' + this.getOutputExpression() + '\n'; }
+  pseudoCode(){ return '\tOutput ' + this.getOutputExpression().replace(/\&/g,', ') + '\n'; }
   // toString(){ return '\tOutput \'' + this.getOutputExpression() + '\'\n'; }
 
   cplusplusCode(){
-    return '\tcout<<' + this.getOutputExpression() + '<<endl;\n';
+    //let exp = this.getOutputExpression();
+    //exp.replace(/\&/g,'<<');
+    return '\tcout<<' + this.getOutputExpression().replace(/\&/g,'<<') + '<<endl;\n';
   }
 
 }

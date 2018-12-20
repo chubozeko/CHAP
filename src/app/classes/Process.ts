@@ -66,7 +66,7 @@ export class Process{
         for (let i = 0; i < values.length; i++) { parsedValues.splice( parsedValues.length, 0, parseFloat(values[i]) ); }
       break;
       case 'String': 
-        for (let i = 0; i < values.length; i++) { parsedValues.splice( parsedValues.length, 0, values[i].toString() ); }
+        for (let i = 0; i < values.length; i++) { parsedValues.splice( parsedValues.length, 0, values[i].replace(/\"/g,'').toString() ); }
       break;
       case 'Boolean': 
         for (let i = 0; i < values.length; i++) {

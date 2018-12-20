@@ -219,10 +219,29 @@ export class IfCase{
     return result;
   }
 
-  pseudoCode(){ return '\tIf ' + this.getIfStatement() + '\n'; }
+  pseudoCode(){ 
+    let iftrue = '', iffalse = '';
+    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
+      const el = this.trueBlockSymbols[i];
+      iftrue += '\t' + el.pseudoCode();
+    }
+    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
+      const el = this.falseBlockSymbols[i];
+      iffalse += '\t' + el.pseudoCode();
+    }
+    return '\tIf ' + this.getIfStatement() + ' Then\n' + iftrue + '\tElse\n' + iffalse + '\tEnd If\n'; }
 
   cplusplusCode(){
-    return '\t' + this.getIfStatement() + ';\n';
+    let iftrue = '', iffalse = '';
+    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
+      const el = this.trueBlockSymbols[i];
+      iftrue += '\t' + el.cplusplusCode();
+    }
+    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
+      const el = this.falseBlockSymbols[i];
+      iffalse += '\t' + el.cplusplusCode();
+    }
+    return '\tif (' + this.getIfStatement() + '){\n' + iftrue + '\telse {\n' + iffalse + '\t} \n';
   }
 
 }
