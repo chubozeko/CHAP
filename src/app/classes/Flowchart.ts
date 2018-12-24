@@ -53,6 +53,37 @@ export class Flowchart{
     await alert.present();
   }
 
+  async showInputPrompt(alertTitle: string, varIndex: number) {
+    const alert = await this.alertC.create({
+      header: alertTitle,
+      inputs: [{
+        name: 'inputText',
+        type: 'text'
+      }],
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (data) => {
+          console.log('Cancel ' + data.inputText);
+        }
+      }, 
+      {
+        text: 'OK',
+        handler: (data) => {
+          console.log('Ok ' + data.inputText);
+          this.inputParsing( this.variables[varIndex], data.inputText );
+        }
+      }]
+    });
+
+    alert.onDidDismiss().then((data) => { 
+      console.log("hello");
+    });
+      
+    await alert.present();
+  }
+
   addSymbolToFlowchart( symbol: any, position: number){ this.SYMBOLS.splice(position, 0, symbol); }
 
   removeSymbolFromFlowchart( position: number ){ this.SYMBOLS.splice(position, 1); }
@@ -141,17 +172,44 @@ export class Flowchart{
     }
   }
 
+  inputParsing(var1: Variable, var_val: any){
+    // Checking the data type of an entered variable into the Console
+    let var_value1: any;
+    if( !isNaN( parseInt(var_val) ) ){ var_value1 = parseInt(var_val); }
+    else if( !isNaN( parseFloat(var_val) ) ){ var_value1 = parseFloat(var_val); }
+    else if( var_val == "true" ){ var_value1 = true; }
+    else if( var_val == "false" ){ var_value1 = false; }
+    else { var_value1 = var_val.toString(); }
+
+    if ( var1.getDataType() == 'Integer' && typeof var_value1 == 'number' ){ 
+      var1.value = var_value1; 
+      // this.isInputEntered = true;
+    }
+    else if ( var1.getDataType() == 'Real' && typeof var_value1 == 'number' ){ 
+      var1.value = var_value1;
+      // this.isInputEntered = true;
+    }
+    else if ( var1.getDataType() == 'String' && typeof var_value1 == 'string' ){ 
+      var1.value = var_value1;
+      // this.isInputEntered = true;
+    }
+    else if ( var1.getDataType() == 'Boolean' && typeof var_value1 == 'boolean' ){ 
+      var1.value = var_value1;
+      // this.isInputEntered = true;
+    }
+    else {
+      this.showAlert("Invalid datatype entered!","");
+    }
+
+    console.log(this.variables);
+  }
+
   async validateInput(varIndex: number){
-    // Enable Console Input for editing
-    this.consoleInput.disabled = false;
-    this.consoleInput.contentEditable = 'true';
-    this.consoleInput.focus();
     // Display Input prompt
     this.inputPromptStatement = Input.prototype.parseInputExp( this.variables[varIndex] ) + "\n";
-    this.consoleLog.value += this.inputPromptStatement;
-    this.consoleInput.addEventListener("keyup", (e) => this.enterPressedOnConsole(e, this.variables[varIndex]) );
-    //await this.variables[varIndex].value != undefined;
-    return this.variables[varIndex].value != undefined; //this.isInputEntered;
+    this.showInputPrompt( this.inputPromptStatement, varIndex );
+    //this.inputParsing( this.variables[varIndex] );
+    return await this.variables[varIndex].value != undefined;
   }
 
   validateProcess(symbol: Process, varIndex: number){ 
@@ -199,8 +257,8 @@ export class Flowchart{
           this.showAlert('Invalid Statement at \'Input\'','Variable \"' + this.SYMBOLS[i].getVariableName() + '\" is not declared!');
         } else { 
           console.log('input variable declared! carry on...');
-          await this.validateInput(varIndex) == true;
-          //this.validateInput(varIndex);
+          this.validateInput(varIndex);
+          //await this.validateInput(varIndex);
           //await this.checkIsInputEntered() == true;
         }
       } else

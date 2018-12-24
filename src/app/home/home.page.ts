@@ -403,7 +403,7 @@ export class HomePage {
     }
   }
 
-  public openSymbolDialog(event, id){
+  async openSymbolDialog(event, id){
     // Get the target symbol & make it active
     let active_sym_index, tempSym, asi;
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
@@ -676,8 +676,6 @@ export class HomePage {
   public clearConsole(){
     let consoleCHAP = document.getElementById("console") as HTMLTextAreaElement;
     consoleCHAP.value = "";
-    let consoleInput = document.getElementById("consoleInput") as HTMLInputElement;
-    consoleInput.value = "";
   }
 
   public clearWorkspace(){
