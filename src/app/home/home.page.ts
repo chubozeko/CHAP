@@ -787,8 +787,8 @@ export class HomePage {
     this.clearConsole();
     let tempFC = new Flowchart(this.alertC);
     tempFC = this.flowchart;
-    //this.flowchart.validateFlowchart();
-    tempFC.validateFlowchart();
+    //this.flowchart.validateFlowchart(0);
+    tempFC.validateFlowchart(0);
   }
 
   public generatePseudoCode(e){
