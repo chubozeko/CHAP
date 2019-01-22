@@ -229,7 +229,8 @@ export class IfCase{
       const el = this.falseBlockSymbols[i];
       iffalse += '\t' + el.pseudoCode();
     }
-    return '\tIf ' + this.getIfStatement() + ' Then\n' + iftrue + '\tElse\n' + iffalse + '\tEnd If\n'; }
+    return '\tIf ' + this.getIfStatement() + ' Then\n' + iftrue + '\tElse\n' + iffalse + '\tEnd If\n'; 
+  }
 
   cplusplusCode(){
     let iftrue = '', iffalse = '';

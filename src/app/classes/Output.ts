@@ -20,7 +20,6 @@ export class Output{
   }
 
   pseudoCode(){ return '\tOutput ' + this.getOutputExpression().replace(/\&/g,', ') + '\n'; }
-  // toString(){ return '\tOutput \'' + this.getOutputExpression() + '\'\n'; }
 
   cplusplusCode(){
     //let exp = this.getOutputExpression();

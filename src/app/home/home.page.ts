@@ -96,32 +96,32 @@ export class HomePage {
       // shapes[i].addEventListener("dragmove", (e) => this.dragMove(e), false);
     }
 
-    interact('.dropzone').dropzone({
-      accept: '.symbol',
-      overlap: 0.75,
-      ondragenter: this.dragEnter,
-      ondragleave: this.dragLeave,
-      ondrop: this.dropped,
-    });
+    // interact('.dropzone').dropzone({
+    //   accept: '.symbol',
+    //   // overlap: 0.75,
+    //   ondragenter: this.dragEnter,
+    //   ondragleave: this.dragLeave,
+    //   ondrop: this.dropped,
+    // });
 
     // interact('.symbol')
-      // .draggable({
-      //   ignoreFrom: '#s_start, #s_stop',
-      //   inertia: {
-      //     resistance: 10,
-      //     minSpeed: 500,
-      //     endSpeed: 50
-      //   },
-      //   restrict: {
-      //     restriction: '.wrapper',
-      //     endOnly: true,
-      //     elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-      //   },
-      //   autoScroll: true,
-      //   onstart: this.startDrag,
-      //   onmove: this.moveDrag,
-      //   onend: this.endDrag
-      // });
+    //   .draggable({
+    //     ignoreFrom: '#s_start, #s_stop',
+    //     inertia: {
+    //       resistance: 10,
+    //       minSpeed: 500,
+    //       endSpeed: 50
+    //     },
+    //     restrict: {
+    //       restriction: '.wrapper',
+    //       endOnly: true,
+    //       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+    //     },
+    //     autoScroll: true,
+    //     onstart: this.startDrag,
+    //     onmove: this.moveDrag,
+    //     onend: this.endDrag
+    //   });
   }
 
   public openMenu(){ this.menu.open(); }
@@ -702,36 +702,39 @@ export class HomePage {
   }
 
   public startDrag(e){
-    let t = e.target || e.srcElement || e.currentTarget,
-      x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
-      y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
+    // let t = e.target || e.srcElement || e.currentTarget,
+    //   x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
+    //   y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
     // this.dupSymbol = t.cloneNode(true);
-    // document.body.appendChild( this.dupSymbol );
-    // this.dupSymbol.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    
+    // this.dupSymbol.setAttribute('data-x', x);
+    // this.dupSymbol.setAttribute('data-y', y);
+    // document.getElementById('workspace').appendChild( this.dupSymbol );
+    // //this.dupSymbol.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
     
     // e.target = this.dupSymbol;
-    this.selectedSymbol = t.id;
+    this.selectedSymbol = e.target.id;
     //e.dataTransfer.setData('id', this.selectedSymbol);
-    //e.target.parentElement = document.getElementById('workspace');
+    //document.getElementById('workspace').appendChild(e.target);
     console.log("start drag" + e.target);
   }
 
   public moveDrag(e){ 
     e.preventDefault();
-    let target = e.target || e.srcElement || e.currentTarget,
-      // keep the dragged position in the data-x/data-y attributes
-      x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx,
-      y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy;
+    // let target = e.target || e.srcElement || e.currentTarget,
+    //   // keep the dragged position in the data-x/data-y attributes
+    //   x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx,
+    //   y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy;
 
-    // translate the element
-    target.style.zIndex = '-1';
-    target.style.webkitTransform =
-    target.style.transform =
-      'translate(' + x + 'px, ' + y + 'px)';
+    // // translate the element
+    // target.style.zIndex = '-1';
+    // target.style.webkitTransform =
+    // target.style.transform =
+    //   'translate(' + x + 'px, ' + y + 'px)';
 
-    // update the position attributes
-    target.setAttribute('data-x', x);
-    target.setAttribute('data-y', y);
+    // // update the position attributes
+    // target.setAttribute('data-x', x);
+    // target.setAttribute('data-y', y);
   }
   
   public endDrag(e){ 
