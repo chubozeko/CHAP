@@ -141,9 +141,31 @@ export class Process{
 	  return result;
   }
 
-  calculateBooleanExpression( bool1: number, bool2: number, operator: string ){}
+  calculateBooleanExpression( bool1: boolean, bool2: boolean, operator: string ){
+    let result: any = bool1;
+	  switch (operator){
+      case '%':	
+      case '-':	
+      case '+':	
+      case '*':	
+      case '/':	
+		  default: console.log('Invalid expression for Booleans!'); break;
+    }
+    return result;
+  }
 
-  calculateStringExpression( str1: number, str2: number, operator: string ){}
+  calculateStringExpression( str1: string, str2: string, operator: string ){
+    let result: any;
+	  switch (operator){
+      case '+':	result = str1 + str2;	break;
+      case '%':	
+      case '-':	
+      case '*':	
+      case '/':	
+		  default: console.log('Invalid operation for Strings!');	break;
+    }
+    return result;
+  }
 
   pseudoCode(){ return '\tProcess ' + this.getProcessExpression() + '\n'; }
 

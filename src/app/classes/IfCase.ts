@@ -45,11 +45,9 @@ export class IfCase{
       || (this.ifStatement.indexOf('+') != -1) || (this.ifStatement.indexOf('-') != -1) || (this.ifStatement.indexOf('*') != -1)
       || (this.ifStatement.indexOf('/') != -1) || (this.ifStatement.indexOf('%') != -1) ){ 
       // Split by logical operators
-      //exps1 = this.ifStatement.split(/[\&\|\!]+/g);
       exps1 = this.ifStatement.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
       for (let i = 0; i < exps1.length; i++) { exps[i] = exps1[i].trim(); }
       // Store logical operators in "opers"
-      //opers = this.ifStatement.match(/[\&\|\!]+/g);
       opers = this.ifStatement.match(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
     } else {
       exps.splice( exps.length, 0, this.ifStatement.trim() );
@@ -145,7 +143,7 @@ export class IfCase{
     console.log(opers);
 
     if( exps[0] == true ) return this.trueBlockSymbols;
-    else if( exps[0] == false ) return this.falseBlockSymbols;   
+    else if( exps[0] == false ) return this.falseBlockSymbols;
   }
 
   calculateIntegerExpression( num1: number, num2: number, operator: string ){

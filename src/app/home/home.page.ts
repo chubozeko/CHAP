@@ -248,10 +248,7 @@ export class HomePage {
       try {
         let ifcase = data.data as IfCase;
         e.target.innerHTML = ifcase.getIfStatement();
-        //this.consoleLog(ifcase.getIfStatement());
         console.log(data.data);
-        //console.log(ifcase.getIfStatement());
-        
       } catch (error) { console.log(error); }
     });
     await modal.present();
@@ -272,7 +269,6 @@ export class HomePage {
       try {
         let whileloop = data.data as WhileLoop;
       // e.target.innerHTML = whileloop.getWhileExpression();
-      // this.consoleLog(whileloop.getWhileExpression());
       console.log(data.data);
       } catch (error) { console.log(error); }
     });
@@ -285,7 +281,6 @@ export class HomePage {
   //     componentProps: { s_id: id }
   //   });
   //   modal.onDidDismiss().then((data) => {
-  //     this.consoleLog(data.data);
   //     console.log(data.data);
   //   });
   //   await modal.present();
@@ -297,7 +292,6 @@ export class HomePage {
   //     componentProps: { s_id: id }
   //   });
   //   modal.onDidDismiss().then((data) => {
-  //     this.consoleLog(data.data);
   //     console.log(data.data);
   //   });
   //   await modal.present();
@@ -788,10 +782,10 @@ export class HomePage {
   public debugProgram(e){
     this.menu.close();
     this.clearConsole();
-    let tempFC = new Flowchart(this.alertC);
-    tempFC = this.flowchart;
-    //this.flowchart.validateFlowchart(0);
-    tempFC.validateFlowchart(0);
+    //let tempFC = new Flowchart(this.alertC);
+    //tempFC = this.flowchart;
+    this.flowchart.validateFlowchart(0);
+    //tempFC.validateFlowchart(0);
   }
 
   public generatePseudoCode(e){
