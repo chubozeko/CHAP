@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController } from '@ionic/angular';
 import { ActionSheetOptions } from '@ionic/core';
 import html2canvas from 'html2canvas';
-//import interact from 'interactjs';
 const interact = require('interactjs');
 
 import { SYMBOLS } from "../symbol-list";   // importing the symbol array from symbol-list.ts
@@ -782,10 +781,8 @@ export class HomePage {
   public debugProgram(e){
     this.menu.close();
     this.clearConsole();
-    //let tempFC = new Flowchart(this.alertC);
-    //tempFC = this.flowchart;
     this.flowchart.validateFlowchart(0);
-    //tempFC.validateFlowchart(0);
+    //console.log(this.flowchart);
   }
 
   public generatePseudoCode(e){

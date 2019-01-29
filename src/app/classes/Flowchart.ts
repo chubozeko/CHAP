@@ -14,7 +14,6 @@ export class Flowchart{
 
   SYMBOLS: any[];
   tempSymbols: any[];
-
   variables: any[];
   comments: string[];
 
@@ -28,18 +27,15 @@ export class Flowchart{
   //alertC: AlertController;
 
   constructor(public alertC: AlertController){
-    let defaultSymbols = document.getElementsByClassName('symbols');
-    for (let i = 0; i < defaultSymbols.length; i++) {
-      this.SYMBOLS.splice( i, 0, defaultSymbols[i] );
-    }
-
+    // let defaultSymbols = document.getElementsByClassName('symbols');
+    // for (let i = 0; i < defaultSymbols.length; i++) {
+    //   this.SYMBOLS.splice( i, 0, defaultSymbols[i] );
+    // }
     let start = new Start();
     let stop = new Stop();
     this.SYMBOLS = [];
     this.variables = [];
     this.tempSymbols = [];
-
-    console.log(this.SYMBOLS.length);
 
     this.consoleLog = document.getElementById("console") as HTMLTextAreaElement;
   }
@@ -88,11 +84,17 @@ export class Flowchart{
     await alert.present();
   }
 
-  addSymbolToFlowchart( symbol: any, position: number){ this.SYMBOLS.splice(position, 0, symbol); }
+  addSymbolToFlowchart( symbol: any, position: number){ 
+    this.SYMBOLS.splice(position, 0, symbol); 
+  }
 
-  removeSymbolFromFlowchart( position: number ){ this.SYMBOLS.splice(position, 1); }
+  removeSymbolFromFlowchart( position: number ){ 
+    this.SYMBOLS.splice(position, 1); 
+  }
 
-  getSymbolFromFlowchart( index: number ){ return this.SYMBOLS[index]; }
+  getSymbolFromFlowchart( index: number ){ 
+    return this.SYMBOLS[index]; 
+  }
 
   clearFlowchart(){
     let start = new Start();
@@ -156,7 +158,10 @@ export class Flowchart{
   }
 
   async validateFlowchart(startIndex: number){
-    this.tempSymbols = this.SYMBOLS;
+    
+    for (let q = 0; q < this.SYMBOLS.length; q++) {
+      this.tempSymbols.splice( q, 0, this.SYMBOLS[q] ); 
+    }
 
     if(startIndex == 0){
       this.variables = [];
@@ -199,7 +204,6 @@ export class Flowchart{
 
       // PROCESS
       if( this.tempSymbols[i] instanceof Process ){
-
         let isVarDeclared = false;
         for( let j=0; j<this.variables.length; j++){
           if( this.tempSymbols[i].getVariableName() == this.variables[j].getName() ){
@@ -213,7 +217,6 @@ export class Flowchart{
           console.log('process variable declared. carry on...');
           this.validateProcess( this.tempSymbols[i], varIndex );
         }
-
       } else
 
       // OUTPUT
@@ -282,15 +285,13 @@ export class Flowchart{
 
       // IF CASE
       if( this.tempSymbols[i] instanceof IfCase ){
-        //let ifState = this.tempSymbols[i].getIfStatement();
         let ifBlock = this.tempSymbols[i].parseIfCaseExpression( this.variables );
         // Add ifBlock symbols to Flowchart instead of IfCase
         this.tempSymbols.splice( i, 1 );
         for (let k = 0; k < ifBlock.length; k++) {
           this.tempSymbols.splice( i+k, 0, ifBlock[k] );
         }
-        //this.tempSymbols.splice( i, 1, ifBlock );
-        i = 0;
+        --i;
       } else
 
       // WHILE LOOP
@@ -305,10 +306,12 @@ export class Flowchart{
       }
     }
 
+    console.log("Variables");
     console.log(this.variables);
+    console.log("Symbols");
     console.log(this.SYMBOLS);
+    console.log("Temporary symbols");
     console.log(this.tempSymbols);
-    
   }
 
 }

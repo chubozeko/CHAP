@@ -33,10 +33,8 @@ export class IfCase{
 
   parseIfCaseExpression( variables: any[] ){
 
-    let strSplit = [], values = [], opers = [], parsedValues = [];
+    let opers = [], parsedValues = [], exps = [], exps1 = [];
     let op = '', oper1, oper2, result, j = 0;
-
-    let exps = [], exps1 = [], conds = [], conds1 = [], condOps = [], conState = [], conState1 = [], conStateOps = [];
 
     // LOGICAL Operators: &&, ||, !
     if( (this.ifStatement.indexOf('&&') != -1) || (this.ifStatement.indexOf('||') != -1) || (this.ifStatement.indexOf('!') != -1)
@@ -52,30 +50,6 @@ export class IfCase{
     } else {
       exps.splice( exps.length, 0, this.ifStatement.trim() );
     }
-
-    // // CONDITIONAL Operators: <, >, ==, <=, >=, !=
-    // for (let j = 0; j < exps.length; j++) {
-    //   // Split by conditional operators
-    //   conds1 = exps[j].split(/[\>\<\=\!]+/g);
-    //   for (let k = 0; k < conds1.length; k++) { conds.splice( conds.length, 0, conds1[k].trim() ); }
-    //   // Store conditional operators in "condOps"
-    //   condOps.splice( condOps.length, 0, exps[j].match(/[\>\<\=\!]+/g)[0] );
-    // }
-
-    // // REGULAR Operators: +, -, *, /, %
-    // for (let k = 0; k < conds.length; k++) {
-    //   const con = conds[k];
-    //   if( (con.indexOf('+') != -1) || (con.indexOf('-') != -1) || (con.indexOf('*') != -1) || (con.indexOf('/') != -1) || (con.indexOf('%') != -1) ){
-    //     // Split conditional expressions by operators
-    //     conState1 = con.split(/[\+\-\*\/\%]+/g);
-    //     for (let l = 0; l < conState1.length; l++) { conState.splice( conState.length, 0, conState1[l].trim() ); }
-    //     // Stored operators in an Array called "conStateOps"
-    //     condOps.splice(k, 0, con.match(/[\+\-\*\/\%]+/g)[0] );
-    //   } else {
-    //     conState.splice( conState.length, 0, con.trim() );
-    //   }
-      
-    // }
 
     // Check if it is a variable name & parse to desired data type
     for (let i = 0; i < exps.length; i++) {
@@ -139,6 +113,7 @@ export class IfCase{
       console.log(opers);
     } 
 
+    console.log("Expressions:");
     console.log(exps);
     console.log(opers);
 
