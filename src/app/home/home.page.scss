@@ -12,7 +12,7 @@
 // SYMBOLS CSS
 #control_loop_list{ display: none; }
 
-.if_div, .while_div{
+.if_div, .while_div, .for_div, .do_while_div{
   display: grid;
   grid-template-columns: repeat(5, 70px);
   align-items: center;

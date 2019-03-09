@@ -3,7 +3,7 @@ import { Symbol } from "../app/symbol";
 export const SYMBOLS: Symbol[] = [
     // { id: '', cardID: '', s_name: "" },
     { id: 's_comment', cardID: 'card_comment', s_name: "Comment" },
-    // { id: 's_do_while_loop', cardID: 'card_do_while_loop', s_name: "Do.. While" },
+    { id: 's_do_while_loop', cardID: 'card_do_while_loop', s_name: "Do" },
     { id: 's_while_loop', cardID: 'card_while_loop', s_name: "While" },
     { id: 's_for_loop', cardID: 'card_for_loop', s_name: "For" },
     { id: 's_if_case', cardID: 'card_if_case', s_name: "If" },

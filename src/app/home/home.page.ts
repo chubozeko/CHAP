@@ -28,6 +28,9 @@ import { TutorialPage } from '../tutorial/tutorial.page';
 import { Stop } from '../classes/Stop';
 import { Start } from '../classes/Start';
 import { ForLoopPage } from '../symbol-dialogs/for-loop/for-loop.page';
+import { ForLoop } from '../classes/ForLoop';
+import { DoWhileLoop } from '../classes/DoWhileLoop';
+import { DoWhileLoopPage } from '../symbol-dialogs/do-while-loop/do-while-loop.page';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -232,8 +235,7 @@ export class HomePage {
   }
 
   async openIfModal(symbol, e){
-    console.log(symbol);
-    
+    //console.log(symbol);
     const modal = await this.modalC.create({
       component: IfElsePage,
       componentProps: { symbol: symbol }
@@ -268,34 +270,53 @@ export class HomePage {
 
       try {
         let whileloop = data.data as WhileLoop;
-      // e.target.innerHTML = whileloop.getWhileExpression();
-      console.log(data.data);
+        e.target.innerHTML = whileloop.getWhileExpression();
+        console.log(data.data);
       } catch (error) { console.log(error); }
     });
     await modal.present();
   }
 
-  // async openForLoopModal(id){
-  //   const modal = await this.modalC.create({
-  //     component: ForLoopPage,
-  //     componentProps: { s_id: id }
-  //   });
-  //   modal.onDidDismiss().then((data) => {
-  //     console.log(data.data);
-  //   });
-  //   await modal.present();
-  // }
+  async openForLoopModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: ForLoopPage,
+      componentProps: { symbol: symbol }
+    });
 
-  // async openDoWhileModal(id){
-  //   const modal = await this.modalC.create({
-  //     component: DoWhileLoopPage,
-  //     componentProps: { s_id: id }
-  //   });
-  //   modal.onDidDismiss().then((data) => {
-  //     console.log(data.data);
-  //   });
-  //   await modal.present();
-  // }
+    modal.onDidDismiss().then((data) => {
+      let s = document.getElementsByClassName("active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
+
+      try {
+        let forloop = data.data as ForLoop;
+        e.target.innerHTML = forloop.getForExpression();
+        console.log(data.data);
+      } catch (error) { console.log(error); }
+    });
+    await modal.present();
+  }
+
+  async openDoWhileModal(symbol, e){
+    const modal = await this.modalC.create({
+      component: DoWhileLoopPage,
+      componentProps: { symbol: symbol }
+    });
+    modal.onDidDismiss().then((data) => {
+      let s = document.getElementsByClassName("active-symbol");
+      for(let i=0; i<s.length; i++){
+        s[i].classList.remove('active-symbol');
+      }
+
+      try {
+        let dowhileloop = data.data as DoWhileLoop;
+        e.target.innerHTML = dowhileloop.getDoWhileExpression();
+        console.log(data.data);
+      } catch (error) { console.log(error); }
+    });
+    await modal.present();
+  }
 
   async openSymbolsAS(event){
     event.preventDefault();
@@ -390,18 +411,12 @@ export class HomePage {
     }
   }
 
-  public openTutorialFAB(event){
-    let tutorialFAB = document.getElementById("tutorialFAB");
-    if (!tutorialFAB.getAttribute("activated")){
-      this.tutorialFAB.activated = true;
-    }
-  }
-
   async openSymbolDialog(event, id){
     // Get the target symbol & make it active
     let active_sym_index, tempSym, asi;
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
-    if(targetSymbol.id == 's_if_case' || targetSymbol.id == 's_while_loop'){
+    if(targetSymbol.id == 's_if_case' || targetSymbol.id == 's_while_loop' 
+      || targetSymbol.id == 's_do_while_loop' || targetSymbol.id == 's_for_loop'){
       targetSymbol.classList.add('active-symbol');
     } else {
       targetSymbol.classList.add('active-symbol');
@@ -424,7 +439,9 @@ export class HomePage {
           else if(targetSymbol.id == 's_comment'){ this.openCommentModal(tempSym, event); } 
           else if(targetSymbol.id == 's_process'){ this.openProcessModal(tempSym, event); } 
           else if(targetSymbol.id == 's_if_case'){ this.openIfModal(tempSym, event); } 
+          else if(targetSymbol.id == 's_for_loop'){ this.openForLoopModal(tempSym, event); }
           else if(targetSymbol.id == 's_while_loop'){ this.openWhileModal(tempSym, event); }
+          else if(targetSymbol.id == 's_do_while_loop'){ this.openDoWhileModal(tempSym, event); }
         }
       }
     }
@@ -444,7 +461,9 @@ export class HomePage {
           else if(targetSymbol.id == 's_comment'){ this.openCommentModal(tempSym, event); } 
           else if(targetSymbol.id == 's_process'){ this.openProcessModal(tempSym, event); } 
           else if(targetSymbol.id == 's_if_case'){ this.openIfModal(tempSym, event); } 
+          else if(targetSymbol.id == 's_for_loop'){ this.openForLoopModal(tempSym, event); }
           else if(targetSymbol.id == 's_while_loop'){ this.openWhileModal(tempSym, event); }
+          else if(targetSymbol.id == 's_do_while_loop'){ this.openDoWhileModal(tempSym, event); }
         }
       }
     }
@@ -461,7 +480,9 @@ export class HomePage {
       else if(targetSymbol.id == 's_comment'){ this.openCommentModal(tempSym, event); } 
       else if(targetSymbol.id == 's_process'){ this.openProcessModal(tempSym, event); } 
       else if(targetSymbol.id == 's_if_case'){ this.openIfModal(tempSym, event); } 
+      else if(targetSymbol.id == 's_for_loop'){ this.openForLoopModal(tempSym, event); }
       else if(targetSymbol.id == 's_while_loop'){ this.openWhileModal(tempSym, event); }
+      else if(targetSymbol.id == 's_do_while_loop'){ this.openDoWhileModal(tempSym, event); }
     }
     
     // } else if(targetSymbol.id == 's_for_loop'){
@@ -535,22 +556,22 @@ export class HomePage {
       symbol = whileloop.getWhileSymbol();
       symComponent = whileloop;
     } 
-    // else if(id == 's_for_loop'){
-    //   let forloop = new ForLoop();
-    //   symClass = "for_div";
-    //   temp = document.getElementsByClassName(symClass);
-    //   forloop.setForSymbol( temp[0].cloneNode(true) );
-    //   symbol = forloop.getForSymbol();
-    //   symComponent = forloop;
-    // } 
-    // else if(id == 's_do_while_loop'){
-    //   let doWhileLoop = new DoWhileLoop();
-    //   symClass = "do_while_div";
-    //   temp = document.getElementsByClassName(symClass);
-    //   doWhileLoop.setDoWhileSymbol( temp[0].cloneNode(true) );
-    //   symbol = doWhileLoop.getDoWhileSymbol();
-    //   symComponent = doWhileLoop;
-    // }
+    else if(id == 's_for_loop'){
+      let forloop = new ForLoop();
+      symClass = "for_div";
+      temp = document.getElementsByClassName(symClass);
+      forloop.setForSymbol( temp[0].cloneNode(true) );
+      symbol = forloop.getForSymbol();
+      symComponent = forloop;
+    } 
+    else if(id == 's_do_while_loop'){
+      let doWhileLoop = new DoWhileLoop();
+      symClass = "do_while_div";
+      temp = document.getElementsByClassName(symClass);
+      doWhileLoop.setDoWhileSymbol( temp[0].cloneNode(true) );
+      symbol = doWhileLoop.getDoWhileSymbol();
+      symComponent = doWhileLoop;
+    }
 
     // Get the selected arrow/branch to append symbol after
     let branches = document.getElementsByClassName("arrow dropzone active-arrow");
