@@ -16,8 +16,8 @@ import { VariablesComponent } from './variables/variables.component';
 
 import { CommentPageModule } from './symbol-dialogs/comment/comment.module';
 import { DeclarePageModule } from './symbol-dialogs/declare/declare.module';
-// import { DoWhileLoopPageModule } from './symbol-dialogs/do-while-loop/do-while-loop.module';
-// import { ForLoopPageModule } from './symbol-dialogs/for-loop/for-loop.module';
+import { DoWhileLoopPageModule } from './symbol-dialogs/do-while-loop/do-while-loop.module';
+import { ForLoopPageModule } from './symbol-dialogs/for-loop/for-loop.module';
 import { IfElsePageModule } from './symbol-dialogs/if-else/if-else.module';
 import { InputPageModule } from './symbol-dialogs/input/input.module';
 // import { OperationPageModule } from './symbol-dialogs/operation/operation.module';
@@ -43,8 +43,8 @@ import { TutorialPageModule } from './tutorial/tutorial.module';
     AppRoutingModule,
     CommentPageModule,
     DeclarePageModule,
-    // DoWhileLoopPageModule,
-    // ForLoopPageModule,
+    DoWhileLoopPageModule,
+    ForLoopPageModule,
     IfElsePageModule,
     InputPageModule,
     ProcessPageModule,

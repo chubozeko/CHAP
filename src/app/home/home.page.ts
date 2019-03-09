@@ -284,7 +284,7 @@ export class HomePage {
     });
 
     modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("active-symbol");
+      let s = document.getElementsByClassName("symbol active-symbol");
       for(let i=0; i<s.length; i++){
         s[i].classList.remove('active-symbol');
       }
@@ -559,7 +559,8 @@ export class HomePage {
     else if(id == 's_for_loop'){
       let forloop = new ForLoop();
       symClass = "for_div";
-      temp = document.getElementsByClassName(symClass);
+      //temp = document.getElementsByClassName(symClass);
+      temp = document.getElementById("control_loop_list").getElementsByClassName(symClass);
       forloop.setForSymbol( temp[0].cloneNode(true) );
       symbol = forloop.getForSymbol();
       symComponent = forloop;

@@ -1,9 +1,34 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>for-loop</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-toolbar style="padding: 5px; " color="primary">
+  <div id="for_sym">For Loop</div>
+  <ion-title style="float: left;">For Loop Properties</ion-title>
+</ion-toolbar>
 
-<ion-content padding>
+<ion-content padding color="secondary">
+
+  <ion-item>
+    <input id="for_var_name" type="text" placeholder="Variable Name" value="" />
+  </ion-item>
+
+  <ion-item>
+    <input id="for_start_val" type="text" placeholder="Start Value" value="" /> <br/>
+    <input id="for_end_val" type="text" placeholder="End Value" value="" />
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Step Direction: </ion-label>
+    <ion-select id="for_step_dir" [value]="" [(ngModel)]="stepDirection" ok-text="Confirm" cancel-text="Cancel" color="primary">
+      <ion-select-option value="Increasing">Increasing</ion-select-option>
+      <ion-select-option value="Decreasing">Decreasing</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <input id="for_step_val" type="text" placeholder="Step By" value="" />
+  </ion-item>
 
 </ion-content>
+
+<ion-footer id="for_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="closeModal()" color="dark" full >Apply</ion-button>
+</ion-footer>
