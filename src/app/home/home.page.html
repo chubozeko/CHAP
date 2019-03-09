@@ -72,46 +72,60 @@
           <div id="s_terminator"></div>
         </div>
       </li>
-      <!-- <li>
-        <div class="for_div">
-          <div id="arrow_left_down" class="arrows"></div>
-          <div id="s_for_loop" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" ondragstart="startDrag" ondragend="endDrag">For</div>
-          <div id="arrow_right_down" class="arrows dropzone"></div>
-          <div id="s_comment" class="symbol" style="font-size: 8pt;">// done</div>
-          <div id="arrow_up" class="arrow"></div>
-          <div id="s_comment" class="symbol" style="font-size: 8pt;">// next</div>
-          <div id="arrow" class="arrow"></div>
-          <div id="arrow_left_up" class="arrows"></div>
-          <div id="arrow_down_left" class="arrows"></div>
-          <div id="arrow_down_right" class="arrows"></div>
-          <div id="s_terminator"></div> <div></div> 
-        </div>
-        </li> -->
+      <li>
+          <div class="for_div">
+              <div></div>
+              <div></div>
+              <div id="s_for_loop" class="symbol" (click)="addSymbol('s_for_loop',$event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">For</div>
+              <div id="arrow_right" class="arrows"></div>
+              <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">Next</div>
+  
+              <div></div>
+              <div></div>
+              <div id="arrows_line_up" class="arrows"></div>
+              <div></div>
+              <div id="forTrueBlock">
+                <div id="arrow" class="arrow dropzone" ></div>
+              </div>
+  
+              <div></div>
+              <div></div>
+              <div id="arrows_down_down_right" class="arrows"></div>
+              <div id="arrow_horizontal" class="arrows"></div>
+              <div id="s_terminator"></div>
+  
+              <div></div>
+              <div></div>
+              <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">Done</div>
+              <div></div>
+              <div></div>
+            </div>
+        </li>
         <li>
           <div class="while_div">
             <div></div>
-            <div id="arrow_left_down" class="arrows"></div>
+            <div></div>
             <div id="s_while_loop" class="symbol" (click)="addSymbol('s_while_loop',$event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">While</div>
             <div id="arrow_right" class="arrows"></div>
-            <div id="s_terminator">True</div>
+            <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">True</div>
 
             <div></div>
-            <div id="arrow" class="arrow dropzone" ></div>
-            <div id="arrow_up" class="arrows"></div>
+            <div></div>
+            <div id="arrows_line_up" class="arrows"></div>
             <div></div>
             <div id="whileTrueBlock">
               <div id="arrow" class="arrow dropzone" ></div>
             </div>
 
             <div></div>
-            <div id="arrow" class="arrow dropzone" ></div>
-            <div id="arrow_left_up" class="arrows"></div>
-            <div id="arrow_left" class="arrows dropzone"></div>
+            <div></div>
+            <div id="arrows_down_down_right" class="arrows"></div>
+            <div id="arrow_horizontal" class="arrows"></div>
             <div id="s_terminator"></div>
 
             <div></div>
-            <div id="arrow_down_right" class="arrows"></div>
-            <div id="s_terminator"></div>
+            <div></div>
+            <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">False</div>
             <div></div>
             <div></div>
           </div>

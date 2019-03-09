@@ -27,6 +27,7 @@ import { AboutPage } from '../about/about.page';
 import { TutorialPage } from '../tutorial/tutorial.page';
 import { Stop } from '../classes/Stop';
 import { Start } from '../classes/Start';
+import { ForLoopPage } from '../symbol-dialogs/for-loop/for-loop.page';
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -535,13 +536,20 @@ export class HomePage {
       symComponent = whileloop;
     } 
     // else if(id == 's_for_loop'){
+    //   let forloop = new ForLoop();
     //   symClass = "for_div";
     //   temp = document.getElementsByClassName(symClass);
-    //   symbol = temp[0].cloneNode(true);
-    // } else if(id == 's_do_while_loop'){
+    //   forloop.setForSymbol( temp[0].cloneNode(true) );
+    //   symbol = forloop.getForSymbol();
+    //   symComponent = forloop;
+    // } 
+    // else if(id == 's_do_while_loop'){
+    //   let doWhileLoop = new DoWhileLoop();
     //   symClass = "do_while_div";
     //   temp = document.getElementsByClassName(symClass);
-    //   symbol = temp[0].cloneNode(true);
+    //   doWhileLoop.setDoWhileSymbol( temp[0].cloneNode(true) );
+    //   symbol = doWhileLoop.getDoWhileSymbol();
+    //   symComponent = doWhileLoop;
     // }
 
     // Get the selected arrow/branch to append symbol after

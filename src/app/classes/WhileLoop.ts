@@ -26,9 +26,9 @@ export class WhileLoop{
   getSymbolFromTrueBlock(){}
   removeSymbolFromTrueBlock(){}
 
-  addSymbolToFalseBlock(){}
-  getSymbolFromFalseBlock(){}
-  removeSymbolFromFalseBlock(){}
+  // addSymbolToFalseBlock(){}
+  // getSymbolFromFalseBlock(){}
+  // removeSymbolFromFalseBlock(){}
 
   pseudoCode(){ 
     let whiletrue = '', whilefalse = '';
