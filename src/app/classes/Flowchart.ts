@@ -9,6 +9,8 @@ import { IfCase } from "./IfCase";
 import { WhileLoop } from "./WhileLoop";
 import { Variable } from "./Variable";
 import { AlertController } from "@ionic/angular";
+import { DoWhileLoop } from "./DoWhileLoop";
+import { ForLoop } from "./ForLoop";
 
 export class Flowchart{
 
@@ -296,7 +298,17 @@ export class Flowchart{
 
       // WHILE LOOP
       if( this.tempSymbols[i] instanceof WhileLoop ){
-        this.tempSymbols[i].parseWhileLoopExp();
+        //this.tempSymbols[i].parseWhileLoopExp();
+      } else
+
+      // FOR LOOP
+      if( this.tempSymbols[i] instanceof ForLoop ){
+        //this.tempSymbols[i].parseForLoopExp();
+      } else
+
+      // DO WHILE LOOP
+      if( this.tempSymbols[i] instanceof DoWhileLoop ){
+        //this.tempSymbols[i].parseDoWhileLoopExp();
       } else
 
       // STOP

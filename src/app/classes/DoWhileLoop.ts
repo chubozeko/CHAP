@@ -12,7 +12,9 @@ export class DoWhileLoop{
   falseExpression: string;
   falseLoopBlock: any[];
 
-  constructor(){}
+  constructor(){
+    this.doWhileExpression = '';
+  }
 
   setDoWhileExpression(do_while_exp: string){ this.doWhileExpression = do_while_exp; }
   getDoWhileExpression(){ return this.doWhileExpression; }

@@ -10,7 +10,6 @@ import { ForLoop } from '../../classes/ForLoop';
 export class ForLoopPage implements OnInit {
 
   symbol: ForLoop;
-
   constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol');
   }

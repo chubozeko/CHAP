@@ -257,6 +257,7 @@ export class HomePage {
   }
 
   async openWhileModal(symbol, e){
+    console.log(symbol);
     const modal = await this.modalC.create({
       component: WhileLoopPage,
       componentProps: { symbol: symbol }
@@ -278,6 +279,7 @@ export class HomePage {
   }
 
   async openForLoopModal(symbol, e){
+    // console.log(symbol);
     const modal = await this.modalC.create({
       component: ForLoopPage,
       componentProps: { symbol: symbol }
@@ -299,10 +301,12 @@ export class HomePage {
   }
 
   async openDoWhileModal(symbol, e){
+    console.log(symbol);
     const modal = await this.modalC.create({
       component: DoWhileLoopPage,
       componentProps: { symbol: symbol }
     });
+
     modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("active-symbol");
       for(let i=0; i<s.length; i++){
@@ -551,9 +555,13 @@ export class HomePage {
     else if(id == 's_while_loop'){
       let whileloop = new WhileLoop();
       symClass = "while_div";
-      temp = document.getElementsByClassName(symClass);
-      whileloop.setWhileSymbol( temp[0].cloneNode(true) );
-      symbol = whileloop.getWhileSymbol();
+      temp = document.getElementById("control_loop_list").getElementsByClassName(symClass);
+      //temp = document.getElementsByClassName(symClass);
+      let t2 = document.getElementById("s_while_loop");
+      whileloop.setWhileSymbol( t2 );
+      //whileloop.setWhileSymbol( temp[0].cloneNode(true) );
+      symbol = temp[0].cloneNode(true);
+      //symbol = whileloop.getWhileSymbol();
       symComponent = whileloop;
     } 
     else if(id == 's_for_loop'){
@@ -561,16 +569,23 @@ export class HomePage {
       symClass = "for_div";
       //temp = document.getElementsByClassName(symClass);
       temp = document.getElementById("control_loop_list").getElementsByClassName(symClass);
-      forloop.setForSymbol( temp[0].cloneNode(true) );
-      symbol = forloop.getForSymbol();
+      let t3 = document.getElementById("s_for_loop");
+      forloop.setForSymbol( t3 );
+      //forloop.setForSymbol( temp[0].cloneNode(true) );
+      symbol = temp[0].cloneNode(true);
+      //symbol = forloop.getForSymbol();
       symComponent = forloop;
     } 
     else if(id == 's_do_while_loop'){
       let doWhileLoop = new DoWhileLoop();
       symClass = "do_while_div";
-      temp = document.getElementsByClassName(symClass);
-      doWhileLoop.setDoWhileSymbol( temp[0].cloneNode(true) );
-      symbol = doWhileLoop.getDoWhileSymbol();
+      temp = document.getElementById("control_loop_list").getElementsByClassName(symClass);
+      //temp = document.getElementsByClassName(symClass);
+      let t4 = document.getElementById("s_do_while_loop");
+      doWhileLoop.setDoWhileSymbol( t4 );
+      //doWhileLoop.setDoWhileSymbol( temp[0].cloneNode(true) );
+      symbol = temp[0].cloneNode(true);
+      //symbol = doWhileLoop.getDoWhileSymbol();
       symComponent = doWhileLoop;
     }
 

@@ -12,7 +12,9 @@ export class WhileLoop{
   falseExpression: string;
   falseLoopBlock: any[];
 
-  constructor(){}
+  constructor(){
+    this.whileExpression = '';
+  }
 
   setWhileExpression(while_exp: string){ this.whileExpression = while_exp; }
   getWhileExpression(){ return this.whileExpression; }

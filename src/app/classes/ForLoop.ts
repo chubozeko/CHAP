@@ -3,13 +3,13 @@ export class ForLoop{
   static id: string = 's_for_loop';
   static s_name: string = 'For';
 
-  forLoopExpression: string = "";
+  forLoopExpression: string = '';
   forLoopSymbol: any;
 
-  forVariableName: string = "";
-  startValue: number = 0;
-  endValue: number = 0;
-  stepDirection: string = "";
+  forVariableName: string = '';
+  startValue: number;
+  endValue: number;
+  stepDirection: string = '';
   stepValue: number = 1;
 
   trueExpression: string;
@@ -18,7 +18,15 @@ export class ForLoop{
   falseExpression: string;
   falseLoopBlock: any[];
 
-  constructor(){}
+  constructor(){
+    this.forVariableName = '';
+    this.startValue = 0;
+    this.endValue = 0;
+    this.stepDirection = '';
+    this.stepValue = 1;
+    this.trueLoopBlock = [];
+    this.falseLoopBlock = [];
+  }
 
   setVariableName(var_name: string){ this.forVariableName = var_name; }
   getVariableName(){ return this.forVariableName; }
@@ -36,12 +44,12 @@ export class ForLoop{
   getStepValue(){ return this.stepValue; }
 
   setForExpression(){ 
-    this.forLoopExpression = "";
-    this.forLoopExpression += this.getVariableName() + " = " + this.getStartValue() + " to " + this.getEndValue();
-    if( this.getStepDirection() == "Increasing" ){
-      this.forLoopExpression += " increment " + this.getStepValue();
+    this.forLoopExpression = '';
+    this.forLoopExpression += this.getVariableName() + ' = ' + this.getStartValue() + ' to ' + this.getEndValue();
+    if( this.getStepDirection() == 'Increasing' ){
+      this.forLoopExpression += ' increment ' + this.getStepValue();
     } else {
-      this.forLoopExpression += " decrement " + this.getStepValue();
+      this.forLoopExpression += ' decrement ' + this.getStepValue();
     }
   }
   getForExpression(){ return this.forLoopExpression; }
