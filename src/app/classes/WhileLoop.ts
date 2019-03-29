@@ -14,6 +14,8 @@ export class WhileLoop{
 
   constructor(){
     this.whileExpression = '';
+    this.trueLoopBlock = [];
+    this.falseLoopBlock = [];
   }
 
   setWhileExpression(while_exp: string){ this.whileExpression = while_exp; }
@@ -24,9 +26,13 @@ export class WhileLoop{
 
   parseWhileExpression(){}
 
-  addSymbolToTrueBlock(){}
-  getSymbolFromTrueBlock(){}
-  removeSymbolFromTrueBlock(){}
+  addSymbolToTrueBlock( symbol: any, position: number){ this.trueLoopBlock.splice(position, 0, symbol); }
+  getSymbolFromTrueBlock( index: number ){ return this.trueLoopBlock[index]; }
+  removeSymbolFromTrueBlock( position: number ){ this.trueLoopBlock.splice(position, 1); }
+
+  // addSymbolToTrueBlock(){}
+  // getSymbolFromTrueBlock(){}
+  // removeSymbolFromTrueBlock(){}
 
   // addSymbolToFalseBlock(){}
   // getSymbolFromFalseBlock(){}
