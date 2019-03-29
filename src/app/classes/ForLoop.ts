@@ -63,38 +63,29 @@ export class ForLoop{
   getSymbolFromTrueBlock( index: number ){ return this.trueLoopBlock[index]; }
   removeSymbolFromTrueBlock( position: number ){ this.trueLoopBlock.splice(position, 1); }
 
-  // addSymbolToTrueBlock(){}  
-  // getSymbolFromTrueBlock(){}
-  // removeSymbolFromTrueBlock(){}
-
-  // addSymbolToFalseBlock(){}
-  // getSymbolFromFalseBlock(){}
-  // removeSymbolFromFalseBlock(){}
-
   pseudoCode(){ 
-    let forTrue = '', forFalse = '';
+    let forTrue = '';
     for (let i = 0; i < this.trueLoopBlock.length; i++) {
       const el = this.trueLoopBlock[i];
       forTrue += '\t' + el.pseudoCode();
     }
-    for (let i = 0; i < this.falseLoopBlock.length; i++) {
-      const el = this.falseLoopBlock[i];
-      forFalse += '\t' + el.pseudoCode();
-    }
-    return '\For ' + this.getForExpression() + ' Do\n' + forTrue + '\tEnd For\n'; 
+    return '\tFor ' + this.getForExpression() + ' Do\n' + forTrue + '\tEnd For\n'; 
   }
 
   cplusplusCode(){
-    let forTrue = '', forFalse = '';
+    let forTrue = '', forExp = '';
     for (let i = 0; i < this.trueLoopBlock.length; i++) {
       const el = this.trueLoopBlock[i];
       forTrue += '\t' + el.cplusplusCode();
     }
-    for (let i = 0; i < this.falseLoopBlock.length; i++) {
-      const el = this.falseLoopBlock[i];
-      forFalse += '\t' + el.cplusplusCode();
+    forExp += this.getVariableName() + '=' + this.getStartValue() + '; ';
+    forExp += this.getVariableName() + '<' + this.getEndValue() + '; ';
+    if(this.getStepDirection() == 'Increasing'){
+      forExp += this.getVariableName() + '=' + this.getVariableName() + '+' + this.getStepValue();
+    } else if(this.getStepDirection() == 'Decreasing'){
+      forExp += this.getVariableName() + '=' + this.getVariableName() + '-' + this.getStepValue();
     }
-    return '\for (' + this.getForExpression() + '){\n' + forTrue + '\t} \n';
+    return '\tfor (' + forExp + '){\n' + forTrue + '\t} \n';
   }
   
 }

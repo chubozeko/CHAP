@@ -30,36 +30,20 @@ export class WhileLoop{
   getSymbolFromTrueBlock( index: number ){ return this.trueLoopBlock[index]; }
   removeSymbolFromTrueBlock( position: number ){ this.trueLoopBlock.splice(position, 1); }
 
-  // addSymbolToTrueBlock(){}
-  // getSymbolFromTrueBlock(){}
-  // removeSymbolFromTrueBlock(){}
-
-  // addSymbolToFalseBlock(){}
-  // getSymbolFromFalseBlock(){}
-  // removeSymbolFromFalseBlock(){}
-
   pseudoCode(){ 
-    let whiletrue = '', whilefalse = '';
+    let whiletrue = '';
     for (let i = 0; i < this.trueLoopBlock.length; i++) {
       const el = this.trueLoopBlock[i];
       whiletrue += '\t' + el.pseudoCode();
-    }
-    for (let i = 0; i < this.falseLoopBlock.length; i++) {
-      const el = this.falseLoopBlock[i];
-      whilefalse += '\t' + el.pseudoCode();
     }
     return '\tWhile ' + this.getWhileExpression() + ' Do\n' + whiletrue + '\tEnd While\n'; 
   }
 
   cplusplusCode(){
-    let whiletrue = '', whilefalse = '';
+    let whiletrue = '';
     for (let i = 0; i < this.trueLoopBlock.length; i++) {
       const el = this.trueLoopBlock[i];
       whiletrue += '\t' + el.cplusplusCode();
-    }
-    for (let i = 0; i < this.falseLoopBlock.length; i++) {
-      const el = this.falseLoopBlock[i];
-      whilefalse += '\t' + el.cplusplusCode();
     }
     return '\twhile (' + this.getWhileExpression() + '){\n' + whiletrue + '\t} \n';
   }

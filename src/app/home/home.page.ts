@@ -407,8 +407,7 @@ export class HomePage {
                 this.workspace.removeChild(nextArrow);
                 selectedSymbol[0].remove();
               }
-              console.log(this.flowchart.SYMBOLS);
-              
+              console.log(this.flowchart.SYMBOLS); 
             }
           }
         ]
@@ -560,8 +559,10 @@ export class HomePage {
       }
     } else {
       let syms = document.getElementById('workspace').getElementsByClassName("symbol");
+      let nrOfDoWhileSyms = 0;
       for (let i=0; i<syms.length; i++) {
-        if( syms[i].classList.contains('active-symbol') ){ active_sym_index = i-1; }
+        if(syms[i].parentElement.id == 'doWhileTrueBlock') nrOfDoWhileSyms++;
+        else if( syms[i].classList.contains('active-symbol') ){ active_sym_index = i-nrOfDoWhileSyms-1; }
       }
       tempSym = this.flowchart.getSymbolFromFlowchart( active_sym_index );
 
@@ -576,11 +577,6 @@ export class HomePage {
       else if(targetSymbol.id == 's_do_while_loop'){ this.openDoWhileModal(tempSym, event); }
     }
     
-    // } else if(targetSymbol.id == 's_for_loop'){
-    //   this.openForLoopModal(id);
-    // }  else if(targetSymbol.id == 's_do_while_loop'){
-    //   this.openDoWhileModal(id);
-    // }
   }
 
   public addSymbol(id: string, e){

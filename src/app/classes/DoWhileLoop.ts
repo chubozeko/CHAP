@@ -30,38 +30,22 @@ export class DoWhileLoop{
   getSymbolFromTrueBlock( index: number ){ return this.trueLoopBlock[index]; }
   removeSymbolFromTrueBlock( position: number ){ this.trueLoopBlock.splice(position, 1); }
 
-  // addSymbolToTrueBlock(){}
-  // getSymbolFromTrueBlock(){}
-  // removeSymbolFromTrueBlock(){}
-
-  // addSymbolToFalseBlock(){}
-  // getSymbolFromFalseBlock(){}
-  // removeSymbolFromFalseBlock(){}
-
   pseudoCode(){ 
-    let doWhileTrue = '', doWhileFalse = '';
+    let doWhileTrue = '';
     for (let i = 0; i < this.trueLoopBlock.length; i++) {
       const el = this.trueLoopBlock[i];
       doWhileTrue += '\t' + el.pseudoCode();
     }
-    for (let i = 0; i < this.falseLoopBlock.length; i++) {
-      const el = this.falseLoopBlock[i];
-      doWhileFalse += '\t' + el.pseudoCode();
-    }
-    return '\tWhile ' + this.getDoWhileExpression() + ' Do\n' + doWhileTrue + '\tEnd While\n'; 
+    return '\tDo\n' + doWhileTrue + '\tWhile ' + this.getDoWhileExpression() + '\n\tEnd Do While\n'; 
   }
 
   cplusplusCode(){
-    let doWhileTrue = '', doWhileFalse = '';
+    let doWhileTrue = '';
     for (let i = 0; i < this.trueLoopBlock.length; i++) {
       const el = this.trueLoopBlock[i];
       doWhileTrue += '\t' + el.cplusplusCode();
     }
-    for (let i = 0; i < this.falseLoopBlock.length; i++) {
-      const el = this.falseLoopBlock[i];
-      doWhileFalse += '\t' + el.cplusplusCode();
-    }
-    return '\twhile (' + this.getDoWhileExpression() + '){\n' + doWhileTrue + '\t} \n';
+    return '\tdo { \n' + doWhileTrue + '\t} while (' + this.getDoWhileExpression() + ');\n';
   }
   
 }
