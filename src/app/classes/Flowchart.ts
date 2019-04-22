@@ -298,7 +298,21 @@ export class Flowchart{
 
       // WHILE LOOP
       if( this.tempSymbols[i] instanceof WhileLoop ){
-        //this.tempSymbols[i].parseWhileLoopExp();
+
+        let whileBoolean;
+        do {
+          let whileBlock = this.tempSymbols[i].parseWhileLoopExpression( this.variables );
+          if( whileBlock.length != 0 ) whileBoolean = true;
+          else whileBoolean = false;
+
+          // Add whileBlock symbols to Flowchart instead of WhileLoop
+          this.tempSymbols.splice( i, 1 );
+          for (let k = 0; k < whileBlock.length; k++) {
+            this.tempSymbols.splice( i+k, 0, whileBlock[k] );
+          }
+          --i;
+        } while ( whileBoolean );
+
       } else
 
       // FOR LOOP

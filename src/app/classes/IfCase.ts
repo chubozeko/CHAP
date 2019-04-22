@@ -219,3 +219,41 @@ export class IfCase{
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ERROR Error: Uncaught (in promise): TypeError: this.tempSymbols[i].parseWhileLoopExpression is not a function
+// TypeError: this.tempSymbols[i].parseWhileLoopExpression is not a function
+//     at Flowchart.<anonymous> (Flowchart.ts:304)
+//     at step (DoWhileLoop.ts:1)
+//     at Object.next (DoWhileLoop.ts:1)
+//     at DoWhileLoop.ts:1
+//     at new ZoneAwarePromise (zone.js:891)
+//     at push../src/app/classes/Flowchart.ts.__awaiter (DoWhileLoop.ts:1)
+//     at Flowchart.push../src/app/classes/Flowchart.ts.Flowchart.validateFlowchart (Flowchart.ts:162)
+//     at HomePage.push../src/app/home/home.page.ts.HomePage.debugProgram (home.page.ts:960)
+//     at HTMLElement.<anonymous> (home.page.ts:64)
+//     at ZoneDelegate.push../node_modules/zone.js/dist/zone.js.ZoneDelegate.invokeTask (zone.js:421)
+//     at resolvePromise (zone.js:814)
+//     at new ZoneAwarePromise (zone.js:894)
+//     at push../src/app/classes/Flowchart.ts.__awaiter (DoWhileLoop.ts:1)
+//     at Flowchart.push../src/app/classes/Flowchart.ts.Flowchart.validateFlowchart (Flowchart.ts:162)
+//     at HomePage.push../src/app/home/home.page.ts.HomePage.debugProgram (home.page.ts:960)
+//     at HTMLElement.<anonymous> (home.page.ts:64)
+//     at ZoneDelegate.push../node_modules/zone.js/dist/zone.js.ZoneDelegate.invokeTask (zone.js:421)
+//     at Object.onInvokeTask (core.js:14051)
+//     at ZoneDelegate.push../node_modules/zone.js/dist/zone.js.ZoneDelegate.invokeTask (zone.js:420)
+//     at Zone.push../node_modules/zone.js/dist/zone.js.Zone.runTask (zone.js:188)
