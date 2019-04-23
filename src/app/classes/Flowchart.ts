@@ -12,23 +12,22 @@ import { AlertController } from "@ionic/angular";
 import { DoWhileLoop } from "./DoWhileLoop";
 import { ForLoop } from "./ForLoop";
 
-export class Flowchart{
-
+export class Flowchart {
   SYMBOLS: any[];
   tempSymbols: any[];
   variables: any[];
   comments: string[];
 
   isProgramRunning: boolean = false;
-  inputPromptStatement: string = '';
+  inputPromptStatement: string = "";
   isInputEntered: boolean;
-  outputStatement: string = '';
+  outputStatement: string = "";
 
   consoleLog: HTMLTextAreaElement;
   consoleInput: HTMLInputElement;
   //alertC: AlertController;
 
-  constructor(public alertC: AlertController){
+  constructor(public alertC: AlertController) {
     // let defaultSymbols = document.getElementsByClassName('symbols');
     // for (let i = 0; i < defaultSymbols.length; i++) {
     //   this.SYMBOLS.splice( i, 0, defaultSymbols[i] );
@@ -46,66 +45,76 @@ export class Flowchart{
     const alert = await this.alertC.create({
       header: alertTitle,
       message: alertMsg,
-      buttons: ['OK']
+      buttons: ["OK"]
     });
     await alert.present();
   }
 
-  async showInputPrompt(alertTitle: string, varIndex: number, symIndex: number) {
+  async showInputPrompt(
+    alertTitle: string,
+    varIndex: number,
+    symIndex: number
+  ) {
     const alert = await this.alertC.create({
       header: alertTitle,
-      inputs: [{
-        name: 'inputText',
-        type: 'text'
-      }],
-      buttons: [{
-        text: 'Cancel',
-        role: 'cancel',
-        cssClass: 'secondary',
-        handler: (data) => {
-          console.log('Cancel ' + data.inputText);
+      inputs: [
+        {
+          name: "inputText",
+          type: "text"
         }
-      }, 
-      {
-        text: 'OK',
-        handler: (data) => {
-          this.isInputEntered = false;
-          console.log('Ok ' + data.inputText);
-          this.inputParsing( this.variables[varIndex], data.inputText );
-          this.consoleLog = document.getElementById("console") as HTMLTextAreaElement;
-          this.consoleLog.value = "";
-          this.validateFlowchart(++symIndex);
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: data => {
+            console.log("Cancel " + data.inputText);
+          }
+        },
+        {
+          text: "OK",
+          handler: data => {
+            this.isInputEntered = false;
+            console.log("Ok " + data.inputText);
+            this.inputParsing(this.variables[varIndex], data.inputText);
+            this.consoleLog = document.getElementById(
+              "console"
+            ) as HTMLTextAreaElement;
+            this.consoleLog.value = "";
+            this.validateFlowchart(++symIndex, this.tempSymbols.length);
+          }
         }
-      }]
+      ]
     });
 
-    alert.onDidDismiss().then((data) => {
+    alert.onDidDismiss().then(data => {
       console.log("hello");
     });
-      
+
     await alert.present();
   }
 
-  addSymbolToFlowchart( symbol: any, position: number){ 
-    this.SYMBOLS.splice(position, 0, symbol); 
+  addSymbolToFlowchart(symbol: any, position: number) {
+    this.SYMBOLS.splice(position, 0, symbol);
   }
 
-  removeSymbolFromFlowchart( position: number ){ 
-    this.SYMBOLS.splice(position, 1); 
+  removeSymbolFromFlowchart(position: number) {
+    this.SYMBOLS.splice(position, 1);
   }
 
-  getSymbolFromFlowchart( index: number ){ 
-    return this.SYMBOLS[index]; 
+  getSymbolFromFlowchart(index: number) {
+    return this.SYMBOLS[index];
   }
 
-  clearFlowchart(){
+  clearFlowchart() {
     let start = new Start();
     let stop = new Stop();
-    this.SYMBOLS = [ start, stop ];
+    this.SYMBOLS = [start, stop];
   }
 
-  displayFlowchartPseudoCode(){
-    let pseudocode = '';
+  displayFlowchartPseudoCode() {
+    let pseudocode = "";
     pseudocode += new Start().pseudoCode();
     for (let i = 0; i < this.SYMBOLS.length; i++) {
       const syms = this.SYMBOLS[i];
@@ -115,8 +124,8 @@ export class Flowchart{
     return pseudocode;
   }
 
-  displayCPlusPlusCode(){
-    let cppcode = '';
+  displayCPlusPlusCode() {
+    let cppcode = "";
     cppcode += new Start().cplusplusCode();
     for (let i = 0; i < this.SYMBOLS.length; i++) {
       const syms = this.SYMBOLS[i];
@@ -126,112 +135,148 @@ export class Flowchart{
     return cppcode;
   }
 
-  declareVariable( declareSymbol: Declare, pos: number ){
-    this.variables.splice( pos, 0, declareSymbol.parseDeclareExp() );
+  declareVariable(declareSymbol: Declare, pos: number) {
+    this.variables.splice(pos, 0, declareSymbol.parseDeclareExp());
   }
 
-  inputParsing(var1: Variable, var_val: any){
+  inputParsing(var1: Variable, var_val: any) {
     // Checking the data type of an entered variable into the Console
     let var_value1: any;
-    if( !isNaN( parseInt(var_val) ) ){ var_value1 = parseInt(var_val); }
-    else if( !isNaN( parseFloat(var_val) ) ){ var_value1 = parseFloat(var_val); }
-    else if( var_val == "true" ){ var_value1 = true; }
-    else if( var_val == "false" ){ var_value1 = false; }
-    else { var_value1 = var_val.toString(); }
+    if (!isNaN(parseInt(var_val))) {
+      var_value1 = parseInt(var_val);
+    } else if (!isNaN(parseFloat(var_val))) {
+      var_value1 = parseFloat(var_val);
+    } else if (var_val == "true") {
+      var_value1 = true;
+    } else if (var_val == "false") {
+      var_value1 = false;
+    } else {
+      var_value1 = var_val.toString();
+    }
 
-    if ( var1.getDataType() == 'Integer' && typeof var_value1 == 'number' ){ var1.value = var_value1; }
-    else if ( var1.getDataType() == 'Real' && typeof var_value1 == 'number' ){ var1.value = var_value1; }
-    else if ( var1.getDataType() == 'String' && typeof var_value1 == 'string' ){ var1.value = var_value1; }
-    else if ( var1.getDataType() == 'Boolean' && typeof var_value1 == 'boolean' ){ var1.value = var_value1; }
-    else { this.showAlert("Invalid datatype entered!",""); }
+    if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
+      var1.value = var_value1;
+    } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
+      var1.value = var_value1;
+    } else if (
+      var1.getDataType() == "String" &&
+      typeof var_value1 == "string"
+    ) {
+      var1.value = var_value1;
+    } else if (
+      var1.getDataType() == "Boolean" &&
+      typeof var_value1 == "boolean"
+    ) {
+      var1.value = var_value1;
+    } else {
+      this.showAlert("Invalid datatype entered!", "");
+    }
 
     console.log(this.variables);
   }
 
-  async validateInput(varIndex: number, symIndex: number){
+  async validateInput(varIndex: number, symIndex: number) {
     // Display Input prompt
-    this.inputPromptStatement = Input.prototype.parseInputExp( this.variables[varIndex] ) + "\n";
+    this.inputPromptStatement =
+      Input.prototype.parseInputExp(this.variables[varIndex]) + "\n";
     this.isInputEntered = true;
-    this.showInputPrompt( this.inputPromptStatement, varIndex, symIndex );
+    this.showInputPrompt(this.inputPromptStatement, varIndex, symIndex);
   }
 
-  validateProcess(symbol: Process, varIndex: number){ 
-    this.variables[varIndex].value = symbol.parseExpression( this.variables, this.variables[varIndex].getDataType() );
+  validateProcess(symbol: Process, varIndex: number) {
+    this.variables[varIndex].value = symbol.parseExpression(
+      this.variables,
+      this.variables[varIndex].getDataType()
+    );
   }
 
-  async validateFlowchart(startIndex: number){
-    
+  async validateFlowchart(startIndex: number, endIndex: number) {
     for (let q = 0; q < this.SYMBOLS.length; q++) {
-      this.tempSymbols.splice( q, 0, this.SYMBOLS[q] ); 
+      this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
     }
 
-    if(startIndex == 0){
+    if (startIndex == 0) {
       this.variables = [];
     }
     let varIndex = 0;
 
-    for(let i=startIndex; i<this.tempSymbols.length; i++){
-
+    for (let i = startIndex; i < endIndex; i++) {
+      // this.tempSymbols.length
       // START
-      if( this.tempSymbols[i] instanceof Start ){
-        console.log( 'Start Program' );
+      if (this.tempSymbols[i] instanceof Start) {
+        console.log("Start Program");
         this.isProgramRunning = true;
-      } else
+      }
 
       // DECLARE
-      if( this.tempSymbols[i] instanceof Declare ){
+      else if (this.tempSymbols[i] instanceof Declare) {
         let vars = this.tempSymbols[i].parseDeclareExp();
         for (let a = 0; a < vars.length; a++) {
-          this.variables.splice(this.variables.length, 0, vars[a] ); 
+          this.variables.splice(this.variables.length, 0, vars[a]);
         }
-      } else
+      }
 
       // INPUT
-      if( this.tempSymbols[i] instanceof Input ){
+      else if (this.tempSymbols[i] instanceof Input) {
         let isVarDeclared = false;
-        for( let j=0; j<this.variables.length; j++ ){
-          if( this.tempSymbols[i].getVariableName() == this.variables[j].getName() ){
+        for (let j = 0; j < this.variables.length; j++) {
+          if (
+            this.tempSymbols[i].getVariableName() == this.variables[j].getName()
+          ) {
             isVarDeclared = true;
             varIndex = j;
           }
         }
-        if(!isVarDeclared){
-          this.showAlert('Invalid Statement at \'Input\'','Variable \"' + this.tempSymbols[i].getVariableName() + '\" is not declared!');
-        } else { 
-          console.log('input variable declared! carry on...');
-          if( !this.isInputEntered )
-            this.validateInput(varIndex, i);
+        if (!isVarDeclared) {
+          this.showAlert(
+            "Invalid Statement at 'Input'",
+            'Variable "' +
+              this.tempSymbols[i].getVariableName() +
+              '" is not declared!'
+          );
+        } else {
+          console.log("input variable declared! carry on...");
+          if (!this.isInputEntered) this.validateInput(varIndex, i);
         }
-      } else
+      }
 
       // PROCESS
-      if( this.tempSymbols[i] instanceof Process ){
+      else if (this.tempSymbols[i] instanceof Process) {
         let isVarDeclared = false;
-        for( let j=0; j<this.variables.length; j++){
-          if( this.tempSymbols[i].getVariableName() == this.variables[j].getName() ){
+        for (let j = 0; j < this.variables.length; j++) {
+          if (
+            this.tempSymbols[i].getVariableName() == this.variables[j].getName()
+          ) {
             isVarDeclared = true;
             varIndex = j;
           }
         }
-        if(!isVarDeclared){
-          this.showAlert('Invalid Statement at \'Process\'','Variable \"' + this.tempSymbols[i].getVariableName() + '\" is not declared!');
+        if (!isVarDeclared) {
+          this.showAlert(
+            "Invalid Statement at 'Process'",
+            'Variable "' +
+              this.tempSymbols[i].getVariableName() +
+              '" is not declared!'
+          );
         } else {
-          console.log('process variable declared. carry on...');
-          this.validateProcess( this.tempSymbols[i], varIndex );
+          console.log("process variable declared. carry on...");
+          this.validateProcess(this.tempSymbols[i], varIndex);
         }
-      } else
+      }
 
       // OUTPUT
-      if( this.tempSymbols[i] instanceof Output ){
-        let isVarDeclared, hasQuotes = 0, outputS = ''; 
+      else if (this.tempSymbols[i] instanceof Output) {
+        let isVarDeclared,
+          hasQuotes = 0,
+          outputS = "";
         let outputStr: string = this.tempSymbols[i].getOutputExpression();
-        let str = outputStr.split('&');
+        let str = outputStr.split("&");
         for (let k = 0; k < str.length; k++) {
           let s1 = str[k].trim();
-          if( s1.indexOf("\"") == -1 ){
+          if (s1.indexOf('"') == -1) {
             console.log("No quotes");
-            for( let j=0; j<this.variables.length; j++){
-              if( s1 == this.variables[j].getName() ){
+            for (let j = 0; j < this.variables.length; j++) {
+              if (s1 == this.variables[j].getName()) {
                 isVarDeclared = true;
                 varIndex = j;
               }
@@ -243,36 +288,47 @@ export class Flowchart{
           }
         }
 
-        if( !isVarDeclared && hasQuotes==0 ){
-          this.showAlert('Invalid Statement at \'Output\'','Variable is not declared!');
-        } else if( isVarDeclared && hasQuotes==0 ){
+        if (!isVarDeclared && hasQuotes == 0) {
+          this.showAlert(
+            "Invalid Statement at 'Output'",
+            "Variable is not declared!"
+          );
+        } else if (isVarDeclared && hasQuotes == 0) {
           // Output variable
-          console.log('output variable declared! carry on...');
+          console.log("output variable declared! carry on...");
           let s1 = this.tempSymbols[i].getOutputExpression();
-          let s2 = s1.split('&');
+          let s2 = s1.split("&");
           for (let i = 0; i < s2.length; i++) {
             let str = s2[i].trim();
-            for( let l=0; l<this.variables.length; l++){
-              if( str == this.variables[l].getName() ){
-                if( this.variables[l].value == undefined && isNaN(this.variables[l].value) ) { outputS = ''; } else
-                  outputS += this.variables[l].value;
+            for (let l = 0; l < this.variables.length; l++) {
+              if (str == this.variables[l].getName()) {
+                if (
+                  this.variables[l].value == undefined &&
+                  isNaN(this.variables[l].value)
+                ) {
+                  outputS = "";
+                } else outputS += this.variables[l].value;
               }
             }
           }
-        } else if( hasQuotes>0 ){
+        } else if (hasQuotes > 0) {
           // Output String expression
           let s1 = this.tempSymbols[i].getOutputExpression();
-          let s2 = s1.split('&');
+          let s2 = s1.split("&");
           for (let i = 0; i < s2.length; i++) {
             let str = s2[i].trim();
-            if( str.indexOf("\"") != -1 ){
-              let str2 = str.replace(/\"/g,'');
+            if (str.indexOf('"') != -1) {
+              let str2 = str.replace(/\"/g, "");
               outputS += str2;
             } else {
-              for( let l=0; l<this.variables.length; l++){
-                if( str == this.variables[l].getName() ){
-                  if( this.variables[l].value == undefined && isNaN(this.variables[l].value) ){ outputS = ''; } else
-                    outputS += this.variables[l].value;
+              for (let l = 0; l < this.variables.length; l++) {
+                if (str == this.variables[l].getName()) {
+                  if (
+                    this.variables[l].value == undefined &&
+                    isNaN(this.variables[l].value)
+                  ) {
+                    outputS = "";
+                  } else outputS += this.variables[l].value;
                 }
               }
             }
@@ -280,54 +336,79 @@ export class Flowchart{
         }
 
         this.consoleLog.value += outputS;
-      } else
+      }
 
       // COMMENT
-      if( this.tempSymbols[i] instanceof Comment ){ break; } else
+      else if (this.tempSymbols[i] instanceof Comment) {
+        break;
+      }
 
       // IF CASE
-      if( this.tempSymbols[i] instanceof IfCase ){
-        let ifBlock = this.tempSymbols[i].parseIfCaseExpression( this.variables );
+      else if (this.tempSymbols[i] instanceof IfCase) {
+        let ifBlock = this.tempSymbols[i].parseIfCaseExpression(this.variables);
         // Add ifBlock symbols to Flowchart instead of IfCase
-        this.tempSymbols.splice( i, 1 );
+        this.tempSymbols.splice(i, 1);
         for (let k = 0; k < ifBlock.length; k++) {
-          this.tempSymbols.splice( i+k, 0, ifBlock[k] );
+          this.tempSymbols.splice(i + k, 0, ifBlock[k]);
         }
         --i;
-      } else
+      }
 
       // WHILE LOOP
-      if( this.tempSymbols[i] instanceof WhileLoop ){
+      else if (this.tempSymbols[i] instanceof WhileLoop) {
+        let whileBoolean, whileIndex, whileSymCount, endOfWhile;
+        let whileSymbol = new WhileLoop();
+        whileSymbol = this.tempSymbols[i];
+        whileIndex = i;
 
-        let whileBoolean;
         do {
-          let whileBlock = this.tempSymbols[i].parseWhileLoopExpression( this.variables );
-          if( whileBlock.length != 0 ) whileBoolean = true;
-          else whileBoolean = false;
-
-          // Add whileBlock symbols to Flowchart instead of WhileLoop
-          this.tempSymbols.splice( i, 1 );
-          for (let k = 0; k < whileBlock.length; k++) {
-            this.tempSymbols.splice( i+k, 0, whileBlock[k] );
+          // let whileBlock = this.tempSymbols[i].parseWhileLoopExpression(
+          let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables);
+          whileSymCount = whileBlock.length;
+          if (whileSymCount != 0) {
+            // Set whileBoolean to TRUE
+            whileBoolean = true;
+            console.log(whileBoolean);
+            // Add whileBlock symbols to Flowchart instead of WhileLoop
+            this.tempSymbols.splice(i, 1);
+            for (let k = 0; k < whileBlock.length; k++) {
+              this.tempSymbols.splice(i + k, 0, whileBlock[k]);
+            }
+            --i;
+            // Validate whileBlock symbols only
+            endOfWhile = whileIndex + whileSymCount;
+            this.validateFlowchart(whileIndex, endOfWhile);
+            // Remove whileBlock symbols to Flowchart
+            this.tempSymbols.splice(i, 1);
+            for (let k = whileIndex; k < endOfWhile; k++) {
+              this.tempSymbols.splice(whileIndex + k, 1, whileBlock[k]);
+            }
+            --i; //i = whileIndex; // --i;
+            console.log("loop pass");
+          } else {
+            // Set whileBoolean to FALSE
+            whileBoolean = false;
+            console.log(whileBoolean);
+            // Add While Symbol back to the Flowchart
+            this.tempSymbols.splice(i, 0, whileSymbol);
+            break;
           }
-          --i;
-        } while ( whileBoolean );
-
-      } else
+        } while (whileBoolean);
+      }
 
       // FOR LOOP
-      if( this.tempSymbols[i] instanceof ForLoop ){
+      else if (this.tempSymbols[i] instanceof ForLoop) {
         //this.tempSymbols[i].parseForLoopExp();
-      } else
+      }
 
       // DO WHILE LOOP
-      if( this.tempSymbols[i] instanceof DoWhileLoop ){
+      else if (this.tempSymbols[i] instanceof DoWhileLoop) {
         //this.tempSymbols[i].parseDoWhileLoopExp();
-      } else
+      }
 
       // STOP
-      if( this.tempSymbols[i] instanceof Stop ){
-        console.log( 'End Program' );
+      else if (this.tempSymbols[i] instanceof Stop) {
+        console.log("End Program");
         this.isProgramRunning = false;
       }
     }
@@ -339,5 +420,4 @@ export class Flowchart{
     console.log("Temporary symbols");
     console.log(this.tempSymbols);
   }
-
 }
