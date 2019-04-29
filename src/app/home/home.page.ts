@@ -1,16 +1,8 @@
 import { Component, ViewChild } from "@angular/core";
-import {
-  ModalController,
-  Fab,
-  ActionSheetController,
-  MenuController,
-  NavParams,
-  AlertController
-} from "@ionic/angular";
+import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController } from "@ionic/angular";
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
-
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
 import { InputPage } from "../symbol-dialogs/input/input.page";
@@ -63,7 +55,7 @@ export class HomePage {
     public menu: MenuController,
     public modalC: ModalController,
     public alertC: AlertController // public navParams: NavParams
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Adding Click Listeners to Menu Items
@@ -93,13 +85,7 @@ export class HomePage {
       branches[i].addEventListener("click", e => this.openSymbolsFAB(e));
       branches[i].addEventListener("dragenter", e => this.dragEnter(e), false);
       branches[i].addEventListener("dragleave", e => this.dragLeave(e), false);
-      branches[i].addEventListener(
-        "dragover",
-        function(e) {
-          e.preventDefault();
-        },
-        false
-      );
+      branches[i].addEventListener("dragover", function (e) { e.preventDefault(); }, false);
       branches[i].addEventListener("drop", e => this.dropped(e), false);
     }
 
@@ -956,7 +942,7 @@ export class HomePage {
           .on(
             "tap",
             e =>
-              function() {
+              function () {
                 e.preventDefault();
               }
           )
@@ -1028,7 +1014,7 @@ export class HomePage {
       dz[i].addEventListener("dragleave", e => this.dragLeave(e), false);
       dz[i].addEventListener(
         "dragover",
-        function(e) {
+        function (e) {
           e.preventDefault();
         },
         false

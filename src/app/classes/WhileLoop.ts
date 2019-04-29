@@ -33,7 +33,6 @@ export class WhileLoop {
 
   parseWhileLoopExpression(variables: any[]) {
     let opers = [],
-      parsedValues = [],
       exps = [],
       exps1 = [];
     let op = "",
@@ -161,8 +160,8 @@ export class WhileLoop {
       // console.log(opers);
     }
 
-    console.log("Expressions:");
-    console.log(exps);
+    console.log("Expressions:", exps);
+    // console.log(exps);
     // console.log(opers);
 
     if (exps[0] == true) return this.trueLoopBlock;
