@@ -31,7 +31,7 @@ export class WhileLoop {
     return this.whileSymbol;
   }
 
-  parseWhileLoopExpression(variables: any[]) {
+  parseWhileLoopExpression(variables) { //: any[]) {
     let opers = [],
       exps = [],
       exps1 = [];

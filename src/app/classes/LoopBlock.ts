@@ -70,7 +70,7 @@ export class LoopBlock {
               "console"
             ) as HTMLTextAreaElement;
             this.consoleLog.value = "";
-            this.validateLoopBlock(this.variables);//++symIndex, this.tempSymbols.length);
+            this.validateLoopBlock(); //this.variables);//++symIndex, this.tempSymbols.length);
           }
         }
       ]
@@ -167,14 +167,11 @@ export class LoopBlock {
     );
   }
 
-  public validateLoopBlock(variables: any) {
+  validateLoopBlock() {
+    this.tempSymbols = [];
     for (let q = 0; q < this.SYMBOLS.length; q++) {
       this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
     }
-    // for (let q = 0; q < variables.length; q++) {
-    //   this.variables.splice(q, 0, variables[q]);
-    // }
-    this.variables = variables.vars;
 
     let varIndex = 0;
 
@@ -328,54 +325,18 @@ export class LoopBlock {
 
       // WHILE LOOP
       // else if (this.tempSymbols[i] instanceof WhileLoop) {
-      //   let whileBoolean, whileIndex, whileSymCount, endOfWhile, whileBlock;
-      //   let whileSymbol = new WhileLoop();
-      //   whileSymbol = this.tempSymbols[i];
-      //   whileIndex = i;
-      //   whileBlock = whileSymbol.parseWhileLoopExpression(this.variables);
-      //   whileSymCount = whileBlock.length;
-      //   if (whileBlock.length != 0) { whileBoolean = true; }
-      //   else { whileBoolean = false; }
-
-      //   // Add whileBlock symbols to Flowchart instead of WhileLoop
-      //   this.tempSymbols.splice(i, 1);
-      //   for (let k = 0; k < whileBlock.length; k++) {
-      //     this.tempSymbols.splice(i + k, 0, whileBlock[k]);
-      //   }
-
-      //   while (whileBoolean) {
-      //     // Validate whileBlock symbols only
-      //     endOfWhile = whileIndex + whileSymCount;
-      //     this.validateFlowchart(whileIndex, endOfWhile);
-      //     // Remove whileBlock symbols from Flowchart
-      //     // this.tempSymbols.splice(whileIndex, 1);
-      //     for (let k = whileIndex; k < endOfWhile; k++) {
-      //       this.tempSymbols.splice(whileIndex + k, 1, whileBlock[k]);
-      //     }
-
-      //     whileBlock = whileSymbol.parseWhileLoopExpression(this.variables);
-      //     if (whileBlock.length != 0) { whileBoolean = true; }
-      //     else { whileBoolean = false; }
-      //     console.log("loop pass");
-      //   }
-
-      //   console.log(whileBoolean);
-      //   // Add While Symbol back to the Flowchart
-      //   this.tempSymbols.splice(whileIndex, 0, whileSymbol);
-      //   break;
+      //
       // }
 
       // // FOR LOOP
       // else if (this.tempSymbols[i] instanceof ForLoop) {
-      //   //this.tempSymbols[i].parseForLoopExp();
+      //   
       // }
 
       // // DO WHILE LOOP
       // else if (this.tempSymbols[i] instanceof DoWhileLoop) {
-      //   //this.tempSymbols[i].parseDoWhileLoopExp();
+      //   
       // }
-
-      return this.variables;
     }
 
     // console.log("Variables");
@@ -384,5 +345,6 @@ export class LoopBlock {
     // console.log(this.SYMBOLS);
     // console.log("Temporary symbols");
     // console.log(this.tempSymbols);
+    return this.variables;
   }
 }

@@ -191,14 +191,12 @@ export class Flowchart {
     for (let q = 0; q < this.SYMBOLS.length; q++) {
       this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
     }
-
     if (startIndex == 0) {
       this.variables.vars = [];
     }
     let varIndex = 0;
 
     for (let i = startIndex; i < endIndex; i++) {
-      // this.tempSymbols.length
       // START
       if (this.tempSymbols[i] instanceof Start) {
         console.log("Start Program");
@@ -363,41 +361,28 @@ export class Flowchart {
         if (whileBlock.length != 0) { whileBoolean = true; }
         else { whileBoolean = false; }
 
-        // Add whileBlock symbols to Flowchart instead of WhileLoop
-        // this.tempSymbols.splice(i, 1);
-        // for (let k = 0; k < whileBlock.length; k++) {
-        //   this.tempSymbols.splice(i + k, 0, whileBlock[k]);
-        // }
-
         // Add whileBlock symbols to a LoopBlock
         let whileLoopBlock = new LoopBlock(this.alertC);
         for (let v = 0; v < whileSymbol.trueLoopBlock.length; v++) {
-          whileLoopBlock.addSymbolToLoopBlock(whileSymbol.trueLoopBlock[v], whileSymbol.trueLoopBlock.length);
+          whileLoopBlock.SYMBOLS.splice(v, 0, whileSymbol.trueLoopBlock[v]);
         }
+        // Pass Variables to WhileLoopBlock
+        for (let q = 0; q < this.variables.vars.length; q++) {
+          whileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
+        }
+
+        console.log("Loop Block: ", whileLoopBlock);
 
         while (whileBoolean) {
-          // Validate whileBlock symbols only [version 1]
-          // endOfWhile = whileIndex + whileSymCount;
-          // this.validateFlowchart(whileIndex, endOfWhile);
-
           // Validate whileBlock symbols only [version 2]
-          let x = whileLoopBlock.validateLoopBlock(this.variables);
+          let x = whileLoopBlock.validateLoopBlock(); // this.variables
 
-          // Remove whileBlock symbols from Flowchart
-          // this.tempSymbols.splice(whileIndex, 1);
-          // for (let k = whileIndex; k < endOfWhile; k++) {
-          //   this.tempSymbols.splice(whileIndex + k, 1, whileBlock[k]);
-          // }
-          // console.log("variables ", x);
-          whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
+          // Check whileBoolean after validating While Loop Block symbols
+          whileBlock = whileSymbol.parseWhileLoopExpression(x);
           if (whileBlock.length != 0) { whileBoolean = true; }
           else { whileBoolean = false; }
-          console.log("loop pass", x);
+          console.log("loop pass: " + whileBoolean, x);
         }
-
-        console.log(whileBoolean);
-        // Add While Symbol back to the Flowchart
-        this.tempSymbols.splice(whileIndex, 0, whileSymbol);
         break;
       }
 
@@ -418,11 +403,8 @@ export class Flowchart {
       }
     }
 
-    console.log("Variables");
-    console.log(this.variables);
-    console.log("Symbols");
-    console.log(this.SYMBOLS);
-    console.log("Temporary symbols");
-    console.log(this.tempSymbols);
+    console.log("Variables", this.variables);
+    console.log("Symbols", this.SYMBOLS);
+    console.log("Temporary symbols", this.tempSymbols);
   }
 }
