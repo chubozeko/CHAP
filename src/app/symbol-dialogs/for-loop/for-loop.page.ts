@@ -10,8 +10,10 @@ import { ForLoop } from '../../classes/ForLoop';
 export class ForLoopPage implements OnInit {
 
   symbol: ForLoop;
+  stepDirection: string = "";
   constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol');
+    this.stepDirection = this.symbol.getStepDirection();
   }
 
   ngOnInit() {
@@ -31,27 +33,27 @@ export class ForLoopPage implements OnInit {
     step_value.value = this.symbol.getStepValue().toString();
   }
 
-  public applyAndCloseModal(){
+  public applyAndCloseModal() {
     let var_name = (document.getElementById("for_var_name") as HTMLInputElement);
-    this.symbol.setVariableName( var_name.value );
+    this.symbol.setVariableName(var_name.value);
 
     let start_value = (document.getElementById("for_start_val") as HTMLInputElement);
-    this.symbol.setStartValue( Number(start_value.value) );
+    this.symbol.setStartValue(Number(start_value.value));
 
     let end_value = (document.getElementById("for_end_val") as HTMLInputElement);
-    this.symbol.setEndValue( Number(end_value.value) );
+    this.symbol.setEndValue(Number(end_value.value));
 
     let step_direction = (document.getElementById("for_step_dir") as HTMLIonSelectElement);
-    this.symbol.setStepDirection( step_direction.value );
+    this.symbol.setStepDirection(step_direction.value);
 
     let step_value = (document.getElementById("for_step_val") as HTMLInputElement);
-    this.symbol.setStepValue( Number(step_value.value) );
+    this.symbol.setStepValue(Number(step_value.value));
 
     this.symbol.setForExpression();
 
-    this.modal.dismiss( this.symbol );
+    this.modal.dismiss(this.symbol);
   }
 
-  public closeModal(){ this.modal.dismiss( this.symbol ); }
+  public closeModal() { this.modal.dismiss(this.symbol); }
 
 }
