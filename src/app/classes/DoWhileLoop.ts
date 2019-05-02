@@ -142,17 +142,13 @@ export class DoWhileLoop {
         default:
           break;
       }
-
       opers.splice(j, 1);
       exps.splice(j, 2, result);
 
-      // console.log('Values: ');
-      // console.log(parsedValues);
-      // console.log('Operators: ');
-      // console.log(opers);
+      // console.log('Values: ', parsedValues);
+      // console.log('Operators: ', opers);
     }
     console.log("Expressions:", exps);
-    // console.log(exps);
     // console.log(opers);
 
     if (exps[0] == true) return this.trueLoopBlock;

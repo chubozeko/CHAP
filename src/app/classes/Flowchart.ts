@@ -388,7 +388,46 @@ export class Flowchart {
 
       // FOR LOOP
       else if (this.tempSymbols[i] instanceof ForLoop) {
-        //this.tempSymbols[i].parseForLoopExp();
+        let forBoolean, forIndex, forSymCount, forBlock;
+        let forSymbol = new ForLoop();
+        forSymbol = this.tempSymbols[i];
+        forIndex = i;
+
+        // Add forBlock symbols to a LoopBlock
+        let forLoopBlock = new LoopBlock(this.alertC);
+        for (let v = 0; v < forSymbol.trueLoopBlock.length; v++) {
+          forLoopBlock.SYMBOLS.splice(v, 0, forSymbol.trueLoopBlock[v]);
+        }
+        // Pass Variables to forLoopBlock
+        for (let q = 0; q < this.variables.vars.length; q++) {
+          forLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
+        }
+        console.log("Loop Block: ", forLoopBlock);
+
+        if (forSymbol.getStepDirection() === 'Increasing') {
+          // Validation to prevent INFINITE LOOPS:
+          if (forSymbol.getStartValue() < forSymbol.getEndValue()) {
+            for (let tempVar = forSymbol.getStartValue();
+              tempVar <= forSymbol.getEndValue();
+              tempVar = forSymbol.iterateForStepDirection(tempVar)) {
+              // Validate forBlock symbols only
+              let x = forLoopBlock.validateLoopBlock();
+              console.log("loop pass: " + forBoolean, x);
+            } break;
+          }
+        } else if (forSymbol.getStepDirection() === 'Decreasing') {
+          // Validation to prevent INFINITE LOOPS:
+          if (forSymbol.getStartValue() > forSymbol.getEndValue()) {
+            for (let tempVar = forSymbol.getStartValue();
+              tempVar >= forSymbol.getEndValue();
+              tempVar = forSymbol.iterateForStepDirection(tempVar)) {
+              // Validate forBlock symbols only
+              let x = forLoopBlock.validateLoopBlock();
+              console.log("loop pass: " + forBoolean, x);
+            } break;
+          }
+        } else { break; }
+
       }
 
       // DO WHILE LOOP
