@@ -85,7 +85,7 @@ export class HomePage {
       branches[i].addEventListener("click", e => this.openSymbolsFAB(e));
       branches[i].addEventListener("dragenter", e => this.dragEnter(e), false);
       branches[i].addEventListener("dragleave", e => this.dragLeave(e), false);
-      branches[i].addEventListener("dragover", function (e) { e.preventDefault(); }, false);
+      // branches[i].addEventListener("dragover", function (e) { e.preventDefault(); }, false);
       branches[i].addEventListener("drop", e => this.dropped(e), false);
     }
 
@@ -93,35 +93,31 @@ export class HomePage {
     for (var i = 0; i < shapes.length; i++) {
       shapes[i].addEventListener("dragstart", e => this.startDrag(e), false);
       shapes[i].addEventListener("dragend", e => this.endDrag(e), false);
-      // shapes[i].addEventListener("dragmove", (e) => this.dragMove(e), false);
+      shapes[i].addEventListener("dragmove", (e) => this.moveDrag(e), false);
     }
 
-    // interact('.dropzone').dropzone({
-    //   accept: '.symbol',
-    //   // overlap: 0.75,
-    //   ondragenter: this.dragEnter,
-    //   ondragleave: this.dragLeave,
-    //   ondrop: this.dropped,
-    // });
+    interact('.dropzone').dropzone({
+      accept: '.symbol',
+      //overlap: 0.25,
+      ondragenter: this.dragEnter,
+      ondragleave: this.dragLeave,
+      ondrop: this.dropped,
+    });
 
-    // interact('.symbol')
-    //   .draggable({
-    //     ignoreFrom: '#s_start, #s_stop',
-    //     inertia: {
-    //       resistance: 10,
-    //       minSpeed: 500,
-    //       endSpeed: 50
-    //     },
-    //     restrict: {
-    //       restriction: '.wrapper',
-    //       endOnly: true,
-    //       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-    //     },
-    //     autoScroll: true,
-    //     onstart: this.startDrag,
-    //     onmove: this.moveDrag,
-    //     onend: this.endDrag
-    //   });
+    interact('.symbol')
+      .draggable({
+        ignoreFrom: '#s_start, #s_stop',
+        inertia: false,
+        restrict: {
+          restriction: '.wrapper',
+          endOnly: true,
+          elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+        },
+        autoScroll: false,
+        onstart: this.startDrag,
+        onmove: this.moveDrag,
+        onend: this.endDrag
+      });
   }
 
   public openMenu() {
@@ -947,22 +943,22 @@ export class HomePage {
               }
           )
           .on("doubletap", e => this.openSymbolDialog(e, id))
-          // .draggable({
-          //   inertia: {
-          //     resistance: 10,
-          //     minSpeed: 500,
-          //     endSpeed: 50
-          //   },
-          //   restrict: {
-          //     restriction: '.wrapper',
-          //     endOnly: true,
-          //     elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-          //   },
-          //   autoScroll: true,
-          //   onstart: this.startDrag,
-          //   onmove: this.moveDrag,
-          //   onend: this.endDrag
-          // })
+          .draggable({
+            inertia: {
+              resistance: 10,
+              minSpeed: 500,
+              endSpeed: 50
+            },
+            restrict: {
+              restriction: '.wrapper',
+              endOnly: true,
+              elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+            },
+            autoScroll: true,
+            onstart: this.startDrag,
+            onmove: this.moveDrag,
+            onend: this.endDrag
+          })
           .on("hold", e => this.openSymbolsAS(e));
 
         for (let l = 0; l < b1.length; l++) {
@@ -1079,63 +1075,67 @@ export class HomePage {
   }
 
   public startDrag(e) {
-    // let t = e.target || e.srcElement || e.currentTarget,
-    //   x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
-    //   y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
-    // this.dupSymbol = t.cloneNode(true);
+    let t = e.target || e.srcElement || e.currentTarget,
+      x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
+      y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
+    this.dupSymbol = t.cloneNode(true);
 
-    // this.dupSymbol.setAttribute('data-x', x);
-    // this.dupSymbol.setAttribute('data-y', y);
-    // document.getElementById('workspace').appendChild( this.dupSymbol );
-    // //this.dupSymbol.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+    this.dupSymbol.setAttribute('data-x', x);
+    this.dupSymbol.setAttribute('data-y', y);
+    document.getElementById('fabSymbols').appendChild(this.dupSymbol);
+    this.dupSymbol.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
 
-    // e.target = this.dupSymbol;
+    e.target = this.dupSymbol;
     this.selectedSymbol = e.target.id;
-    //e.dataTransfer.setData('id', this.selectedSymbol);
+    // e.dataTransfer.setData('text', e.target.getAttribute('data-x'));
     //document.getElementById('workspace').appendChild(e.target);
-    console.log("start drag" + e.target);
+    console.log("start drag ", e.target);
   }
 
   public moveDrag(e) {
     e.preventDefault();
-    // let target = e.target || e.srcElement || e.currentTarget,
-    //   // keep the dragged position in the data-x/data-y attributes
-    //   x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx,
-    //   y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy;
+    let target = e.target || e.srcElement || e.currentTarget,
+      // keep the dragged position in the data-x/data-y attributes
+      x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx,
+      y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy;
 
-    // // translate the element
-    // target.style.zIndex = '-1';
-    // target.style.webkitTransform =
-    // target.style.transform =
-    //   'translate(' + x + 'px, ' + y + 'px)';
+    // translate the element
+    target.style.zIndex = '1';
+    target.style.webkitTransform =
+      target.style.transform =
+      'translate(' + x + 'px, ' + y + 'px)';
 
-    // // update the position attributes
-    // target.setAttribute('data-x', x);
-    // target.setAttribute('data-y', y);
+    // update the position attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+
+    // console.log("move drag ", e.target);
   }
 
   public endDrag(e) {
-    e.preventDefault();
+    //e.preventDefault();
     // this.consoleLog("end drag");
   }
 
   public dragEnter(e) {
-    e.preventDefault();
+    // e.preventDefault();
     e.target.classList.add("active-arrow");
     e.target.style.background = "#9CDCFE";
     // this.consoleLog("drag enter");
   }
 
   public dragLeave(e) {
-    e.preventDefault();
+    // e.preventDefault();
     e.target.classList.remove("active-arrow");
     e.target.style.background = "#000000";
     //this.consoleLog("drag leave");
   }
 
   public dropped(e) {
-    e.preventDefault();
+    // e.preventDefault();
     e.target.style.background = "#000000";
+    // e.relatedTarget.style.position = 'initial';
+    // console.log(e.dataTransfer.getData(this.selectedSymbol));
     this.addSymbol(this.selectedSymbol, e);
     //this.consoleLog("dropped");
   }

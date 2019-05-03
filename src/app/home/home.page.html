@@ -2,9 +2,9 @@
 
 <ion-toolbar color="primary">
   <button menuToggle="right" style="background-color: #333;" (click)="openMenu()">
-    <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/menu.png"/>
+    <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/menu.png" />
   </button> &nbsp;
-  <img style="width: 36px; height: 36px;" src="./assets/icon/chap_logo.png"/> &nbsp;
+  <img style="width: 36px; height: 36px;" src="./assets/icon/chap_logo.png" /> &nbsp;
   <input type="text" id="fileName" placeholder="Untitled Sketch" value="{{fileName}}">
 </ion-toolbar>
 
@@ -13,12 +13,22 @@
   <div class="wrapper">
 
     <div id="workspace" appEditor>
+
+      <aside id="side_fab_symbols" class="side_fab_symbols" style="float: left">
+        <div id="fabSymbols">
+          <div *ngFor="let s of symbols" id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true"
+            (dragstart)="startDrag($event)" (dragend)="endDrag($event)" style="z-index: 1">
+            {{s.s_name}}
+          </div>
+        </div>
+      </aside>
+
       <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
-      <div id="arrow" class="arrow dropzone" ></div>
+      <div id="arrow" class="arrow dropzone" style="z-index: 5"></div>
       <!-- <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" (press)="openSymbolsAS($event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">{{s.s_name}}</div> -->
       <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
     </div>
-    
+
     <div class="sidebar">
       <div>
         <ion-fab vertical="bottom" horizontal="start" #symbolsFAB>
@@ -27,40 +37,46 @@
           </ion-fab-button>
           <ion-fab-list side="top" style="overflow-y: auto;">
             <ion-card *ngFor="let s of symbols" id="fabSymbols">
-              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">
+              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true"
+                (dragstart)="startDrag($event)" (dragend)="endDrag($event)">
                 {{s.s_name}}
               </div>
             </ion-card>
           </ion-fab-list>
         </ion-fab>
       </div>
-      
+
       <div>
         <div>
           <div style="padding: 3px 10px; background-color: #333; color: #ddd; float: left;">Console</div>
           <div style="padding: 3px 10px; float: right; cursor: pointer; color: #ddd; background-color: #f04141;">
-            <a (click)="clearConsole()" >Clear</a>
+            <a (click)="clearConsole()">Clear</a>
           </div>
         </div>
-        
+
         <textarea id="console" rows="4" disabled="true" contenteditable="false" style="color: #ddd;"></textarea>
-      </div>  
-      
+      </div>
+
     </div>
 
     <ul id="control_loop_list">
       <li>
         <div class="if_div">
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">False</div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            False</div>
           <div id="arrow_left" class="arrows dropzone"></div>
-          <div id="s_if_case" class="symbol" (click)="addSymbol('s_if_case', $event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">If</div>
+          <div id="s_if_case" class="symbol" (click)="addSymbol('s_if_case', $event)" draggable="true"
+            (dragstart)="startDrag($event)" (dragend)="endDrag($event)">If</div>
           <div id="arrow_right" class="arrows dropzone"></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">True</div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            True</div>
 
           <div id="ifFalseBlock">
             <div id="arrow" class="arrow dropzone"></div>
           </div>
-          <div></div> <div></div> <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
           <div id="ifTrueBlock">
             <div id="arrow" class="arrow dropzone"></div>
           </div>
@@ -74,70 +90,104 @@
       </li>
       <li>
         <div class="for_div">
-          <div></div> <div></div>
-          <div id="s_for_loop" class="symbol" (click)="addSymbol('s_for_loop',$event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">For</div>
+          <div></div>
+          <div></div>
+          <div id="s_for_loop" class="symbol" (click)="addSymbol('s_for_loop',$event)" draggable="true"
+            (dragstart)="startDrag($event)" (dragend)="endDrag($event)">For</div>
           <div id="arrow_right" class="arrows"></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">Next</div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            Next</div>
 
-          <div></div> <div></div> <div id="arrows_line_up" class="arrows" style="height: 100%;"></div> <div></div>
+          <div></div>
+          <div></div>
+          <div id="arrows_line_up" class="arrows" style="height: 100%;"></div>
+          <div></div>
           <div id="forTrueBlock">
-            <div id="arrow" class="arrow dropzone" ></div>
+            <div id="arrow" class="arrow dropzone"></div>
           </div>
 
-          <div></div> <div></div>
+          <div></div>
+          <div></div>
           <div id="arrows_down_down_right" class="arrows"></div>
           <div id="arrow_horizontal" class="arrows"></div>
           <div id="s_terminator"></div>
 
-          <div></div> <div></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">Done</div>
-          <div></div> <div></div>
+          <div></div>
+          <div></div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            Done</div>
+          <div></div>
+          <div></div>
         </div>
       </li>
       <li>
         <div class="while_div">
-          <div></div> <div></div>
-          <div id="s_while_loop" class="symbol" (click)="addSymbol('s_while_loop',$event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">While</div>
+          <div></div>
+          <div></div>
+          <div id="s_while_loop" class="symbol" (click)="addSymbol('s_while_loop',$event)" draggable="true"
+            (dragstart)="startDrag($event)" (dragend)="endDrag($event)">While</div>
           <div id="arrow_right" class="arrows"></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">True</div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            True</div>
 
-          <div></div> <div></div> <div id="arrows_line_up" class="arrows" style="height: 100%;"></div> <div></div>
+          <div></div>
+          <div></div>
+          <div id="arrows_line_up" class="arrows" style="height: 100%;"></div>
+          <div></div>
           <div id="whileTrueBlock">
-            <div id="arrow" class="arrow dropzone" ></div>
+            <div id="arrow" class="arrow dropzone"></div>
           </div>
 
-          <div></div> <div></div>
+          <div></div>
+          <div></div>
           <div id="arrows_down_down_right" class="arrows"></div>
           <div id="arrow_horizontal" class="arrows"></div>
           <div id="s_terminator"></div>
 
-          <div></div> <div></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">False</div>
-          <div></div> <div></div>
+          <div></div>
+          <div></div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            False</div>
+          <div></div>
+          <div></div>
         </div>
       </li>
       <li>
         <div class="do_while_div">
-          <div></div> <div></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">True</div>
+          <div></div>
+          <div></div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            True</div>
           <div id="arrow_right" class="arrows"></div>
           <div id="s_terminator"></div>
 
-          <div></div> <div></div> <div id="arrow_up" class="arrows" style="height: 100%;"></div> <div></div>
+          <div></div>
+          <div></div>
+          <div id="arrow_up" class="arrows" style="height: 100%;"></div>
+          <div></div>
           <div id="doWhileTrueBlock">
-            <div id="arrow" class="arrow dropzone" ></div>
+            <div id="arrow" class="arrow dropzone"></div>
           </div>
-          
-          <div></div> <div></div>
-          <div id="s_do_while_loop" class="symbol" (click)="addSymbol('s_do_while_loop',$event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">Do</div>
+
+          <div></div>
+          <div></div>
+          <div id="s_do_while_loop" class="symbol" (click)="addSymbol('s_do_while_loop',$event)" draggable="true"
+            (dragstart)="startDrag($event)" (dragend)="endDrag($event)">Do</div>
           <div id="arrow_left" class="arrows"></div>
           <div id="s_terminator"></div>
 
-          <div></div> <div></div> <div id="arrow" class="arrow"></div> <div></div> <div></div>
+          <div></div>
+          <div></div>
+          <div id="arrow" class="arrow"></div>
+          <div></div>
+          <div></div>
 
-          <div></div> <div></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">False</div>
-          <div></div> <div></div>    
+          <div></div>
+          <div></div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            False</div>
+          <div></div>
+          <div></div>
         </div>
       </li>
     </ul>
