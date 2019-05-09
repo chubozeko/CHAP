@@ -96,28 +96,28 @@ export class HomePage {
       shapes[i].addEventListener("dragmove", (e) => this.moveDrag(e), false);
     }
 
-    interact('.dropzone').dropzone({
-      accept: '.symbol',
-      //overlap: 0.25,
-      ondragenter: this.dragEnter,
-      ondragleave: this.dragLeave,
-      ondrop: this.dropped,
-    });
+    // interact('.dropzone').dropzone({
+    //   accept: '.symbol',
+    //   //overlap: 0.25,
+    //   ondragenter: this.dragEnter,
+    //   ondragleave: this.dragLeave,
+    //   ondrop: this.dropped,
+    // });
 
-    interact('.symbol')
-      .draggable({
-        ignoreFrom: '#s_start, #s_stop',
-        inertia: false,
-        restrict: {
-          restriction: '.wrapper',
-          endOnly: true,
-          elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-        },
-        autoScroll: false,
-        onstart: this.startDrag,
-        onmove: this.moveDrag,
-        onend: this.endDrag
-      });
+    // interact('.symbol')
+    //   .draggable({
+    //     ignoreFrom: '#s_start, #s_stop',
+    //     inertia: false,
+    //     restrict: {
+    //       restriction: '.wrapper',
+    //       endOnly: true,
+    //       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+    //     },
+    //     autoScroll: false,
+    //     onstart: this.startDrag,
+    //     onmove: this.moveDrag,
+    //     onend: this.endDrag
+    //   });
   }
 
   public openMenu() {
@@ -1078,14 +1078,14 @@ export class HomePage {
     let t = e.target || e.srcElement || e.currentTarget,
       x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
       y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
-    this.dupSymbol = t.cloneNode(true);
+    // this.dupSymbol = t.cloneNode(true);
 
-    this.dupSymbol.setAttribute('data-x', x);
-    this.dupSymbol.setAttribute('data-y', y);
-    document.getElementById('fabSymbols').appendChild(this.dupSymbol);
-    this.dupSymbol.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
+    // this.dupSymbol.setAttribute('data-x', x);
+    // this.dupSymbol.setAttribute('data-y', y);
+    // document.getElementById('fabSymbols').appendChild(this.dupSymbol);
+    // this.dupSymbol.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
 
-    e.target = this.dupSymbol;
+    // e.target = this.dupSymbol;
     this.selectedSymbol = e.target.id;
     // e.dataTransfer.setData('text', e.target.getAttribute('data-x'));
     //document.getElementById('workspace').appendChild(e.target);
