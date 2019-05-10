@@ -24,7 +24,7 @@
       </aside> -->
 
       <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
-      <div id="arrow" class="arrow dropzone" style="z-index: 5"></div>
+      <div id="arrow" class="arrow dropzone" dragula="symbol" style="z-index: 5"></div>
       <!-- <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" (press)="openSymbolsAS($event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">{{s.s_name}}</div> -->
       <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
     </div>
@@ -35,8 +35,8 @@
           <ion-fab-button id="symbolsFAB" color="light" style="padding: 15px;">
             <img src="./assets/icon/symbols_icon.png" alt="">
           </ion-fab-button>
-          <ion-fab-list side="top" style="overflow-y: auto;">
-            <ion-card *ngFor="let s of symbols" id="fabSymbols">
+          <ion-fab-list dragula="symbol" side="top" style="overflow-y: auto;">
+            <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
               <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true"
                 (dragstart)="startDrag($event)" (dragend)="endDrag($event)">
                 {{s.s_name}}

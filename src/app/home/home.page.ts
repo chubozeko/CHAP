@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController } from "@ionic/angular";
+import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController, ToastController } from "@ionic/angular";
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
@@ -28,6 +28,9 @@ import { Stop } from "../classes/Stop";
 import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
+import { DragulaService } from "ng2-dragula";
+import { container } from "@angular/core/src/render3";
+const dragula = require('ng2-dragula');
 // import 'libraries/scripts/drag&drop.js';
 
 @Component({
@@ -49,12 +52,15 @@ export class HomePage {
   symbols = SYMBOLS;
   newSymbol: any;
   dupSymbol: any;
+  drake;
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
     public menu: MenuController,
     public modalC: ModalController,
-    public alertC: AlertController // public navParams: NavParams
+    public alertC: AlertController, // public navParams: NavParams
+    private dragulaService: DragulaService,
+    private toastC: ToastController
   ) { }
 
   ngOnInit() {
@@ -96,13 +102,65 @@ export class HomePage {
       shapes[i].addEventListener("dragmove", (e) => this.moveDrag(e), false);
     }
 
-    // interact('.dropzone').dropzone({
-    //   accept: '.symbol',
-    //   //overlap: 0.25,
-    //   ondragenter: this.dragEnter,
-    //   ondragleave: this.dragLeave,
-    //   ondrop: this.dropped,
-    // });
+    this.dragulaService.drag('symbol')
+      .subscribe(({ name, el, source }) => {
+        this.selectedSymbol = el.children[0].id;
+      });
+
+    this.dragulaService.drop('symbol')
+      .subscribe(({ name, el, target, source }) => {
+        target.setAttribute('style', 'background: #000000');
+        target.removeChild(target.children[0]);
+        this.addSymbol(this.selectedSymbol, el.children[0]);
+
+        console.log('el', el);
+        console.log('target', target);
+        console.log('source', source);
+      });
+
+    this.dragulaService.over('symbol')
+      .subscribe(({ name, el, container, source }) => {
+        if (container.className == 'arrow dropzone') {
+          container.classList.add("active-arrow");
+          container.setAttribute('style', 'background: #9CDCFE');
+          console.log('el', el);
+          console.log('container', container);
+          console.log('source', source);
+        }
+      });
+
+    this.dragulaService.out('symbol')
+      .subscribe(({ name, el, container, source }) => {
+        if (container.className == 'arrow dropzone') {
+          container.classList.remove("active-arrow");
+          container.setAttribute('style', 'background: #000000');
+        }
+      });
+
+    this.dragulaService.createGroup('symbol', {
+      copy: true,
+      removeOnSpill: true,
+      isContainer: (el) => {
+        return el.classList.contains('arrow dropzone');
+      }
+    });
+
+    // this.drake = dragula([document.getElementsByClassName('arrow dropzone')], {
+    //   copy: true,
+    //   removeOnSpill: true,
+    //   isContainer: (el) => {
+    //     return el.classList.contains('arrow dropzone');
+    //   }
+    // }
+    // );
+
+    interact('.dropzone').dropzone({
+      accept: '.symbol',
+      //overlap: 0.25,
+      ondragenter: this.dragEnter,
+      ondragleave: this.dragLeave,
+      ondrop: this.dropped,
+    });
 
     // interact('.symbol')
     //   .draggable({
@@ -943,22 +1001,6 @@ export class HomePage {
               }
           )
           .on("doubletap", e => this.openSymbolDialog(e, id))
-          .draggable({
-            inertia: {
-              resistance: 10,
-              minSpeed: 500,
-              endSpeed: 50
-            },
-            restrict: {
-              restriction: '.wrapper',
-              endOnly: true,
-              elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-            },
-            autoScroll: true,
-            onstart: this.startDrag,
-            onmove: this.moveDrag,
-            onend: this.endDrag
-          })
           .on("hold", e => this.openSymbolsAS(e));
 
         for (let l = 0; l < b1.length; l++) {
@@ -989,6 +1031,8 @@ export class HomePage {
             ai = i - totalAD;
           }
         }
+
+
         // Add symbol and corresponding arrow/branch to Workspace
         this.workspace.insertBefore(symbol, branches[0].nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
@@ -1016,6 +1060,8 @@ export class HomePage {
         false
       );
       dz[i].addEventListener("drop", e => this.dropped(e), false);
+
+      // tempBranch.setAttribute('dragula', 'symbol');
     }
     interact(".dropzone").dropzone({
       accept: ".symbol",
