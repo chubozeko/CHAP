@@ -29,11 +29,6 @@ import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
 import { DragulaService } from "ng2-dragula";
-import { container } from "@angular/core/src/render3";
-import { Subscription, Subscriber, Observable } from "rxjs";
-//const dragula = require('ng2-dragula');
-const dragula = require('dragula');
-// import 'libraries/scripts/drag&drop.js';
 
 @Component({
   selector: "app-home",
@@ -42,7 +37,7 @@ const dragula = require('dragula');
 })
 export class HomePage {
   @ViewChild("symbolsFAB") symbolsFAB: Fab;
-  @ViewChild("tutorialFAB") tutorialFAB: Fab;
+  // @ViewChild("tutorialFAB") tutorialFAB: Fab;
 
   flowchart: Flowchart = new Flowchart(this.alertC);
   title = "CHAP";
@@ -54,15 +49,15 @@ export class HomePage {
   symbols = SYMBOLS;
   newSymbol: any;
   dupSymbol: any;
-  drake;
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
     public menu: MenuController,
     public modalC: ModalController,
-    public alertC: AlertController, // public navParams: NavParams
+    public alertC: AlertController,
     private dragulaService: DragulaService,
     private toastC: ToastController
+    // public navParams: NavParams
   ) { }
 
   ngOnInit() {
@@ -91,20 +86,13 @@ export class HomePage {
     let branches = document.getElementsByClassName("dropzone");
     for (let i = 0; i < branches.length; i++) {
       branches[i].addEventListener("click", e => this.openSymbolsFAB(e));
-      branches[i].addEventListener("dragenter", e => this.dragEnter(e), false);
-      branches[i].addEventListener("dragleave", e => this.dragLeave(e), false);
-      // branches[i].addEventListener("dragover", function (e) { e.preventDefault(); }, false);
-      branches[i].addEventListener("drop", e => this.dropped(e), false);
-    }
-
-    let shapes = document.getElementsByClassName("symbol");
-    for (var i = 0; i < shapes.length; i++) {
-      shapes[i].addEventListener("dragstart", e => this.startDrag(e), false);
-      shapes[i].addEventListener("dragend", e => this.endDrag(e), false);
-      shapes[i].addEventListener("dragmove", (e) => this.moveDrag(e), false);
     }
 
     /*** Dragula DRAG & DROP configs ***/
+    this.subscribeToDragula();
+  }
+
+  public subscribeToDragula() {
     this.dragulaService.drag('symbol')
       .subscribe(({ name, el, source }) => {
         this.selectedSymbol = el.children[0].id;
@@ -115,10 +103,7 @@ export class HomePage {
         target.setAttribute('style', 'background: #000000');
         target.removeChild(target.children[0]);
         this.addSymbol(this.selectedSymbol, el.children[0]);
-
-        console.log('el', el);
-        console.log('target', target);
-        console.log('source', source);
+        this.symbolsFAB.close();
       });
 
     this.dragulaService.over('symbol')
@@ -126,9 +111,6 @@ export class HomePage {
         if (container.className == 'arrow dropzone') {
           container.classList.add("active-arrow");
           container.setAttribute('style', 'background: #9CDCFE');
-          console.log('el', el);
-          console.log('container', container);
-          console.log('source', source);
         }
       });
 
@@ -137,9 +119,6 @@ export class HomePage {
         if (container.className == 'arrow dropzone active-arrow') {
           container.classList.remove("active-arrow");
           container.setAttribute('style', 'background: #000000');
-          console.log('el', el);
-          console.log('container', container);
-          console.log('source', source);
         }
       });
 
@@ -150,79 +129,6 @@ export class HomePage {
         return el.classList.contains('arrow dropzone');
       }
     });
-
-
-    this.drake = dragula([document.getElementsByClassName('arrow dropzone')], {
-      copy: true,
-      removeOnSpill: true,
-      isContainer: (el) => {
-        return el.classList.contains('arrow dropzone');
-      }
-    }
-    );
-
-    // this.drake.containers.push();
-
-    // interact('.dropzone').dropzone({
-    //   accept: '.symbol',
-    //   //overlap: 0.25,
-    //   ondragenter: this.dragEnter,
-    //   ondragleave: this.dragLeave,
-    //   ondrop: this.dropped,
-    // });
-
-    // interact('.symbol')
-    //   .draggable({
-    //     ignoreFrom: '#s_start, #s_stop',
-    //     inertia: false,
-    //     restrict: {
-    //       restriction: '.wrapper',
-    //       endOnly: true,
-    //       elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-    //     },
-    //     autoScroll: false,
-    //     onstart: this.startDrag,
-    //     onmove: this.moveDrag,
-    //     onend: this.endDrag
-    //   });
-  }
-
-  public subscribeToDragula() {
-    /*** Dragula DRAG & DROP configs ***/
-    this.dragulaService.drag('symbol')
-      .subscribe(({ name, el, source }) => {
-        this.selectedSymbol = el.children[0].id;
-      });
-
-    this.dragulaService.drop('symbol')
-      .subscribe(({ name, el, target, source }) => {
-        target.setAttribute('style', 'background: #000000');
-        target.removeChild(target.children[0]);
-        this.addSymbol(this.selectedSymbol, el.children[0]);
-
-        console.log('el', el);
-        console.log('target', target);
-        console.log('source', source);
-      });
-
-    this.dragulaService.over('symbol')
-      .subscribe(({ name, el, container, source }) => {
-        if (container.className == 'arrow dropzone') {
-          container.classList.add("active-arrow");
-          container.setAttribute('style', 'background: #9CDCFE');
-          console.log('el', el);
-          console.log('container', container);
-          console.log('source', source);
-        }
-      });
-
-    this.dragulaService.out('symbol')
-      .subscribe(({ name, el, container, source }) => {
-        if (container.className == 'arrow dropzone') {
-          container.classList.remove("active-arrow");
-          container.setAttribute('style', 'background: #000000');
-        }
-      });
   }
 
   public openMenu() {
@@ -1097,37 +1003,13 @@ export class HomePage {
         branches[i].classList.remove("active-arrow");
       }
     }
-
     let dz = document.getElementsByClassName("arrow dropzone");
     for (let i = 0; i < dz.length; i++) {
       dz[i].addEventListener("click", e => this.openSymbolsFAB(e));
-      dz[i].addEventListener("dragenter", e => this.dragEnter(e), false);
-      dz[i].addEventListener("dragleave", e => this.dragLeave(e), false);
-      dz[i].addEventListener(
-        "dragover",
-        function (e) {
-          e.preventDefault();
-        },
-        false
-      );
-      dz[i].addEventListener("drop", e => this.dropped(e), false);
-
-      // dz[i].setAttribute('dragula', 'symbol');
-      // dz[i].setAttribute('dragulaModel', 'symbol');
-      // drake.containers.push(dz[i]);
     }
-    // interact(".dropzone").dropzone({
-    //   accept: ".symbol",
-    //   overlap: 0.75,
-    //   ondragenter: this.dragEnter,
-    //   ondragleave: this.dragLeave,
-    //   ondrop: this.dropped
-    // });
 
-    // this.subscribeToDragula();
-
-    console.log('Group: ', this.dragulaService.find('symbol'));
     console.log(this.flowchart.SYMBOLS);
+
   }
 
   public consoleLog(lineOutput) {
@@ -1174,78 +1056,6 @@ export class HomePage {
       }
     }
     this.flowchart = new Flowchart(this.alertC);
-  }
-
-  public startDrag(e) {
-    let t = e.target || e.srcElement || e.currentTarget,
-      x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
-      y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
-    // this.dupSymbol = t.cloneNode(true);
-
-    // this.dupSymbol.setAttribute('data-x', x);
-    // this.dupSymbol.setAttribute('data-y', y);
-    // document.getElementById('fabSymbols').appendChild(this.dupSymbol);
-    // this.dupSymbol.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
-
-    // e.target = this.dupSymbol;
-    this.selectedSymbol = e.target.id;
-    // e.dataTransfer.setData('text', e.target.getAttribute('data-x'));
-    //document.getElementById('workspace').appendChild(e.target);
-    console.log("start drag ", e.target);
-  }
-
-  public moveDrag(e) {
-    e.preventDefault();
-    let target = e.target || e.srcElement || e.currentTarget,
-      // keep the dragged position in the data-x/data-y attributes
-      x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx,
-      y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy;
-
-    // translate the element
-    target.style.zIndex = '1';
-    target.style.webkitTransform =
-      target.style.transform =
-      'translate(' + x + 'px, ' + y + 'px)';
-
-    // update the position attributes
-    target.setAttribute('data-x', x);
-    target.setAttribute('data-y', y);
-
-    // console.log("move drag ", e.target);
-  }
-
-  public endDrag(e) {
-    //e.preventDefault();
-    // this.consoleLog("end drag");
-  }
-
-  public dragEnter(e) {
-    // e.preventDefault();
-    e.target.classList.add("active-arrow");
-    e.target.style.background = "#9CDCFE";
-    // this.consoleLog("drag enter");
-  }
-
-  public dragLeave(e) {
-    // e.preventDefault();
-    e.target.classList.remove("active-arrow");
-    e.target.style.background = "#000000";
-    //this.consoleLog("drag leave");
-  }
-
-  public dropped(e) {
-    // e.preventDefault();
-    e.target.style.background = "#000000";
-    // e.relatedTarget.style.position = 'initial';
-    // console.log(e.dataTransfer.getData(this.selectedSymbol));
-    this.addSymbol(this.selectedSymbol, e);
-    //this.consoleLog("dropped");
-  }
-
-  public onPress(e) {
-    e.target.style.border = "2px dashed #000";
-    //this.openSymbolsAS(e);
-    this.consoleLog("press");
   }
 
   public newProject() {

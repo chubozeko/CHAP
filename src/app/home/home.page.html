@@ -13,20 +13,9 @@
   <div class="wrapper">
 
     <div id="workspace" appEditor>
-
-      <!-- <aside id="side_fab_symbols" class="side_fab_symbols" style="float: left">
-        <div id="fabSymbols">
-          <div *ngFor="let s of symbols" id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true"
-            (dragstart)="startDrag($event)" (dragend)="endDrag($event)" style="z-index: 1">
-            {{s.s_name}}
-          </div>
-        </div>
-      </aside> -->
-
       <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
-      <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbol" style="z-index: 5">
+      <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbol">
       </div>
-      <!-- <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" (press)="openSymbolsAS($event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">{{s.s_name}}</div> -->
       <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
     </div>
 
@@ -38,8 +27,7 @@
           </ion-fab-button>
           <ion-fab-list dragula="symbol" side="top" style="overflow-y: auto;">
             <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
-              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" draggable="true"
-                (dragstart)="startDrag($event)" (dragend)="endDrag($event)">
+              <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id, $event)">
                 {{s.s_name}}
               </div>
             </ion-card>
@@ -66,8 +54,7 @@
           <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
             False</div>
           <div id="arrow_left" class="arrows dropzone"></div>
-          <div id="s_if_case" class="symbol" (click)="addSymbol('s_if_case', $event)" draggable="true"
-            (dragstart)="startDrag($event)" (dragend)="endDrag($event)">If</div>
+          <div id="s_if_case" class="symbol" (click)="addSymbol('s_if_case', $event)">If</div>
           <div id="arrow_right" class="arrows dropzone"></div>
           <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
             True</div>
@@ -93,8 +80,7 @@
         <div class="for_div">
           <div></div>
           <div></div>
-          <div id="s_for_loop" class="symbol" (click)="addSymbol('s_for_loop',$event)" draggable="true"
-            (dragstart)="startDrag($event)" (dragend)="endDrag($event)">For</div>
+          <div id="s_for_loop" class="symbol" (click)="addSymbol('s_for_loop',$event)">For</div>
           <div id="arrow_right" class="arrows"></div>
           <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
             Next</div>
@@ -125,8 +111,7 @@
         <div class="while_div">
           <div></div>
           <div></div>
-          <div id="s_while_loop" class="symbol" (click)="addSymbol('s_while_loop',$event)" draggable="true"
-            (dragstart)="startDrag($event)" (dragend)="endDrag($event)">While</div>
+          <div id="s_while_loop" class="symbol" (click)="addSymbol('s_while_loop',$event)">While</div>
           <div id="arrow_right" class="arrows"></div>
           <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
             True</div>
@@ -172,8 +157,7 @@
 
           <div></div>
           <div></div>
-          <div id="s_do_while_loop" class="symbol" (click)="addSymbol('s_do_while_loop',$event)" draggable="true"
-            (dragstart)="startDrag($event)" (dragend)="endDrag($event)">Do</div>
+          <div id="s_do_while_loop" class="symbol" (click)="addSymbol('s_do_while_loop',$event)">Do</div>
           <div id="arrow_left" class="arrows"></div>
           <div id="s_terminator"></div>
 
