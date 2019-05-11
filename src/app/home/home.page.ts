@@ -76,6 +76,8 @@ export class HomePage {
     newProj.addEventListener("click", e => this.newProject());
     // let saveProj = document.getElementById("btn_saveProject");
     // saveProj.addEventListener('click', (e) => this.saveProject());
+    let closeM = document.getElementById("btn_closeMenu");
+    closeM.addEventListener("click", e => this.closeMenu());
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
@@ -133,6 +135,10 @@ export class HomePage {
 
   public openMenu() {
     this.menu.open();
+  }
+
+  public closeMenu() {
+    this.menu.close();
   }
 
   async openDeclareModal(symbol, e) {
@@ -1024,6 +1030,10 @@ export class HomePage {
       buttons: ["OK"]
     });
     await alert.present();
+  }
+
+  public toggleConsole() {
+
   }
 
   public clearConsole() {

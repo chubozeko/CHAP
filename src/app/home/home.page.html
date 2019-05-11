@@ -25,7 +25,7 @@
           <ion-fab-button id="symbolsFAB" color="light" style="padding: 15px;">
             <img src="./assets/icon/symbols_icon.png" alt="">
           </ion-fab-button>
-          <ion-fab-list dragula="symbol" side="top" style="overflow-y: auto;">
+          <ion-fab-list dragula="symbol" side="top" style="overflow-y: auto; height: 500px; padding: 0px;">
             <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
               <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id, $event)">
                 {{s.s_name}}
@@ -35,15 +35,13 @@
         </ion-fab>
       </div>
 
+      <!-- <div> -->
       <div>
-        <div>
-          <div style="padding: 3px 10px; background-color: #333; color: #ddd; float: left;">Console</div>
-          <div style="padding: 3px 10px; float: right; cursor: pointer; color: #ddd; background-color: #f04141;">
-            <a (click)="clearConsole()">Clear</a>
-          </div>
-        </div>
-
-        <textarea id="console" rows="4" disabled="true" contenteditable="false" style="color: #ddd;"></textarea>
+        <ion-button size="small" color="primary" style="float: left;" (click)="toggleConsole()">Console</ion-button>
+        <ion-button size="small" color="danger" style="float: right;" (click)="clearConsole()">Clear</ion-button>
+        <!-- </div> -->
+        <textarea id="console" class="toggleConsole" rows="4" disabled="true" contenteditable="false"
+          style="color: #ddd;"></textarea>
       </div>
 
     </div>
