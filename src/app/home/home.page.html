@@ -24,7 +24,8 @@
       </aside> -->
 
       <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
-      <div id="arrow" class="arrow dropzone" dragula="symbol" style="z-index: 5"></div>
+      <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbol" style="z-index: 5">
+      </div>
       <!-- <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id,$event)" (press)="openSymbolsAS($event)" draggable="true" (dragstart)="startDrag($event)" (dragend)="endDrag($event)">{{s.s_name}}</div> -->
       <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
     </div>
