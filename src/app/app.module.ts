@@ -6,6 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicGestureConfig } from "./gestures/ionic-gesture-config";
+import { DragulaModule } from "ng2-dragula";
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -38,8 +39,9 @@ import { TutorialPageModule } from './tutorial/tutorial.module';
   ],
   entryComponents: [],
   imports: [
-    BrowserModule, 
-    IonicModule.forRoot(), 
+    BrowserModule,
+    IonicModule.forRoot(),
+    DragulaModule.forRoot(),
     AppRoutingModule,
     CommentPageModule,
     DeclarePageModule,
@@ -62,4 +64,4 @@ import { TutorialPageModule } from './tutorial/tutorial.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

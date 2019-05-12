@@ -1,25 +1,33 @@
 <ion-app>
-  <ion-menu contentId="content">
+  <ion-menu contentId="content" swipeGesture="false">
     <ion-toolbar color="primary">
-      <img style="width: 36px; height: 36px; margin-left: 10px;" src="./assets/icon/chap_logo.png"/>
+      <img style="width: 36px; height: 36px; margin-left: 10px;" src="./assets/icon/chap_logo.png" />
       <ion-title style="display: inline-block; padding: 5px; margin-left: 10px;"> Menu </ion-title>
+      <button menuToggle="right" style="background-color: #333; float: right;" id="btn_closeMenu">
+        <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/arrow_back.png" />
+      </button>
     </ion-toolbar>
-    
+
     <ion-content color="primary">
       <ion-list id="sidemenu_list">
         <!-- <ion-item (click)=""> <img src="" alt="">  </ion-item> -->
         <ion-item id="btn_newProject"> <img src="./assets/icon/add.svg" alt="New Project">&nbsp; New Project</ion-item>
         <!-- <ion-item > <img src="./assets/icon/open.svg" alt="Open Project">&nbsp; Open Project</ion-item> -->
         <!-- <ion-item id="btn_saveProject"> <img src="./assets/icon/save.svg" alt="Save Project">&nbsp; Save Project</ion-item> -->
-        <ion-item id="btn_clearWorkspace"><img src="./assets/icon/clear.svg" alt="Clear Workspace">&nbsp; Clear Workspace</ion-item>
+        <ion-item id="btn_clearWorkspace"><img src="./assets/icon/clear.svg" alt="Clear Workspace">&nbsp; Clear
+          Workspace</ion-item>
         <!-- <ion-item > <img src="./assets/icon/run.svg" alt="Run">&nbsp; Run Program</ion-item> -->
-        <ion-item id="btn_debugProgram"> <img src="./assets/icon/debug.svg" alt="Debug Program">&nbsp; Debug Program</ion-item>
-        <ion-item id="btn_generateCode"> <img src="./assets/icon/code.svg" alt="Generate Code">&nbsp; Generate Code</ion-item> <hr/>
+        <ion-item id="btn_debugProgram"> <img src="./assets/icon/debug.svg" alt="Debug Program">&nbsp; Debug Program
+        </ion-item>
+        <ion-item id="btn_generateCode"> <img src="./assets/icon/code.svg" alt="Generate Code">&nbsp; Generate Code
+        </ion-item>
+        <hr />
         <!-- <ion-item > <img src="./assets/icon/survey.svg" alt="Pre Survey"> &nbsp;&nbsp; <a href="https://www.surveymonkey.com/r/WQN6QKZ" target="_blank"> Pre Survey </a> </ion-item> -->
         <!-- <ion-item > <img src="./assets/icon/survey.svg" alt="Post Survey"> &nbsp;&nbsp; <a href="https://www.surveymonkey.com/r/DJZ3RCF" target="_blank"> Post Survey </a> </ion-item> -->
         <!-- <ion-item > <img src="./assets/icon/android.svg" alt="Download CHAP Mobile"> &nbsp;&nbsp; <a href="https://drive.google.com/open?id=1DWeslCXpcDYtmFB7eZwqmCBoXVxTt4yh" target="_blank"> Download CHAP Mobile </a> </ion-item> <hr/> -->
         <ion-item id="btn_aboutPage"> <img src="./assets/icon/info.svg" alt="About">&nbsp; About</ion-item>
-        <ion-item id="btn_tutorialPage"> <img src="./assets/icon/help.svg" alt="Tutorial">&nbsp; CHAP Tutorial </ion-item>
+        <ion-item id="btn_tutorialPage"> <img src="./assets/icon/help.svg" alt="Tutorial">&nbsp; CHAP Tutorial
+        </ion-item>
       </ion-list>
     </ion-content>
   </ion-menu>

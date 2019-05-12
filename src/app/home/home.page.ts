@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController } from "@ionic/angular";
+import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController, ToastController } from "@ionic/angular";
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
@@ -28,7 +28,7 @@ import { Stop } from "../classes/Stop";
 import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
-// import 'libraries/scripts/drag&drop.js';
+import { DragulaService } from "ng2-dragula";
 
 @Component({
   selector: "app-home",
@@ -37,7 +37,7 @@ import { DoWhileLoop } from "../classes/DoWhileLoop";
 })
 export class HomePage {
   @ViewChild("symbolsFAB") symbolsFAB: Fab;
-  @ViewChild("tutorialFAB") tutorialFAB: Fab;
+  // @ViewChild("tutorialFAB") tutorialFAB: Fab;
 
   flowchart: Flowchart = new Flowchart(this.alertC);
   title = "CHAP";
@@ -54,7 +54,10 @@ export class HomePage {
     public symbolOptionsAS: ActionSheetController,
     public menu: MenuController,
     public modalC: ModalController,
-    public alertC: AlertController // public navParams: NavParams
+    public alertC: AlertController,
+    private dragulaService: DragulaService,
+    private toastC: ToastController
+    // public navParams: NavParams
   ) { }
 
   ngOnInit() {
@@ -73,6 +76,8 @@ export class HomePage {
     newProj.addEventListener("click", e => this.newProject());
     // let saveProj = document.getElementById("btn_saveProject");
     // saveProj.addEventListener('click', (e) => this.saveProject());
+    let closeM = document.getElementById("btn_closeMenu");
+    closeM.addEventListener("click", e => this.closeMenu());
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
@@ -83,45 +88,57 @@ export class HomePage {
     let branches = document.getElementsByClassName("dropzone");
     for (let i = 0; i < branches.length; i++) {
       branches[i].addEventListener("click", e => this.openSymbolsFAB(e));
-      branches[i].addEventListener("dragenter", e => this.dragEnter(e), false);
-      branches[i].addEventListener("dragleave", e => this.dragLeave(e), false);
-      // branches[i].addEventListener("dragover", function (e) { e.preventDefault(); }, false);
-      branches[i].addEventListener("drop", e => this.dropped(e), false);
     }
 
-    let shapes = document.getElementsByClassName("symbol");
-    for (var i = 0; i < shapes.length; i++) {
-      shapes[i].addEventListener("dragstart", e => this.startDrag(e), false);
-      shapes[i].addEventListener("dragend", e => this.endDrag(e), false);
-      shapes[i].addEventListener("dragmove", (e) => this.moveDrag(e), false);
-    }
+    /*** Dragula DRAG & DROP configs ***/
+    this.subscribeToDragula();
+  }
 
-    interact('.dropzone').dropzone({
-      accept: '.symbol',
-      //overlap: 0.25,
-      ondragenter: this.dragEnter,
-      ondragleave: this.dragLeave,
-      ondrop: this.dropped,
-    });
-
-    interact('.symbol')
-      .draggable({
-        ignoreFrom: '#s_start, #s_stop',
-        inertia: false,
-        restrict: {
-          restriction: '.wrapper',
-          endOnly: true,
-          elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-        },
-        autoScroll: false,
-        onstart: this.startDrag,
-        onmove: this.moveDrag,
-        onend: this.endDrag
+  public subscribeToDragula() {
+    this.dragulaService.drag('symbol')
+      .subscribe(({ name, el, source }) => {
+        this.selectedSymbol = el.children[0].id;
       });
+
+    this.dragulaService.drop('symbol')
+      .subscribe(({ name, el, target, source }) => {
+        target.setAttribute('style', 'background: #000000');
+        target.removeChild(target.children[0]);
+        this.addSymbol(this.selectedSymbol, el.children[0]);
+        this.symbolsFAB.close();
+      });
+
+    this.dragulaService.over('symbol')
+      .subscribe(({ name, el, container, source }) => {
+        if (container.className == 'arrow dropzone') {
+          container.classList.add("active-arrow");
+          container.setAttribute('style', 'background: #9CDCFE');
+        }
+      });
+
+    this.dragulaService.out('symbol')
+      .subscribe(({ name, el, container, source }) => {
+        if (container.className == 'arrow dropzone active-arrow') {
+          container.classList.remove("active-arrow");
+          container.setAttribute('style', 'background: #000000');
+        }
+      });
+
+    this.dragulaService.createGroup('symbol', {
+      copy: true,
+      removeOnSpill: true,
+      isContainer: (el) => {
+        return el.classList.contains('arrow dropzone');
+      }
+    });
   }
 
   public openMenu() {
     this.menu.open();
+  }
+
+  public closeMenu() {
+    this.menu.close();
   }
 
   async openDeclareModal(symbol, e) {
@@ -943,22 +960,6 @@ export class HomePage {
               }
           )
           .on("doubletap", e => this.openSymbolDialog(e, id))
-          .draggable({
-            inertia: {
-              resistance: 10,
-              minSpeed: 500,
-              endSpeed: 50
-            },
-            restrict: {
-              restriction: '.wrapper',
-              endOnly: true,
-              elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-            },
-            autoScroll: true,
-            onstart: this.startDrag,
-            onmove: this.moveDrag,
-            onend: this.endDrag
-          })
           .on("hold", e => this.openSymbolsAS(e));
 
         for (let l = 0; l < b1.length; l++) {
@@ -989,6 +990,10 @@ export class HomePage {
             ai = i - totalAD;
           }
         }
+
+        tempBranch.classList.remove("active-arrow");
+        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
+
         // Add symbol and corresponding arrow/branch to Workspace
         this.workspace.insertBefore(symbol, branches[0].nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
@@ -1000,32 +1005,17 @@ export class HomePage {
     // Make all the arrows/branches on the Workspace inactive
     branches = document.getElementsByClassName("arrow dropzone active-arrow");
     for (let i = 0; i < branches.length; i++) {
-      branches[i].classList.remove("active-arrow");
+      if (branches[i].className == 'arrow dropzone active-arrow') {
+        branches[i].classList.remove("active-arrow");
+      }
     }
-
     let dz = document.getElementsByClassName("arrow dropzone");
     for (let i = 0; i < dz.length; i++) {
       dz[i].addEventListener("click", e => this.openSymbolsFAB(e));
-      dz[i].addEventListener("dragenter", e => this.dragEnter(e), false);
-      dz[i].addEventListener("dragleave", e => this.dragLeave(e), false);
-      dz[i].addEventListener(
-        "dragover",
-        function (e) {
-          e.preventDefault();
-        },
-        false
-      );
-      dz[i].addEventListener("drop", e => this.dropped(e), false);
     }
-    interact(".dropzone").dropzone({
-      accept: ".symbol",
-      overlap: 0.75,
-      ondragenter: this.dragEnter,
-      ondragleave: this.dragLeave,
-      ondrop: this.dropped
-    });
 
     console.log(this.flowchart.SYMBOLS);
+
   }
 
   public consoleLog(lineOutput) {
@@ -1040,6 +1030,10 @@ export class HomePage {
       buttons: ["OK"]
     });
     await alert.present();
+  }
+
+  public toggleConsole() {
+
   }
 
   public clearConsole() {
@@ -1072,78 +1066,6 @@ export class HomePage {
       }
     }
     this.flowchart = new Flowchart(this.alertC);
-  }
-
-  public startDrag(e) {
-    let t = e.target || e.srcElement || e.currentTarget,
-      x = (parseFloat(t.getAttribute('data-x')) || 0) + e.dx,
-      y = (parseFloat(t.getAttribute('data-y')) || 0) + e.dy;
-    this.dupSymbol = t.cloneNode(true);
-
-    this.dupSymbol.setAttribute('data-x', x);
-    this.dupSymbol.setAttribute('data-y', y);
-    document.getElementById('fabSymbols').appendChild(this.dupSymbol);
-    this.dupSymbol.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
-
-    e.target = this.dupSymbol;
-    this.selectedSymbol = e.target.id;
-    // e.dataTransfer.setData('text', e.target.getAttribute('data-x'));
-    //document.getElementById('workspace').appendChild(e.target);
-    console.log("start drag ", e.target);
-  }
-
-  public moveDrag(e) {
-    e.preventDefault();
-    let target = e.target || e.srcElement || e.currentTarget,
-      // keep the dragged position in the data-x/data-y attributes
-      x = (parseFloat(target.getAttribute('data-x')) || 0) + e.dx,
-      y = (parseFloat(target.getAttribute('data-y')) || 0) + e.dy;
-
-    // translate the element
-    target.style.zIndex = '1';
-    target.style.webkitTransform =
-      target.style.transform =
-      'translate(' + x + 'px, ' + y + 'px)';
-
-    // update the position attributes
-    target.setAttribute('data-x', x);
-    target.setAttribute('data-y', y);
-
-    // console.log("move drag ", e.target);
-  }
-
-  public endDrag(e) {
-    //e.preventDefault();
-    // this.consoleLog("end drag");
-  }
-
-  public dragEnter(e) {
-    // e.preventDefault();
-    e.target.classList.add("active-arrow");
-    e.target.style.background = "#9CDCFE";
-    // this.consoleLog("drag enter");
-  }
-
-  public dragLeave(e) {
-    // e.preventDefault();
-    e.target.classList.remove("active-arrow");
-    e.target.style.background = "#000000";
-    //this.consoleLog("drag leave");
-  }
-
-  public dropped(e) {
-    // e.preventDefault();
-    e.target.style.background = "#000000";
-    // e.relatedTarget.style.position = 'initial';
-    // console.log(e.dataTransfer.getData(this.selectedSymbol));
-    this.addSymbol(this.selectedSymbol, e);
-    //this.consoleLog("dropped");
-  }
-
-  public onPress(e) {
-    e.target.style.border = "2px dashed #000";
-    //this.openSymbolsAS(e);
-    this.consoleLog("press");
   }
 
   public newProject() {

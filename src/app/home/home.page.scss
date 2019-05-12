@@ -9,6 +9,13 @@
   resize: none; width: 100%; padding: 2px; float: left;
 }
 
+textarea{ 
+  width: 100%; padding: 5px; float: right; 
+  background-color: #333; color: #ddd; 
+  font-family: Consolas, monaco, monospace; 
+  resize: none; white-space: pre-wrap;
+}
+
 // SYMBOLS CSS
 #control_loop_list{ display: none; }
 
@@ -28,7 +35,7 @@ ion-card{
 #fabSymbols{
   padding: 5px; font-size: 8pt;
   width: 80px; height: 45px;
-  background-color: #F8F8F8;
+  background-color: rgba(255, 255, 255, 0);
 }
 
 ion-row{ float: left; overflow-y: hidden; padding: 0; }
@@ -104,6 +111,7 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   background: #000000;
   -webkit-clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
   clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
+  // width: 70px; height: 35px;
 }
 
 #arrow_up{
