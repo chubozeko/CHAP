@@ -113,6 +113,16 @@ export class LoopBlock {
     return cppcode;
   }
 
+  updateVariables(variable: Variable) {
+    for (let j = 0; j < this.variables.length; j++) {
+      if (
+        variable.getName() == this.variables[j].getName()
+      ) {
+        this.variables[j].setValue(variable.getValue());
+      }
+    }
+  }
+
   declareVariable(declareSymbol: Declare, pos: number) {
     this.variables.splice(pos, 0, declareSymbol.parseDeclareExp());
   }
@@ -167,12 +177,15 @@ export class LoopBlock {
     );
   }
 
-  validateLoopBlock() {
+  validateLoopBlock(variables: any[]) {
     this.tempSymbols = [];
     for (let q = 0; q < this.SYMBOLS.length; q++) {
       this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
     }
-
+    this.variables = [];
+    for (let q = 0; q < variables.length; q++) {
+      this.variables.splice(q, 0, variables[q]);
+    }
     let varIndex = 0;
 
     for (let i = 0; i < this.tempSymbols.length; i++) {

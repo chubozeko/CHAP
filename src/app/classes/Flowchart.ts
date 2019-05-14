@@ -132,6 +132,16 @@ export class Flowchart {
     return cppcode;
   }
 
+  updateVariables(variable: Variable) {
+    for (let j = 0; j < this.variables.vars.length; j++) {
+      if (
+        variable.getName() == this.variables.vars[j].getName()
+      ) {
+        this.variables.vars[j].setValue(variable.getValue());
+      }
+    }
+  }
+
   declareVariable(declareSymbol: Declare, pos: number) {
     this.variables.vars.splice(pos, 0, declareSymbol.parseDeclareExp());
   }
@@ -199,7 +209,6 @@ export class Flowchart {
     for (let i = startIndex; i < endIndex; i++) {
       // START
       if (this.tempSymbols[i] instanceof Start) {
-        console.log("Start Program");
         this.isProgramRunning = true;
       }
 
@@ -230,7 +239,6 @@ export class Flowchart {
             '" is not declared!'
           );
         } else {
-          console.log("input variable declared! carry on...");
           if (!this.isInputEntered) this.validateInput(varIndex, i);
         }
       }
@@ -254,7 +262,6 @@ export class Flowchart {
             '" is not declared!'
           );
         } else {
-          console.log("process variable declared. carry on...");
           this.validateProcess(this.tempSymbols[i], varIndex);
         }
       }
@@ -269,7 +276,6 @@ export class Flowchart {
         for (let k = 0; k < str.length; k++) {
           let s1 = str[k].trim();
           if (s1.indexOf('"') == -1) {
-            console.log("No quotes");
             for (let j = 0; j < this.variables.vars.length; j++) {
               if (s1 == this.variables.vars[j].getName()) {
                 isVarDeclared = true;
@@ -279,7 +285,6 @@ export class Flowchart {
           } else {
             hasQuotes++;
             this.outputStatement = outputStr;
-            console.log("Quotes");
           }
         }
 
@@ -290,7 +295,6 @@ export class Flowchart {
           );
         } else if (isVarDeclared && hasQuotes == 0) {
           // Output variable
-          console.log("output variable declared! carry on...");
           let s1 = this.tempSymbols[i].getOutputExpression();
           let s2 = s1.split("&");
           for (let i = 0; i < s2.length; i++) {
@@ -356,6 +360,11 @@ export class Flowchart {
         whileSymbol = this.tempSymbols[i];
         whileIndex = i;
 
+        // this.showAlert(
+        //   "Invalid Statement at 'While Loop'",
+        //   "Variable is not declared!"
+        // );
+
         whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
         whileSymCount = whileBlock.length;
         if (whileBlock.length != 0) { whileBoolean = true; }
@@ -375,7 +384,7 @@ export class Flowchart {
 
         while (whileBoolean) {
           // Validate whileBlock symbols only [version 2]
-          let x = whileLoopBlock.validateLoopBlock(); // this.variables
+          let x = whileLoopBlock.validateLoopBlock(this.variables.vars); // this.variables
 
           // Check whileBoolean after validating While Loop Block symbols
           whileBlock = whileSymbol.parseWhileLoopExpression(x);
@@ -389,44 +398,65 @@ export class Flowchart {
       // FOR LOOP
       else if (this.tempSymbols[i] instanceof ForLoop) {
         let forBoolean, forIndex, forSymCount, forBlock;
+        let isVarDeclared = false;
         let forSymbol = new ForLoop();
         forSymbol = this.tempSymbols[i];
         forIndex = i;
 
-        // Add forBlock symbols to a LoopBlock
-        let forLoopBlock = new LoopBlock(this.alertC);
-        for (let v = 0; v < forSymbol.trueLoopBlock.length; v++) {
-          forLoopBlock.SYMBOLS.splice(v, 0, forSymbol.trueLoopBlock[v]);
+        for (let j = 0; j < this.variables.vars.length; j++) {
+          if (
+            forSymbol.getVariableName() == this.variables.vars[j].getName()
+          ) {
+            this.variables.vars[j].setValue(forSymbol.getStartValue());
+            isVarDeclared = true;
+          }
         }
-        // Pass Variables to forLoopBlock
-        for (let q = 0; q < this.variables.vars.length; q++) {
-          forLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
-        }
-        console.log("Loop Block: ", forLoopBlock);
+        if (!isVarDeclared) {
+          this.showAlert(
+            "Invalid Statement at 'For Loop'",
+            'Variable "' +
+            forSymbol.getVariableName() +
+            '" is not declared!'
+          );
+        } else {
+          forSymbol.setCurrentValue(forSymbol.getStartValue());
+          // Add forBlock symbols to a LoopBlock
+          let forLoopBlock = new LoopBlock(this.alertC);
+          for (let v = 0; v < forSymbol.trueLoopBlock.length; v++) {
+            forLoopBlock.SYMBOLS.splice(v, 0, forSymbol.trueLoopBlock[v]);
+          }
+          // Pass Variables to forLoopBlock
+          for (let q = 0; q < this.variables.vars.length; q++) {
+            forLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
+          }
+          console.log("Loop Block: ", forLoopBlock);
 
-        if (forSymbol.getStepDirection() === 'Increasing') {
-          // Validation to prevent INFINITE LOOPS:
-          if (forSymbol.getStartValue() < forSymbol.getEndValue()) {
-            for (let tempVar = forSymbol.getStartValue();
-              tempVar <= forSymbol.getEndValue();
-              tempVar = forSymbol.iterateForStepDirection(tempVar)) {
-              // Validate forBlock symbols only
-              let x = forLoopBlock.validateLoopBlock();
-              console.log("loop pass: " + forBoolean, x);
-            } break;
-          }
-        } else if (forSymbol.getStepDirection() === 'Decreasing') {
-          // Validation to prevent INFINITE LOOPS:
-          if (forSymbol.getStartValue() > forSymbol.getEndValue()) {
-            for (let tempVar = forSymbol.getStartValue();
-              tempVar >= forSymbol.getEndValue();
-              tempVar = forSymbol.iterateForStepDirection(tempVar)) {
-              // Validate forBlock symbols only
-              let x = forLoopBlock.validateLoopBlock();
-              console.log("loop pass: " + forBoolean, x);
-            } break;
-          }
-        } else { break; }
+          if (forSymbol.getStepDirection() === 'Increasing') {
+            // Validation to prevent INFINITE LOOPS:
+            if (forSymbol.getStartValue() < forSymbol.getEndValue()) {
+              for (let tempVar = forSymbol.getStartValue();
+                tempVar <= forSymbol.getEndValue();
+                tempVar = forSymbol.iterateForStepDirection(tempVar)) {
+                // Validate forBlock symbols only
+                this.updateVariables(forSymbol.getForVariable());
+                let x = forLoopBlock.validateLoopBlock(this.variables.vars);
+                console.log("loop pass: ", x);
+              } break;
+            }
+          } else if (forSymbol.getStepDirection() === 'Decreasing') {
+            // Validation to prevent INFINITE LOOPS:
+            if (forSymbol.getStartValue() > forSymbol.getEndValue()) {
+              for (let tempVar = forSymbol.getStartValue();
+                tempVar >= forSymbol.getEndValue();
+                tempVar = forSymbol.iterateForStepDirection(tempVar)) {
+                // Validate forBlock symbols only
+                this.updateVariables(forSymbol.getForVariable());
+                let x = forLoopBlock.validateLoopBlock(this.variables.vars);
+                console.log("loop pass: ", x);
+              } break;
+            }
+          } else { break; }
+        }
 
       }
 
@@ -457,7 +487,7 @@ export class Flowchart {
 
         do {
           // Validate whileBlock symbols only [version 2]
-          let x = doWhileLoopBlock.validateLoopBlock(); // this.variables
+          let x = doWhileLoopBlock.validateLoopBlock(this.variables.vars); // this.variables
 
           // Check whileBoolean after validating While Loop Block symbols
           doWhileBlock = doWhileSymbol.parseDoWhileExpression(x);

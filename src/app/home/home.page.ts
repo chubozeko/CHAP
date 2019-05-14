@@ -37,7 +37,6 @@ import { DragulaService } from "ng2-dragula";
 })
 export class HomePage {
   @ViewChild("symbolsFAB") symbolsFAB: Fab;
-  // @ViewChild("tutorialFAB") tutorialFAB: Fab;
 
   flowchart: Flowchart = new Flowchart(this.alertC);
   title = "CHAP";

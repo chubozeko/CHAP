@@ -1,3 +1,5 @@
+import { Variable } from "./Variable";
+
 export class ForLoop {
 
   static id: string = 's_for_loop';
@@ -8,6 +10,7 @@ export class ForLoop {
 
   forVariableName: string = '';
   startValue: number;
+  currentValue: number;
   endValue: number;
   stepDirection: string = '';
   stepValue: number = 1;
@@ -21,6 +24,7 @@ export class ForLoop {
   constructor() {
     this.forVariableName = '';
     this.startValue = 0;
+    //this.currentValue = this.startValue;
     this.endValue = 0;
     this.stepDirection = '';
     this.stepValue = 1;
@@ -31,8 +35,18 @@ export class ForLoop {
   setVariableName(var_name: string) { this.forVariableName = var_name; }
   getVariableName() { return this.forVariableName; }
 
+  getForVariable() {
+    let newVar = new Variable();
+    newVar.setName(this.forVariableName);
+    newVar.setValue(this.currentValue);
+    return newVar;
+  }
+
   setStartValue(startVal: number) { this.startValue = startVal; }
   getStartValue() { return this.startValue; }
+
+  setCurrentValue(currentVal: number) { this.currentValue = currentVal; }
+  getCurrentValue() { return this.currentValue; }
 
   setEndValue(endVal: number) { this.endValue = endVal; }
   getEndValue() { return this.endValue; }
@@ -59,9 +73,11 @@ export class ForLoop {
 
   iterateForStepDirection(forVar) {
     if (this.getStepDirection() == 'Increasing') {
-      return forVar += this.getStepValue();
+      this.setCurrentValue(forVar += this.getStepValue());
+      return this.currentValue;
     } else if (this.getStepDirection() == 'Decreasing') {
-      return forVar -= this.getStepValue();
+      this.setCurrentValue(forVar -= this.getStepValue());
+      return this.currentValue;
     } else {
       let consoleLog = document.getElementById("console") as HTMLTextAreaElement;
       consoleLog.value += "\nStep Direction of For Loop undefined!";
