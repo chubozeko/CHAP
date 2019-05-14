@@ -70,7 +70,7 @@ export class LoopBlock {
               "console"
             ) as HTMLTextAreaElement;
             this.consoleLog.value = "";
-            this.validateLoopBlock(); //this.variables);//++symIndex, this.tempSymbols.length);
+            this.validateLoopBlock(this.variables);
           }
         }
       ]

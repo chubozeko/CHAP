@@ -24,7 +24,6 @@ export class ForLoop {
   constructor() {
     this.forVariableName = '';
     this.startValue = 0;
-    //this.currentValue = this.startValue;
     this.endValue = 0;
     this.stepDirection = '';
     this.stepValue = 1;

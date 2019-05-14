@@ -383,8 +383,8 @@ export class Flowchart {
         console.log("Loop Block: ", whileLoopBlock);
 
         while (whileBoolean) {
-          // Validate whileBlock symbols only [version 2]
-          let x = whileLoopBlock.validateLoopBlock(this.variables.vars); // this.variables
+          // Validate whileBlock symbols only
+          let x = whileLoopBlock.validateLoopBlock(this.variables.vars);
 
           // Check whileBoolean after validating While Loop Block symbols
           whileBlock = whileSymbol.parseWhileLoopExpression(x);
