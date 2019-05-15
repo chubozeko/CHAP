@@ -1045,17 +1045,21 @@ export class HomePage {
     this.clearConsole();
     let workspace = document.getElementById("workspace");
     let wsSymbols = workspace.getElementsByClassName("symbol");
+    let wsDoWhiles = workspace.getElementsByClassName("do_while_div");
     for (let i = 0; i < wsSymbols.length; i++) {
       if (wsSymbols[i].id != "s_start" && wsSymbols[i].id != "s_stop") {
         if (
           wsSymbols[i].id == "s_if_case" ||
           wsSymbols[i].id == "s_for_loop" ||
-          wsSymbols[i].id == "s_while_loop" ||
-          wsSymbols[i].id == "s_do_while_loop"
+          wsSymbols[i].id == "s_while_loop"
         ) {
           let nextArrow = wsSymbols[i].parentElement.nextSibling;
           workspace.removeChild(nextArrow);
-          workspace.removeChild(wsSymbols[i].parentNode);
+          workspace.removeChild(wsSymbols[i].parentElement);
+        } else if (wsSymbols[i].id == "s_do_while_loop") {
+          let nextArrow = wsSymbols[i].parentElement.nextSibling;
+          workspace.removeChild(nextArrow);
+          workspace.removeChild(wsSymbols[i].parentElement);
         } else {
           let nextArrow = wsSymbols[i].nextSibling;
           workspace.removeChild(nextArrow);

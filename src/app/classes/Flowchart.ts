@@ -344,11 +344,9 @@ export class Flowchart {
 
       // IF CASE
       else if (this.tempSymbols[i] instanceof IfCase) {
-        let ifBlock, ifIndex, ifSymCount;
+        let ifBlock;
         let ifSymbol = new IfCase();
         ifSymbol = this.tempSymbols[i];
-        ifIndex = i;
-
         ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
         if (ifBlock == null) {
           this.showAlert(
@@ -357,7 +355,6 @@ export class Flowchart {
           );
           break;
         } else {
-          ifSymCount = ifBlock.length;
           let ifCaseBlock = new LoopBlock(this.alertC);
           // Add ifBlock symbols to IfCaseBlock
           for (let v = 0; v < ifBlock.length; v++) {
@@ -375,11 +372,9 @@ export class Flowchart {
 
       // WHILE LOOP
       else if (this.tempSymbols[i] instanceof WhileLoop) {
-        let whileBoolean, whileIndex, whileSymCount, endOfWhile, whileBlock;
+        let whileBoolean, whileBlock;
         let whileSymbol = new WhileLoop();
         whileSymbol = this.tempSymbols[i];
-        whileIndex = i;
-
         whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
         if (whileBlock == null) {
           this.showAlert(
@@ -388,7 +383,6 @@ export class Flowchart {
           );
           break;
         } else {
-          whileSymCount = whileBlock.length;
           if (whileBlock.length != 0) { whileBoolean = true; }
           else { whileBoolean = false; }
 
@@ -421,11 +415,9 @@ export class Flowchart {
 
       // FOR LOOP
       else if (this.tempSymbols[i] instanceof ForLoop) {
-        let forBoolean, forIndex, forSymCount, forBlock;
         let isVarDeclared = false;
         let forSymbol = new ForLoop();
         forSymbol = this.tempSymbols[i];
-        forIndex = i;
 
         for (let j = 0; j < this.variables.vars.length; j++) {
           if (
