@@ -344,13 +344,33 @@ export class Flowchart {
 
       // IF CASE
       else if (this.tempSymbols[i] instanceof IfCase) {
-        let ifBlock = this.tempSymbols[i].parseIfCaseExpression(this.variables.vars);
-        // Add ifBlock symbols to Flowchart instead of IfCase
-        this.tempSymbols.splice(i, 1);
-        for (let k = 0; k < ifBlock.length; k++) {
-          this.tempSymbols.splice(i + k, 0, ifBlock[k]);
+        let ifBlock, ifIndex, ifSymCount;
+        let ifSymbol = new IfCase();
+        ifSymbol = this.tempSymbols[i];
+        ifIndex = i;
+
+        ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
+        if (ifBlock == null) {
+          this.showAlert(
+            "Invalid Statement at 'If Case'",
+            'Variable is not declared!'
+          );
+          break;
+        } else {
+          ifSymCount = ifBlock.length;
+          let ifCaseBlock = new LoopBlock(this.alertC);
+          // Add ifBlock symbols to IfCaseBlock
+          for (let v = 0; v < ifBlock.length; v++) {
+            ifCaseBlock.SYMBOLS.splice(v, 0, ifBlock[v]);
+          }
+          // Pass Variables to IfCaseBlock
+          for (let q = 0; q < this.variables.vars.length; q++) {
+            ifCaseBlock.variables.splice(q, 0, this.variables.vars[q]);
+          }
+          console.log("If Case Block: ", ifCaseBlock);
+          let x = ifCaseBlock.validateLoopBlock(this.variables.vars);
+          console.log("if case passed: ", x);
         }
-        --i;
       }
 
       // WHILE LOOP
@@ -392,7 +412,7 @@ export class Flowchart {
             whileBlock = whileSymbol.parseWhileLoopExpression(x);
             if (whileBlock.length != 0) { whileBoolean = true; }
             else { whileBoolean = false; }
-            console.log("loop pass: " + whileBoolean, x);
+            console.log("loop pass: ", x);
           }
           break;
         }

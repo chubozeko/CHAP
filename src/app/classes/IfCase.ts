@@ -32,9 +32,9 @@ export class IfCase {
   removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
 
   parseIfCaseExpression(variables: any[]) {
-
     let opers = [], parsedValues = [], exps = [], exps1 = [];
     let op = '', oper1, oper2, result, j = 0;
+    let isVarDeclared = false;
 
     // LOGICAL Operators: &&, ||, !
     if ((this.ifStatement.indexOf('&&') != -1) || (this.ifStatement.indexOf('||') != -1) || (this.ifStatement.indexOf('!') != -1)
@@ -55,6 +55,7 @@ export class IfCase {
     for (let i = 0; i < exps.length; i++) {
       for (let j = 0; j < variables.length; j++) {
         if (variables[j].getName() == exps[i]) {
+          isVarDeclared = true;
           if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].value));
           else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].value));
           else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].value.toString());
@@ -117,6 +118,7 @@ export class IfCase {
     console.log(exps);
     console.log(opers);
 
+    if (!isVarDeclared) return null;
     if (exps[0] == true) return this.trueBlockSymbols;
     else if (exps[0] == false) return this.falseBlockSymbols;
   }
