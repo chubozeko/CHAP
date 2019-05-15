@@ -77,6 +77,10 @@ export class HomePage {
     // saveProj.addEventListener('click', (e) => this.saveProject());
     let closeM = document.getElementById("btn_closeMenu");
     closeM.addEventListener("click", e => this.closeMenu());
+    let downloadAPK = document.getElementById("btn_downloadAPK");
+    downloadAPK.addEventListener("click", (e) => {
+      window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
+    });
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
