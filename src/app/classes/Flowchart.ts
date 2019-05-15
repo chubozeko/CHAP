@@ -360,39 +360,43 @@ export class Flowchart {
         whileSymbol = this.tempSymbols[i];
         whileIndex = i;
 
-        // this.showAlert(
-        //   "Invalid Statement at 'While Loop'",
-        //   "Variable is not declared!"
-        // );
-
         whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
-        whileSymCount = whileBlock.length;
-        if (whileBlock.length != 0) { whileBoolean = true; }
-        else { whileBoolean = false; }
-
-        // Add whileBlock symbols to a LoopBlock
-        let whileLoopBlock = new LoopBlock(this.alertC);
-        for (let v = 0; v < whileSymbol.trueLoopBlock.length; v++) {
-          whileLoopBlock.SYMBOLS.splice(v, 0, whileSymbol.trueLoopBlock[v]);
-        }
-        // Pass Variables to WhileLoopBlock
-        for (let q = 0; q < this.variables.vars.length; q++) {
-          whileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
-        }
-
-        console.log("Loop Block: ", whileLoopBlock);
-
-        while (whileBoolean) {
-          // Validate whileBlock symbols only
-          let x = whileLoopBlock.validateLoopBlock(this.variables.vars);
-
-          // Check whileBoolean after validating While Loop Block symbols
-          whileBlock = whileSymbol.parseWhileLoopExpression(x);
+        if (whileBlock == null) {
+          this.showAlert(
+            "Invalid Statement at 'While Loop'",
+            'Variable is not declared!'
+          );
+          break;
+        } else {
+          whileSymCount = whileBlock.length;
           if (whileBlock.length != 0) { whileBoolean = true; }
           else { whileBoolean = false; }
-          console.log("loop pass: " + whileBoolean, x);
+
+          // Add whileBlock symbols to a LoopBlock
+          let whileLoopBlock = new LoopBlock(this.alertC);
+          for (let v = 0; v < whileSymbol.trueLoopBlock.length; v++) {
+            whileLoopBlock.SYMBOLS.splice(v, 0, whileSymbol.trueLoopBlock[v]);
+          }
+          // Pass Variables to WhileLoopBlock
+          for (let q = 0; q < this.variables.vars.length; q++) {
+            whileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
+          }
+
+          console.log("Loop Block: ", whileLoopBlock);
+
+          while (whileBoolean) {
+            // Validate whileBlock symbols only
+            let x = whileLoopBlock.validateLoopBlock(this.variables.vars);
+
+            // Check whileBoolean after validating While Loop Block symbols
+            whileBlock = whileSymbol.parseWhileLoopExpression(x);
+            if (whileBlock.length != 0) { whileBoolean = true; }
+            else { whileBoolean = false; }
+            console.log("loop pass: " + whileBoolean, x);
+          }
+          break;
         }
-        break;
+
       }
 
       // FOR LOOP
@@ -462,40 +466,47 @@ export class Flowchart {
 
       // DO WHILE LOOP
       else if (this.tempSymbols[i] instanceof DoWhileLoop) {
-        //this.tempSymbols[i].parseDoWhileLoopExp();
         let doWhileBoolean, doWhileIndex, doWhileSymCount, doWhileBlock;
         let doWhileSymbol = new DoWhileLoop();
         doWhileSymbol = this.tempSymbols[i];
         doWhileIndex = i;
 
         doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
-        doWhileSymCount = doWhileBlock.length;
-        if (doWhileBlock.length != 0) { doWhileBoolean = true; }
-        else { doWhileBoolean = false; }
-
-        // Add doWhileBlock symbols to a LoopBlock
-        let doWhileLoopBlock = new LoopBlock(this.alertC);
-        for (let v = 0; v < doWhileSymbol.trueLoopBlock.length; v++) {
-          doWhileLoopBlock.SYMBOLS.splice(v, 0, doWhileSymbol.trueLoopBlock[v]);
-        }
-        // Pass Variables to DoWhileLoopBlock
-        for (let q = 0; q < this.variables.vars.length; q++) {
-          doWhileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
-        }
-
-        console.log("Loop Block: ", doWhileLoopBlock);
-
-        do {
-          // Validate whileBlock symbols only [version 2]
-          let x = doWhileLoopBlock.validateLoopBlock(this.variables.vars); // this.variables
-
-          // Check whileBoolean after validating While Loop Block symbols
-          doWhileBlock = doWhileSymbol.parseDoWhileExpression(x);
+        if (doWhileBlock == null) {
+          this.showAlert(
+            "Invalid Statement at 'Do While Loop'",
+            'Variable is not declared!'
+          );
+          break;
+        } else {
+          doWhileSymCount = doWhileBlock.length;
           if (doWhileBlock.length != 0) { doWhileBoolean = true; }
           else { doWhileBoolean = false; }
-          console.log("loop pass: " + doWhileBoolean, x);
-        } while (doWhileBoolean);
-        break;
+
+          // Add doWhileBlock symbols to a LoopBlock
+          let doWhileLoopBlock = new LoopBlock(this.alertC);
+          for (let v = 0; v < doWhileSymbol.trueLoopBlock.length; v++) {
+            doWhileLoopBlock.SYMBOLS.splice(v, 0, doWhileSymbol.trueLoopBlock[v]);
+          }
+          // Pass Variables to DoWhileLoopBlock
+          for (let q = 0; q < this.variables.vars.length; q++) {
+            doWhileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
+          }
+
+          console.log("Loop Block: ", doWhileLoopBlock);
+
+          do {
+            // Validate whileBlock symbols only [version 2]
+            let x = doWhileLoopBlock.validateLoopBlock(this.variables.vars); // this.variables
+
+            // Check whileBoolean after validating While Loop Block symbols
+            doWhileBlock = doWhileSymbol.parseDoWhileExpression(x);
+            if (doWhileBlock.length != 0) { doWhileBoolean = true; }
+            else { doWhileBoolean = false; }
+            console.log("loop pass: " + doWhileBoolean, x);
+          } while (doWhileBoolean);
+          break;
+        }
       }
 
       // STOP

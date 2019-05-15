@@ -31,7 +31,7 @@ export class WhileLoop {
     return this.whileSymbol;
   }
 
-  parseWhileLoopExpression(variables) { //: any[]) {
+  parseWhileLoopExpression(variables) {
     let opers = [],
       exps = [],
       exps1 = [];
@@ -40,6 +40,7 @@ export class WhileLoop {
       oper2,
       result,
       j = 0;
+    let isVarDeclared = false;
 
     // LOGICAL Operators: &&, ||, !
     if (
@@ -73,6 +74,7 @@ export class WhileLoop {
     for (let i = 0; i < exps.length; i++) {
       for (let j = 0; j < variables.length; j++) {
         if (variables[j].getName() == exps[i]) {
+          isVarDeclared = true;
           if (variables[j].getDataType() == "Integer")
             exps.splice(i, 1, parseInt(variables[j].value));
           else if (variables[j].getDataType() == "Real")
@@ -153,17 +155,11 @@ export class WhileLoop {
 
       opers.splice(j, 1);
       exps.splice(j, 2, result);
-
-      // console.log('Values: ');
-      // console.log(parsedValues);
-      // console.log('Operators: ');
-      // console.log(opers);
     }
 
     console.log("Expressions:", exps);
-    // console.log(exps);
-    // console.log(opers);
 
+    if (!isVarDeclared) return null;
     if (exps[0] == true) return this.trueLoopBlock;
     else if (exps[0] == false) return this.falseLoopBlock;
   }
