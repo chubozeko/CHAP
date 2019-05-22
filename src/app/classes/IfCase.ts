@@ -1,7 +1,7 @@
 export class IfCase {
 
-  static id: string = 's_if_case';
   static s_name: string = 'If';
+  id: string = 's_if_case';
 
   ifStatement: string = '';
   ifcaseSymbol: any;
@@ -16,6 +16,8 @@ export class IfCase {
     this.trueBlockSymbols = [];
     this.falseBlockSymbols = [];
   }
+
+  createIfCaseSymbol(ifCaseSym: any) { }
 
   setIfStatement(if_exp: string) { this.ifStatement = if_exp; }
   getIfStatement() { return this.ifStatement; }

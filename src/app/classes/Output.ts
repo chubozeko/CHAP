@@ -1,30 +1,32 @@
-export class Output{
+export class Output {
 
-  static id: string = 's_output';
   static s_name: string = 'Output';
+  id: string = 's_output';
 
   outputExp: string = '';
 
   outputSymbol: any;
 
-  constructor(){}
+  constructor() { }
 
-  setOutputExpression(exp: string){ this.outputExp = exp; }
-  getOutputExpression(){ return this.outputExp; }
+  createOutputSymbol(outputSym: any) { }
 
-  setOutputSymbol( symbol: any ){ this.outputSymbol = symbol; }
-  getOutputSymbol(){ return this.outputSymbol; }
+  setOutputExpression(exp: string) { this.outputExp = exp; }
+  getOutputExpression() { return this.outputExp; }
 
-  parseExpression(){
+  setOutputSymbol(symbol: any) { this.outputSymbol = symbol; }
+  getOutputSymbol() { return this.outputSymbol; }
+
+  parseExpression() {
     // parse the output expression
   }
 
-  pseudoCode(){ return '\tOutput ' + this.getOutputExpression().replace(/\&/g,', ') + '\n'; }
+  pseudoCode() { return '\tOutput ' + this.getOutputExpression().replace(/\&/g, ', ') + '\n'; }
 
-  cplusplusCode(){
+  cplusplusCode() {
     //let exp = this.getOutputExpression();
     //exp.replace(/\&/g,'<<');
-    return '\tcout<<' + this.getOutputExpression().replace(/\&/g,'<<') + '<<endl;\n';
+    return '\tcout<<' + this.getOutputExpression().replace(/\&/g, '<<') + '<<endl;\n';
   }
 
 }

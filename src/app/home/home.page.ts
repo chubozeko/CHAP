@@ -1,8 +1,10 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, ViewChild, SystemJsNgModuleLoader, Injectable } from "@angular/core";
 import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController, ToastController } from "@ionic/angular";
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
+import { Chooser } from '@ionic-native/chooser/ngx';
+import { HttpClient } from '@angular/common/http';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
 import { InputPage } from "../symbol-dialogs/input/input.page";
@@ -29,12 +31,14 @@ import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
 import { DragulaService } from "ng2-dragula";
+import { from } from "rxjs";
 
 @Component({
   selector: "app-home",
   templateUrl: "home.page.html",
   styleUrls: ["home.page.scss"]
 })
+@Injectable()
 export class HomePage {
   @ViewChild("symbolsFAB") symbolsFAB: Fab;
 
@@ -42,6 +46,7 @@ export class HomePage {
   title = "CHAP";
   fileName = "";
 
+  fs;
   workspace;
   branch;
   selectedSymbol;
@@ -55,7 +60,9 @@ export class HomePage {
     public modalC: ModalController,
     public alertC: AlertController,
     private dragulaService: DragulaService,
-    private toastC: ToastController
+    private toastC: ToastController,
+    public chooser: Chooser,
+    private http: HttpClient
     // public navParams: NavParams
   ) { }
 
@@ -73,8 +80,10 @@ export class HomePage {
     tutorPg.addEventListener("click", e => this.openTutorialPage(e));
     let newProj = document.getElementById("btn_newProject");
     newProj.addEventListener("click", e => this.newProject());
-    // let saveProj = document.getElementById("btn_saveProject");
-    // saveProj.addEventListener('click', (e) => this.saveProject());
+    let openProj = document.getElementById("btn_openProject");
+    openProj.addEventListener("click", e => this.openProject());
+    let saveProj = document.getElementById("btn_saveProject");
+    saveProj.addEventListener('click', (e) => this.saveProject());
     let closeM = document.getElementById("btn_closeMenu");
     closeM.addEventListener("click", e => this.closeMenu());
     let downloadAPK = document.getElementById("btn_downloadAPK");
@@ -1081,14 +1090,75 @@ export class HomePage {
     this.clearWorkspace();
   }
 
+  public openProject() {
+    this.menu.close();
+
+    let dataSyms;
+    this.http.get('assets/new.chap', { responseType: 'text' })
+      .subscribe(data => {
+        dataSyms = JSON.parse(data);
+        for (let i = 0; i < dataSyms.length; i++) {
+          let sym: any;
+          switch (dataSyms[i].id) {
+            case 's_declare':
+              sym = new Declare();
+              sym.createDeclareSymbol(dataSyms[i]);
+              break;
+            case 's_input':
+              sym = new Input();
+              sym.createInputSymbol(dataSyms[i]);
+              break;
+            case 's_output':
+              sym = new Output();
+              sym.createOutputSymbol(dataSyms[i]);
+              break;
+            case 's_process':
+              sym = new Process();
+              sym.createProcessSymbol(dataSyms[i]);
+              break;
+            case 's_comment':
+              sym = new Comment();
+              sym.createCommentSymbol(dataSyms[i]);
+              break;
+            case 's_if_case':
+              sym = new IfCase();
+              sym.createIfCaseSymbol(dataSyms[i]);
+              break;
+            case 's_for_loop':
+              sym = new ForLoop();
+              sym.createForLoopSymbol(dataSyms[i]);
+              break;
+            case 's_while_loop':
+              sym = new WhileLoop();
+              sym.createWhileLoopSymbol(dataSyms[i]);
+              break;
+            case 's_do_while_loop':
+              sym = new DoWhileLoop();
+              sym.createDoWhileLoopSymbol(dataSyms[i]);
+              break;
+            default:
+              break;
+          }
+          this.flowchart.addSymbolToFlowchart(sym, i);
+        }
+        console.log(this.flowchart);
+        console.log(dataSyms);
+
+      });
+
+    // console.log(JSON.parse(JSON.stringify(this.flowchart.SYMBOLS)));
+  }
+
   public saveProject() {
-    html2canvas(document.querySelector("#workspace")).then(canvas => {
-      let can = canvas as HTMLCanvasElement;
-      can.width = 100;
-      can.height = 100;
-      document.getElementById("workspace").appendChild(can);
-    });
+    this.menu.close();
+    // html2canvas(document.querySelector("#workspace")).then(canvas => {
+    //   let can = canvas as HTMLCanvasElement;
+    //   can.width = 100;
+    //   can.height = 100;
+    //   document.getElementById("workspace").appendChild(can);
+    // });
     //alert('Screenshot');
+    console.log(JSON.stringify(this.flowchart.SYMBOLS));
   }
 
   public debugProgram(e) {

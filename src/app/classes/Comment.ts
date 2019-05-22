@@ -1,24 +1,26 @@
-export class Comment{
-  
-  static id: string = 's_comment';
+export class Comment {
+
   static s_name: string = 'Comment';
+  id: string = 's_comment';
 
   commentText: string = '';
 
   commentSymbol: any;
 
-  constructor(){}
+  constructor() { }
 
-  setCommentSymbol( symbol: any ){ this.commentSymbol = symbol; }
-  getCommentSymbol(){ return this.commentSymbol; }
+  createCommentSymbol(commentSym: any) { }
 
-  setCommentText(comment_text: string){ this.commentText = comment_text; }
-  getCommentText(){ return this.commentText; }
+  setCommentSymbol(symbol: any) { this.commentSymbol = symbol; }
+  getCommentSymbol() { return this.commentSymbol; }
 
-  getCommentExpression(){ return '// ' + this.commentText; }
+  setCommentText(comment_text: string) { this.commentText = comment_text; }
+  getCommentText() { return this.commentText; }
 
-  pseudoCode(){ return '\t' + this.getCommentExpression() + '\n'; }
-  
-  cplusplusCode(){ return '\t/*' + this.commentText + '*/\n'; }
+  getCommentExpression() { return '// ' + this.commentText; }
+
+  pseudoCode() { return '\t' + this.getCommentExpression() + '\n'; }
+
+  cplusplusCode() { return '\t/*' + this.commentText + '*/\n'; }
 
 }

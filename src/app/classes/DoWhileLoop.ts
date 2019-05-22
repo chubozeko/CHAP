@@ -1,6 +1,7 @@
 export class DoWhileLoop {
-  static id: string = 's_do_while_loop';
+
   static s_name: string = 'Do';
+  id: string = 's_do_while_loop';
 
   doWhileExpression: string;
   doWhileSymbol: any;
@@ -16,6 +17,8 @@ export class DoWhileLoop {
     this.trueLoopBlock = [];
     this.falseLoopBlock = [];
   }
+
+  createDoWhileLoopSymbol(doWhileSym: any) { }
 
   setDoWhileExpression(do_while_exp: string) { this.doWhileExpression = do_while_exp; }
   getDoWhileExpression() { return this.doWhileExpression; }

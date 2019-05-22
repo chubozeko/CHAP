@@ -1,6 +1,7 @@
 export class WhileLoop {
-  static id: string = "s_while_loop";
+
   static s_name: string = "While";
+  id: string = "s_while_loop";
 
   whileExpression: string = "";
   whileSymbol: any;
@@ -16,6 +17,8 @@ export class WhileLoop {
     this.trueLoopBlock = [];
     this.falseLoopBlock = [];
   }
+
+  createWhileLoopSymbol(whileSym: any) { }
 
   setWhileExpression(while_exp: string) {
     this.whileExpression = while_exp;

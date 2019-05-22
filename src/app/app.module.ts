@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
-
+import { Chooser } from '@ionic-native/chooser/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicGestureConfig } from "./gestures/ionic-gesture-config";
 import { DragulaModule } from "ng2-dragula";
-
+import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SymbolsComponent } from './symbols/symbols.component';
@@ -28,6 +28,7 @@ import { ProcessPageModule } from './symbol-dialogs/process/process.module';
 import { CodeViewerPageModule } from './code-viewer/code-viewer.module';
 import { AboutPageModule } from './about/about.module';
 import { TutorialPageModule } from './tutorial/tutorial.module';
+import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -54,13 +55,15 @@ import { TutorialPageModule } from './tutorial/tutorial.module';
     WhileLoopPageModule,
     CodeViewerPageModule,
     AboutPageModule,
-    TutorialPageModule
+    TutorialPageModule,
+    HttpClientModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
+    Chooser
   ],
   bootstrap: [AppComponent]
 })

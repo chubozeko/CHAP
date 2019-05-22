@@ -1,0 +1,1 @@
+[{"id":"s_declare","text":"","variableName":"a","data_type":"Real","isArray":false,"arraySize":0,"declareExpression":"Real a","declareSymbol":{}},{"id":"s_process","variableName":"a","expression":"5.2","processExpression":"a = 5.2","processValue":[],"processSymbol":{}},{"id":"s_output","outputExp":"\"a = \"&a","outputSymbol":{}}]

@@ -2,8 +2,8 @@ import { Variable } from "./Variable";
 
 export class ForLoop {
 
-  static id: string = 's_for_loop';
   static s_name: string = 'For';
+  id: string = 's_for_loop';
 
   forLoopExpression: string = '';
   forLoopSymbol: any;
@@ -30,6 +30,8 @@ export class ForLoop {
     this.trueLoopBlock = [];
     this.falseLoopBlock = [];
   }
+
+  createForLoopSymbol(forSym: any) { }
 
   setVariableName(var_name: string) { this.forVariableName = var_name; }
   getVariableName() { return this.forVariableName; }
