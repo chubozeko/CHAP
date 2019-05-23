@@ -14,7 +14,7 @@ import { SymbolsComponent } from './symbols/symbols.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { ConsoleComponent } from './console/console.component';
 import { VariablesComponent } from './variables/variables.component';
-
+import { File } from '@ionic-native/file/ngx'
 import { CommentPageModule } from './symbol-dialogs/comment/comment.module';
 import { DeclarePageModule } from './symbol-dialogs/declare/declare.module';
 import { DoWhileLoopPageModule } from './symbol-dialogs/do-while-loop/do-while-loop.module';
@@ -63,7 +63,7 @@ import { from } from 'rxjs';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
-    Chooser
+    Chooser, File
   ],
   bootstrap: [AppComponent]
 })

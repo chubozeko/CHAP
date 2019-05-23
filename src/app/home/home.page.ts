@@ -3,6 +3,7 @@ import { ModalController, Fab, ActionSheetController, MenuController, NavParams,
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
+import { File } from '@ionic-native/file/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 import { HttpClient } from '@angular/common/http';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
@@ -45,7 +46,6 @@ export class HomePage {
   flowchart: Flowchart = new Flowchart(this.alertC);
   title = "CHAP";
   fileName = "";
-
   fs;
   workspace;
   branch;
@@ -62,7 +62,8 @@ export class HomePage {
     private dragulaService: DragulaService,
     private toastC: ToastController,
     public chooser: Chooser,
-    private http: HttpClient
+    private http: HttpClient,
+    private file: File
     // public navParams: NavParams
   ) { }
 
@@ -1091,10 +1092,10 @@ export class HomePage {
   }
 
   public openProject() {
-    this.menu.close();
-
     let dataSyms, arrowT, els, p;
-    this.http.get('assets/new.chap', { responseType: 'text' })
+    let fileUrl = 'assets/new.chap';
+    this.menu.close();
+    this.http.get(fileUrl, { responseType: 'text' })
       .subscribe(data => {
         dataSyms = JSON.parse(data);
         for (let i = 0; i < dataSyms.length; i++) {
@@ -1202,12 +1203,10 @@ export class HomePage {
             default:
               break;
           }
-
           this.flowchart.addSymbolToFlowchart(sym, i);
         }
+        console.log('File content: ', dataSyms);
         console.log(this.flowchart);
-        console.log(dataSyms);
-
       });
 
     // console.log(JSON.parse(JSON.stringify(this.flowchart.SYMBOLS)));
@@ -1222,7 +1221,10 @@ export class HomePage {
     //   document.getElementById("workspace").appendChild(can);
     // });
     //alert('Screenshot');
-    console.log(JSON.stringify(this.flowchart.SYMBOLS));
+    let fileUrl = 'c:/Users/zhubo/Desktop/'; // assets/new2.chap
+    let flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
+    this.file.writeFile(fileUrl, 'new2.chap', flowchartJSON);
+    console.log(flowchartJSON);
   }
 
   public debugProgram(e) {

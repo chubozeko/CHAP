@@ -23,12 +23,9 @@
         <allow-intent href="market:*" />
         <icon density="mdpi" src="resources/icon.png" />
         <splash density="port-mdpi" src="resources/splash.png" />
-        <edit-config
-   file="app/src/main/AndroidManifest.xml"
-   mode="merge"
-   target="/manifest/application">
-   <application android:largeHeap="true" />
- </edit-config>
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:largeHeap="true" />
+        </edit-config>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
