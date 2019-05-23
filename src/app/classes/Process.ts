@@ -13,7 +13,13 @@ export class Process {
 
   constructor() { this.processValue = new Array(); }
 
-  createProcessSymbol(processSym: any) { }
+  createProcessSymbol(processSym: any) {
+    this.expression = processSym.expression;
+    this.processExpression = processSym.processExpression;
+    this.processSymbol = processSym.processSymbol;
+    this.processValue = processSym.processValue;
+    this.variableName = processSym.variableName;
+  }
 
   setProcessSymbol(symbol: any) { this.processSymbol = symbol; }
   getProcessSymbol() { return this.processSymbol; }

@@ -9,7 +9,10 @@ export class Output {
 
   constructor() { }
 
-  createOutputSymbol(outputSym: any) { }
+  createOutputSymbol(outputSym: any) {
+    this.outputExp = outputSym.outputExp;
+    this.outputSymbol = outputSym.outputSymbol;
+  }
 
   setOutputExpression(exp: string) { this.outputExp = exp; }
   getOutputExpression() { return this.outputExp; }

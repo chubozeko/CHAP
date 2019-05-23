@@ -14,7 +14,12 @@ export class Input {
 
   constructor() { }
 
-  createInputSymbol(inputSym: any) { }
+  createInputSymbol(inputSym: any) {
+    this.inputExpression = inputSym.inputExpression;
+    this.inputPrompt = inputSym.inputPrompt;
+    this.inputSymbol = inputSym.inputSymbol;
+    this.variableName = inputSym.variableName;
+  }
 
   setVariableName(var_name: string) { this.variableName = var_name; }
   getVariableName() { return this.variableName; }
