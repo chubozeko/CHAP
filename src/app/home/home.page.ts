@@ -1213,25 +1213,51 @@ export class HomePage {
   }
 
   public saveProject() {
+    let fileName, flowchartJSON;
+
     this.menu.close();
-    // html2canvas(document.querySelector("#workspace")).then(canvas => {
-    //   let can = canvas as HTMLCanvasElement;
-    //   can.width = 100;
-    //   can.height = 100;
-    //   document.getElementById("workspace").appendChild(can);
-    // });
-    //alert('Screenshot');
-    let fileUrl = 'c:/Users/zhubo/Desktop/'; // assets/new2.chap
-    let flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
-    this.file.writeFile(fileUrl, 'new2.chap', flowchartJSON);
-    console.log(flowchartJSON);
+    let fName = document.getElementById('fileName') as HTMLInputElement;
+    this.fileName = fName.value;
+
+    if (this.fileName == "") {
+      this.showAlert(
+        'Failed to Save',
+        `Please enter a name for the project in the TextBox above, before saving it.`
+      );
+    } else {
+      fileName = this.fileName + '.chap';
+      flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
+      this.saveTextAsFile(flowchartJSON, fileName);
+    }
+  }
+
+  public saveTextAsFile(data, filename) {
+    if (!data) {
+      console.error('Console.save: No data');
+      return;
+    }
+    if (!filename) filename = 'console.json';
+    var blob = new Blob([data], { type: 'text/plain' }),
+      e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+
+    // FOR IE:
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      var e = document.createEvent('MouseEvents'), a = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+      e.initEvent('click', true, false);
+      a.dispatchEvent(e);
+    }
   }
 
   public debugProgram(e) {
     this.menu.close();
     this.clearConsole();
     this.flowchart.validateFlowchart(0, this.flowchart.SYMBOLS.length);
-    //console.log(this.flowchart);
   }
 
   public generatePseudoCode(e) {
@@ -1264,6 +1290,16 @@ export class HomePage {
       component: TutorialPage
     });
     await modal.present();
+  }
+
+  public printFlowchart() {
+    // html2canvas(document.querySelector("#workspace")).then(canvas => {
+    //   let can = canvas as HTMLCanvasElement;
+    //   can.width = 100;
+    //   can.height = 100;
+    //   document.getElementById("workspace").appendChild(can);
+    // });
+    //alert('Screenshot');
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
