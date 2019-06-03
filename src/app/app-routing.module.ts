@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'variables', loadChildren: './variables/variables.component#VariablesComponent' },  { path: 'CodeViewer', loadChildren: './code-viewer/code-viewer.module#CodeViewerPageModule' },
   { path: 'About', loadChildren: './about/about.module#AboutPageModule' },
   { path: 'Tutorial', loadChildren: './tutorial/tutorial.module#TutorialPageModule' },
+  { path: 'open-project', loadChildren: './open-project/open-project.module#OpenProjectPageModule' },
 
   // { path: 'process', loadChildren: './symbol-dialogs/process/process.module#ProcessPageModule' },
   // { path: 'declare', loadChildren: './symbol-dialogs/declare/declare.module#DeclarePageModule' },

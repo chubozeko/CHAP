@@ -1,0 +1,19 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <img style="float: left; width: 24px; height: 24px; margin-left: 0;" src="./assets/icon/code-white.png" />
+  <ion-title style="float: left;">Upload Project File</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-item>
+    <ion-label> Upload a CHAP project (.chap) file to open a project </ion-label>
+  </ion-item>
+
+  <div id="fileDropzone"> {{dropzoneText}} </div>
+
+</ion-content>
+
+<ion-footer id="openFile_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Open File</ion-button>
+</ion-footer>

@@ -33,6 +33,7 @@ import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
 import { DragulaService } from "ng2-dragula";
 import { from } from "rxjs";
+import { OpenProjectPage } from "../open-project/open-project.page";
 
 @Component({
   selector: "app-home",
@@ -91,6 +92,8 @@ export class HomePage {
     downloadAPK.addEventListener("click", (e) => {
       window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
     });
+    // let printFC = document.getElementById("btn_printFlowchart");
+    // printFC.addEventListener('click', (e) => this.printFlowchart());
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
@@ -1091,125 +1094,138 @@ export class HomePage {
     this.clearWorkspace();
   }
 
-  public openProject() {
-    let dataSyms, arrowT, els, p;
-    let fileUrl = 'assets/new.chap';
+  async openProject() {
     this.menu.close();
-    this.http.get(fileUrl, { responseType: 'text' })
-      .subscribe(data => {
-        dataSyms = JSON.parse(data);
-        for (let i = 0; i < dataSyms.length; i++) {
-          let sym: any;
-          switch (dataSyms[i].id) {
-            case 's_declare':
-              sym = new Declare();
-              sym.createDeclareSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getDeclareExpression();
-              break;
-            case 's_input':
-              sym = new Input();
-              sym.createInputSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getInputExpression();
-              break;
-            case 's_output':
-              sym = new Output();
-              sym.createOutputSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getOutputExpression();
-              break;
-            case 's_process':
-              sym = new Process();
-              sym.createProcessSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getProcessExpression();
-              break;
-            case 's_comment':
-              sym = new Comment();
-              sym.createCommentSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getCommentExpression();
-              break;
-            case 's_if_case':
-              sym = new IfCase();
-              sym.createIfCaseSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getIfStatement();
-              break;
-            case 's_for_loop':
-              sym = new ForLoop();
-              sym.createForLoopSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getForExpression();
-              break;
-            case 's_while_loop':
-              sym = new WhileLoop();
-              sym.createWhileLoopSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getWhileExpression();
-              break;
-            case 's_do_while_loop':
-              sym = new DoWhileLoop();
-              sym.createDoWhileLoopSymbol(dataSyms[i]);
-              arrowT = document.getElementsByClassName('arrow dropzone');
-              arrowT[i].classList.add("active-arrow");
-              this.addSymbol(sym.id, arrowT[i]);
-              this.flowchart.removeSymbolFromFlowchart(i);
-              els = document.getElementsByClassName('symbol');
-              p = i + 1;
-              els[p].innerHTML = sym.getDoWhileExpression();
-              break;
-            default:
-              break;
-          }
-          this.flowchart.addSymbolToFlowchart(sym, i);
-        }
-        console.log('File content: ', dataSyms);
-        console.log(this.flowchart);
-      });
+    const modal = await this.modalC.create({
+      component: OpenProjectPage,
+      componentProps: {}
+    });
+    modal.onDidDismiss().then(data => {
+      let chapFileName = data.data.name.replace('.chap', '');
+      let fr = new FileReader();
+      fr.readAsText(data.data);
+      fr.onloadend = () => {
+        this.loadProject(chapFileName, fr.result);
+      };
+    });
+    await modal.present();
+  }
 
-    // console.log(JSON.parse(JSON.stringify(this.flowchart.SYMBOLS)));
+  public loadProject(chapFileName, fileData) {
+    let dataSyms, arrowT, els, p;
+    dataSyms = JSON.parse(fileData);
+
+    this.newProject();
+    for (let i = 0; i < dataSyms.length; i++) {
+      let sym: any;
+      switch (dataSyms[i].id) {
+        case 's_declare':
+          sym = new Declare();
+          sym.createDeclareSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getDeclareExpression();
+          break;
+        case 's_input':
+          sym = new Input();
+          sym.createInputSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getInputExpression();
+          break;
+        case 's_output':
+          sym = new Output();
+          sym.createOutputSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getOutputExpression();
+          break;
+        case 's_process':
+          sym = new Process();
+          sym.createProcessSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getProcessExpression();
+          break;
+        case 's_comment':
+          sym = new Comment();
+          sym.createCommentSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getCommentExpression();
+          break;
+        case 's_if_case':
+          sym = new IfCase();
+          sym.createIfCaseSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getIfStatement();
+          break;
+        case 's_for_loop':
+          sym = new ForLoop();
+          sym.createForLoopSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getForExpression();
+          break;
+        case 's_while_loop':
+          sym = new WhileLoop();
+          sym.createWhileLoopSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getWhileExpression();
+          break;
+        case 's_do_while_loop':
+          sym = new DoWhileLoop();
+          sym.createDoWhileLoopSymbol(dataSyms[i]);
+          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT[i].classList.add("active-arrow");
+          this.addSymbol(sym.id, arrowT[i]);
+          this.flowchart.removeSymbolFromFlowchart(i);
+          els = document.getElementsByClassName('symbol');
+          p = i + 1;
+          els[p].innerHTML = sym.getDoWhileExpression();
+          break;
+        default:
+          break;
+      }
+      this.flowchart.addSymbolToFlowchart(sym, i);
+    }
+    this.fileName = chapFileName;
+    let fName = document.getElementById('fileName') as HTMLInputElement;
+    fName.value = this.fileName;
   }
 
   public saveProject() {
@@ -1293,13 +1309,46 @@ export class HomePage {
   }
 
   public printFlowchart() {
-    // html2canvas(document.querySelector("#workspace")).then(canvas => {
-    //   let can = canvas as HTMLCanvasElement;
-    //   can.width = 100;
-    //   can.height = 100;
-    //   document.getElementById("workspace").appendChild(can);
-    // });
-    //alert('Screenshot');
+    this.closeMenu();
+
+    html2canvas(document.body).then(canvas => {
+      // canvas.style.width = '500px';
+      // canvas.style.height = '500px';
+      // canvas.style.display = 'block';
+      // document.body.appendChild(canvas);
+      // canvas.appendChild(document.getElementById("workspace"));
+
+      var image = canvas.toDataURL('image/png');
+      //.replace('image/png', 'image/octet-stream');
+      console.log(image);
+      // window.location.href = image;
+      // window.open('', image);
+
+      // this.saveAsImageFile(image, 'fileName');
+    });
+  }
+
+  public saveAsImageFile(data, filename) {
+    if (!data) {
+      console.error('Console.save: No data');
+      return;
+    }
+    if (!filename) filename = 'temp.png';
+    var blob = new Blob([data], { type: 'image/png' }),
+      e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+
+    // FOR IE:
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      var e = document.createEvent('MouseEvents'), a = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['image/png', a.download, a.href].join(':');
+      e.initEvent('click', true, false);
+      a.dispatchEvent(e);
+    }
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
