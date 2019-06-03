@@ -27,25 +27,24 @@ export class OpenProjectPage implements OnInit {
   public dragEnter(e) {
     e.preventDefault();
     e.target.style.background = "#9CDCFE";
-    console.log("drag enter");
   }
 
   public dragLeave(e) {
     e.preventDefault();
-    e.target.style.background = "#ddd";
-    console.log("drag leave");
+    e.target.style.background = "#fff";
+    e.target.style.color = "#ddd";
   }
 
   public dropped(e) {
     e.preventDefault();
-    e.target.style.background = "#ddd";
+    e.target.style.background = "#fff";
+    e.target.style.color = "#333";
+    e.target.style.fontSize = "12pt";
+
     this.chapFile = e.dataTransfer.files[0];
-    // let fr = new FileReader();
-    // fr.readAsText(e.dataTransfer.files[0]);
-    // fr.onloadend = (e) => {
-    //   this.chapFile = fr.result;
-    // };
-    this.dropzoneText = '\'' + e.dataTransfer.files[0].name + '\' dropped!';
+    this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
+    this.dropzoneText += 'Last Modified: ' + this.chapFile.lastModifiedDate + '\n';
+    this.dropzoneText += 'File Size: ' + this.chapFile.size + ' bytes';
   }
 
   public applyAndCloseModal() { this.modal.dismiss(this.chapFile); }

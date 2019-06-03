@@ -1,5 +1,6 @@
 <ion-toolbar style="padding: 5px; " color="primary">
-  <img style="float: left; width: 24px; height: 24px; margin-left: 0;" src="./assets/icon/code-white.png" />
+  <ion-icon name="folder-open" style="float: left; width: 24px; height: 24px; margin-left: 0; padding-left: 10px;">
+  </ion-icon>
   <ion-title style="float: left;">Upload Project File</ion-title>
 </ion-toolbar>
 
@@ -9,7 +10,9 @@
     <ion-label> Upload a CHAP project (.chap) file to open a project </ion-label>
   </ion-item>
 
-  <div id="fileDropzone"> {{dropzoneText}} </div>
+  <div id="fileDropzone">
+    <span>{{dropzoneText}}</span>
+  </div>
 
 </ion-content>
 

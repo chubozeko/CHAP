@@ -1101,12 +1101,14 @@ export class HomePage {
       componentProps: {}
     });
     modal.onDidDismiss().then(data => {
-      let chapFileName = data.data.name.replace('.chap', '');
-      let fr = new FileReader();
-      fr.readAsText(data.data);
-      fr.onloadend = () => {
-        this.loadProject(chapFileName, fr.result);
-      };
+      if (data.data != undefined) {
+        let chapFileName = data.data.name.replace('.chap', '');
+        let fr = new FileReader();
+        fr.readAsText(data.data);
+        fr.onloadend = () => {
+          this.loadProject(chapFileName, fr.result);
+        };
+      }
     });
     await modal.present();
   }
