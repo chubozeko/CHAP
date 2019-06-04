@@ -8,14 +8,19 @@ import { VariablesComponent } from './variables/variables.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  // { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home', loadChildren: './home/home.module#HomePageModule' },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'symbols', loadChildren: './symbols/symbols.component#SymbolsComponent' },
   { path: 'workspace', loadChildren: './workspace/workspace.component#WorkspaceComponent' },
   { path: 'console', loadChildren: './console/console.component#ConsoleComponent' },
-  { path: 'variables', loadChildren: './variables/variables.component#VariablesComponent' },  { path: 'CodeViewer', loadChildren: './code-viewer/code-viewer.module#CodeViewerPageModule' },
+  { path: 'variables', loadChildren: './variables/variables.component#VariablesComponent' },
+  { path: 'CodeViewer', loadChildren: './code-viewer/code-viewer.module#CodeViewerPageModule' },
   { path: 'About', loadChildren: './about/about.module#AboutPageModule' },
   { path: 'Tutorial', loadChildren: './tutorial/tutorial.module#TutorialPageModule' },
   { path: 'open-project', loadChildren: './open-project/open-project.module#OpenProjectPageModule' },
+  { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' },
+
 
   // { path: 'process', loadChildren: './symbol-dialogs/process/process.module#ProcessPageModule' },
   // { path: 'declare', loadChildren: './symbol-dialogs/declare/declare.module#DeclarePageModule' },

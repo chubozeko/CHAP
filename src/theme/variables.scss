@@ -75,7 +75,6 @@
   --ion-color-light-contrast-rgb: 0,0,0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
-
 }
 
 $colors: (
@@ -85,10 +84,4 @@ $colors: (
   light:      rgba(187, 195, 199, 0.904),
   dark:       #111
 );
-
-// $text-color: #333333;
-// $colors-ios: ( primary: #333333, secondary: #dddddd );
-// $colors-md: ( primary: #333333, secondary: #dddddd );
-// $alert-ios-button-text-color: color($colors-ios, primary); /* color($colors-ios, primary) */
-// $alert-md-button-text-color: color($colors-md, primary);  /* color($colors-md, primary) */
 
