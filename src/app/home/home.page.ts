@@ -47,6 +47,7 @@ export class HomePage {
   flowchart: Flowchart = new Flowchart(this.alertC);
   title = "CHAP";
   fileName = "";
+  consoleButtonText = "Close Console";
   fs;
   workspace;
   branch;
@@ -1049,7 +1050,25 @@ export class HomePage {
   }
 
   public toggleConsole() {
-
+    let console1 = document.getElementById("console");
+    let consoleBtns = document.getElementById("consoleBtns");
+    if (console1.classList.contains('toggleConsole')) {
+      console1.classList.remove('toggleConsole');
+      console1.style.display = 'block';
+      console1.style.position = 'absolute';
+      console1.style.bottom = '0';
+      consoleBtns.style.position = 'absolute';
+      consoleBtns.style.right = '5px';
+      consoleBtns.style.bottom = console1.offsetHeight + 'px';
+      this.consoleButtonText = "Close Console";
+    } else {
+      console1.classList.add('toggleConsole');
+      console1.style.display = 'none';
+      consoleBtns.style.position = 'absolute';
+      consoleBtns.style.right = '5px';
+      consoleBtns.style.bottom = '5px';
+      this.consoleButtonText = "Open Console";
+    }
   }
 
   public clearConsole() {
@@ -1060,31 +1079,22 @@ export class HomePage {
   public clearWorkspace() {
     this.menu.close();
     this.clearConsole();
+    let startSym, stopSym, arrowInit;
     let workspace = document.getElementById("workspace");
     let wsSymbols = workspace.getElementsByClassName("symbol");
-    let wsDoWhiles = workspace.getElementsByClassName("do_while_div");
-    for (let i = 0; i < wsSymbols.length; i++) {
-      if (wsSymbols[i].id != "s_start" && wsSymbols[i].id != "s_stop") {
-        if (
-          wsSymbols[i].id == "s_if_case" ||
-          wsSymbols[i].id == "s_for_loop" ||
-          wsSymbols[i].id == "s_while_loop"
-        ) {
-          let nextArrow = wsSymbols[i].parentElement.nextSibling;
-          workspace.removeChild(nextArrow);
-          workspace.removeChild(wsSymbols[i].parentElement);
-        } else if (wsSymbols[i].id == "s_do_while_loop") {
-          let nextArrow = wsSymbols[i].parentElement.nextSibling;
-          workspace.removeChild(nextArrow);
-          workspace.removeChild(wsSymbols[i].parentElement);
-        } else {
-          let nextArrow = wsSymbols[i].nextSibling;
-          workspace.removeChild(nextArrow);
-          workspace.removeChild(wsSymbols[i]);
-        }
-        i = 0;
+    for (let l = 0; l < wsSymbols.length; l++) {
+      if (wsSymbols[l].id == "s_start") {
+        startSym = wsSymbols[l];
+      } else if (wsSymbols[l].id == "s_stop") {
+        stopSym = wsSymbols[l];
       }
     }
+    arrowInit = document.getElementById("arrow");
+
+    workspace.innerHTML = '';
+    workspace.appendChild(startSym);
+    workspace.appendChild(arrowInit);
+    workspace.appendChild(stopSym);
     this.flowchart = new Flowchart(this.alertC);
   }
 
