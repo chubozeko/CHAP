@@ -822,6 +822,11 @@ export class HomePage {
       ifcase.setIfCaseSymbol(t1);
       symbol = temp[0].cloneNode(true);
       symComponent = ifcase;
+      // add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService.find('symbol').drake.containers.push(innerArrows[a]);
+      }
     } else if (id == "s_while_loop") {
       let whileloop = new WhileLoop();
       symClass = "while_div";
@@ -832,6 +837,11 @@ export class HomePage {
       whileloop.setWhileSymbol(t2);
       symbol = temp[0].cloneNode(true);
       symComponent = whileloop;
+      // add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService.find('symbol').drake.containers.push(innerArrows[a]);
+      }
     } else if (id == "s_for_loop") {
       let forloop = new ForLoop();
       symClass = "for_div";
@@ -842,6 +852,11 @@ export class HomePage {
       forloop.setForSymbol(t3);
       symbol = temp[0].cloneNode(true);
       symComponent = forloop;
+      // add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService.find('symbol').drake.containers.push(innerArrows[a]);
+      }
     } else if (id == "s_do_while_loop") {
       let doWhileLoop = new DoWhileLoop();
       symClass = "do_while_div";
@@ -852,6 +867,11 @@ export class HomePage {
       doWhileLoop.setDoWhileSymbol(t4);
       symbol = temp[0].cloneNode(true);
       symComponent = doWhileLoop;
+      // add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService.find('symbol').drake.containers.push(innerArrows[a]);
+      }
     }
 
     // Get the selected arrow/branch to append symbol after
@@ -875,6 +895,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
+        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -894,6 +915,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
+        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -913,6 +935,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
+        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -932,6 +955,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
+        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -951,6 +975,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
+        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
