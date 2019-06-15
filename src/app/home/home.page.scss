@@ -3,14 +3,52 @@
 .symbol.large { -webkit-transform: scale(1.25); transform: scale(1.25); }
 .rotate { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
 
+// Console & Console Buttons
 #consoleInput{
   background-color: #333; color: #ddd; 
   font-family: Consolas, monaco, monospace; 
   resize: none; width: 100%; padding: 2px; float: left;
 }
-
 .toggleConsole {
   display: none;
+}
+#consoleBtns {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+
+// Symbols FAB & List
+#symbolsFAB {
+  position: absolute;
+  bottom: 0px; left: 0px;
+}
+#symbolsList {
+  display: none;
+  position: absolute; resize: none;
+  background-color: #ddd;
+  font-family: Consolas, monaco, monospace; 
+  padding: 2px; 
+  bottom: 10px;
+}
+.scrollbar {
+	height: 360px; width: 90px;
+	overflow-y: scroll;
+  direction: rtl;
+}
+.scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #ddd;
+}
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  background-color: #ddd;
+} 
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #333;
 }
 
 // SYMBOLS CSS

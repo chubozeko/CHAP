@@ -47,7 +47,7 @@ export class HomePage {
   flowchart: Flowchart = new Flowchart(this.alertC);
   title = "CHAP";
   fileName = "";
-  consoleButtonText = "Close Console";
+  consoleButtonText = "Open Console";
   fs;
   workspace;
   branch;
@@ -93,6 +93,8 @@ export class HomePage {
     downloadAPK.addEventListener("click", (e) => {
       window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
     });
+    let sFAB = document.getElementById("symbolsFAB");
+    sFAB.addEventListener("click", e => this.toggleSymbolsFAB(e));
     // let printFC = document.getElementById("btn_printFlowchart");
     // printFC.addEventListener('click', (e) => this.printFlowchart());
 
@@ -122,7 +124,7 @@ export class HomePage {
         target.setAttribute('style', 'background: #000000');
         target.removeChild(target.children[0]);
         this.addSymbol(this.selectedSymbol, el.children[0]);
-        this.symbolsFAB.close();
+        // this.symbolsFAB.close();
       });
 
     this.dragulaService.over('symbol')
@@ -531,6 +533,23 @@ export class HomePage {
     }
   }
 
+  public toggleSymbolsFAB(e) {
+    let symbolsList = document.getElementById("symbolsList");
+    if (e.target.classList.contains('toggleSymFAB')) {
+      e.target.classList.remove('toggleSymFAB');
+      e.target.innerHTML = '<img src="./assets/icon/symbols_icon.png" alt="">';
+      symbolsList.style.display = 'none';
+      console.log('hide list');
+    } else {
+      e.target.classList.add('toggleSymFAB');
+      e.target.innerHTML = '<ion-icon name="close"></ion-icon>';
+      symbolsList.style.display = 'block';
+      symbolsList.style.position = 'absolute';
+      symbolsList.style.bottom = '80px';
+      console.log('show list');
+    }
+  }
+
   public openSymbolsFAB(event) {
     // Get the target arrow
     let t = event.target || event.srcElement || event.currentTarget;
@@ -543,6 +562,7 @@ export class HomePage {
       t.classList.add("active-arrow");
       if (!symbolsFAB.getAttribute("activated")) {
         this.symbolsFAB.activated = true;
+        console.log('Open FAB', this.symbolsFAB.activated);
       }
     } else {
       let branches = document.getElementsByClassName("dropzone active-arrow");
@@ -553,6 +573,7 @@ export class HomePage {
       // Open symbols FAB
       if (!symbolsFAB.getAttribute("activated")) {
         this.symbolsFAB.activated = true;
+        console.log('Open FAB', this.symbolsFAB.activated);
       }
     }
   }
