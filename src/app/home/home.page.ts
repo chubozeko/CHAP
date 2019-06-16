@@ -94,7 +94,7 @@ export class HomePage {
       window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
     });
     let sFAB = document.getElementById("symbolsFAB");
-    sFAB.addEventListener("click", e => this.toggleSymbolsFAB(e));
+    sFAB.addEventListener("click", e => this.toggleSymbolsFAB());
     // let printFC = document.getElementById("btn_printFlowchart");
     // printFC.addEventListener('click', (e) => this.printFlowchart());
 
@@ -533,20 +533,21 @@ export class HomePage {
     }
   }
 
-  public toggleSymbolsFAB(e) {
+  public toggleSymbolsFAB() {
     let symbolsList = document.getElementById("symbolsList");
-    if (e.target.classList.contains('toggleSymFAB')) {
-      e.target.classList.remove('toggleSymFAB');
-      e.target.innerHTML = '<img src="./assets/icon/symbols_icon.png" alt="">';
+    let symbolsFAB = document.getElementById("symbolsFAB");
+    if (symbolsFAB.classList.contains('toggleSymFAB')) {
+      // Close Symbols List
+      symbolsFAB.classList.remove('toggleSymFAB');
+      symbolsFAB.innerHTML = '<img src="./assets/icon/symbols_icon.png" alt="">';
       symbolsList.style.display = 'none';
-      console.log('hide list');
     } else {
-      e.target.classList.add('toggleSymFAB');
-      e.target.innerHTML = '<ion-icon name="close"></ion-icon>';
+      // Show Symbols List
+      symbolsFAB.classList.add('toggleSymFAB');
+      symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
       symbolsList.style.display = 'block';
       symbolsList.style.position = 'absolute';
       symbolsList.style.bottom = '80px';
-      console.log('show list');
     }
   }
 
@@ -555,14 +556,18 @@ export class HomePage {
     let t = event.target || event.srcElement || event.currentTarget;
     // Get symbols FAB
     let symbolsFAB = document.getElementById("symbolsFAB");
+    let symbolsList = document.getElementById("symbolsList");
     // Get the active arrow/branch
     let arrows = document.getElementsByClassName("dropzone active-arrow");
     // Check if there are other active arrows/branches
     if (arrows.length < 1) {
       t.classList.add("active-arrow");
-      if (!symbolsFAB.getAttribute("activated")) {
-        this.symbolsFAB.activated = true;
-        console.log('Open FAB', this.symbolsFAB.activated);
+      if (!symbolsFAB.classList.contains('toggleSymFAB')) {
+        symbolsFAB.classList.add('toggleSymFAB');
+        symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
+        symbolsList.style.display = 'block';
+        symbolsList.style.position = 'absolute';
+        symbolsList.style.bottom = '80px';
       }
     } else {
       let branches = document.getElementsByClassName("dropzone active-arrow");
@@ -571,9 +576,13 @@ export class HomePage {
       }
       t.classList.add("active-arrow");
       // Open symbols FAB
-      if (!symbolsFAB.getAttribute("activated")) {
-        this.symbolsFAB.activated = true;
-        console.log('Open FAB', this.symbolsFAB.activated);
+      this.toggleSymbolsFAB();
+      if (!symbolsFAB.classList.contains('toggleSymFAB')) {
+        symbolsFAB.classList.add('toggleSymFAB');
+        symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
+        symbolsList.style.display = 'block';
+        symbolsList.style.position = 'absolute';
+        symbolsList.style.bottom = '80px';
       }
     }
   }
@@ -1075,10 +1084,11 @@ export class HomePage {
     let dz = document.getElementsByClassName("arrow dropzone");
     for (let i = 0; i < dz.length; i++) {
       dz[i].addEventListener("click", e => this.openSymbolsFAB(e));
+      // dz[i].addEventListener("click", e => this.toggleSymbolsFAB(e));
     }
 
+    this.toggleSymbolsFAB();
     console.log(this.flowchart.SYMBOLS);
-
   }
 
   public consoleLog(lineOutput) {
@@ -1127,7 +1137,9 @@ export class HomePage {
     this.clearConsole();
     let startSym, stopSym, arrowInit;
     let workspace = document.getElementById("workspace");
+    let symbolsList = document.getElementById("symbolsList");
     let wsSymbols = workspace.getElementsByClassName("symbol");
+
     for (let l = 0; l < wsSymbols.length; l++) {
       if (wsSymbols[l].id == "s_start") {
         startSym = wsSymbols[l];
@@ -1138,6 +1150,7 @@ export class HomePage {
     arrowInit = document.getElementById("arrow");
 
     workspace.innerHTML = '';
+    workspace.appendChild(symbolsList);
     workspace.appendChild(startSym);
     workspace.appendChild(arrowInit);
     workspace.appendChild(stopSym);
