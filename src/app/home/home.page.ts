@@ -89,10 +89,10 @@ export class HomePage {
     saveProj.addEventListener('click', (e) => this.saveProject());
     let closeM = document.getElementById("btn_closeMenu");
     closeM.addEventListener("click", e => this.closeMenu());
-    let downloadAPK = document.getElementById("btn_downloadAPK");
-    downloadAPK.addEventListener("click", (e) => {
-      window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
-    });
+    // let downloadAPK = document.getElementById("btn_downloadAPK");
+    // downloadAPK.addEventListener("click", (e) => {
+    //   window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
+    // });
     let sFAB = document.getElementById("symbolsFAB");
     sFAB.addEventListener("click", e => this.toggleSymbolsFAB());
     // let printFC = document.getElementById("btn_printFlowchart");
