@@ -1,0 +1,7 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "chap2",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}

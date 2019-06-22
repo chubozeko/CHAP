@@ -10,10 +10,10 @@ import { DragulaModule } from "ng2-dragula";
 import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { SymbolsComponent } from './symbols/symbols.component';
-import { WorkspaceComponent } from './workspace/workspace.component';
-import { ConsoleComponent } from './console/console.component';
-import { VariablesComponent } from './variables/variables.component';
+// import { SymbolsComponent } from './symbols/symbols.component';
+// import { WorkspaceComponent } from './workspace/workspace.component';
+// import { ConsoleComponent } from './console/console.component';
+// import { VariablesComponent } from './variables/variables.component';
 import { File } from '@ionic-native/file/ngx'
 import { CommentPageModule } from './symbol-dialogs/comment/comment.module';
 import { DeclarePageModule } from './symbol-dialogs/declare/declare.module';
@@ -33,11 +33,11 @@ import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SymbolsComponent,
-    WorkspaceComponent,
-    ConsoleComponent,
-    VariablesComponent
+    AppComponent
+    // SymbolsComponent,
+    // WorkspaceComponent,
+    // ConsoleComponent,
+    // VariablesComponent
   ],
   entryComponents: [],
   imports: [
