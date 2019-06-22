@@ -2,7 +2,7 @@
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CHAP</name>
     <description>Interactively build and run solutions to programming problems using Flowcharts</description>
-    <author email="chubozeko@gmail.com" href="http://chap.cf/">CHAP Team</author>
+    <author email="chubozeko@gmail.com" href="http://chapchap.ga/">CHAP Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -21,8 +21,8 @@
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="mdpi" src="resources/icon.png" />
-        <splash density="port-mdpi" src="resources/splash.png" />
+        <icon density="mdpi" src="src/assets/icon.png" />
+        <splash density="port-mdpi" src="src/assets/splash.png" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:largeHeap="true" />
         </edit-config>

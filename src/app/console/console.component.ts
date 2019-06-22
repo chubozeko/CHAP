@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+// import { Component, OnInit } from '@angular/core';
 
-@Component({
-  selector: 'app-console',
-  templateUrl: './console.component.html',
-})
-export class ConsoleComponent implements OnInit {
+// @Component({
+//   selector: 'app-console',
+//   templateUrl: './console.component.html',
+// })
+// export class ConsoleComponent implements OnInit {
 
-  constructor() { }
+//   constructor() { }
 
-  ngOnInit() {
-  }
+//   ngOnInit() {
+//   }
 
-}
+// }
