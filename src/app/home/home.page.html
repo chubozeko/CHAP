@@ -16,6 +16,11 @@
 
     <div id="workspace" appEditor>
 
+      <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
+      <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols">
+      </div>
+      <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
+
       <div id="symbolsList" dragula="symbol" class="scrollbar">
         <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
           <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id, $event)">
@@ -23,11 +28,6 @@
           </div>
         </ion-card>
       </div>
-
-      <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
-      <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols">
-      </div>
-      <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
 
     </div>
 

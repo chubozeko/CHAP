@@ -1183,10 +1183,10 @@ export class HomePage {
   }
 
   public loadProject(chapFileName, fileData) {
+    this.newProject();
     let dataSyms, arrowT, els, p;
     dataSyms = JSON.parse(fileData);
 
-    this.newProject();
     for (let i = 0; i < dataSyms.length; i++) {
       let sym: any;
       switch (dataSyms[i].id) {
@@ -1198,7 +1198,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getDeclareExpression();
           break;
         case 's_input':
@@ -1209,7 +1209,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getInputExpression();
           break;
         case 's_output':
@@ -1220,7 +1220,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getOutputExpression();
           break;
         case 's_process':
@@ -1231,7 +1231,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getProcessExpression();
           break;
         case 's_comment':
@@ -1242,7 +1242,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getCommentExpression();
           break;
         case 's_if_case':
@@ -1253,7 +1253,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getIfStatement();
           break;
         case 's_for_loop':
@@ -1264,7 +1264,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getForExpression();
           break;
         case 's_while_loop':
@@ -1275,7 +1275,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getWhileExpression();
           break;
         case 's_do_while_loop':
@@ -1286,7 +1286,7 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           this.flowchart.removeSymbolFromFlowchart(i);
           els = document.getElementsByClassName('symbol');
-          p = i + 1;
+          p = (i + 9) + 1;
           els[p].innerHTML = sym.getDoWhileExpression();
           break;
         default:
