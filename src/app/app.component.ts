@@ -8,12 +8,15 @@ import { Flowchart } from './classes/Flowchart';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  styleUrls: ["splashscreen.scss"]
 })
 export class AppComponent {
 
   flowchart: Flowchart;
   temp: HomePage;
+
+  splash = true;
 
   constructor(
     private platform: Platform,
@@ -27,7 +30,8 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      //this.splashScreen.hide();
+      setTimeout(() => this.splash = false, 4000);
     });
   }
 
