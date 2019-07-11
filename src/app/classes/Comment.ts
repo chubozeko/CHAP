@@ -23,4 +23,6 @@ export class Comment {
 
   cplusplusCode() { return '\t/*' + this.commentText + '*/\n'; }
 
+  getJavaCode() { return '\t\t/*' + this.commentText + '*/\n'; }
+
 }

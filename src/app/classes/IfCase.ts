@@ -222,4 +222,17 @@ export class IfCase {
     return '\tif (' + this.getIfStatement() + '){\n' + iftrue + '\telse {\n' + iffalse + '\t} \n';
   }
 
+  getJavaCode() {
+    let iftrue = '', iffalse = '';
+    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
+      const el = this.trueBlockSymbols[i];
+      iftrue += '\t' + el.getJavaCode();
+    }
+    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
+      const el = this.falseBlockSymbols[i];
+      iffalse += '\t' + el.getJavaCode();
+    }
+    return '\t\tif (' + this.getIfStatement() + '){\n' + iftrue + '\t\telse {\n' + iffalse + '\t\t} \n';
+  }
+
 }

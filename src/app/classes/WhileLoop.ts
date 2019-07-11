@@ -355,4 +355,16 @@ export class WhileLoop {
       "\twhile (" + this.getWhileExpression() + "){\n" + whiletrue + "\t} \n"
     );
   }
+
+  getJavaCode() {
+    let whiletrue = "";
+    for (let i = 0; i < this.trueLoopBlock.length; i++) {
+      const el = this.trueLoopBlock[i];
+      whiletrue += "\t" + el.getJavaCode();
+    }
+    return (
+      "\t\twhile (" + this.getWhileExpression() + "){\n" + whiletrue + "\t\t} \n"
+    );
+  }
+
 }

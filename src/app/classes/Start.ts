@@ -1,4 +1,4 @@
-export class Start{
+export class Start {
 
   static id: string = 's_start';
   static s_name: string = 'Start';
@@ -6,15 +6,19 @@ export class Start{
 
   startSymbol: any = document.getElementById('s_start');
 
-  constructor(){}
+  constructor() { }
 
-  setStartSymbol( symbol: any ){ this.startSymbol = symbol; }
-  getStartSymbol(){ return this.startSymbol; }
+  setStartSymbol(symbol: any) { this.startSymbol = symbol; }
+  getStartSymbol() { return this.startSymbol; }
 
-  pseudoCode(){ return 'Start\n'; }
+  pseudoCode() { return 'Start\n'; }
 
-  cplusplusCode(){ 
+  cplusplusCode() {
     return '#include <iostream> \n#include <cstdlib>\n#include <string> \n\nusing namespace std;\n\nint main(void)\n{ \n';
+  }
+
+  getJavaCode() {
+    return `import java.io.*; \nimport java.util.*; \nimport java.lang.Math; \n\npublic class ChapJavaApp {\n\tpublic static void main(String[] args) {\n`;
   }
 
 }

@@ -1,4 +1,4 @@
-export class Stop{
+export class Stop {
 
   static id: string = 's_stop';
   static s_name: string = 'Stop';
@@ -6,15 +6,19 @@ export class Stop{
 
   stopSymbol: any = document.getElementById('s_stop');
 
-  constructor(){}
+  constructor() { }
 
-  setStopSymbol( symbol: any ){ this.stopSymbol = symbol; }
-  getStopSymbol(){ return this.stopSymbol; }
+  setStopSymbol(symbol: any) { this.stopSymbol = symbol; }
+  getStopSymbol() { return this.stopSymbol; }
 
-  pseudoCode(){ return 'Stop'; }
+  pseudoCode() { return 'Stop'; }
 
-  cplusplusCode(){
+  cplusplusCode() {
     return '\treturn 0;\n}';
+  }
+
+  getJavaCode() {
+    return `\t}\n}`;
   }
 
 }

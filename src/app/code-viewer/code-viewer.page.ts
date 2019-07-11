@@ -13,6 +13,7 @@ export class CodeViewerPage implements OnInit {
   displayCode: string = '';
   pseudocode: string = '';
   cpluspluscode: string = '';
+  javaCode: string = '';
   lineNumbers: string = '  ';
   flowchart: Flowchart;
   codeFileName: string = '';
@@ -45,6 +46,15 @@ export class CodeViewerPage implements OnInit {
       }
       this.cpluspluscode = this.flowchart.displayCPlusPlusCode();
       this.displayCode = this.cpluspluscode;
+    } else if (language.value == 'Java') {
+      this.lineNumbers = '  ';
+      let code = this.flowchart.displayJavaCode();
+      let temp = code.split('\n');
+      for (let i = 0; i < temp.length; i++) {
+        this.lineNumbers += i + 1 + '  \n  ';
+      }
+      this.javaCode = this.flowchart.displayJavaCode();
+      this.displayCode = this.javaCode;
     }
 
   }
@@ -70,6 +80,15 @@ export class CodeViewerPage implements OnInit {
       }
       this.cpluspluscode = this.flowchart.displayCPlusPlusCode();
       this.displayCode = this.cpluspluscode;
+    } else if (language.value == 'Java') {
+      this.lineNumbers = '  ';
+      let code = this.flowchart.displayJavaCode();
+      let temp = code.split('\n');
+      for (let i = 0; i < temp.length; i++) {
+        this.lineNumbers += i + 1 + '  \n  ';
+      }
+      this.javaCode = this.flowchart.displayJavaCode();
+      this.displayCode = this.javaCode;
     }
   }
 
@@ -78,6 +97,8 @@ export class CodeViewerPage implements OnInit {
       this.saveProject('.txt');
     } else if (this.programmingLang == 'C++') {
       this.saveProject('.cpp');
+    } else if (this.programmingLang == 'Java') {
+      this.saveProject('.java');
     }
   }
 

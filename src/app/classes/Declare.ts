@@ -100,4 +100,19 @@ export class Declare {
         return '\t' + exp + ';\n';
     }
 
+    getJavaCode() {
+        let exp = '';
+        switch (this.getDataType()) {
+            case 'Integer': exp = exp + 'int '; break;
+            case 'Real': exp = exp + 'double '; break;
+            case 'String': exp = exp + 'String '; break;
+            case 'Boolean': exp = exp + 'boolean '; break;
+            default: exp = exp + ''; break;
+        }
+        exp = exp + this.getVariableName();
+        if (this.isArray) { exp = exp + '[' + this.getArraySize() + ']'; }
+        else { exp = exp + ''; }
+        return '\t\t' + exp + ';\n';
+    }
+
 }

@@ -181,4 +181,8 @@ export class Process {
     return '\t' + this.getProcessExpression() + ';\n';
   }
 
+  getJavaCode() {
+    return '\t\t' + this.getProcessExpression() + ';\n';
+  }
+
 }

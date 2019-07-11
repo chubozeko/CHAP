@@ -132,6 +132,17 @@ export class Flowchart {
     return cppcode;
   }
 
+  displayJavaCode() {
+    let javaCode = "";
+    javaCode += new Start().getJavaCode();
+    for (let i = 0; i < this.SYMBOLS.length; i++) {
+      const syms = this.SYMBOLS[i];
+      javaCode = javaCode + syms.getJavaCode();
+    }
+    javaCode += new Stop().getJavaCode();
+    return javaCode;
+  }
+
   updateVariables(variable: Variable) {
     for (let j = 0; j < this.variables.vars.length; j++) {
       if (

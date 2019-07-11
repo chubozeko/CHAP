@@ -27,9 +27,11 @@ export class Output {
   pseudoCode() { return '\tOutput ' + this.getOutputExpression().replace(/\&/g, ', ') + '\n'; }
 
   cplusplusCode() {
-    //let exp = this.getOutputExpression();
-    //exp.replace(/\&/g,'<<');
     return '\tcout<<' + this.getOutputExpression().replace(/\&/g, '<<') + '<<endl;\n';
+  }
+
+  getJavaCode() {
+    return '\t\tSystem.out.println(' + this.getOutputExpression().replace(/\&/g, ' + ') + ');\n';
   }
 
 }

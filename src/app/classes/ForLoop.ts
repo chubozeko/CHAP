@@ -405,4 +405,20 @@ export class ForLoop {
     return '\tfor (' + forExp + '){\n' + forTrue + '\t} \n';
   }
 
+  getJavaCode() {
+    let forTrue = '', forExp = '';
+    for (let i = 0; i < this.trueLoopBlock.length; i++) {
+      const el = this.trueLoopBlock[i];
+      forTrue += '\t' + el.getJavaCode();
+    }
+    forExp += this.getVariableName() + '=' + this.getStartValue() + '; ';
+    forExp += this.getVariableName() + '<' + this.getEndValue() + '; ';
+    if (this.getStepDirection() == 'Increasing') {
+      forExp += this.getVariableName() + '=' + this.getVariableName() + '+' + this.getStepValue();
+    } else if (this.getStepDirection() == 'Decreasing') {
+      forExp += this.getVariableName() + '=' + this.getVariableName() + '-' + this.getStepValue();
+    }
+    return '\t\tfor (' + forExp + '){\n' + forTrue + '\t\t} \n';
+  }
+
 }

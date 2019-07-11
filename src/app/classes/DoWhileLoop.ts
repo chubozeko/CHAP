@@ -332,4 +332,13 @@ export class DoWhileLoop {
     return '\tdo { \n' + doWhileTrue + '\t} while (' + this.getDoWhileExpression() + ');\n';
   }
 
+  getJavaCode() {
+    let doWhileTrue = '';
+    for (let i = 0; i < this.trueLoopBlock.length; i++) {
+      const el = this.trueLoopBlock[i];
+      doWhileTrue += '\t' + el.getJavaCode();
+    }
+    return '\t\tdo { \n' + doWhileTrue + '\t\t} while (' + this.getDoWhileExpression() + ');\n';
+  }
+
 }

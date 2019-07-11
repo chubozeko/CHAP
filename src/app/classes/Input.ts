@@ -43,4 +43,8 @@ export class Input {
     return '\tcin>>' + this.getVariableName() + ';\n';
   }
 
+  getJavaCode() {
+    return '\t\t' + this.getVariableName() + ' = System.console().readLine();\n';
+  }
+
 }
