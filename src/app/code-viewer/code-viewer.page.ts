@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Flowchart } from '../classes/Flowchart';
-import { NavParams, ModalController } from '@ionic/angular';
+import { NavParams, ModalController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-code-viewer',
@@ -15,8 +15,9 @@ export class CodeViewerPage implements OnInit {
   cpluspluscode: string = '';
   lineNumbers: string = '  ';
   flowchart: Flowchart;
+  codeFileName: string = '';
 
-  constructor(public modal: ModalController, public navP: NavParams) {
+  constructor(public modal: ModalController, public navP: NavParams, public alertC: AlertController) {
     this.flowchart = navP.get('flowchart');
     this.programmingLang = 'PseudoCode';
   }
@@ -46,13 +47,6 @@ export class CodeViewerPage implements OnInit {
       this.displayCode = this.cpluspluscode;
     }
 
-    // let code = this.flowchart.displayFlowchartPseudoCode();
-    // let temp = code.split('\n');
-    // for (let i = 0; i < temp.length; i++) {
-    //   this.lineNumbers += i+1 + '  \n  ';
-    // }
-    // this.pseudocode = this.flowchart.displayFlowchartPseudoCode();
-    // this.cpluspluscode = this.flowchart.displayCPlusPlusCode();
   }
 
   public changeCode() {
@@ -76,6 +70,78 @@ export class CodeViewerPage implements OnInit {
       }
       this.cpluspluscode = this.flowchart.displayCPlusPlusCode();
       this.displayCode = this.cpluspluscode;
+    }
+  }
+
+  public downloadCode() {
+    if (this.programmingLang == 'PseudoCode') {
+      this.saveProject('.txt');
+    } else if (this.programmingLang == 'C++') {
+      this.saveProject('.cpp');
+    }
+  }
+
+  async showSaveAlert(fileType) {
+    const alert = await this.alertC.create({
+      header: 'Failed to Save',
+      message: `Please enter a file name for the source code before saving it.`,
+      inputs: [
+        {
+          name: "fileName",
+          type: "text"
+        }
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          cssClass: "secondary",
+        },
+        {
+          text: "OK",
+          handler: data => {
+            this.codeFileName = data.fileName;
+            this.saveTextAsFile(this.displayCode, this.codeFileName + fileType);
+          }
+        }
+      ]
+    });
+
+    alert.onDidDismiss().then(data => { });
+    await alert.present();
+  }
+
+  async saveProject(fileType: string) {
+    let fileName;
+    let fName = document.getElementById('fileName') as HTMLInputElement;
+
+    if (fName.value == '') {
+      await this.showSaveAlert(fileType);
+    } else {
+      fileName = fName.value + fileType;
+      this.saveTextAsFile(this.displayCode, fileName);
+    }
+  }
+
+  public saveTextAsFile(data, filename) {
+    if (!data) {
+      console.error('Console.save: No data');
+      return;
+    }
+    var blob = new Blob([data], { type: 'text/plain' }),
+      e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+
+    // FOR IE:
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+      var e = document.createEvent('MouseEvents'), a = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+      e.initEvent('click', true, false);
+      a.dispatchEvent(e);
     }
   }
 
