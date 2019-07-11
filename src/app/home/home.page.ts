@@ -48,6 +48,7 @@ export class HomePage {
   title = "CHAP";
   fileName = "";
   consoleButtonText = "Open Console";
+  isConsoleOpen = false;
   fs;
   workspace;
   branch;
@@ -1117,6 +1118,7 @@ export class HomePage {
       consoleBtns.style.right = '5px';
       consoleBtns.style.bottom = console1.offsetHeight + 'px';
       this.consoleButtonText = "Close Console";
+      this.isConsoleOpen = true;
     } else {
       console1.classList.add('toggleConsole');
       console1.style.display = 'none';
@@ -1124,6 +1126,7 @@ export class HomePage {
       consoleBtns.style.right = '5px';
       consoleBtns.style.bottom = '5px';
       this.consoleButtonText = "Open Console";
+      this.isConsoleOpen = false;
     }
   }
 
@@ -1150,10 +1153,10 @@ export class HomePage {
     arrowInit = document.getElementById("arrow");
 
     workspace.innerHTML = '';
-    workspace.appendChild(symbolsList);
     workspace.appendChild(startSym);
     workspace.appendChild(arrowInit);
     workspace.appendChild(stopSym);
+    workspace.appendChild(symbolsList);
     this.flowchart = new Flowchart(this.alertC);
   }
 
@@ -1344,6 +1347,9 @@ export class HomePage {
   public debugProgram(e) {
     this.menu.close();
     this.clearConsole();
+    if (this.isConsoleOpen == false) {
+      this.toggleConsole();
+    }
     this.flowchart.validateFlowchart(0, this.flowchart.SYMBOLS.length);
   }
 
