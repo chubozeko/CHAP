@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController, NavParams, Platform } from '@ionic/angular';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-open-project',
@@ -12,7 +16,16 @@ export class OpenProjectPage implements OnInit {
   chapFile;
   dropzoneText;
 
-  constructor(public modal: ModalController, public navP: NavParams) { }
+  constructor(
+    public modal: ModalController,
+    public navP: NavParams,
+    public platform: Platform,
+    public file: File,
+    public ft: FileTransfer,
+    public fileOpener: FileOpener,
+    public document: DocumentViewer) {
+
+  }
 
   ngOnInit() {
     this.dropzone = document.getElementById('fileDropzone');
@@ -50,5 +63,41 @@ export class OpenProjectPage implements OnInit {
   public applyAndCloseModal() { this.modal.dismiss(this.chapFile); }
 
   public closeModal() { this.modal.dismiss(); }
+
+  /* File Opener Tutorial */
+  // public openLocalChap() {
+  //   let filePath = this.file.applicationDirectory + 'www/assets';
+
+  //   if (this.platform.is('android')) {
+  //     let fakeName = Date.now();
+  //     this.file.copyFile(filePath, 'new2.chap', this.file.applicationDirectory, `${fakeName}.chap`)
+  //       .then(result => {
+  //         //this.fileOpener.open(result.nativeURL, 'application/chap');
+  //         this.chapFile = result;
+  //         console.log('Open ', result);
+  //       });
+  //   } else {
+  //     const options: DocumentViewerOptions = {
+  //       title: 'My CHAP'
+  //     }
+  //     //this.document.viewDocument(`${filePath}/new2.chap`, 'application/chap', options);
+  //   }
+  // }
+
+  // public downloadAndOpenChap() {
+  //   let downloadUrl = '';
+  //   let path = this.file.dataDirectory;
+  //   const transfer = this.ft.create();
+
+  //   transfer.download(downloadUrl, `${path}myfile.chap`).then(entry => {
+  //     let url = entry.toURL();
+
+  //     if (this.platform.is('ios')) {
+  //       this.document.viewDocument(url, 'application/chap', {});
+  //     } else {
+  //       this.fileOpener.open(url, 'application/chap');
+  //     }
+  //   });
+  // }
 
 }

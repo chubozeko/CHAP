@@ -10,18 +10,17 @@ import { DragulaModule } from "ng2-dragula";
 import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-// import { SymbolsComponent } from './symbols/symbols.component';
-// import { WorkspaceComponent } from './workspace/workspace.component';
-// import { ConsoleComponent } from './console/console.component';
-// import { VariablesComponent } from './variables/variables.component';
-import { File } from '@ionic-native/file/ngx'
+import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
+
 import { CommentPageModule } from './symbol-dialogs/comment/comment.module';
 import { DeclarePageModule } from './symbol-dialogs/declare/declare.module';
 import { DoWhileLoopPageModule } from './symbol-dialogs/do-while-loop/do-while-loop.module';
 import { ForLoopPageModule } from './symbol-dialogs/for-loop/for-loop.module';
 import { IfElsePageModule } from './symbol-dialogs/if-else/if-else.module';
-import { InputPageModule } from './symbol-dialogs/input/input.module';
-// import { OperationPageModule } from './symbol-dialogs/operation/operation.module';
+import { InputPageModule } from './symbol-dialogs/input/input.module'
 import { OutputPageModule } from './symbol-dialogs/output/output.module';
 import { WhileLoopPageModule } from './symbol-dialogs/while-loop/while-loop.module';
 import { ProcessPageModule } from './symbol-dialogs/process/process.module';
@@ -29,15 +28,10 @@ import { CodeViewerPageModule } from './code-viewer/code-viewer.module';
 import { AboutPageModule } from './about/about.module';
 import { TutorialPageModule } from './tutorial/tutorial.module';
 import { OpenProjectPageModule } from './open-project/open-project.module';
-import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
     AppComponent
-    // SymbolsComponent,
-    // WorkspaceComponent,
-    // ConsoleComponent,
-    // VariablesComponent
   ],
   entryComponents: [],
   imports: [
@@ -65,7 +59,7 @@ import { from } from 'rxjs';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
-    Chooser, File
+    Chooser, File, FileOpener, FileTransfer, DocumentViewer
   ],
   bootstrap: [AppComponent]
 })
