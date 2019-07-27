@@ -60,7 +60,6 @@ export class HomePage {
   dupSymbol: any;
 
   paste_sym_buffer: Array<Declare | Input | Output | Process | IfCase | ForLoop | WhileLoop | DoWhileLoop | Comment>;
-  paste_buffer: Array<Element>;
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -120,7 +119,6 @@ export class HomePage {
 
     // Initialize Paste buffers
     this.paste_sym_buffer = new Array<Declare | Input | Output | Process | IfCase | ForLoop | WhileLoop | DoWhileLoop | Comment>();
-    this.paste_buffer = new Array<Element>();
   }
 
   public subscribeToDragula() {
@@ -419,7 +417,8 @@ export class HomePage {
       let options: ActionSheetOptions = {
         buttons: [
           {
-            text: "Cut Symbol",
+            text: "Cut",
+            icon: 'cut',
             handler: () => {
               let asi,
                 selectedSymbol = document
@@ -445,8 +444,6 @@ export class HomePage {
                 // Remove symbol and trailing arrow from If-True-Block in Workspace
                 let nextArrow = syms[asi].nextSibling;
                 syms[asi].parentElement.removeChild(nextArrow);
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
                 syms[asi].remove();
               } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                 let syms = selectedSymbol[0].parentElement.getElementsByClassName(
@@ -468,8 +465,6 @@ export class HomePage {
                 // Remove symbol and trailing arrow from If-False-Block in Workspace
                 let nextArrow = syms[asi].nextSibling;
                 syms[asi].parentElement.removeChild(nextArrow);
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
                 syms[asi].remove();
               } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                 let syms = selectedSymbol[0].parentElement.getElementsByClassName(
@@ -491,8 +486,6 @@ export class HomePage {
                 // Remove symbol and trailing arrow from For-Loop-Block in Workspace
                 let nextArrow = syms[asi].nextSibling;
                 syms[asi].parentElement.removeChild(nextArrow);
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
                 syms[asi].remove();
               } else if (
                 selectedSymbol[0].parentElement.id == "whileTrueBlock"
@@ -516,8 +509,6 @@ export class HomePage {
                 // Remove symbol and trailing arrow from While-Loop-Block in Workspace
                 let nextArrow = syms[asi].nextSibling;
                 syms[asi].parentElement.removeChild(nextArrow);
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
                 syms[asi].remove();
               } else if (
                 selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
@@ -541,8 +532,6 @@ export class HomePage {
                 // Remove symbol and trailing arrow from Do-While-Loop-Block in Workspace
                 let nextArrow = syms[asi].nextSibling;
                 syms[asi].parentElement.removeChild(nextArrow);
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
                 syms[asi].remove();
               } else {
                 let syms = document
@@ -560,8 +549,6 @@ export class HomePage {
                 // Remove symbol and trailing arrow from Workspace
                 let nextArrow = selectedSymbol[0].nextSibling;
                 this.workspace.removeChild(nextArrow);
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(selectedSymbol[0]);
                 selectedSymbol[0].remove();
               }
               let syms = document
@@ -579,7 +566,8 @@ export class HomePage {
             }
           },
           {
-            text: "Copy Symbol",
+            text: "Copy",
+            icon: 'copy',
             handler: () => {
               let asi,
                 selectedSymbol = document
@@ -601,8 +589,6 @@ export class HomePage {
                     this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
                   }
                 }
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
               } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                 let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                   "symbol"
@@ -619,8 +605,6 @@ export class HomePage {
                     this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi));
                   }
                 }
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
               } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                 let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                   "symbol"
@@ -637,8 +621,6 @@ export class HomePage {
                     this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
                   }
                 }
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
               } else if (
                 selectedSymbol[0].parentElement.id == "whileTrueBlock"
               ) {
@@ -657,8 +639,6 @@ export class HomePage {
                     this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
                   }
                 }
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
               } else if (
                 selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
               ) {
@@ -677,8 +657,6 @@ export class HomePage {
                     this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
                   }
                 }
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(syms[asi]);
               } else {
                 let syms = document
                   .getElementById("workspace")
@@ -691,8 +669,6 @@ export class HomePage {
                 }
                 // Add symbol to Paste buffer
                 this.paste_sym_buffer.push(this.flowchart.getSymbolFromFlowchart(asi));
-                // Add symbol element to Paste buffer
-                this.paste_buffer.push(selectedSymbol[0]);
               }
               let syms = document
                 .getElementById("workspace")
@@ -709,7 +685,9 @@ export class HomePage {
             }
           },
           {
-            text: "Delete Symbol",
+            text: "Delete",
+            role: 'destructive',
+            icon: 'trash',
             handler: () => {
               let asi,
                 selectedSymbol = document
@@ -876,7 +854,8 @@ export class HomePage {
       let options: ActionSheetOptions = {
         buttons: [
           {
-            text: "Paste Symbol",
+            text: "Paste",
+            icon: 'clipboard',
             handler: () => {
               let sym: any;
               let active_index: number;
@@ -962,6 +941,7 @@ export class HomePage {
                 }
               }
               this.paste_sym_buffer.push(tempSym);
+              this.toggleSymbolsFAB();
               console.log(this.flowchart.SYMBOLS);
               console.log('Paste buffers: ');
               console.log(this.paste_sym_buffer);
@@ -1754,6 +1734,7 @@ export class HomePage {
     this.fileName = chapFileName;
     let fName = document.getElementById('fileName') as HTMLInputElement;
     fName.value = this.fileName;
+    this.toggleSymbolsFAB();
   }
 
   public saveProject() {

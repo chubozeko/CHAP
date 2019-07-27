@@ -2,9 +2,7 @@
   <img style="float: left; width: 24px; height: 24px; margin-left: 5px;" src="./assets/icon/help_white.png" />
   <ion-title>Tutorial</ion-title>
   <ion-buttons slot="end">
-    <ion-button (click)="closeModal()" color="secondary" style="float: right;">
-      <ion-icon name="close-circle-outline"></ion-icon>
-    </ion-button>
+    <ion-button (click)="closeModal()" color="secondary" style="float: right;"> Close </ion-button>
   </ion-buttons>
 </ion-toolbar>
 
@@ -25,8 +23,14 @@
     </ion-slide>
     <ion-slide>
       <div>
-        <img width="auto" height="auto" style="padding: 2px;" src="./assets/tutorials/chap_delete.gif" />
-        <h3>Press and Hold a Symbol to Delete the Symbol</h3>
+        <img width="auto" height="auto" style="padding: 2px;" src="./assets/tutorials/chap_ccp.gif" />
+        <h3>Press and Hold a Symbol to Cut, Copy or Delete the Symbol</h3>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div>
+        <img width="auto" height="auto" style="padding: 2px;" src="./assets/tutorials/chap_paste.gif" />
+        <h3>Press and Hold an Arrow to Paste a Cut or Copied Symbol</h3>
       </div>
     </ion-slide>
   </ion-slides>
