@@ -66,6 +66,7 @@ export class Declare {
                     case 'Boolean': this.declareVar as boolean; break;
                     default: this.declareVar as any; break;
                 }
+                var1.setIsArray(false);
             } else {
                 switch (this.getDataType()) {
                     case 'Integer': this.declareVar = new Array(this.getArraySize()) as number[]; break;
@@ -74,9 +75,11 @@ export class Declare {
                     case 'Boolean': this.declareVar = new Array(this.getArraySize()) as boolean[]; break;
                     default: this.declareVar = new Array(this.getArraySize()) as any[]; break;
                 }
+                var1.setIsArray(true);
+                var1.createArray(this.getArraySize());
             }
-            var1.name = varNames[i].trim(); //this.getVariableName();
-            var1.dataType = this.getDataType();
+            var1.setName(varNames[i].trim());
+            var1.setDataType(this.getDataType());
             vars.splice(vars.length, 0, var1);
         }
 

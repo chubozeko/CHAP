@@ -23,6 +23,7 @@ export class Flowchart {
   inputPromptStatement: string = "";
   isInputEntered: boolean;
   outputStatement: string = "";
+  continueDebugIndex: number = 0;
 
   consoleLog: HTMLTextAreaElement;
   consoleInput: HTMLInputElement;
@@ -48,47 +49,6 @@ export class Flowchart {
       message: alertMsg,
       buttons: ["OK"]
     });
-    await alert.present();
-  }
-
-  async showInputPrompt(alertTitle: string, varIndex: number, symIndex: number) {
-    const alert = await this.alertC.create({
-      header: alertTitle,
-      inputs: [
-        {
-          name: "inputText",
-          type: "text"
-        }
-      ],
-      buttons: [
-        {
-          text: "Cancel",
-          role: "cancel",
-          cssClass: "secondary",
-          handler: data => {
-            console.log("Cancel " + data.inputText);
-          }
-        },
-        {
-          text: "OK",
-          handler: data => {
-            this.isInputEntered = false;
-            console.log("Ok " + data.inputText);
-            this.inputParsing(this.variables.vars[varIndex], data.inputText);
-            this.consoleLog = document.getElementById(
-              "console"
-            ) as HTMLTextAreaElement;
-            this.consoleLog.value = "";
-            this.validateFlowchart(++symIndex, this.tempSymbols.length);
-          }
-        }
-      ]
-    });
-
-    alert.onDidDismiss().then(data => {
-      console.log("hello");
-    });
-
     await alert.present();
   }
 
@@ -157,7 +117,57 @@ export class Flowchart {
     this.variables.vars.splice(pos, 0, declareSymbol.parseDeclareExp());
   }
 
-  inputParsing(var1: Variable, var_val: any) {
+  async validateInput(varIndex: number, symIndex: number, arrayIndex?: number) {
+    // Display Input prompt
+    this.inputPromptStatement =
+      Input.prototype.parseInputExp(this.variables.vars[varIndex]) + "\n";
+    this.isInputEntered = true;
+    this.showInputPrompt(this.inputPromptStatement, varIndex, symIndex, arrayIndex);
+    // return ++symIndex;
+  }
+
+  async showInputPrompt(alertTitle: string, varIndex: number, symIndex: number, arrayIndex?: number) {
+    const alert = await this.alertC.create({
+      header: alertTitle,
+      inputs: [
+        {
+          name: "inputText",
+          type: "text"
+        }
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: data => {
+            console.log("Cancel " + data.inputText);
+          }
+        },
+        {
+          text: "OK",
+          handler: data => {
+            this.isInputEntered = false;
+            console.log("Ok " + data.inputText);
+            this.inputParsing(this.variables.vars[varIndex], data.inputText, arrayIndex);
+            this.consoleLog = document.getElementById(
+              "console"
+            ) as HTMLTextAreaElement;
+            this.consoleLog.value = "";
+            this.validateFlowchart(++symIndex, this.tempSymbols.length);
+          }
+        }
+      ]
+    });
+
+    alert.onDidDismiss().then(data => {
+      console.log("hello");
+    });
+
+    await alert.present();
+  }
+
+  inputParsing(var1: Variable, var_val: any, arrayIndex?: number) {
     // Checking the data type of an entered variable into the Console
     let var_value1: any;
     if (!isNaN(parseInt(var_val))) {
@@ -172,33 +182,45 @@ export class Flowchart {
       var_value1 = var_val.toString();
     }
 
-    if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
-      var1.value = var_value1;
-    } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
-      var1.value = var_value1;
-    } else if (
-      var1.getDataType() == "String" &&
-      typeof var_value1 == "string"
-    ) {
-      var1.value = var_value1;
-    } else if (
-      var1.getDataType() == "Boolean" &&
-      typeof var_value1 == "boolean"
-    ) {
-      var1.value = var_value1;
+    if (var1.getIsArray()) {
+      if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
+        var1.variable[arrayIndex] = var_value1;
+      } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
+        var1.variable[arrayIndex] = var_value1;
+      } else if (
+        var1.getDataType() == "String" &&
+        typeof var_value1 == "string"
+      ) {
+        var1.variable[arrayIndex] = var_value1;
+      } else if (
+        var1.getDataType() == "Boolean" &&
+        typeof var_value1 == "boolean"
+      ) {
+        var1.variable[arrayIndex] = var_value1;
+      } else {
+        this.showAlert("Invalid datatype entered!", "");
+      }
     } else {
-      this.showAlert("Invalid datatype entered!", "");
+      if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
+        var1.value = var_value1;
+      } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
+        var1.value = var_value1;
+      } else if (
+        var1.getDataType() == "String" &&
+        typeof var_value1 == "string"
+      ) {
+        var1.value = var_value1;
+      } else if (
+        var1.getDataType() == "Boolean" &&
+        typeof var_value1 == "boolean"
+      ) {
+        var1.value = var_value1;
+      } else {
+        this.showAlert("Invalid datatype entered!", "");
+      }
     }
 
     console.log(this.variables);
-  }
-
-  async validateInput(varIndex: number, symIndex: number) {
-    // Display Input prompt
-    this.inputPromptStatement =
-      Input.prototype.parseInputExp(this.variables.vars[varIndex]) + "\n";
-    this.isInputEntered = true;
-    this.showInputPrompt(this.inputPromptStatement, varIndex, symIndex);
   }
 
   validateProcess(symbol: Process, varIndex: number) {
@@ -209,11 +231,11 @@ export class Flowchart {
   }
 
   async validateFlowchart(startIndex: number, endIndex: number) {
-    for (let q = 0; q < this.SYMBOLS.length; q++) {
-      this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
-    }
     if (startIndex == 0) {
       this.variables.vars = [];
+      for (let q = 0; q < this.SYMBOLS.length; q++) {
+        this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
+      }
     }
     let varIndex = 0;
 
@@ -234,13 +256,39 @@ export class Flowchart {
       // INPUT
       else if (this.tempSymbols[i] instanceof Input) {
         let isVarDeclared = false;
+        let isVarAnArray = false;
+        let tempArrIndex: number;
         for (let j = 0; j < this.variables.vars.length; j++) {
-          if (
-            this.tempSymbols[i].getVariableName() == this.variables.vars[j].getName()
-          ) {
-            isVarDeclared = true;
-            varIndex = j;
+          if (this.variables.vars[j].getIsArray()) {
+            let tempVarName = this.tempSymbols[i].getVariableName().split('[');
+            if (
+              tempVarName[0] == this.variables.vars[j].getName()
+            ) {
+              isVarDeclared = true;
+              isVarAnArray = true;
+              varIndex = j;
+              this.continueDebugIndex = varIndex;
+              // Getting the index of the array
+              let tempIn = tempVarName[1].replace(']', '');
+              if (!isNaN(parseInt(tempIn))) {
+                tempArrIndex = parseInt(tempIn);
+              } else {
+                for (let k = 0; k < this.variables.vars.length; k++) {
+                  if (tempIn == this.variables.vars[k].getName()) {
+                    tempArrIndex = this.variables.vars[k].getValue();
+                  }
+                }
+              }
+            }
+          } else {
+            if (
+              this.tempSymbols[i].getVariableName() == this.variables.vars[j].getName()
+            ) {
+              isVarDeclared = true;
+              varIndex = j;
+            }
           }
+
         }
         if (!isVarDeclared) {
           this.showAlert(
@@ -250,8 +298,15 @@ export class Flowchart {
             '" is not declared!'
           );
         } else {
-          if (!this.isInputEntered) this.validateInput(varIndex, i);
+          if (!this.isInputEntered) {
+            if (isVarAnArray) {
+              this.validateInput(varIndex, i, tempArrIndex);
+            } else {
+              this.validateInput(varIndex, i);
+            }
+          }
         }
+        continue;
       }
 
       // PROCESS
