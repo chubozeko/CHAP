@@ -223,11 +223,18 @@ export class Flowchart {
     console.log(this.variables);
   }
 
-  validateProcess(symbol: Process, varIndex: number) {
-    this.variables.vars[varIndex].value = symbol.parseExpression(
-      this.variables.vars,
-      this.variables.vars[varIndex].getDataType()
-    );
+  validateProcess(symbol: Process, varIndex: number, arrayIndex?: number) {
+    if (this.variables.vars[varIndex].getIsArray()) {
+      this.variables.vars[varIndex].variable[arrayIndex] = symbol.parseExpression(
+        this.variables.vars,
+        this.variables.vars[varIndex].getDataType()
+      );
+    } else {
+      this.variables.vars[varIndex].value = symbol.parseExpression(
+        this.variables.vars,
+        this.variables.vars[varIndex].getDataType()
+      );
+    }
   }
 
   async validateFlowchart(startIndex: number, endIndex: number) {
@@ -313,12 +320,30 @@ export class Flowchart {
       // PROCESS
       else if (this.tempSymbols[i] instanceof Process) {
         let isVarDeclared = false;
+        let isVarAnArray = false;
+        let tempArrIndex: number;
         for (let j = 0; j < this.variables.vars.length; j++) {
-          if (
-            this.tempSymbols[i].getVariableName() == this.variables.vars[j].getName()
-          ) {
-            isVarDeclared = true;
-            varIndex = j;
+          if (this.variables.vars[j].getIsArray()) {
+            let tempVarName = this.tempSymbols[i].getVariableName().split('[');
+            if (
+              tempVarName[0] == this.variables.vars[j].getName()
+            ) {
+              isVarDeclared = true;
+              isVarAnArray = true;
+              varIndex = j;
+              // Getting the index of the array
+              let tempIn = tempVarName[1].replace(']', '');
+              if (!isNaN(parseInt(tempIn))) {
+                tempArrIndex = parseInt(tempIn);
+              } else {
+                for (let k = 0; k < this.variables.vars.length; k++) {
+                  if (tempIn == this.variables.vars[k].getName()) {
+                    tempArrIndex = this.variables.vars[k].getValue();
+                  }
+                }
+              }
+            }
+
           }
         }
         if (!isVarDeclared) {
@@ -329,7 +354,11 @@ export class Flowchart {
             '" is not declared!'
           );
         } else {
-          this.validateProcess(this.tempSymbols[i], varIndex);
+          if (isVarAnArray) {
+            this.validateProcess(this.tempSymbols[i], varIndex, tempArrIndex);
+          } else {
+            this.validateProcess(this.tempSymbols[i], varIndex);
+          }
         }
       }
 

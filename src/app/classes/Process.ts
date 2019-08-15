@@ -56,11 +56,32 @@ export class Process {
       // Make this.expression = this.variables[index].value
     }
 
+    let tempArrIndex: number;
     // Check if it is a variable name
     for (let i = 0; i < values.length; i++) {
       for (let j = 0; j < variables.length; j++) {
-        if (variables[j].getName() == values[i]) {
-          values.splice(i, 1, variables[j].value);
+        if (variables[j].getIsArray()) {
+          let tempVarName = values[i].split('[');
+          if (tempVarName[0] == variables[j].getName()) {
+            // Getting the index of the array
+            let tempIn = tempVarName[1].replace(']', '');
+            if (!isNaN(parseInt(tempIn))) {
+              tempArrIndex = parseInt(tempIn);
+            } else {
+              for (let k = 0; k < variables.length; k++) {
+                if (tempIn == variables[k].getName()) {
+                  tempArrIndex = variables[k].getValue();
+                }
+              }
+            }
+            // if (variables[j].getName() == values[i]) {
+            values.splice(i, 1, variables[j].variable[tempArrIndex]);
+            // }
+          }
+        } else {
+          if (variables[j].getName() == values[i]) {
+            values.splice(i, 1, variables[j].value);
+          }
         }
       }
     }
