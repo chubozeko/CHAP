@@ -233,6 +233,7 @@ export class Flowchart {
   async validateFlowchart(startIndex: number, endIndex: number) {
     if (startIndex == 0) {
       this.variables.vars = [];
+      this.tempSymbols = [];
       for (let q = 0; q < this.SYMBOLS.length; q++) {
         this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
       }
@@ -334,18 +335,43 @@ export class Flowchart {
 
       // OUTPUT
       else if (this.tempSymbols[i] instanceof Output) {
-        let isVarDeclared,
-          hasQuotes = 0,
-          outputS = "";
+        let isVarDeclared = false;
+        let isVarAnArray = false;
+        let tempArrIndex: number;
+        let hasQuotes = 0, outputS = "";
+        // Get output expression
         let outputStr: string = this.tempSymbols[i].getOutputExpression();
         let str = outputStr.split("&");
         for (let k = 0; k < str.length; k++) {
           let s1 = str[k].trim();
           if (s1.indexOf('"') == -1) {
+            // Check if it is a variable
             for (let j = 0; j < this.variables.vars.length; j++) {
-              if (s1 == this.variables.vars[j].getName()) {
-                isVarDeclared = true;
-                varIndex = j;
+              if (this.variables.vars[j].getIsArray()) {
+                let tempVarName = s1.split('[');
+                if (
+                  tempVarName[0] == this.variables.vars[j].getName()
+                ) {
+                  isVarDeclared = true;
+                  isVarAnArray = true;
+                  varIndex = j;
+                  // Getting the index of the array
+                  let tempIn = tempVarName[1].replace(']', '');
+                  if (!isNaN(parseInt(tempIn))) {
+                    tempArrIndex = parseInt(tempIn);
+                  } else {
+                    for (let k = 0; k < this.variables.vars.length; k++) {
+                      if (tempIn == this.variables.vars[k].getName()) {
+                        tempArrIndex = this.variables.vars[k].getValue();
+                      }
+                    }
+                  }
+                }
+              } else {
+                if (s1 == this.variables.vars[j].getName()) {
+                  isVarDeclared = true;
+                  varIndex = j;
+                }
               }
             }
           } else {
@@ -366,13 +392,39 @@ export class Flowchart {
           for (let i = 0; i < s2.length; i++) {
             let str = s2[i].trim();
             for (let l = 0; l < this.variables.vars.length; l++) {
-              if (str == this.variables.vars[l].getName()) {
+              /* check if it is an array  */
+              if (this.variables.vars[l].getIsArray()) {
+                let tempVarName = str.split('[');
                 if (
-                  this.variables.vars[l].value == undefined &&
-                  isNaN(this.variables.vars[l].value)
+                  tempVarName[0] == this.variables.vars[l].getName()
                 ) {
-                  outputS = "";
-                } else outputS += this.variables.vars[l].value;
+                  // Getting the index of the array
+                  let tempIn = tempVarName[1].replace(']', '');
+                  if (!isNaN(parseInt(tempIn))) {
+                    tempArrIndex = parseInt(tempIn);
+                  } else {
+                    for (let r = 0; r < this.variables.vars.length; r++) {
+                      if (tempIn == this.variables.vars[r].getName()) {
+                        tempArrIndex = this.variables.vars[r].getValue();
+                      }
+                    }
+                  }
+                  if (
+                    this.variables.vars[l].variable[tempArrIndex] == undefined &&
+                    isNaN(this.variables.vars[l].variable[tempArrIndex])
+                  ) {
+                    outputS = "";
+                  } else outputS += this.variables.vars[l].variable[tempArrIndex];
+                }
+              } else {
+                if (str == this.variables.vars[l].getName()) {
+                  if (
+                    this.variables.vars[l].value == undefined &&
+                    isNaN(this.variables.vars[l].value)
+                  ) {
+                    outputS = "";
+                  } else outputS += this.variables.vars[l].value;
+                }
               }
             }
           }
@@ -387,20 +439,45 @@ export class Flowchart {
               outputS += str2;
             } else {
               for (let l = 0; l < this.variables.vars.length; l++) {
-                if (str == this.variables.vars[l].getName()) {
+                if (!this.variables.vars[l].getIsArray()) {
+                  if (str == this.variables.vars[l].getName()) {
+                    if (
+                      this.variables.vars[l].value == undefined &&
+                      isNaN(this.variables.vars[l].value)
+                    ) {
+                      outputS = "";
+                    } else outputS += this.variables.vars[l].value;
+                  }
+                } else {
+                  let tempVarName = str.split('[');
                   if (
-                    this.variables.vars[l].value == undefined &&
-                    isNaN(this.variables.vars[l].value)
+                    tempVarName[0] == this.variables.vars[l].getName()
                   ) {
-                    outputS = "";
-                  } else outputS += this.variables.vars[l].value;
+                    // Getting the index of the array
+                    let tempIn = tempVarName[1].replace(']', '');
+                    if (!isNaN(parseInt(tempIn))) {
+                      tempArrIndex = parseInt(tempIn);
+                    } else {
+                      for (let r = 0; r < this.variables.vars.length; r++) {
+                        if (tempIn == this.variables.vars[r].getName()) {
+                          tempArrIndex = this.variables.vars[r].getValue();
+                        }
+                      }
+                    }
+                    if (
+                      this.variables.vars[l].variable[tempArrIndex] == undefined &&
+                      isNaN(this.variables.vars[l].variable[tempArrIndex])
+                    ) {
+                      outputS = "";
+                    } else outputS += this.variables.vars[l].variable[tempArrIndex];
+                  }
                 }
               }
             }
           }
-        }
 
-        this.consoleLog.value += outputS;
+          this.consoleLog.value += outputS;
+        }
       }
 
       // COMMENT
