@@ -39,6 +39,7 @@ export class Process {
 
     let strSplit = [], values = [], operators = [], parsedValues = [];
     let op = '', oper1, oper2, result, j = 0;
+    let tempArrIndex: number;
 
     // Check for operators
     if ((this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
@@ -56,7 +57,6 @@ export class Process {
       // Make this.expression = this.variables[index].value
     }
 
-    let tempArrIndex: number;
     // Check if it is a variable name
     for (let i = 0; i < values.length; i++) {
       for (let j = 0; j < variables.length; j++) {
@@ -74,9 +74,7 @@ export class Process {
                 }
               }
             }
-            // if (variables[j].getName() == values[i]) {
             values.splice(i, 1, variables[j].variable[tempArrIndex]);
-            // }
           }
         } else {
           if (variables[j].getName() == values[i]) {

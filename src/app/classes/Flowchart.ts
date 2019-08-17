@@ -21,7 +21,8 @@ export class Flowchart {
 
   isProgramRunning: boolean = false;
   inputPromptStatement: string = "";
-  isInputEntered: boolean;
+  isInputEntered: boolean = false;
+  isAnInputBlockRunning: boolean = false;
   outputStatement: string = "";
   continueDebugIndex: number = 0;
 
@@ -148,21 +149,19 @@ export class Flowchart {
           text: "OK",
           handler: data => {
             this.isInputEntered = false;
-            console.log("Ok " + data.inputText);
             this.inputParsing(this.variables.vars[varIndex], data.inputText, arrayIndex);
             this.consoleLog = document.getElementById(
               "console"
             ) as HTMLTextAreaElement;
-            this.consoleLog.value = "";
+            this.consoleLog.value += "> " + data.inputText + "\n";
+            this.isAnInputBlockRunning = false;
             this.validateFlowchart(++symIndex, this.tempSymbols.length);
           }
         }
       ]
     });
 
-    alert.onDidDismiss().then(data => {
-      console.log("hello");
-    });
+    alert.onDidDismiss().then(data => { });
 
     await alert.present();
   }
@@ -307,6 +306,7 @@ export class Flowchart {
           );
         } else {
           if (!this.isInputEntered) {
+            this.isAnInputBlockRunning = true;
             if (isVarAnArray) {
               this.validateInput(varIndex, i, tempArrIndex);
             } else {
@@ -343,7 +343,13 @@ export class Flowchart {
                 }
               }
             }
-
+          } else {
+            if (
+              this.tempSymbols[i].getVariableName() == this.variables.vars[j].getName()
+            ) {
+              isVarDeclared = true;
+              varIndex = j;
+            }
           }
         }
         if (!isVarDeclared) {
@@ -354,10 +360,12 @@ export class Flowchart {
             '" is not declared!'
           );
         } else {
-          if (isVarAnArray) {
-            this.validateProcess(this.tempSymbols[i], varIndex, tempArrIndex);
-          } else {
-            this.validateProcess(this.tempSymbols[i], varIndex);
+          if (!this.isAnInputBlockRunning) {
+            if (isVarAnArray) {
+              this.validateProcess(this.tempSymbols[i], varIndex, tempArrIndex);
+            } else {
+              this.validateProcess(this.tempSymbols[i], varIndex);
+            }
           }
         }
       }
@@ -504,9 +512,9 @@ export class Flowchart {
               }
             }
           }
-
-          this.consoleLog.value += outputS;
         }
+        if (this.isAnInputBlockRunning == false)
+          this.consoleLog.value += outputS + "\n";
       }
 
       // COMMENT
