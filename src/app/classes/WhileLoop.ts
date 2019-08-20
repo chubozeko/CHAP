@@ -18,7 +18,14 @@ export class WhileLoop {
     this.falseLoopBlock = [];
   }
 
-  createWhileLoopSymbol(whileSym: any) { }
+  createWhileLoopSymbol(whileSym: any) {
+    this.whileExpression = whileSym.whileExpression;
+    this.whileSymbol = whileSym.whileSymbol;
+    this.trueExpression = whileSym.trueExpression;
+    this.trueLoopBlock = whileSym.trueLoopBlock;
+    this.falseExpression = whileSym.falseExpression;
+    this.falseLoopBlock = whileSym.falseLoopBlock;
+  }
 
   setWhileExpression(while_exp: string) {
     this.whileExpression = while_exp;

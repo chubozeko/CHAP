@@ -17,7 +17,14 @@ export class IfCase {
     this.falseBlockSymbols = [];
   }
 
-  createIfCaseSymbol(ifCaseSym: any) { }
+  createIfCaseSymbol(ifCaseSym: any) {
+    this.ifStatement = ifCaseSym.ifStatement;
+    this.ifcaseSymbol = ifCaseSym.ifcaseSymbol;
+    this.trueExpression = ifCaseSym.trueExpression;
+    this.trueBlockSymbols = ifCaseSym.trueBlockSymbols;
+    this.falseExpression = ifCaseSym.falseExpression;
+    this.falseBlockSymbols = ifCaseSym.falseBlockSymbols;
+  }
 
   setIfStatement(if_exp: string) { this.ifStatement = if_exp; }
   getIfStatement() { return this.ifStatement; }

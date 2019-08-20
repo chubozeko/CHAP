@@ -9,7 +9,10 @@ export class Comment {
 
   constructor() { }
 
-  createCommentSymbol(commentSym: any) { }
+  createCommentSymbol(commentSym: any) {
+    this.commentText = commentSym.commentText;
+    this.commentSymbol = commentSym.commentSymbol;
+  }
 
   setCommentSymbol(symbol: any) { this.commentSymbol = symbol; }
   getCommentSymbol() { return this.commentSymbol; }

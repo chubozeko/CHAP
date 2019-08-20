@@ -1,3 +1,8 @@
+import { create, all } from 'mathjs'
+
+const config = {};
+const math = create(all, config);
+
 export class Process {
 
   static s_name: string = 'Process';
@@ -38,16 +43,18 @@ export class Process {
   parseExpression(variables: any[], dataType: string) {
 
     let strSplit = [], values = [], operators = [], parsedValues = [];
-    let op = '', oper1, oper2, result, j = 0;
-    let tempArrIndex: number;
+    let tempArrIndex: number, result;
+    // let op = '', oper1, oper2, j = 0;
 
     // Check for operators
     if ((this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
-      (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) || (this.expression.indexOf('%') != -1)) {
+      (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) || (this.expression.indexOf('%') != -1) ||
+      (this.expression.indexOf('(') != -1) || (this.expression.indexOf(')') != -1)) {
       // Split expression by operators
-      strSplit = this.expression.split(/[\+\-\*\/\%]+/g);
+      strSplit = this.expression.split(/[\+\-\*\/\%\(\)]/g);
+
       // Stored operators in an Array called "operators"
-      operators = this.expression.match(/[\+\-\*\/\%]+/g);
+      operators = this.expression.match(/[\+\-\*\/\%\(\)]/g);
       // Store operands in an Array called "values"
       for (let i = 0; i < strSplit.length; i++) { values[i] = strSplit[i].trim(); }
     } else {
@@ -104,42 +111,41 @@ export class Process {
       default: break;
     }
 
-    console.log('Operators: ');
-    console.log(operators);
-
-    console.log('Values: ');
-    console.log(parsedValues);
-
-    while (operators.length != 0) {
-      if (operators.indexOf('%') != -1) { j = operators.indexOf('%'); }
-      else if (operators.indexOf('/') != -1) { j = operators.indexOf('/'); }
-      else if (operators.indexOf('*') != -1) { j = operators.indexOf('*'); }
-      else if (operators.indexOf('+') != -1) { j = operators.indexOf('+'); }
-      else if (operators.indexOf('-') != -1) { j = operators.indexOf('-'); }
-
-      op = operators[j];
-      oper1 = parsedValues[j];
-      oper2 = parsedValues[j + 1];
-
-      switch (dataType) {
-        case 'Integer': result = this.calculateIntegerExpression(oper1, oper2, op); break;
-        case 'Real': result = this.calculateRealExpression(oper1, oper2, op); break;
-        case 'String': result = this.calculateStringExpression(oper1, oper2, op); break;
-        case 'Boolean': result = this.calculateBooleanExpression(oper1, oper2, op); break;
-        default: break;
-      }
-
-      operators.splice(j, 1);
-      parsedValues.splice(j, 2, result);
-
-      console.log('Values: ');
-      console.log(parsedValues);
-      console.log('Operators: ');
-      console.log(operators);
+    // Remove empty elements [""] from parsedValues
+    for (let i = 0; i < parsedValues.length; i++) { if (isNaN(parsedValues[i])) parsedValues.splice(i, 1, ""); }
+    // Create newExpression with parsed values instead of variable names
+    let newExpression = "";
+    for (let j = 0; j < operators.length; j++) {
+      newExpression += parsedValues[j] + operators[j];
     }
+    newExpression += parsedValues[parsedValues.length - 1];
+    // Evaluate the expression and return the result
+    result = math.evaluate(newExpression);
+    return result;
 
-    console.log(parsedValues);
-    return parsedValues[0];
+    // while (operators.length != 0) {
+    //   if (operators.indexOf('%') != -1) { j = operators.indexOf('%'); }
+    //   else if (operators.indexOf('/') != -1) { j = operators.indexOf('/'); }
+    //   else if (operators.indexOf('*') != -1) { j = operators.indexOf('*'); }
+    //   else if (operators.indexOf('+') != -1) { j = operators.indexOf('+'); }
+    //   else if (operators.indexOf('-') != -1) { j = operators.indexOf('-'); }
+
+    //   op = operators[j];
+    //   oper1 = parsedValues[j];
+    //   oper2 = parsedValues[j + 1];
+
+    //   switch (dataType) {
+    //     case 'Integer': result = this.calculateIntegerExpression(oper1, oper2, op); break;
+    //     case 'Real': result = this.calculateRealExpression(oper1, oper2, op); break;
+    //     case 'String': result = this.calculateStringExpression(oper1, oper2, op); break;
+    //     case 'Boolean': result = this.calculateBooleanExpression(oper1, oper2, op); break;
+    //     default: break;
+    //   }
+
+    //   operators.splice(j, 1);
+    //   parsedValues.splice(j, 2, result);
+    // }
+    // return parsedValues[0];
   }
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {

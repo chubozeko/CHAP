@@ -12,6 +12,9 @@ import { AlertController } from "@ionic/angular";
 import { DoWhileLoop } from "./DoWhileLoop";
 import { ForLoop } from "./ForLoop";
 import { LoopBlock } from "./LoopBlock";
+import { create, all } from 'mathjs';
+const config = {};
+const math = create(all, config);
 
 export class Flowchart {
   SYMBOLS: any[];

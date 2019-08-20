@@ -9,6 +9,9 @@ import { AlertController } from "@ionic/angular";
 // import { WhileLoop } from "./WhileLoop";
 // import { DoWhileLoop } from "./DoWhileLoop";
 // import { ForLoop } from "./ForLoop";
+import { create, all } from 'mathjs'
+const config = {};
+const math = create(all, config);
 
 export class LoopBlock {
   SYMBOLS: any[];

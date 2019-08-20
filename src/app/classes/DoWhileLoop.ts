@@ -18,7 +18,14 @@ export class DoWhileLoop {
     this.falseLoopBlock = [];
   }
 
-  createDoWhileLoopSymbol(doWhileSym: any) { }
+  createDoWhileLoopSymbol(doWhileSym: any) {
+    this.doWhileExpression = doWhileSym.doWhileExpression;
+    this.doWhileSymbol = doWhileSym.doWhileSymbol;
+    this.trueExpression = doWhileSym.trueExpression;
+    this.trueLoopBlock = doWhileSym.trueLoopBlock;
+    this.falseExpression = doWhileSym.falseExpression;
+    this.falseLoopBlock = doWhileSym.falseLoopBlock;
+  }
 
   setDoWhileExpression(do_while_exp: string) { this.doWhileExpression = do_while_exp; }
   getDoWhileExpression() { return this.doWhileExpression; }
