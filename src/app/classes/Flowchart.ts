@@ -269,6 +269,7 @@ export class Flowchart {
         let isVarAnArray = false;
         let tempArrIndex: number;
         for (let j = 0; j < this.variables.vars.length; j++) {
+          // Check if the input variable is an array
           if (this.variables.vars[j].getIsArray()) {
             let tempVarName = this.tempSymbols[i].getVariableName().split('[');
             if (
@@ -706,7 +707,6 @@ export class Flowchart {
 
       // STOP
       else if (this.tempSymbols[i] instanceof Stop) {
-        console.log("End Program");
         this.isProgramRunning = false;
       }
     }

@@ -1,5 +1,4 @@
 import { create, all } from 'mathjs'
-
 const config = {};
 const math = create(all, config);
 
@@ -122,30 +121,6 @@ export class Process {
     // Evaluate the expression and return the result
     result = math.evaluate(newExpression);
     return result;
-
-    // while (operators.length != 0) {
-    //   if (operators.indexOf('%') != -1) { j = operators.indexOf('%'); }
-    //   else if (operators.indexOf('/') != -1) { j = operators.indexOf('/'); }
-    //   else if (operators.indexOf('*') != -1) { j = operators.indexOf('*'); }
-    //   else if (operators.indexOf('+') != -1) { j = operators.indexOf('+'); }
-    //   else if (operators.indexOf('-') != -1) { j = operators.indexOf('-'); }
-
-    //   op = operators[j];
-    //   oper1 = parsedValues[j];
-    //   oper2 = parsedValues[j + 1];
-
-    //   switch (dataType) {
-    //     case 'Integer': result = this.calculateIntegerExpression(oper1, oper2, op); break;
-    //     case 'Real': result = this.calculateRealExpression(oper1, oper2, op); break;
-    //     case 'String': result = this.calculateStringExpression(oper1, oper2, op); break;
-    //     case 'Boolean': result = this.calculateBooleanExpression(oper1, oper2, op); break;
-    //     default: break;
-    //   }
-
-    //   operators.splice(j, 1);
-    //   parsedValues.splice(j, 2, result);
-    // }
-    // return parsedValues[0];
   }
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {
