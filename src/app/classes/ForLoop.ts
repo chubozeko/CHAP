@@ -66,10 +66,8 @@ export class ForLoop {
     }
   }
   getForVariable() {
-    let newVar = new Variable();
-    newVar.setName(this.forVariableName);
-    newVar.setValue(this.currentValue);
-    return newVar;
+    this.forLoopVariable.setValue(this.currentValue);
+    return this.forLoopVariable;
   }
 
   setStartValue(startVal: number) { this.startValue = startVal; }
