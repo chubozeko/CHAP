@@ -107,12 +107,20 @@ export class Flowchart {
     return javaCode;
   }
 
-  updateVariables(variable: Variable) {
+  updateVariables(variable: Variable, arrayIndex?: number) {
     for (let j = 0; j < this.variables.vars.length; j++) {
-      if (
-        variable.getName() == this.variables.vars[j].getName()
-      ) {
-        this.variables.vars[j].setValue(variable.getValue());
+      if (variable.getIsArray()) {
+        if (
+          variable.getName() == this.variables.vars[j].getName()
+        ) {
+          this.variables.vars[j].variable[arrayIndex] = variable.getValue();
+        }
+      } else {
+        if (
+          variable.getName() == this.variables.vars[j].getName()
+        ) {
+          this.variables.vars[j].setValue(variable.getValue());
+        }
       }
     }
   }
@@ -600,16 +608,43 @@ export class Flowchart {
       // FOR LOOP
       else if (this.tempSymbols[i] instanceof ForLoop) {
         let isVarDeclared = false;
+        let isVarAnArray = false;
+        let tempArrIndex: number;
         let forSymbol = new ForLoop();
         forSymbol = this.tempSymbols[i];
 
         for (let j = 0; j < this.variables.vars.length; j++) {
-          if (
-            forSymbol.getVariableName() == this.variables.vars[j].getName()
-          ) {
-            this.variables.vars[j].setValue(forSymbol.getStartValue());
-            isVarDeclared = true;
-          }
+
+          if (this.variables.vars[j].getIsArray()) {
+            let tempVarName = forSymbol.getVariableName().split('[');
+            if (
+              tempVarName[0] == this.variables.vars[j].getName()
+            ) {
+              isVarDeclared = true;
+              isVarAnArray = true;
+              // Getting the index of the array
+              let tempIn = tempVarName[1].replace(']', '');
+              if (!isNaN(parseInt(tempIn))) {
+                tempArrIndex = parseInt(tempIn);
+              } else {
+                for (let k = 0; k < this.variables.vars.length; k++) {
+                  if (tempIn == this.variables.vars[k].getName()) {
+                    tempArrIndex = this.variables.vars[k].getValue();
+                  }
+                }
+              }
+              this.variables.vars[j].variable[tempArrIndex] = forSymbol.getStartValue();
+              forSymbol.setForVariable(this.variables.vars[j], tempArrIndex);
+            }
+          } else
+
+            if (
+              forSymbol.getVariableName() == this.variables.vars[j].getName()
+            ) {
+              this.variables.vars[j].setValue(forSymbol.getStartValue());
+              forSymbol.setForVariable(this.variables.vars[j]);
+              isVarDeclared = true;
+            }
         }
         if (!isVarDeclared) {
           this.showAlert(
@@ -638,7 +673,7 @@ export class Flowchart {
                 tempVar <= forSymbol.getEndValue();
                 tempVar = forSymbol.iterateForStepDirection(tempVar)) {
                 // Validate forBlock symbols only
-                this.updateVariables(forSymbol.getForVariable());
+                this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
                 let x = forLoopBlock.validateLoopBlock(this.variables.vars);
                 console.log("loop pass: ", x);
               } break;
@@ -650,7 +685,7 @@ export class Flowchart {
                 tempVar >= forSymbol.getEndValue();
                 tempVar = forSymbol.iterateForStepDirection(tempVar)) {
                 // Validate forBlock symbols only
-                this.updateVariables(forSymbol.getForVariable());
+                this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
                 let x = forLoopBlock.validateLoopBlock(this.variables.vars);
                 console.log("loop pass: ", x);
               } break;

@@ -1,4 +1,7 @@
 import { Variable } from "./Variable";
+import { create, all } from 'mathjs';
+const config = {};
+const math = create(all, config);
 
 export class ForLoop {
 
@@ -7,6 +10,7 @@ export class ForLoop {
 
   forLoopExpression: string = '';
   forLoopSymbol: any;
+  forLoopVariable: Variable;
 
   forVariableName: string = '';
   startValue: number;
@@ -29,6 +33,7 @@ export class ForLoop {
     this.stepValue = 1;
     this.trueLoopBlock = [];
     this.falseLoopBlock = [];
+    this.forLoopVariable = new Variable();
   }
 
   createForLoopSymbol(forSym: any) {
@@ -50,6 +55,16 @@ export class ForLoop {
   setVariableName(var_name: string) { this.forVariableName = var_name; }
   getVariableName() { return this.forVariableName; }
 
+  setForVariable(variable: Variable, arrayIndex?: number) {
+    this.forLoopVariable.setName(variable.getName());
+    this.forLoopVariable.setIsArray(variable.getIsArray());
+    this.forLoopVariable.setDataType(variable.getDataType());
+    if (variable.getIsArray()) {
+      this.forLoopVariable.setValue(variable.variable[arrayIndex]);
+    } else {
+      this.forLoopVariable.setValue(variable.getValue());
+    }
+  }
   getForVariable() {
     let newVar = new Variable();
     newVar.setName(this.forVariableName);
@@ -101,14 +116,9 @@ export class ForLoop {
   }
 
   parseForLoopExpression(variables) {
-    let opers = [],
-      exps = [],
-      exps1 = [];
-    let op = "",
-      oper1,
-      oper2,
-      result,
-      j = 0;
+    let opers = [], exps = [], exps1 = [];
+    let op = "", oper1, oper2, result, j = 0, tempArrIndex;
+    let isVarDeclared = false;
 
     // LOGICAL Operators: &&, ||, !
     if (
@@ -141,100 +151,69 @@ export class ForLoop {
     // Check if it is a variable name & parse to desired data type
     for (let i = 0; i < exps.length; i++) {
       for (let j = 0; j < variables.length; j++) {
-        if (variables[j].getName() == exps[i]) {
-          if (variables[j].getDataType() == "Integer")
-            exps.splice(i, 1, parseInt(variables[j].value));
-          else if (variables[j].getDataType() == "Real")
-            exps.splice(i, 1, parseFloat(variables[j].value));
-          else if (variables[j].getDataType() == "String")
-            exps.splice(i, 1, variables[j].value.toString());
-          else if (variables[j].getDataType() == "Boolean") {
-            if (variables[j] == "true") exps.splice(i, 1, true);
-            if (variables[j] == "false") exps.splice(i, 1, false);
+        if (variables[j].getIsArray()) {
+          let tempVarName = exps[i].split('[');
+          if (
+            tempVarName[0] == variables[j].getName()
+          ) {
+            isVarDeclared = true;
+            // Getting the index of the array
+            let tempIn = tempVarName[1].replace(']', '');
+            if (!isNaN(parseInt(tempIn))) {
+              tempArrIndex = parseInt(tempIn);
+            } else {
+              for (let k = 0; k < variables.length; k++) {
+                if (tempIn == variables[k].getName()) {
+                  tempArrIndex = variables[k].getValue();
+                }
+              }
+            }
+            if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].variable[tempArrIndex]));
+            else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].variable[tempArrIndex]));
+            else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].variable[tempArrIndex].toString());
+            else if (variables[j].getDataType() == 'Boolean') {
+              if (variables[j].variable[tempArrIndex] == "true") exps.splice(i, 1, true);
+              if (variables[j].variable[tempArrIndex] == "false") exps.splice(i, 1, false);
+            }
           }
         } else {
-          let v = exps[i];
-          let temp: any;
-          if (!isNaN(parseInt(v)) || !isNaN(parseFloat(v))) {
-            let a = v.split(".");
-            if (a.length > 1) temp = parseFloat(v);
-            else temp = parseInt(v);
-          } else if (v == "true") {
-            temp = true;
-          } else if (v == "false") {
-            temp = false;
+          if (variables[j].getName() == exps[i]) {
+            isVarDeclared = true;
+            if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].value));
+            else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].value));
+            else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].value.toString());
+            else if (variables[j].getDataType() == 'Boolean') {
+              if (variables[j] == "true") exps.splice(i, 1, true);
+              if (variables[j] == "false") exps.splice(i, 1, false);
+            }
           } else {
-            temp = v.toString();
+            let v = exps[i];
+            let temp: any;
+            if (!isNaN(parseInt(v)) || !isNaN(parseFloat(v))) {
+              let a = v.split('.');
+              if (a.length > 1) temp = parseFloat(v); else temp = parseInt(v);
+            } else if (v == 'true') { temp = true; }
+            else if (v == 'false') { temp = false; }
+            else { temp = v.toString(); }
+            exps.splice(i, 1, temp);
           }
-          exps.splice(i, 1, temp);
         }
       }
     }
 
-    // Calculate expression
-    while (opers.length != 0) {
-      if (opers.indexOf("%") != -1) {
-        j = opers.indexOf("%");
-      } else if (opers.indexOf("/") != -1) {
-        j = opers.indexOf("/");
-      } else if (opers.indexOf("*") != -1) {
-        j = opers.indexOf("*");
-      } else if (opers.indexOf("+") != -1) {
-        j = opers.indexOf("+");
-      } else if (opers.indexOf("-") != -1) {
-        j = opers.indexOf("-");
-      } else if (opers.indexOf("<") != -1) {
-        j = opers.indexOf("<");
-      } else if (opers.indexOf("<=") != -1) {
-        j = opers.indexOf("<=");
-      } else if (opers.indexOf(">") != -1) {
-        j = opers.indexOf(">");
-      } else if (opers.indexOf(">=") != -1) {
-        j = opers.indexOf(">=");
-      } else if (opers.indexOf("==") != -1) {
-        j = opers.indexOf("==");
-      } else if (opers.indexOf("!=") != -1) {
-        j = opers.indexOf("!=");
-      } else if (opers.indexOf("&&") != -1) {
-        j = opers.indexOf("&&");
-      } else if (opers.indexOf("||") != -1) {
-        j = opers.indexOf("||");
-      }
-
-      op = opers[j];
-      oper1 = exps[j];
-      oper2 = exps[j + 1];
-
-      switch (typeof oper1) {
-        case "number":
-          result = this.calculateIntegerExpression(oper1, oper2, op);
-          break;
-        //case "number": result = this.calculateRealExpression(oper1, oper2, op); break;
-        case "string":
-          result = this.calculateStringExpression(oper1, oper2, op);
-          break;
-        case "boolean":
-          result = this.calculateBooleanExpression(oper1, oper2, op);
-          break;
-        default:
-          break;
-      }
-
-      opers.splice(j, 1);
-      exps.splice(j, 2, result);
-
-      // console.log('Values: ');
-      // console.log(parsedValues);
-      // console.log('Operators: ');
-      // console.log(opers);
+    if (!isVarDeclared) return null;
+    // Remove empty elements [""] from parsedValues
+    for (let i = 0; i < exps.length; i++) { if (isNaN(exps[i])) exps.splice(i, 1, ""); }
+    // Create newExpression with parsed values instead of variable names
+    let newExpression = "";
+    for (let j = 0; j < opers.length; j++) {
+      newExpression += exps[j] + opers[j];
     }
-
-    console.log("Expressions:", exps);
-    // console.log(exps);
-    // console.log(opers);
-
-    if (exps[0] == true) return this.trueLoopBlock;
-    else if (exps[0] == false) return this.falseLoopBlock;
+    newExpression += exps[exps.length - 1];
+    // Evaluate the expression and return the result
+    result = math.evaluate(newExpression);
+    if (result == true) return this.trueLoopBlock;
+    else if (result == false) return this.falseLoopBlock;
   }
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {
