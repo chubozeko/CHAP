@@ -29,6 +29,51 @@
                 <data android:scheme="@string/custom_url_scheme" />
             </intent-filter>
 
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<data android:scheme="file"  android:host="*" android:pathPattern=".*\\.chap" android:mimeType="text/plain"  />-->
+            <!--</intent-filter>-->
+
+            <!--Handle http requests without mimetypes-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<data android:scheme="http" />-->
+                <!--<data android:host="*" />-->
+                <!--<data android:pathPattern=".*\\.chap" />-->
+            <!--</intent-filter>-->
+
+            <!--Handle with mimetypes, where the suffix is irrelevant-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<data android:scheme="http" />-->
+                <!--<data android:host="*" />-->
+                <!--<data android:mimeType="text/plain" />-->
+            <!--</intent-filter>-->
+
+            <!--Handle intent from a file browser app-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<data android:scheme="file" />-->
+                <!--<data android:host="*" />-->
+                <!--<data android:pathPattern=".*\\.chap" />-->
+            <!--</intent-filter>-->
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.chap" />
+                <data android:host="*" />
+            </intent-filter>
+
         </activity>
 
         <provider
@@ -56,8 +101,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Navigator.getUserMedia -->
     <!-- Video -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
     <!-- Audio -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <!--<uses-permission android:name="android.permission.RECORD_AUDIO" />-->
+    <!--<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>-->
 </manifest>

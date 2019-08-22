@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 import { Chooser } from '@ionic-native/chooser/ngx';
+import { Toast } from '@ionic-native/toast/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -59,7 +60,7 @@ import { OpenProjectPageModule } from './open-project/open-project.module';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
-    Chooser, File, FileOpener, FileTransfer, DocumentViewer
+    Chooser, File, FileOpener, FileTransfer, DocumentViewer, Toast
   ],
   bootstrap: [AppComponent]
 })

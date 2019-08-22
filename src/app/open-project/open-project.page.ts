@@ -4,6 +4,8 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { Chooser } from '@ionic-native/chooser/ngx';
+import { Toast } from '@ionic-native/toast/ngx';
 
 @Component({
   selector: 'app-open-project',
@@ -14,7 +16,8 @@ export class OpenProjectPage implements OnInit {
 
   dropzone;
   chapFile;
-  dropzoneText;
+  dropzoneText = '';
+  currentPlatform;
 
   constructor(
     public modal: ModalController,
@@ -23,7 +26,9 @@ export class OpenProjectPage implements OnInit {
     public file: File,
     public ft: FileTransfer,
     public fileOpener: FileOpener,
-    public document: DocumentViewer) {
+    public document: DocumentViewer,
+    public chooser: Chooser,
+    public toast: Toast) {
 
   }
 
@@ -34,7 +39,9 @@ export class OpenProjectPage implements OnInit {
     this.dropzone.addEventListener("drop", e => this.dropped(e), false);
     this.dropzone.addEventListener("dragover", function (e) { e.preventDefault(); }, false);
 
-    this.dropzoneText = 'Drag your file here';
+    if (this.platform.is("android")) { this.currentPlatform = 'android'; this.dropzoneText = ''; }
+    else if (this.platform.is("ios")) { this.currentPlatform = 'ios'; this.dropzoneText = ''; }
+    else if (this.platform.is("desktop")) { this.currentPlatform = 'desktop'; this.dropzoneText = 'Drag your file here'; }
   }
 
   public dragEnter(e) {
@@ -58,6 +65,16 @@ export class OpenProjectPage implements OnInit {
     this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
     this.dropzoneText += 'Last Modified: ' + this.chapFile.lastModifiedDate + '\n';
     this.dropzoneText += 'File Size: ' + this.chapFile.size + ' bytes';
+  }
+
+  public openLocalChap() {
+    this.chooser.getFile('*/*')
+      .then(file => {
+        this.chapFile = file;
+        this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
+        this.dropzoneText += 'datauri: ' + file.dataURI + '\n';
+      })
+      .catch(e => console.log(e));
   }
 
   public applyAndCloseModal() { this.modal.dismiss(this.chapFile); }

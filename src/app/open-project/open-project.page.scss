@@ -7,7 +7,6 @@
 }
 
 #fileDropzone{
-  display: table;
   width: 100%;
   height: 80%;
   padding: 10px;
@@ -16,11 +15,23 @@
   background-color: #fff;
   color: #ddd;
   text-align: center;
-  font-size: 24pt;
+  font-size: 12pt;
 }
 
 #fileDropzone span {
-  display: table-cell;
-  vertical-align: middle;
+  display: block;
+  align-self: center;
   white-space: pre-wrap;
+}
+
+#fileDropzone .android {
+  display: block;
+}
+
+#fileDropzone .ios {
+  display: block;
+}
+
+#fileDropzone .desktop {
+  display: none;
 }

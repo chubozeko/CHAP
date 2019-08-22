@@ -1,10 +1,11 @@
 import { Component, ViewChild, SystemJsNgModuleLoader, Injectable } from "@angular/core";
-import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController, ToastController } from "@ionic/angular";
+import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController, ToastController, Platform } from "@ionic/angular";
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
 import { File } from '@ionic-native/file/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
+import { Toast } from '@ionic-native/toast/ngx';
 import { HttpClient } from '@angular/common/http';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
@@ -71,7 +72,9 @@ export class HomePage {
     private toastC: ToastController,
     public chooser: Chooser,
     private http: HttpClient,
-    private file: File
+    private file: File,
+    public platform: Platform,
+    public toast: Toast
     // public navParams: NavParams
   ) { }
 
@@ -119,6 +122,11 @@ export class HomePage {
 
     // Initialize Paste buffers
     this.paste_sym_buffer = new Array<Declare | Input | Output | Process | IfCase | ForLoop | WhileLoop | DoWhileLoop | Comment>();
+
+    // if (this.platform.is("android")) { this.fileName = 'android'; }
+    // else if (this.platform.is("ios")) { this.fileName = 'ios'; }
+    // else if (this.platform.is("desktop")) { this.fileName = 'desktop'; }
+    // else if (this.platform.is("pwa")) { this.fileName = 'pwa'; }
   }
 
   public subscribeToDragula() {
@@ -1610,11 +1618,24 @@ export class HomePage {
       if (data.data != undefined) {
         let chapFileName = data.data.name.replace('.chap', '');
         let fr = new FileReader();
+        //let blob = new Blob([data.data.dataURI]); //, { type: 'application/octet-stream' });
+        //fr.readAsBinaryString(data.data.toBlob());
         fr.readAsText(data.data);
+        console.log(fr.result);
         fr.onloadend = () => {
           this.loadProject(chapFileName, fr.result);
         };
       }
+      // this.chooser.getFile('*/*') //"application/chap")
+      //   .then(uri => {
+      //     this.toast.show(uri.data.toString(), '5000', 'center').subscribe(
+      //       toast => {
+      //         console.log(toast);
+      //       }
+      //     );
+      //     console.log(uri);
+      //   })
+      //   .catch(e => console.log(e));
     });
     await modal.present();
   }
