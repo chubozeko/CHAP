@@ -7,6 +7,10 @@ import { File } from '@ionic-native/file/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { HttpClient } from '@angular/common/http';
+import { DragulaService } from "ng2-dragula";
+import { from } from "rxjs";
+import { type } from "os";
+
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
 import { InputPage } from "../symbol-dialogs/input/input.page";
@@ -32,10 +36,7 @@ import { Stop } from "../classes/Stop";
 import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
-import { DragulaService } from "ng2-dragula";
-import { from } from "rxjs";
 import { OpenProjectPage } from "../open-project/open-project.page";
-import { type } from "os";
 
 @Component({
   selector: "app-home",
@@ -62,6 +63,8 @@ export class HomePage {
 
   paste_sym_buffer: Array<Declare | Input | Output | Process | IfCase | ForLoop | WhileLoop | DoWhileLoop | Comment>;
 
+  items: Array<any> = [];
+
   constructor(
     public symbolOptionsAS: ActionSheetController,
     public arrowsOptionsAS: ActionSheetController,
@@ -77,6 +80,37 @@ export class HomePage {
     public toast: Toast
     // public navParams: NavParams
   ) { }
+
+  // /**
+  //   * Triggered when template view is about to be entered
+  //   * Returns and parses the PHP data through the load() method
+  //   * @public
+  //   * @method ionViewWillEnter
+  //   * @return {None}
+  //   */
+  // ionViewWillEnter(): void {
+  //   this.load();
+  // }
+  // /**
+  //  * Retrieve the JSON encoded data from the remote server
+  //  * Using Angular's Http class and an Observable - then
+  //  * assign this to the items array for rendering to the HTML template
+  //  * @public
+  //  * @method load
+  //  * @return {None}
+  //  */
+  // load(): void {
+  //   this.http
+  //     .get('../chap_ums/index.php')
+  //     .subscribe((data: any) => {
+  //       console.dir(data);
+  //       this.items = data;
+  //     },
+  //       (error: any) => {
+  //         console.dir(error);
+  //       });
+  // }
+
 
   ngOnInit() {
     // Adding Click Listeners to Menu Items
