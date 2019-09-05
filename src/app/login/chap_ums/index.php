@@ -1,3 +1,9 @@
+<?php 
+  header("Access-Control-Allow-Origin: *");
+  header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS");
+  header("Access-Control-Allow-Headers: Accept-Encoding, X-Requested-With, Content-Type, Origin, Accept, Authenticationtoken");
+?>
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -7,6 +13,7 @@
 
 <title>login</title>
 
+<!-- NEW CODE -->
 
 
 <style type="text/css">

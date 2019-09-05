@@ -1,3 +1,10 @@
+#loginMainCard {
+  width: 480px; 
+  height: 520px; 
+  align-self: center; 
+  padding: 0 5px;
+}
+
 #login_footer{ 
   display: flex;
   background-color: #333; 
@@ -6,4 +13,18 @@
 
 ion-label {
   font-family: 'Roboto', 'Lato', 'Raleway', 'Oswald', sans-serif;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  #loginMainCard {
+    height:95%;
+	  width:95%;
+    align-self: center; 
+    padding: 0 5px;
+    margin-left:auto;
+	  margin-right:auto;
+	  margin-bottom:auto;
+	  margin-top:10%;
+	  border-radius: 10px;
+  }
 }

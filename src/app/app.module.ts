@@ -11,6 +11,7 @@ import { DragulaModule } from "ng2-dragula";
 
 import { HttpClientModule } from "@angular/common/http";
 import { HttpModule } from "@angular/http";
+import { InterceptorModule } from './interceptor.module';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -57,6 +58,7 @@ import { OpenProjectPageModule } from './open-project/open-project.module';
     TutorialPageModule,
     OpenProjectPageModule,
     HttpClientModule,
+    InterceptorModule,
   ],
   providers: [
     StatusBar,
