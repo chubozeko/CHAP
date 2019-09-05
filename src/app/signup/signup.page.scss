@@ -1,6 +1,27 @@
 @charset "utf-8";
 /* CSS Document */
 
+#signupMainCard {
+  width: 480px; 
+  height: 520px; 
+  align-self: center; 
+  padding: 0 5px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  #signupMainCard {
+    height: 95%;
+	  width: 95%;
+    align-self: center; 
+    padding: 0 5px;
+    margin-left: auto;
+	  margin-right: auto;
+	  margin-bottom: auto;
+	  margin-top: auto;
+	  border-radius: 10px;
+  }
+}
+
 body {
 	}
 	 #apDiv1 {

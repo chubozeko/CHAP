@@ -86,7 +86,8 @@ export class LoginPage implements OnInit {
   }
 
   signUpToCHAP(e) {
-    window.setTimeout(function () { location.href = '/login/chap_ums/createaccount.php'; }, 0x01);
+    // window.setTimeout(function () { location.href = '/login/chap_ums/createaccount.php'; }, 0x01);
+    window.setTimeout(function () { location.href = '/signup'; }, 0x01);
     alert('SIGNUP');
   }
 
