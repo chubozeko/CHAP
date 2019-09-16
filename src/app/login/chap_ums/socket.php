@@ -54,7 +54,7 @@ if($btn1LOG=="LOG IN") {
           ## IT HAS TO BE A CHAP MAIN FILE											   
 					# header("Location:home.php"); // FIRST CONNECTION METHOD
 					#	header('www/index.html');
-					header("Location: www/index.html");
+					# header("Location: www/index.html");
 				}
 				else {
 		      ## PART 2: EMAIL AND PASSWORD IS INVALID                                   
@@ -99,68 +99,8 @@ if($btn1LOG=="LOG IN") {
 		// }
 	}
 // else {
-	
+}
 // }	
 ?>
 
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="CSS/style.css">
-
-<title>Login</title>
-
-<style type="text/css">
-body {
-	background-color: #dddddd;
-}
-</style>
- 
-</head>
-
-<body>
-
-<div class="login"  >
-  <div class="logo">
-  <img src="logo/chaplogo.png" width="129" height="120">
-  </div>
-  
-  <div class="title"
-  >Welcome To CHAP
-  </div>
-  <form  action="socket.php" method="POST">
-  
-<div class="backcon">
-
-  <div class="emailfield">
-    <input type="email" name="email" id="email" class="emailboxfield" placeholder="Use your e-mail" >
-  </div>
-  
-  <div class="passwordfield">
-    <input name="passwordbox" type="password" id="passwordbox" class="passwordboxfield" placeholder="Passwords">
-    </div>
-  
-  <div class="butonfield"> 
-    <input name="btn1LOG" type="Submit" value="LOG IN"class="btnstyle">
-	
-    
-  <input name="btn" id="btn" type="button" value="SIGN UP" class="btnstyle">
-  <script>      
-        document.getElementById("btn")
-            .onclick = function(){
-                window.setTimeout(function(){location.href = 'createaccount.php';}, 0001);                        
-             };
-    </script>
-  
-  </div>
-  </div>
-<div class="API_ICONfield">
-  <input name="facebook" type="button" class="facebookAPI"><input name="google" type="button"class="gmailAPI"><input name="linkedin" type="button"class="linkedinAPI">
-  </div>
-</form>
-</div>
-
-</body>
-</html>
+<div><?php echo $control_Con ?></div>

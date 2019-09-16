@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 const cors = require('cors');
 
@@ -12,6 +13,7 @@ const cors = require('cors');
 })
 export class LoginPage implements OnInit {
 
+  loginForm: FormGroup;
   items: Array<any> = [];
   corsOptions;
   phpCode;
@@ -19,7 +21,19 @@ export class LoginPage implements OnInit {
 
   constructor(public modalC: ModalController,
     private http: HttpClient,
-    private auth: AuthService) { }
+    private auth: AuthService,
+    public formBuilder: FormBuilder) {
+
+    this.loginForm = this.formBuilder.group({
+      email: new FormControl(''),
+      passwordbox: new FormControl(''),
+      btn1LOG: new FormControl(''),
+      btn: new FormControl(''),
+      facebook: new FormControl(''),
+      google: new FormControl(''),
+      linkedin: new FormControl('')
+    });
+  }
 
   ngOnInit() {
     const allowedOrigins = [
@@ -41,23 +55,21 @@ export class LoginPage implements OnInit {
     }
 
     // Adding Click Listeners to Buttons
-    // let btnSignUp = document.getElementById("btn");
-    // btnSignUp.addEventListener("click", e => this.signUpToCHAP(e));
-    // let btnLogin = document.getElementById("btn1LOG");
-    // btnLogin.addEventListener("click", e => this.logInToCHAP(e));
+    let btnSignUp = document.getElementById("btn");
+    btnSignUp.addEventListener("click", e => this.signUpToCHAP(e));
+    let btnLogin = document.getElementById("btn1LOG");
+    btnLogin.addEventListener("click", e => this.logInToCHAP(e));
 
-    this.auth.loadPHP().subscribe((data: any) => {
+    this.auth.loadPHP('index.php').subscribe((data: any) => {
       console.log(data.toString());
-      this.phpCode = data.toString();
-      let divv = document.getElementById('innerPHP');
-      divv.innerHTML = data.toString();
-      console.log(this.phpCode);
+      // this.phpCode = data.toString();
+      // let divv = document.getElementById('innerPHP');
+      // divv.innerHTML = data.toString();
+      // console.log(this.phpCode);
     },
       (error: any) => {
         console.dir(error);
       });
-
-    //this.cssUrl = '/assets/styles1.css' : '/assets/styles2.css';
   }
 
   // ionViewWillEnter(): void {
@@ -109,7 +121,36 @@ export class LoginPage implements OnInit {
   }
 
   logInToCHAP(e) {
-    alert('LOGIN');
+    console.log('LOGIN', this.loginForm.value);
+    console.log('email: ', this.loginForm.value.email);
+    console.log('password: ', this.loginForm.value.passwordbox);
+
+    // require_once('PHP/dbadapter.php');
+    // require_once('PHP/variable.php');
+    // require_once('PHP/Browser_Module.php');
+    // require_once('PHP/OS_Module.php');
+
+    // Load 'PHP/dbadapter.php'
+    this.auth.loadPHP('PHP/dbadapter.php', this.loginForm.value).subscribe((data: any) => {
+      console.log('PHP/dbadapter.php data', data.toString());
+    }, (error: any) => { console.dir(error); });
+    // Load 'PHP/variable.php'
+    this.auth.loadPHP('PHP/variable.php', this.loginForm.value).subscribe((data: any) => {
+      console.log('PHP/variable.php data', data.toString());
+    }, (error: any) => { console.dir(error); });
+    // Load 'PHP/Browser_Module.php'
+    this.auth.loadPHP('PHP/Browser_Module.php', this.loginForm.value).subscribe((data: any) => {
+      console.log('PHP/Browser_Module.php data', data.toString());
+    }, (error: any) => { console.dir(error); });
+    // Load 'PHP/OS_Module.php'
+    this.auth.loadPHP('PHP/OS_Module.php', this.loginForm.value).subscribe((data: any) => {
+      console.log('PHP/OS_Module.php data', data.toString());
+    }, (error: any) => { console.dir(error); });
+
+    // Post to 'socket.php'
+    this.auth.loadPHP('socket.php', this.loginForm.value).subscribe((data: any) => {
+      console.log("socket.php POST data", data.toString());
+    }, (error: any) => { console.dir(error); });
   }
 
 }

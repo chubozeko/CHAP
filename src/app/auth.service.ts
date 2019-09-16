@@ -8,10 +8,11 @@ const cors = require('cors');
 export class AuthService {
 
   corsOptions;
+  rootURL: string = 'http://localhost:80/chap_ums/';
 
   constructor(private http: HttpClient) { }
 
-  loadPHP() {
+  loadPHP(phpFile: string, data?: any) {
     // post these details to API server return user info if correct
     // return this.http.post('/api/auth.php', {
     //   username,
@@ -38,8 +39,10 @@ export class AuthService {
     }
 
     this.http.options('*', cors(this.corsOptions));
+    // 'http://localhost:80/chap_ums/index.php'
+    let fileName = this.rootURL + phpFile;
     // { responseType: 'text' }
-    return this.http.get('http://localhost:80/chap_ums/index.php', { responseType: 'text' });
+    return this.http.post(fileName, { data });
     // .subscribe((data: any) => {
     //   console.log(data.toString());
     //   // return data.toString();
@@ -47,5 +50,6 @@ export class AuthService {
     //   (error: any) => {
     //     console.dir(error);
     //   });
+    // responseType: 'text' 
   }
 }
