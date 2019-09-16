@@ -9,105 +9,74 @@ require_once('PHP/variable.php');
 $error = false;
 
 $email = htmlspecialchars($entrmail);
-if($crtaccount=="Create Account")
-	// First Check Button value is Create Account
-{
-	if($usrname!=""AND$srname!=""AND$gender!=""AND$country!=""AND$entrmail!=""AND$email!=""AND$entrpass!=""AND$cnfrmpass!="")
-		//Second Check if form element is NOT  empty
-{
-	if(strlen($usrname) < 3 AND strlen($srname)<3)
-		// Third Check if username and surname has less than three characters
-	{
-		$error=True;
-		$username_surname_error="Username and Surname must have more than 3 characters  ";
-		echo "<script type=\"text/javascript\"> 
-	                 alert('$username_surname_error');
-	
-	         </script> ";
+// First Check Button value is Create Account
+if($crtaccount=="Create Account") {
+  //Second Check if form element is NOT  empty
+	if($usrname!="" AND $srname!="" AND $gender!="" AND $country!="" AND $entrmail!="" AND $email!="" AND $entrpass!="" AND $cnfrmpass!="") {
+  // Third Check if username and surname has less than three characters
+    if(strlen($usrname) < 3 AND strlen($srname)<3 )	{
+		  $error=True;
+		  $username_surname_error="Username and Surname must have more than 3 characters  ";
+		  echo "<script type=\"text/javascript\"> 
+	            alert('$username_surname_error');
+	          </script> ";
+    }
+    //Check if username and surname contains alphabets or not
+	  else if(!preg_match("/^[a-zA-Z ]+$/",$usrname)AND!preg_match("/^[a-zA-Z ]+$/",$srname))	{
+		  $error=True;
+		  $username_surname_error="Username and Surname Must Contains Alphabet !!";
+		  echo "<script type=\"text/javascript\"> 
+	            alert('$username_surname_error');
+	          </script> ";
+    }
+    //Forth Check if user email is valid or not 
+	  elseif ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
+		  $error = true;
+      $emailError = "**Please enter valid email address.";
+    }
+    //Check if password size is less than six characters
+	  else if(strlen($entrpass) < 6) {
+      $error = true;
+      $passError = "Password must have atleast 6 characters !!.";
+		  echo "<script type=\"text/javascript\"> 
+	            alert('$passError');
+	          </script> ";
+    }
+	  else {
+      //Fifth Confirm if password is same with the confirm password field
+      if($entrpass==$cnfrmpass) {
+		    //User Registration Code Here!!
+		    $SQL_COMMAND = "INSERT INTO `$user_info`(user_ip,usrname,usrsurname,email,password,country,gender) VALUES ('$IP', '$usrname', '$srname', '$email', '$entrpass', '$country', '$gender')";
+		    $control_Con = mysqli_query($conn,$SQL_COMMAND);
+      }
+      //Chech if Data saved or not in database 
+		  if($control_Con) {
+		    $Check = "Welcome To CHAP!! You Successfully Create CHAP Account  Please Login Now !! ";
+		    echo "<script type=\"text/javascript\"> 
+	              alert('$Check');
+	            </script> ";
+		  }
+		  else {
+			  $Check = "Ooops..... Something Went Wrong !! Please Check Entered Data or Check Your Internet Conncetion ";
+			  echo "<script type=\"text/javascript\"> 
+	              alert('$Check');
+	            </script> ";
+		  }
+	  }
+	  else{
+	    echo "<script type=\"text/javascript\"> 
+	            alert('Your Password Is In Correct Please Check & Try Again !!!');
+	          </script> ";
+	  }
 	}
-	else if(!preg_match("/^[a-zA-Z ]+$/",$usrname)AND!preg_match("/^[a-zA-Z ]+$/",$srname))
-		//Check if username and surname contains alphabets or not
-	{
-		
-		$error=True;
-		$username_surname_error="Username and Surname Must Contains Alphabet !!";
-		echo "<script type=\"text/javascript\"> 
-	                 alert('$username_surname_error');
-	
-	         </script> ";
-	}
-	elseif ( !filter_var($email,FILTER_VALIDATE_EMAIL) )
-	//Forth Check if user email is valid or not 
-	{
-		$error = true;
-         $emailError = "**Please enter valid email address.";
-	}
-	 else if(strlen($entrpass) < 6) //Check if password size is less than six characters
-	 {
-        $error = true;
-        $passError = "Password must have atleast 6 characters !!.";
-		echo "<script type=\"text/javascript\"> 
-	                 alert('$passError');
-	
-	         </script> ";
-  }
-	else{
-	if($entrpass==$cnfrmpass)
-		//Fifth Confirm if password is same with the confirm password field
-	{
-		//User Registration Code Here!!
-		
-		
-		$SQL_COMMAND = "INSERT INTO `$user_info`(user_ip,usrname,usrsurname,email,password,country,gender) VALUES ('$IP', '$usrname', '$srname', '$email', '$entrpass', '$country', '$gender')";
-	
-		$control_Con = mysqli_query($conn,$SQL_COMMAND);
-		
-		 
-		if($control_Con)
-			//Chech if Data saved or not in database 
-		{
-		$Check = "Welcome To CHAP!! You Successfully Create CHAP Account  Please Login Now !! ";
-			
-			 echo "<script type=\"text/javascript\"> 
-	                                       alert('$Check');
-	
-	               </script> ";
-		}
-		else
-		{
-			$Check = "Ooops..... Something Went Wrong !! Please Check Entered Data or Check Your Internet Conncetion ";
-			 echo "<script type=\"text/javascript\"> 
-	                                       alert('$Check');
-	
-	               </script> ";
-		}
-	}
-	else{
-	             echo "<script type=\"text/javascript\"> 
-	                                       alert('Your Password Is In Correct Please Check & Try Again !!!');
-	
-	                   </script> ";
-	
-	}
-	}
-}
-           else{
-	                               echo "<script type=\"text/javascript\"> 
-	                                                                    alert('Do not Leave Empty Space ');
-	
-	                                       </script> ";
-	
-}
-
-
 }
 else{
-	
-	
-	
+  echo "<script type=\"text/javascript\"> 
+          alert('Do not Leave Empty Space ');
+	      </script> ";
 }
-?>
 
+?>
 
 <html>
 <head>
@@ -405,10 +374,10 @@ else{
  </div>
  <div id="mail_pass_confpass" class="emailpassDIV">
  <div class="emailDIV">
-  <!-- <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>-->
+  <!-- <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> -->
    <input type="email" name="email" id="email" class="email" placeholder="Enter Your Email"/>
     </br>
-   <!-- <span class="sr-only">--><?php echo $emailError; ?><!--</span>-->
+    <span class="sr-only"><?php echo $emailError; ?></span>
     
      </div>
  <div class="passwordDIV">

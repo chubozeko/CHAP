@@ -1,5 +1,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- <link rel="stylesheet" [href]='sanitizer.bypassSecurityTrustResourceUrl(cssUrl)'> -->
+
+<!-- <div id="innerPHP"></div> -->
+
 <ion-card id="loginMainCard">
   <ion-toolbar style="padding: 5px;" color="primary">
     <img style="float:left; width: 50px; height: 50px; margin-left: 10px; padding: 5px;"
@@ -11,15 +15,15 @@
   <ion-content padding color="secondary">
     <form action="./chap_ums/socket.php" method="POST">
       <div>
-        <ion-button shape="round" slot="start" expand="block" style="--background: #3B5998;">
+        <ion-button name="facebook" shape="round" slot="start" expand="block" style="--background: #3B5998;">
           <ion-icon name="logo-facebook"></ion-icon>
           &nbsp; Login with Facebook
         </ion-button>
-        <ion-button shape="round" slot="start" expand="block" style="--background: #D44638;">
+        <ion-button name="google" shape="round" slot="start" expand="block" style="--background: #D44638;">
           <ion-icon name="logo-google"></ion-icon>
           &nbsp; Login with Gmail
         </ion-button>
-        <ion-button shape="round" slot="start" expand="block" style="--background: #0077B5;">
+        <ion-button name="linkedin" shape="round" slot="start" expand="block" style="--background: #0077B5;">
           <ion-icon name="logo-linkedin"></ion-icon>
           &nbsp; Login with LinkedIn
         </ion-button>
@@ -31,20 +35,18 @@
 
       <div>
         <ion-item>
-          <!-- <ion-label position="stacked">E-mail Address: </ion-label> -->
-          <ion-input id="email" placeholder="E-mail Address"></ion-input>
+          <ion-input name="email" id="email" placeholder="E-mail Address"></ion-input>
         </ion-item>
         <ion-item>
-          <!-- <ion-label position="stacked">Password: </ion-label> -->
-          <ion-input id="passwordbox" placeholder="Password"></ion-input>
+          <ion-input name="passwordbox" id="passwordbox" placeholder="Password"></ion-input>
         </ion-item>
-        <ion-button id="btn1LOG" style="padding: 10px 0;" expand="block">Log In</ion-button>
+        <ion-button name="btn1LOG" id="btn1LOG" style="padding: 10px 0;" expand="block">Log In</ion-button>
       </div>
 
       <div>
         <ion-icon name="arrow-dropright" color="primary" style="size: 16px;"></ion-icon> &nbsp;
         <ion-label color="primary" style="font-size: 14pt">Don't have an account? &nbsp;</ion-label>
-        <ion-button id="btn" color="medium" style="padding: 10px 0;" expand="block">Sign Up</ion-button>
+        <ion-button name="btn" id="btn" color="medium" style="padding: 10px 0;" expand="block">Sign Up</ion-button>
       </div>
     </form>
   </ion-content>
