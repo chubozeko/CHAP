@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
-
+<style type="text/css">
 body {
 	}
 	 #apDiv1 {
@@ -80,7 +80,7 @@ body {
 	border-radius:20px;
 	border:none;
 	display: inline;
-	padding:left;
+	padding:left:
 	}	
 	.genderDIV{
 	background-color:#BBBBBB;
@@ -458,3 +458,4 @@ display: inline;
 	font-style: normal;
 			}												
 			
+	</style>

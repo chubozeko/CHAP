@@ -30,6 +30,21 @@
                 "glob": "**/*.svg",
                 "input": "node_modules/@ionic/angular/dist/ionic/svg",
                 "output": "./svg"
+              },
+              {
+                "glob": "dbconnect.php",
+                "input": "./",
+                "output": "./assets/database/"
+              },
+              {
+                "glob": "login.php",
+                "input": "./",
+                "output": "./assets/database/"
+              },
+              {
+                "glob": "register.php",
+                "input": "./",
+                "output": "./assets/database/"
               }
             ],
             "styles": [

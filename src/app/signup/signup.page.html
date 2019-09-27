@@ -13,11 +13,11 @@
     <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
       <div>
         <ion-item>
-          <ion-input type="text" name="usrname" id="usrname" placeholder="Name"></ion-input>
+          <ion-input type="text" name="fullname" id="fullname" placeholder="Name" #fullname></ion-input>
           <!-- class="USRNMTXTBX" -->
         </ion-item>
         <ion-item>
-          <ion-input type="text" name="surname" id="surname" placeholder="Surname"></ion-input>
+          <ion-input type="text" name="surname" id="surname" placeholder="Surname" #surname></ion-input>
         </ion-item>
       </div>
       <div>
@@ -301,25 +301,26 @@
       <div>
         <ion-item>
           <!-- class="email" -->
-          <ion-input type="email" name="email" id="email" placeholder="Enter Your Email"></ion-input>
+          <ion-input type="email" name="email" id="email" placeholder="Enter Your Email" #email></ion-input>
         </ion-item>
         <ion-item>
           <!-- class="PASS" -->
-          <ion-input name="PASS" type="password" placeholder="Enter Your Password"></ion-input>
+          <ion-input name="password" type="password" placeholder="Enter Your Password" #password></ion-input>
         </ion-item>
         <ion-item>
           <!-- class="CNFRMPASS" -->
-          <ion-input name="CNFRPASS" type="password" placeholder="Confirm Your Password">
+          <ion-input name="CNFRPASS" type="password" placeholder="Confirm Your Password" #CNFRPASS>
           </ion-input>
         </ion-item>
       </div>
       <!-- <span class="sr-only"><?php echo $emailError; ?></span> -->
       <div>
         <!-- (click)="" -->
-        <ion-button name="CRTBTN" color="success" size="large" expand="block" class="buttons">Create Account
+        <ion-button id="btn_createAccount" color="success" size="large" expand="block" class="buttons">Create Account
         </ion-button>
         <!-- <ion-input type="submit" name="CRTBTN" value="Create Account" class="BUTTONFLD"></ion-input> -->
-        <ion-button color="medium" expand="block" class="buttons"> &lt; &lt; Back to Login </ion-button>
+        <ion-button id="btn_backToLogin" color="medium" expand="block" class="buttons"> &lt; &lt; Back to Login
+        </ion-button>
         <!-- <a href="index.php" class="backtologin">Back to Login &gt;&gt;</a> -->
       </div>
     </form>

@@ -1,4 +1,4 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 
 <!-- <link rel="stylesheet" [href]='sanitizer.bypassSecurityTrustResourceUrl(cssUrl)'> -->
 
@@ -17,15 +17,18 @@
   <ion-content padding color="secondary">
     <form [formGroup]="loginForm">
       <div>
-        <ion-button formControlName="facebook" shape="round" slot="start" expand="block" style="--background: #3B5998;">
+        <!-- formControlName="facebook"  -->
+        <ion-button shape="round" slot="start" expand="block" style="--background: #3B5998;">
           <ion-icon name="logo-facebook"></ion-icon>
           &nbsp; Login with Facebook
         </ion-button>
-        <ion-button formControlName="google" shape="round" slot="start" expand="block" style="--background: #D44638;">
+        <!-- formControlName="google"  -->
+        <ion-button shape="round" slot="start" expand="block" style="--background: #D44638;">
           <ion-icon name="logo-google"></ion-icon>
           &nbsp; Login with Gmail
         </ion-button>
-        <ion-button formControlName="linkedin" shape="round" slot="start" expand="block" style="--background: #0077B5;">
+        <!-- formControlName="linkedin"  -->
+        <ion-button shape="round" slot="start" expand="block" style="--background: #0077B5;">
           <ion-icon name="logo-linkedin"></ion-icon>
           &nbsp; Login with LinkedIn
         </ion-button>
@@ -37,18 +40,23 @@
 
       <div>
         <ion-item>
-          <ion-input formControlName="email" id="email" placeholder="E-mail Address" type="email"></ion-input>
+          <!-- formControlName="email" -->
+          <ion-input id="email" name="email" placeholder="E-mail Address" type="email" #email>
+          </ion-input>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="passwordbox" id="passwordbox" placeholder="Password" type="password"></ion-input>
+          <!-- formControlName="password" -->
+          <ion-input id="password" name="password" placeholder="Password" type="password" #password></ion-input>
         </ion-item>
-        <ion-button formControlName="btn1LOG" id="btn1LOG" style="padding: 10px 0;" expand="block">Log In</ion-button>
+        <!-- formControlName="btn1LOG"  -->
+        <ion-button id="btn_login" style="padding: 10px 0;" expand="block">Log In</ion-button>
       </div>
 
       <div>
         <ion-icon name="arrow-dropright" color="primary" style="size: 16px;"></ion-icon> &nbsp;
         <ion-label color="primary" style="font-size: 14pt">Don't have an account? &nbsp;</ion-label>
-        <ion-button formControlName="btn" id="btn" color="medium" style="padding: 10px 0;" expand="block">Sign Up
+        <!-- formControlName="btn"  -->
+        <ion-button id="btn_signup" color="medium" style="padding: 10px 0;" expand="block">Sign Up
         </ion-button>
       </div>
     </form>

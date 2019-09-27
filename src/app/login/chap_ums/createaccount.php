@@ -9,119 +9,246 @@ require_once('PHP/variable.php');
 $error = false;
 
 $email = htmlspecialchars($entrmail);
-// First Check Button value is Create Account
-if($crtaccount=="Create Account") {
-  //Second Check if form element is NOT  empty
-	if($usrname!="" AND $srname!="" AND $gender!="" AND $country!="" AND $entrmail!="" AND $email!="" AND $entrpass!="" AND $cnfrmpass!="") {
-  // Third Check if username and surname has less than three characters
-    if(strlen($usrname) < 3 AND strlen($srname)<3 )	{
-		  $error=True;
-		  $username_surname_error="Username and Surname must have more than 3 characters  ";
-		  echo "<script type=\"text/javascript\"> 
-	            alert('$username_surname_error');
-	          </script> ";
-    }
-    //Check if username and surname contains alphabets or not
-	  else if(!preg_match("/^[a-zA-Z ]+$/",$usrname)AND!preg_match("/^[a-zA-Z ]+$/",$srname))	{
-		  $error=True;
-		  $username_surname_error="Username and Surname Must Contains Alphabet !!";
-		  echo "<script type=\"text/javascript\"> 
-	            alert('$username_surname_error');
-	          </script> ";
-    }
-    //Forth Check if user email is valid or not 
-	  elseif ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
-		  $error = true;
-      $emailError = "**Please enter valid email address.";
-    }
-    //Check if password size is less than six characters
-	  else if(strlen($entrpass) < 6) {
-      $error = true;
-      $passError = "Password must have atleast 6 characters !!.";
-		  echo "<script type=\"text/javascript\"> 
-	            alert('$passError');
-	          </script> ";
-    }
-	  else {
-      //Fifth Confirm if password is same with the confirm password field
-      if($entrpass==$cnfrmpass) {
-		    //User Registration Code Here!!
-		    $SQL_COMMAND = "INSERT INTO `$user_info`(user_ip,usrname,usrsurname,email,password,country,gender) VALUES ('$IP', '$usrname', '$srname', '$email', '$entrpass', '$country', '$gender')";
-		    $control_Con = mysqli_query($conn,$SQL_COMMAND);
-      }
-      //Chech if Data saved or not in database 
-		  if($control_Con) {
-		    $Check = "Welcome To CHAP!! You Successfully Create CHAP Account  Please Login Now !! ";
-		    echo "<script type=\"text/javascript\"> 
-	              alert('$Check');
-	            </script> ";
-		  }
-		  else {
-			  $Check = "Ooops..... Something Went Wrong !! Please Check Entered Data or Check Your Internet Conncetion ";
-			  echo "<script type=\"text/javascript\"> 
-	              alert('$Check');
-	            </script> ";
-		  }
-	  }
-	  else{
-	    echo "<script type=\"text/javascript\"> 
-	            alert('Your Password Is In Correct Please Check & Try Again !!!');
-	          </script> ";
-	  }
+if($crtaccount=="Create Account")
+	// First Check Button value is Create Account
+{
+	if($usrname!=""AND$srname!=""AND$gender!=""AND$country!=""AND$entrmail!=""AND$email!=""AND$entrpass!=""AND$cnfrmpass!="")
+		//Second Check if form element is NOT  empty
+{
+	if(strlen($usrname) < 3 AND strlen($srname)<3)
+		// Third Check if username and surname has less than three characters
+	{
+		$error=True;
+		$username_surname_error="Username and Surname must have more than 3 characters  ";
+		echo "<script type=\"text/javascript\"> 
+	                 alert('$username_surname_error');
+	
+	         </script> ";
+	}
+	else if(!preg_match("/^[a-zA-Z ]+$/",$usrname)AND!preg_match("/^[a-zA-Z ]+$/",$srname))
+		//Check if username and surname contains alphabets or not
+	{
+		
+		$error=True;
+		$username_surname_error="Username and Surname Must Contains Alphabet !!";
+		echo "<script type=\"text/javascript\"> 
+	                 alert('$username_surname_error');
+	
+	         </script> ";
+	}
+	elseif ( !filter_var($email,FILTER_VALIDATE_EMAIL) )
+	//Forth Check if user email is valid or not 
+	{
+		$error = true;
+         $emailError = "**Please enter valid email address.";
+	}
+	 else if(strlen($entrpass) < 6) //Check if password size is less than six characters
+	 {
+        $error = true;
+        $passError = "Password must have atleast 6 characters !!.";
+		echo "<script type=\"text/javascript\"> 
+	                 alert('$passError');
+	
+	         </script> ";
+  }
+	else{
+	if($entrpass==$cnfrmpass)
+		//Fifth Confirm if password is same with the confirm password field
+	{
+		//User Registration Code Here!!
+		
+		
+		$SQL_COMMAND = "INSERT INTO `$user_info`(user_ip,usrname,usrsurname,email,password,country,gender) VALUES ('$IP', '$usrname', '$srname', '$email', '$entrpass', '$country', '$gender')";
+	
+		$control_Con = mysqli_query($conn,$SQL_COMMAND);
+		
+		 
+		if($control_Con)
+			//Chech if Data saved or not in database 
+		{
+		$Check = "Welcome To CHAP!! You Successfully Create CHAP Account  Please Login Now !! ";
+			
+			 echo "<script type=\"text/javascript\"> 
+	                                       alert('$Check');
+	
+	               </script> ";
+		}
+		else
+		{
+			$Check = "Ooops..... Something Went Wrong !! Please Check Entered Data or Check Your Internet Conncetion ";
+			 echo "<script type=\"text/javascript\"> 
+	                                       alert('$Check');
+	
+	               </script> ";
+		}
+	}
+	else{
+	             echo "<script type=\"text/javascript\"> 
+	                                       alert('Your Password Is In Correct Please Check & Try Again !!!');
+	
+	                   </script> ";
+	
+	}
 	}
 }
-else{
-  echo "<script type=\"text/javascript\"> 
-          alert('Do not Leave Empty Space ');
-	      </script> ";
+           else{
+	                               echo "<script type=\"text/javascript\"> 
+	                                                                    alert('Do not Leave Empty Space ');
+	
+	                                       </script> ";
+	
 }
 
+
+}
+else{
+	
+	
+	
+}
 ?>
 
-<html>
+
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="CSS/createaccntSTYLE.css"/>
-<title>Create Account Page </title>
- <style type="text/css">
- body {
-	background-color: #dddddd;
-}
- 
-
-}
- </style>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+<title>Create Account</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<style type="text/css">
+	body{
+		color: #fff;
+		background: #bbbbbb;
+		font-family: 'Roboto', sans-serif;
+	}
+    .form-control{
+		height: 40px;
+		box-shadow: none;
+		color: #969fa4;
+	}
+	.form-control:focus{
+		border-color: #5cb85c;
+	}
+    .form-control, .btn{        
+        border-radius: 3px;
+    }
+	.signup-form{
+		width: 400px;
+		margin: 0 auto;
+		padding: 30px 0;
+		color:#333333;
+	}
+	.signup-form h2{
+		color: #f0f0f0;
+        margin: 0 0 15px;
+		position: relative;
+		text-align: center;
+    }
+	.signup-form h2:before, .signup-form h2:after{
+		content: "";
+		height: 2px;
+		width: 30%;
+		
+		position: absolute;
+		top: 50%;
+		z-index: 2;
+	}	
+	.signup-form h2:before{
+		left: 0;
+	}
+	.signup-form h2:after{
+		right: 0;
+	}
+    .signup-form .hint-text{
+		color: #999;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+    .signup-form form{
+		color: #999;
+		border-radius: 3px;
+    	margin-bottom: 15px;
+        background: #333333;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+	.signup-form .form-group{
+		margin-bottom: 20px;
+	}
+	.signup-form input[type="checkbox"]{
+		margin-top: 3px;
+	}
+	.signup-form .btn{        
+        font-size: 16px;
+        font-weight: bold;		
+		min-width: 140px;
+        outline: none !important;
+    }
+	.signup-form .row div:first-child{
+		padding-right: 10px;
+	}
+	.signup-form .row div:last-child{
+		padding-left: 10px;
+	}    	
+    .signup-form a{
+		color: #fff;
+		text-decoration: underline;
+	}
+    .signup-form a:hover{
+		text-decoration: none;
+	}
+	.signup-form form a{
+		color: #5cb85c;
+		text-decoration: none;
+	}	
+	.signup-form form a:hover{
+		text-decoration: underline;
+	} 
+	.divlogo{
+	float:left;
+	}
+	.divtitle{
+	padding-top: 45px;
+	padding-bottom: 20px;
+	}
+	.textgexnder{
+	font-size:50px;
+	font-weight: bold;
+	
+	}
+</style>
+</head>
 <body>
-  <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
-
-
-<div id="container" class="CONTAINER">
- <div id="banner" class="BANNER">
-   <div class="logo">
-   <img src="logo/chaplogo.png" class="LOGOSIZE"/>
-   </div>
-<div id="apDiv1" class="title">Create Your CHAP Acount</div>
-
- </div>
- <div id="name&surname" class="username_surnameDIV">
-   <input type="text" name="usrname" id="usrname" class="USRNMTXTBX" placeholder="Name"/> 
-   <input type="text" name="surname" id="surname" class="USRNMTXTBX" placeholder="Surname"/>
-   
- </div>
- <div id="gendercountry" class="genderDIV" >
- <div class="GNDRTXTmll"> 
-  &emsp; &emsp; 
-  <input type="radio" name="gndr" id="Male" value="Male" />
-   Male </div>
-<div class="GNDRTXTfmll">   
-<input type="radio" name="gndr" id="Female" value="Female"  />
- Female
- <input type="radio" name="gndr" id="Other" value="Other"  />
- Other
-<div class="countryDIV">
-<span class="countryDIV">
-   <select name="cntry" class="COUNTYFLD">
+<div class="signup-form">
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
+	<div class="divlogo"><img src="logo/chaplogo.png" width="129" height="120"></div>
+       <div class="divtitle" > <h2 class="title">Create Your CHAP Account</h2> </div> 
+		        <div class="form-group">
+			<div class="row">
+				<div class="col-xs-6"><input type="text" class="form-control" name="usrname" id="usrname" placeholder="First Name" required="required"></div>
+				<div class="col-xs-6"><input type="text" class="form-control" name="surname" id="surname" placeholder="Last Name" required="required"></div>
+			</div>        	
+        </div>
+		<div class="form-group">
+        	<input type="email" class="form-control" name="email" id="email" placeholder="Email" required="required">
+        </div>
+		 <div class="form-group">
+		&emsp; &emsp; <label class="radio-inline"><input type="radio" name="gndr" id="Male" style="font-size:50px; font-weight:bold;" value="Male" />
+   Male </label>
+&emsp; &emsp; <label class="radio-inline"><input type="radio" name="gndr" id="Female"  value="Female"  />
+ Female</label>
+&emsp; &emsp; <label class="radio-inline"> <input type="radio" name="gndr" id="Other"   value="Other"  />
+ Other</label>
+</div>
+        <div class="form-group">
+        	<select name="cntry" class="form-control">
        <option value="NULL">Select Your Country</option>
      <option value="Afghanistan">Afghanistan</option>
      <option value="Åland Islands">Åland Islands</option>
@@ -368,38 +495,20 @@ else{
      <option value="Zambia">Zambia</option>
      <option value="Zimbabwe">Zimbabwe</option>
    </select>
- </span>
-&emsp;</div>
+        </div>
+		<div class="form-group">
+            <input type="password" class="form-control" name="PASS" placeholder="Password" required="required">
+        </div>
+		<div class="form-group">
+            <input type="password" class="form-control" name="CNFRPASS" placeholder="Confirm Password" required="required">
+        </div>        
+       
+		<div class="form-group">
+         <input type="submit" name="CRTBTN" class="btn btn-primary btn-block"   value="Create Account" >
+        </div>
+		<div class="text-center">Already have an account? <a href="index.php">Sign in</a></div>
+    </form>
+	
 </div>
- </div>
- <div id="mail_pass_confpass" class="emailpassDIV">
- <div class="emailDIV">
-  <!-- <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> -->
-   <input type="email" name="email" id="email" class="email" placeholder="Enter Your Email"/>
-    </br>
-    <span class="sr-only"><?php echo $emailError; ?></span>
-    
-     </div>
- <div class="passwordDIV">
- <input name="PASS" type="password" class="PASS" placeholder="Enter Your Password"/>
-
- 
- </div>
- <div class="confirmpassDIV">
- <input name="CNFRPASS" type="password" class="CNFRMPASS" placeholder="Confirm Your Password"/> </div>
- </div>
- <div id="button" class="BUTTONDIV">
- <div class="BUTTON1">
-   <input type="submit" name="CRTBTN"  value="Create Account" class="BUTTONFLD">
- </div>
- 
- </div>
- <div class="bactologinDIV"> 
- <a href="index.php" class="backtologin">Back to Login &gt;&gt;</a>
- </div>
-  </div>
- 
- </div>                  
- </form>
 </body>
-</html>
+</html>                            

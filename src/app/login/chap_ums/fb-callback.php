@@ -1,6 +1,13 @@
+
 <?php
 session_start();
 require_once('Facebook/autoload.php');
+require_once('PHP/dbadapter.php');
+require_once('PHP/Browser_Module.php');
+require_once('PHP/OS_Module.php');
+require_once('PHP/variable.php');
+
+
 $fb = new \Facebook\Facebook([
   'app_id' => '462441681264999', // Replace {app-id} with your app id
   'app_secret' => '42c6eeab8cbf703f3703b18baf26fca7',
@@ -56,46 +63,58 @@ try {
 }
 $graphObject = $response->getGraphObject();
 
-$fbid = $graphObject->getProperty('id'); 
+   $fbid = $graphObject->getProperty('id'); 
    $fbname = $graphObject->getProperty('name');   
    $fbemail = $graphObject->getProperty('email');
    $fbgender = $graphObject->getProperty('gender');
-     $fbBDAY = $graphObject->getProperty('birthday');  
-/*$user = $response->getGraphUser();
-$_SESSION['user']=$user;
-$userId = $user['id']; // Retrieve user Id
-$userName = $user['name']; // Retrieve user name
-$email = $user['email'];
-#$GNDR = $user['gender'];
-$__SESSION['userıd']= $userId;
-$__SESSION['NAME']= $userName;
-$__SESSION['email']= $email;
-$__SESSION['gender']= $fbgender;*/
-echo $fbid;    //working as I'm getting facebook ID
-echo "<br>";
-echo $fbgender;
-echo "<br>";
-echo $fbname;
-echo "<br>";
-echo $fbemail;
-echo "<br>";
-echo $fbBDAY;
+
+ 
+	 	$INSERT_FACEBOOKDB="INSERT INTO `$facebookApiDB` ( `facid`,  `facgender`, `name&surname`,`email`) VALUES ( '$fbid', '$fbgender', '$fbname', '$fbemail')";
+                         
+		            $control_Con = mysqli_query($conn, $INSERT_FACEBOOKDB);
+				 
+		                   if($control_Con)
+							                               												   
+		                                  {
+											$GET_FACEBOOKDB=mysqli_fetch_array(mysqli_query($conn,"SELECT facid,email FROM $facebookApiDB WHERE facid='$fbid'"));
+											$TAKE_FBID=$GET_FACEBOOKDB['facid'];
+											 
+											    $INSERT_LOG_IN="INSERT INTO `$log_in` ( `usrid`,  `ip`, `type_of_browser`,`opsystem`) VALUES ( '$TAKE_FBID', '$IP', '$browser', '$user_os')";
+                         
+		                                                    $control_Con1 = mysqli_query($conn, $INSERT_LOG_IN);
+				 
+		                                                      if($control_Con1)
+							                             												   
+		                                                    {
+											                      #$_SESSION['FBID']=$CHECK_FBID;
+											                      #$_SESSION['FBNAME']=$CHECK_FBNAME;
+
+																 //HERE WHEN FACEBOOK USER LOG IN TO CHAP THIS PART SHOULD SEND TO CHAPCHAP.GA 
+																	 # header("Location:home.php"); // FIRST COONNECTION METHOD
+											                         echo("Hello World");
+		      													  
+		                                                     }
+		                                       else
+		                                                    {
+		                                                                             
+			                                                     $Check = "Facebook Login Faild ";
+			                                                                echo "<script type=\"text/javascript\"> 
+	                                                                                              alert('$Check');
+	
+	                                                                                                </script> ";
+		                                                    }
+										 	 													  
+		                                    }
+		                        else
+		                             {
+		                                                                            
+			                                         $Check = "Facebook Data Registration Faild  ";
+			                                                    echo "<script type=\"text/javascript\"> 
+	                                                                                       alert('$Check');
+	
+	                                                                                             </script> ";
+		                              }
+ 
 ?>
-<html>
-<head>
-	<title>Faceboo Api Tutorial</title>
 
-</head>
-<body>
-
-<div><?php #echo($__SESSION['userıd']);?></div>
-<div><?php #echo($__SESSION['NAME']);?></div>
-<div><?php #echo($__SESSION['email']);?></div> 
-<div><?php #echo($__SESSION['gender']);?></div> 
-
-
-
-
-</body>
-</html>
 

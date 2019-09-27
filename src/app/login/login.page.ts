@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModalController, NavController, AlertController, LoadingController } from '@ionic/angular';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { SignupPage } from '../signup/signup.page';
+import 'rxjs/add/operator/map';
+import { RequestOptions } from '@angular/http';
 
 const cors = require('cors');
 
@@ -12,7 +15,10 @@ const cors = require('cors');
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  @ViewChild("email") username;
+  @ViewChild("password") password;
 
+  data: string;
   loginForm: FormGroup;
   items: Array<any> = [];
   corsOptions;
@@ -22,16 +28,19 @@ export class LoginPage implements OnInit {
   constructor(public modalC: ModalController,
     private http: HttpClient,
     private auth: AuthService,
-    public formBuilder: FormBuilder) {
+    public formBuilder: FormBuilder,
+    public navCtrl: NavController,
+    private alertCtrl: AlertController,
+    public loading: LoadingController) {
 
     this.loginForm = this.formBuilder.group({
       email: new FormControl(''),
       passwordbox: new FormControl(''),
-      btn1LOG: new FormControl(''),
-      btn: new FormControl(''),
-      facebook: new FormControl(''),
-      google: new FormControl(''),
-      linkedin: new FormControl('')
+      btn1LOG: new FormControl(),
+      btn: new FormControl(),
+      facebook: new FormControl('facebook'),
+      google: new FormControl('google'),
+      linkedin: new FormControl('linkedin')
     });
   }
 
@@ -55,21 +64,21 @@ export class LoginPage implements OnInit {
     }
 
     // Adding Click Listeners to Buttons
-    let btnSignUp = document.getElementById("btn");
+    let btnSignUp = document.getElementById("btn_signup");
     btnSignUp.addEventListener("click", e => this.signUpToCHAP(e));
-    let btnLogin = document.getElementById("btn1LOG");
+    let btnLogin = document.getElementById("btn_login");
     btnLogin.addEventListener("click", e => this.logInToCHAP(e));
 
-    this.auth.loadPHP('index.php').subscribe((data: any) => {
-      console.log(data.toString());
-      // this.phpCode = data.toString();
-      // let divv = document.getElementById('innerPHP');
-      // divv.innerHTML = data.toString();
-      // console.log(this.phpCode);
-    },
-      (error: any) => {
-        console.dir(error);
-      });
+    // this.auth.loadPHP('index.php').subscribe((data: any) => {
+    //   console.log(data.toString());
+    //   // this.phpCode = data.toString();
+    //   // let divv = document.getElementById('innerPHP');
+    //   // divv.innerHTML = data.toString();
+    //   // console.log(this.phpCode);
+    // },
+    //   (error: any) => {
+    //     console.dir(error);
+    //   });
   }
 
   // ionViewWillEnter(): void {
@@ -115,42 +124,76 @@ export class LoginPage implements OnInit {
   // }
 
   signUpToCHAP(e) {
-    // window.setTimeout(function () { location.href = '/login/chap_ums/createaccount.php'; }, 0x01);
-    window.setTimeout(function () { location.href = '/signup'; }, 0x01);
-    //alert('SIGNUP');
+    this.navCtrl.navigateRoot('/signup');
   }
 
-  logInToCHAP(e) {
-    console.log('LOGIN', this.loginForm.value);
-    console.log('email: ', this.loginForm.value.email);
-    console.log('password: ', this.loginForm.value.passwordbox);
+  async logInToCHAP(e) {
+    // console.log('LOGIN', this.loginForm.value);
+    // console.log('email: ', this.loginForm.value.email);
+    // console.log('password: ', this.loginForm.value.passwordbox);
+    // // Post to 'socket.php'
+    // this.auth.loadPHP('socket.php', this.loginForm.value).subscribe((data: any) => {
+    //   console.log("socket.php POST data", data.toString());
+    // }, (error: any) => { console.dir(error); });
 
-    // require_once('PHP/dbadapter.php');
-    // require_once('PHP/variable.php');
-    // require_once('PHP/Browser_Module.php');
-    // require_once('PHP/OS_Module.php');
+    // check to confirm the username and password fields are filled
+    if (this.username.value == "") {
+      let alert = await this.alertCtrl.create({
+        header: 'ATTENTION',
+        message: 'Username field is empty',
+        buttons: ['OK']
+      });
+      alert.present();
+    } else if (this.password.value == "") {
+      let alert = await this.alertCtrl.create({
+        header: "ATTENTION",
+        message: "Password field is empty",
+        buttons: ['OK']
+      });
+      alert.present();
+    } else {
+      var headers = new HttpHeaders();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
 
-    // Load 'PHP/dbadapter.php'
-    this.auth.loadPHP('PHP/dbadapter.php', this.loginForm.value).subscribe((data: any) => {
-      console.log('PHP/dbadapter.php data', data.toString());
-    }, (error: any) => { console.dir(error); });
-    // Load 'PHP/variable.php'
-    this.auth.loadPHP('PHP/variable.php', this.loginForm.value).subscribe((data: any) => {
-      console.log('PHP/variable.php data', data.toString());
-    }, (error: any) => { console.dir(error); });
-    // Load 'PHP/Browser_Module.php'
-    this.auth.loadPHP('PHP/Browser_Module.php', this.loginForm.value).subscribe((data: any) => {
-      console.log('PHP/Browser_Module.php data', data.toString());
-    }, (error: any) => { console.dir(error); });
-    // Load 'PHP/OS_Module.php'
-    this.auth.loadPHP('PHP/OS_Module.php', this.loginForm.value).subscribe((data: any) => {
-      console.log('PHP/OS_Module.php data', data.toString());
-    }, (error: any) => { console.dir(error); });
+      //let options = new HttpRequest({ headers: headers });
+      let data = {
+        username: this.username.value,
+        password: this.password.value
+      };
 
-    // Post to 'socket.php'
-    this.auth.loadPHP('socket.php', this.loginForm.value).subscribe((data: any) => {
-      console.log("socket.php POST data", data.toString());
-    }, (error: any) => { console.dir(error); });
+      let loader = await this.loading.create({
+        message: 'Processing please wait...',
+      });
+
+      loader.present().then(() => {
+        //this.http.post('./assets/database/login.php', data, {})
+        this.http.post('http://localhost:80/chap_2/login.php', data, {})
+          .map((res: any) => res)
+          .subscribe(async res => {
+            console.log(res);
+            loader.dismiss();
+
+            if (res == "Your Login success") {
+              let alert = await this.alertCtrl.create({
+                header: "CONGRATS",
+                message: (res),
+                buttons: ['OK']
+              });
+              alert.present();
+              this.navCtrl.navigateRoot('/home');
+            } else {
+              let alert = await this.alertCtrl.create({
+                header: "ERROR",
+                message: "Your Login Email or Password is invalid",
+                buttons: ['OK']
+              });
+              alert.present();
+            }
+          });
+      });
+    }
+
   }
 
 }
