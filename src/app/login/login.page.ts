@@ -167,7 +167,7 @@ export class LoginPage implements OnInit {
       });
 
       loader.present().then(() => {
-        //this.http.post('./assets/database/login.php', data, {})
+        //this.http.post('https://chapweb.000webhostapp.com/login.php', data, {})
         this.http.post('http://localhost:80/chap_2/login.php', data, {})
           .map((res: any) => res)
           .subscribe(async res => {
