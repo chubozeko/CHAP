@@ -102,7 +102,8 @@ export class SignupPage implements OnInit {
         email: this.email.value,
         password: this.password.value,
         cntry: this.cntry.value,
-        gender: this.gender.value
+        gender: this.gender.value,
+        confirmpass: this.CNFRPASS.value
       };
 
       let loader = await this.loading.create({

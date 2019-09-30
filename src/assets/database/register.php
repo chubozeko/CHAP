@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 require "dbconnect.php";
-# require "variable.php";
+require "variable.php";
 
 $data = file_get_contents("php://input");
 if (isset($data)) {
@@ -26,23 +26,72 @@ if (isset($data)) {
   $usrname = $request->fullname;
   $srname = $request->surname;
   $email = $request->email;
-  # $password = $request->password;
+  $cnfrmpass = $request->confirmpass;
   $pass = $request->password;
   $country = $request->cntry;
   $gender = $request->gender;
 }
 
-$password = hash('sha256', $pass);
+# ------------------------------------------------------------
 
-$sql = "INSERT INTO user_info (user_ip,usrname,usrsurname,email,password,country,gender) 
-  VALUES ('$IP', '$usrname', '$srname', '$email', '$password', '$country', '$gender')";
+//error_reporting(0);
+$error = false;
 
-if ($con->query($sql) === TRUE) {
-  $response= "Registration successful";
-} else {
-  $response= "Error: " . $sql . "<br>" . $db->error;
+$email = htmlspecialchars($entrmail);
+
+// Check if form element is NOT  empty
+if ($usrname != "" AND $srname != "" AND $gender != "" AND $country != "" AND $entrmail != "" AND $email != "" AND $pass != "" AND $cnfrmpass != "") {
+  // Check if username and surname has less than three characters
+	if (strlen($usrname) < 3 AND strlen($srname) < 3) {
+		$error = True;
+		$response = "Username and Surname must have more than 3 characters.";
+	}
+  // Check if username and surname contains alphabets or not
+	else if( !preg_match("/^[a-zA-Z ]+$/", $usrname) AND !preg_match("/^[a-zA-Z ]+$/", $srname) ) {
+		$error = True;
+		$response = "Username and Surname must contain Alphabet!";
+	}
+  // Check if user email is valid or not
+	else if ( !filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+		$error = true;
+    $response = "Please enter a valid email address.";
+	}
+  // Check if password size is less than six characters
+	else if(strlen($entrpass) < 6) {
+    $error = true;
+    $response = "Password must have at least 6 characters.";
+  }
+	else {
+     // Confirm if password is same with the confirm password field
+	   if($entrpass == $cnfrmpass) {
+		     // User Registration Code Here
+         $password = hash('sha256', $pass);
+         $sql = "INSERT INTO user_info (user_ip,usrname,usrsurname,email,password,country,gender)
+           VALUES ('$IP', '$usrname', '$srname', '$email', '$password', '$country', '$gender')";
+         if ($con->query($sql) === TRUE) {
+           $response= "Registration successful";
+         } else {
+           $response= "Error: " . $sql . "<br>" . $db->error;
+         }
+
+		     // $control_Con = mysqli_query($con, $SQL_COMMAND);
+         // // Check if Data saved or not in database
+		     // if($control_Con) {
+		     //     $response = "You have successfully created a CHAP Account. You can now log in.";
+		     // }
+		     // else {
+			   //     $response = "Ooops... Something Went Wrong! Please Check your entered data or Check Your Internet Connection.";
+		     // }
+	   }
+	   else {
+	      $response = "Your Password Is Incorrect! Please Check & Try Again.";
+	   }
+   }
 }
-
+else {
+  $response = "Do not Leave Empty Spaces.";
+}
+# ------------------------------------------------------------
 echo json_encode($response);
 
 ?>

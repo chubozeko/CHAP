@@ -1,0 +1,73 @@
+<ion-header></ion-header>
+
+<ion-content padding>
+  <div id="CONTAINER" class="container">
+    <div id="HEADER" class="header">
+      <div id="INSERT LOGO HERE" class="LOGODIV"><img src="./assets/icon/chap_logo.png" width="132" height="117" />
+      </div>
+      <div id="TITLE HERE" class="TITLEDIV">
+        <h3>CHAP USER MANAGEMENT SYSTEMS (UMS)</h3>
+      </div>
+    </div>
+
+    <div id="NAVBAR" class="sidebar1">
+      <ul class="listViewStly">
+        <li><button class="menubottomSTLY" onclick="location.href='ADMINPANEL.php';">
+            <img src="./assets/icon/admin-panel/dashboard.png" /> DASHBOARD </button> </li>
+        <li><button class="menubottomSTLY" onclick="location.href='adminmngr.php';">
+            <img src="./assets/icon/admin-panel/adminmngr.png" /> ADMIN MANAGER</button></li>
+        <li><button class="menubottomSTLY" onclick="location.href='usrinfo.php';">
+            <img src="./assets/icon/admin-panel/userico.png" /> &emsp;USER INFORMATION</button></li>
+        <li><button class="menubottomSTLY" onclick="location.href='logininfo.php';">
+            <img src="./assets/icon/admin-panel/login.png" /> &emsp;LOGIN INFORMATION</button>
+        </li>
+        <li><button class="menubottomSTLY" onclick="location.href='logoutinfo.php';">
+            <img src="./assets/icon/admin-panel/logout.png" /> &emsp;&nbsp; &nbsp; LOGOUT
+            INFORMATION</button></li>
+      </ul>
+    </div>
+
+    <div id="CONTENT" class="content">
+      <div class="LOG_OUT">Welcome Admin: &emsp;
+        <?php =$_SESSION['sess_user']; ?> &emsp;
+        <a href="logout.php">LOG OUT</a>
+      </div> <br>
+
+      <table class="DASHTABLE">
+        <tr>
+          <td>
+            <div id="donutchart" style="width: 350px; height: 200px; "></div>
+          </td>
+          <td>
+            <div id="gender" style="width: 350px; height: 200px; "></div>
+          </td>
+        </tr>
+        <tr>
+          <td> <?php echo" &emsp;Total Number Of User:&ensp;"; echo $TOTAL_USER['0']; ?> </td>
+          <td>
+            <div id="OS" style="width: 350px; height: 200px; "></div>
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footerbar"> <a href="adminpanel1.php">Next Page>></a> </div>
+    <div id="FOOTER" class="footer"> Content for id "FOOTER" Goes Here </div>
+  </div>
+</ion-content>

@@ -68,74 +68,24 @@ export class LoginPage implements OnInit {
     btnSignUp.addEventListener("click", e => this.signUpToCHAP(e));
     let btnLogin = document.getElementById("btn_login");
     btnLogin.addEventListener("click", e => this.logInToCHAP(e));
-
-    // this.auth.loadPHP('index.php').subscribe((data: any) => {
-    //   console.log(data.toString());
-    //   // this.phpCode = data.toString();
-    //   // let divv = document.getElementById('innerPHP');
-    //   // divv.innerHTML = data.toString();
-    //   // console.log(this.phpCode);
-    // },
-    //   (error: any) => {
-    //     console.dir(error);
-    //   });
   }
 
-  // ionViewWillEnter(): void {
-  //   this.load();
-  // }
+  openAdminPanel() {
+    // Enable preflight requests for all routes
+    this.http.options('*', cors(this.corsOptions));
 
-  // load() {
-  //   // try {
-  //   //   const url = 'https://api.example.com';
-  //   //   const params = {};
-  //   //   const headers = {};
-
-  //   //   const response = await this.http.get(url, headers);
-
-  //   //   console.log(response);
-  //   //   //console.log(JSON.parse(response.data)); // JSON data returned by server
-  //   //   //console.log(response.headers);
-
-  //   // } catch (error) {
-  //   //   console.error(error.status);
-  //   //   console.error(error.error); // Error message as string
-  //   //   console.error(error.headers);
-  //   // }
-
-  //   // Enable preflight requests for all routes
-  //   this.http.options('*', cors(this.corsOptions));
-
-  //   this.http.get('./login/chap_ums/index.php', cors(this.corsOptions))
-  //     .subscribe((data: any) => {
-  //       alert(data);
-  //     },
-  //       (error: any) => {
-  //         console.dir(error);
-  //       });
-
-  //   this.http.post('http://localhost/login/chap_ums/index.php', {})
-  //     .subscribe((data: any) => {
-  //       alert(data);
-  //     },
-  //       (error: any) => {
-  //         console.dir(error);
-  //       });
-  // }
+    this.http.get('http://localhost:80/chap_ums/ADMINPANEL.php', cors(this.corsOptions))
+      .map((res: any) => res)
+      .subscribe(async res => {
+        console.log(res);
+      });
+  }
 
   signUpToCHAP(e) {
     this.navCtrl.navigateRoot('/signup');
   }
 
   async logInToCHAP(e) {
-    // console.log('LOGIN', this.loginForm.value);
-    // console.log('email: ', this.loginForm.value.email);
-    // console.log('password: ', this.loginForm.value.passwordbox);
-    // // Post to 'socket.php'
-    // this.auth.loadPHP('socket.php', this.loginForm.value).subscribe((data: any) => {
-    //   console.log("socket.php POST data", data.toString());
-    // }, (error: any) => { console.dir(error); });
-
     // check to confirm the username and password fields are filled
     if (this.username.value == "") {
       let alert = await this.alertCtrl.create({
@@ -182,10 +132,19 @@ export class LoginPage implements OnInit {
               });
               alert.present();
               this.navCtrl.navigateRoot('/home');
+            } else if (res == "Open ADMINPANEL.php") {
+              let alert = await this.alertCtrl.create({
+                header: "ADMIN PANEL",
+                message: (res),
+                buttons: ['OK']
+              });
+              alert.present();
+              // this.navCtrl.navigateRoot('/admin-panel');
+              this.openAdminPanel();
             } else {
               let alert = await this.alertCtrl.create({
                 header: "ERROR",
-                message: "Your Login Email or Password is invalid",
+                message: (res),
                 buttons: ['OK']
               });
               alert.present();

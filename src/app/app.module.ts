@@ -35,6 +35,8 @@ import { CodeViewerPageModule } from './code-viewer/code-viewer.module';
 import { AboutPageModule } from './about/about.module';
 import { TutorialPageModule } from './tutorial/tutorial.module';
 import { OpenProjectPageModule } from './open-project/open-project.module';
+import { AdminPanelPageModule } from './admin-panel/admin-panel.module';
+
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { OpenProjectPageModule } from './open-project/open-project.module';
     InterceptorModule,
     FormsModule,
     ReactiveFormsModule,
+    AdminPanelPageModule
   ],
   providers: [
     StatusBar,

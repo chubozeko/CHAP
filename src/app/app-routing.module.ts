@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'Tutorial', loadChildren: './tutorial/tutorial.module#TutorialPageModule' },
   { path: 'open-project', loadChildren: './open-project/open-project.module#OpenProjectPageModule' },
   { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' },
-
+  { path: 'admin-panel', loadChildren: './admin-panel/admin-panel.module#AdminPanelPageModule' },
 
   // { path: 'process', loadChildren: './symbol-dialogs/process/process.module#ProcessPageModule' },
   // { path: 'declare', loadChildren: './symbol-dialogs/declare/declare.module#DeclarePageModule' },
