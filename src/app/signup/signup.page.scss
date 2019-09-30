@@ -1,0 +1,52 @@
+@charset "utf-8";
+
+#signupMainCard {
+  width: 480px; 
+  height: 520px; 
+  align-self: center; 
+  padding: 0 5px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  #signupMainCard {
+    height: 95%;
+	  width: 95%;
+    align-self: center; 
+    padding: 0 5px;
+    margin-left: auto;
+	  margin-right: auto;
+	  margin-bottom: auto;
+	  margin-top: auto;
+	  border-radius: 10px;
+  }
+}
+
+.buttons:hover {
+	background-color: #DDDDDD;
+	color: #333333;
+}
+
+.emailvalidationerror {
+	font-size: 9px;
+	font-family: "Yu Gothic UI Semibold";
+	color: #900;
+}
+
+/***********MOBILE CSS DESIGN********************/
+@media (min-width: 320px) and (max-width: 480px) {
+  /* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+	.buttons:hover {
+		background-color: #DDDDDD;
+		color: #333333;
+	}
+}
+
+.emailvalidationerror {
+	font-size:9px;
+	font-family: "Yu Gothic UI Semibold";
+	color: #900;
+	font-style: normal;
+}

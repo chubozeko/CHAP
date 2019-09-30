@@ -1,0 +1,218 @@
+<style type="text/css">
+body {
+	}
+	.LOGODIV{
+		display: inline;
+		}
+	.TITLEDIV{
+	margin:auto;
+	color:#FFFFFF;
+	position:absolute;
+	left:313px;
+	top:30px;
+	width:auto;
+	/*z-index:1;*/
+	font-size: 28px;
+	font-family: "Yu Gothic UI Semibold";
+		}
+	.content {
+	padding: 10px 0;
+	width: 75%;
+	float: left;
+	font-family: "Yu Gothic UI Semibold";
+}
+
+/* ~~ This grouped selector gives the lists in the .content area space ~~ */
+.content ul, .content ol { 
+	padding: 0 15px 15px 40px; /* this padding mirrors the right padding in the headings and paragraph rule above. Padding was placed on the bottom for space between other elements on the lists and on the left to create the indention. These may be adjusted as you wish. */
+}
+	.container {
+	width: 90%;
+	max-width: 1260px;/* a max-width may be desirable to keep this layout from getting too wide on a large monitor. This keeps line length more readable. IE6 does not respect this declaration. */
+	min-width: 780px;/* a min-width may be desirable to keep this layout from getting too narrow. This keeps line length more readable in the side columns. IE6 does not respect this declaration. */
+	background: #FFF;
+	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout. It is not needed if you set the .container's width to 100%. */
+}
+.footer {
+	padding: 10px 0;
+	background: #333333;
+	position: relative;/* this gives IE6 hasLayout to properly clear */
+	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
+	
+}
+.sidebar1 {
+	float: left;
+	width: 25%;
+	background: #BBBBBB;
+	padding-bottom: 10px;
+}
+.fltrt {  /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.fltlft { /* this class can be used to float an element left in your page. The floated element must precede the element it should be next to on the page. */
+	float: left;
+	margin-right: 8px;
+}
+.header {
+	background-color: #333333;
+}
+.listViewStly{
+	list-style:none;
+	
+	}
+.menubottomSTLY{
+	font-family: "Yu Gothic UI Semibold";
+	/*color:#333333;*/
+	font-size:15px;
+	/*background-color:*/
+	
+	
+	}	
+.adminmngrTXTBXcss{
+	width:200px ;
+	height:20px;
+	text-align:center;
+	font-family: "Yu Gothic UI Semibold";
+	
+	
+	}
+	
+    .Cuntry{
+	width:250px ;
+	height:30px;
+	text-align:center;
+	font-family: "Yu Gothic UI Semibold";
+	
+	
+	}
+	.inpnlebox{
+	height:20px;
+	width:250px;
+	text-align:center;
+	font-family: "Yu Gothic UI Semibold";
+	
+	}	
+	.admnbtn{
+	/*float-right:70%;*/
+	font-family: "Yu Gothic UI Semibold";
+	width:200px;
+	height:40px;
+	text-align:center;
+	background: #333333;
+	color: #FFF;
+	font-size:15px;
+	margin-left:49%;
+	border:none;
+			}
+	.admnbtnRST{
+	/*float-right:70%;*/
+	font-family: "Yu Gothic UI Semibold";
+	width:180px;
+	height:40px;
+	text-align:center;
+	background: #333333;
+	color: #FFF;
+	font-size:15px;
+	border:none;
+	
+		}
+	.admnlistloginfo{
+	/*float-right:70%;*/
+	font-family: "Yu Gothic UI Semibold";
+	width:200px;
+	height:40px;
+	text-align:center;
+	background: #333333;
+	color: #FFF;
+	font-size:15px;
+	margin-left:5%;
+	border:none;
+			}
+	.admnlistlogout{
+	/*float-right:70%;*/
+	font-family: "Yu Gothic UI Semibold";
+	width:200px;
+	height:40px;
+	text-align:center;
+	background: #333333;
+	color: #FFF;
+	font-size:15px;
+	margin-left:5%;
+	border:none;
+			}
+	.ADD{
+	/*float-right:70%;*/
+	font-family: "Yu Gothic UI Semibold";
+	width:180px;
+	height:40px;
+	text-align:center;
+	background: #333333;
+	color: #FFF;
+	font-size:15px;
+	margin-left:5%;
+	border:none;
+			}	
+	.DELETE{
+	/*float-right:70%;*/
+	font-family: "Yu Gothic UI Semibold";
+	width:200px;
+	height:40px;
+	text-align:center;
+	background: #333333;
+	color: #FFF;
+	font-size:15px;
+	margin-left:5%;
+	border:none;
+			}
+	.SEARCH{
+	/*float-right:70%;*/
+	font-family: "Yu Gothic UI Semibold";
+	width:180px;
+	height:40px;
+	text-align:center;
+	background: #333333;
+	color: #FFF;
+	font-size:15px;
+	margin-left:5%;
+	border:none;
+			}
+	.LIST{
+	/*float-right:70%;*/
+	font-family: "Yu Gothic UI Semibold";
+	width:180px;
+	height:40px;
+	text-align:center;
+	background: #333333;
+	color: #FFF;
+	font-size:15px;
+	border:none;
+			}
+	.listtable{
+		margin-left:5%;
+		
+		}	
+			.table2 {
+  border-collapse: collapse;
+}
+.LOG_OUT
+{
+	margin-left:60%;
+	text-align:center;
+	
+}
+.DASHTABLE{
+	margin-left:3%;
+	width:15%;
+	}
+.footerbar {
+	
+	padding: 10px 0;
+	position: relative;/* this gives IE6 hasLayout to properly clear */
+	clear: both;
+	background-color:#CCCCCC;
+	text-align:center;
+	font-family: "Yu Gothic UI Semibold";
+	font-size:15px;
+}																				
+</style>	

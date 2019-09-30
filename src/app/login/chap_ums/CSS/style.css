@@ -1,0 +1,518 @@
+<style type="text/css">
+body {
+	}
+
+.login
+{
+	width: 480px;
+	height: 490px;
+	 margin: auto;
+	background-color: #333333;
+	border-radius: 20px;
+		}
+.title
+{
+	margin-left: 129px;
+	font-size: 28px;
+	font-family: "Yu Gothic UI Semibold";
+	text-align: center;
+	padding-top: 45px;
+	padding-bottom: 45px;
+	padding-right: 100px;
+	color: #F0F0F0;
+	
+			}
+.logo
+{
+	
+	float: left;
+	
+}	
+   
+.backcon
+{
+	background-color: #BBBBBB;
+	height: 240px;
+	
+}
+.API_ICONfield
+{
+	padding-left: 95px;
+	padding-top:10px;
+	
+}
+.API_BUTTON_STYLE
+{
+	
+
+	
+	
+	}
+.facebookAPI
+	{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	margin-left:30px;
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/facebook50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+
+	}
+.gmailAPI
+	{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	margin-left:30px;
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/gmail50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+	
+}
+.linkedinAPI{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	margin-left:30px;
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/linkedin50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+	}
+	
+.butonfield{
+	padding-top: 15px;
+	padding-right:125px;
+	padding-bottom: 20px;
+	padding-left: 115px;
+
+	
+	
+	}
+.passwordfield{
+	padding-top: 10px;
+	padding-right: 90px;
+	padding-bottom: 30px;
+	padding-left: 90px;
+	
+	}
+.emailfield{
+	
+	padding-top: 10px;
+	padding-right: 90px;
+	padding-bottom: 30px;
+	padding-left: 90px;
+
+		}
+.emailboxfield{
+	width: 300px;
+	height: 30px;
+	float: inherit;
+	border-radius: 20px;
+	text-align:center;
+	font-size:17px;
+	border: 0;
+			
+	}
+	.passwordboxfield
+	{
+	width: 300px;
+	height: 30px;
+	float: inherit;
+	border-radius: 20px;
+	text-align:center;
+	font-size:17px;
+	border: 0;
+		
+		}	
+.btnstyle{
+	width: 100px;
+	height: 50px;
+	border-radius: 20px;
+	font-size: 17px;
+	font-family: "Yu Gothic UI Semibold";
+	color: #DDDDDD;
+	background-color: #333333;
+	border:none;
+	margin-left:10px;
+	
+	
+			
+			}
+.btnstyle:hover{
+	background-color: #DDDDDD;
+	border:none;
+	font-size: 17px;
+	font-family: "Yu Gothic UI Semibold";
+	color: #333333;
+	
+	}	
+	
+  /***********************************************************************************************/
+  /**********************MOBILE CSS********************/
+	
+	/**********************MOBILE CSS********************/
+	
+	@media (min-width: 481px) and (max-width: 767px)  {
+		  
+	body{
+			
+		}
+  /* For mobile phones: */
+  .login
+{
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:auto;
+	margin-top:10%;
+	background-color: #333333;
+	border-radius: 10px;
+	height:100%;
+	width:95%;
+		}
+.title
+{
+	margin-left: 129px;
+	font-size: 28px;
+	font-family: "Yu Gothic UI Semibold";
+	text-align: center;
+	padding-top: 45px;
+	padding-bottom: 45px;
+	padding-right: 50px;
+	color: #F0F0F0;
+	
+			}
+.logo
+{
+	
+	float: left;
+	
+}	
+   
+.backcon
+{
+	background-color: #BBBBBB;
+	height: auto;
+	
+}
+.API_ICONfield
+{
+	padding-left: 40px;
+	padding-top:20px;
+	padding-bottom:10px;
+	padding-right: 20px;
+}
+		
+.facebookAPI
+	{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	/*margin-left:20px;*/
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/facebook50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+
+	}
+.gmailAPI
+	{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	/*margin-left:20px;*/
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/gmail50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+	
+}
+.linkedinAPI{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	/*margin-left:20px;*/
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/linkedin50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+	}
+	
+.butonfield{
+
+	/*padding-right:30px;*/
+	padding-bottom: 20px;
+	padding-left: 30px;
+margin-left:30px;
+}
+.passwordfield{
+	padding-top: 10px;
+	padding-right: initial;
+	padding-bottom: 30px;
+	padding-left:20px;
+
+	
+	}
+.emailfield{
+	
+	padding-top: 30px;
+	padding-right: initial;
+	padding-bottom: 30px;
+	padding-left:20px;
+
+		}
+.emailboxfield{
+	width: 90%;
+	height: 50px;
+	float: inherit;
+	border-radius: 20px;
+	text-align:center;
+	font-size:17px;
+	border: 0;
+			
+	}
+	.passwordboxfield
+	{
+	width: 90%;
+	height: 50px;
+	float: inherit;
+	border-radius: 20px;
+	text-align:center;
+	font-size:17px;
+	border: 0;
+		
+		}	
+.btnstyle{
+	width: 100px;
+	height: 60px;
+	border-radius: 20px;
+	font-size: 17px;
+	font-family: "Yu Gothic UI Semibold";
+	color: #DDDDDD;
+	background-color: #333333;
+	border:none;
+	margin-left:10px;
+	
+	
+			
+			}
+.btnstyle:hover{
+	background-color: #DDDDDD;
+	border:none;
+	font-size: 17px;
+	font-family: "Yu Gothic UI Semibold";
+	color: #333333;
+	
+	}	
+  
+  }  
+  
+  
+ /***********************************************************************************************/
+  @media (min-width: 320px) and (max-width: 480px) {
+	  
+	  
+	body{
+			
+		}
+  /* For mobile phones: */
+  .login
+{
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:auto;
+	margin-top:10%;
+	background-color: #333333;
+	border-radius: 10px;
+	height:100%;
+	width:95%;
+		}
+.title
+{
+	margin-left: 129px;
+	font-size: 28px;
+	font-family: "Yu Gothic UI Semibold";
+	text-align: center;
+	padding-top: 45px;
+	padding-bottom: 45px;
+	padding-right: 50px;
+	color: #F0F0F0;
+	
+			}
+.logo
+{
+	
+	float: left;
+	
+}	
+   
+.backcon
+{
+	background-color: #BBBBBB;
+	height: auto;
+	
+}
+.API_ICONfield
+{
+	padding-left: 20px;
+	padding-top:20px;
+	padding-bottom:10px;
+	padding-right: 20px;
+}
+		
+.facebookAPI
+	{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	/*margin-left:20px;*/
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/facebook50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+
+	}
+.gmailAPI
+	{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	/*margin-left:20px;*/
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/gmail50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+	
+}
+.linkedinAPI{
+	width:50px;
+	height:50px;
+	border-radius: 30px;
+	/*margin-left:20px;*/
+	background-color: #333;
+	background-size: auto;
+	background-image: url(../logo/icon/linkedin50x50.png);
+	background-position: center;
+	background-origin: content-box;
+	vertical-align: central;
+	word-spacing: normal;
+	border: 0;
+	}
+	
+.butonfield{
+
+	padding-right:20px;
+	padding-bottom: 20px;
+	padding-left: 20px;
+margin-left:20px;
+}
+.passwordfield{
+	padding-top: 10px;
+	padding-right: initial;
+	padding-bottom: 30px;
+	padding-left:20px;
+
+	
+	}
+.emailfield{
+	
+	padding-top: 30px;
+	padding-right: initial;
+	padding-bottom: 30px;
+	padding-left:20px;
+
+		}
+.emailboxfield{
+	width: 90%;
+	height: 50px;
+	float: inherit;
+	border-radius: 20px;
+	text-align:center;
+	font-size:17px;
+	border: 0;
+			
+	}
+	.passwordboxfield
+	{
+	width: 90%;
+	height: 50px;
+	float: inherit;
+	border-radius: 20px;
+	text-align:center;
+	font-size:17px;
+	border: 0;
+		
+		}	
+.btnstyle{
+	width: 100px;
+	height: 60px;
+	border-radius: 20px;
+	font-size: 17px;
+	font-family: "Yu Gothic UI Semibold";
+	color: #DDDDDD;
+	background-color: #333333;
+	border:none;
+	margin-left:10px;
+	
+	
+			
+			}
+.btnstyle:hover{
+	background-color: #DDDDDD;
+	border:none;
+	font-size: 17px;
+	font-family: "Yu Gothic UI Semibold";
+	color: #333333;
+	
+	}	
+  
+  }  
+  
+
+  
+
+  
+  /***********************************************************************************************/
+  
+  
+  
+  
+  
+		
+		
+</style>

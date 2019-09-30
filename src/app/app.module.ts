@@ -8,7 +8,13 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicGestureConfig } from "./gestures/ionic-gesture-config";
 import { DragulaModule } from "ng2-dragula";
+
 import { HttpClientModule } from "@angular/common/http";
+import { HttpModule } from "@angular/http";
+import { InterceptorModule } from './interceptor.module';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { File } from '@ionic-native/file/ngx';
@@ -54,6 +60,9 @@ import { OpenProjectPageModule } from './open-project/open-project.module';
     TutorialPageModule,
     OpenProjectPageModule,
     HttpClientModule,
+    InterceptorModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     StatusBar,

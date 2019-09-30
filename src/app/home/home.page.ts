@@ -7,6 +7,11 @@ import { File } from '@ionic-native/file/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { HttpClient } from '@angular/common/http';
+import { DragulaService } from "ng2-dragula";
+import { from } from "rxjs";
+import { type } from "os";
+
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
 import { InputPage } from "../symbol-dialogs/input/input.page";
@@ -32,10 +37,7 @@ import { Stop } from "../classes/Stop";
 import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
-import { DragulaService } from "ng2-dragula";
-import { from } from "rxjs";
 import { OpenProjectPage } from "../open-project/open-project.page";
-import { type } from "os";
 
 @Component({
   selector: "app-home",
@@ -61,6 +63,8 @@ export class HomePage {
   dupSymbol: any;
 
   paste_sym_buffer: Array<Declare | Input | Output | Process | IfCase | ForLoop | WhileLoop | DoWhileLoop | Comment>;
+
+  items: Array<any> = [];
 
   constructor(
     public symbolOptionsAS: ActionSheetController,

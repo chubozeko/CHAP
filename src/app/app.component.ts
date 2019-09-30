@@ -14,8 +14,6 @@ import { Flowchart } from './classes/Flowchart';
 export class AppComponent {
 
   flowchart: Flowchart;
-  temp: HomePage;
-
   splash = true;
 
   constructor(
