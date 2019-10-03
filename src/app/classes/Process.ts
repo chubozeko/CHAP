@@ -40,7 +40,6 @@ export class Process {
   }
 
   parseExpression(variables: any[], dataType: string) {
-
     let strSplit = [], values = [], operators = [], parsedValues = [];
     let tempArrIndex: number, result;
     // let op = '', oper1, oper2, j = 0;
@@ -51,7 +50,6 @@ export class Process {
       (this.expression.indexOf('(') != -1) || (this.expression.indexOf(')') != -1)) {
       // Split expression by operators
       strSplit = this.expression.split(/[\+\-\*\/\%\(\)]/g);
-
       // Stored operators in an Array called "operators"
       operators = this.expression.match(/[\+\-\*\/\%\(\)]/g);
       // Store operands in an Array called "values"

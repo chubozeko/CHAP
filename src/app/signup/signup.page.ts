@@ -110,8 +110,8 @@ export class SignupPage implements OnInit {
         message: 'Processing please wait...',
       });
       loader.present().then(() => {
-        //this.http.post('https://chapweb.000webhostapp.com/register.php', data, {})
-        this.http.post('http://localhost:80/chap_2/register.php', data, {})
+        this.http.post('https://chapweb.000webhostapp.com/register.php', data, {})
+          //this.http.post('http://localhost:80/chap_2/register.php', data, {})
           .map((res: any) => res)
           .subscribe(async res => {
             loader.dismiss();

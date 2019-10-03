@@ -117,8 +117,8 @@ export class LoginPage implements OnInit {
       });
 
       loader.present().then(() => {
-        //this.http.post('https://chapweb.000webhostapp.com/login.php', data, {})
-        this.http.post('http://localhost:80/chap_2/login.php', data, {})
+        this.http.post('https://chapweb.000webhostapp.com/login.php', data, {})
+          //this.http.post('http://localhost:80/chap_2/login.php', data, {})
           .map((res: any) => res)
           .subscribe(async res => {
             console.log(res);
@@ -127,7 +127,7 @@ export class LoginPage implements OnInit {
             if (res == "Your Login success") {
               let alert = await this.alertCtrl.create({
                 header: "CONGRATS",
-                message: (res),
+                message: "Your Login was Successful",
                 buttons: ['OK']
               });
               alert.present();

@@ -15,6 +15,7 @@ export class AppComponent {
 
   flowchart: Flowchart;
   splash = true;
+  //splash = false;
 
   constructor(
     private platform: Platform,

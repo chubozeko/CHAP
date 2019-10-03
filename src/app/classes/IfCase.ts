@@ -69,9 +69,7 @@ export class IfCase {
       for (let j = 0; j < variables.length; j++) {
         if (variables[j].getIsArray()) {
           let tempVarName = exps[i].split('[');
-          if (
-            tempVarName[0] == variables[j].getName()
-          ) {
+          if (tempVarName[0] == variables[j].getName()) {
             isVarDeclared = true;
             // Getting the index of the array
             let tempIn = tempVarName[1].replace(']', '');
@@ -84,34 +82,37 @@ export class IfCase {
                 }
               }
             }
-            if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].variable[tempArrIndex]));
-            else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].variable[tempArrIndex]));
-            else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].variable[tempArrIndex].toString());
-            else if (variables[j].getDataType() == 'Boolean') {
-              if (variables[j].variable[tempArrIndex] == "true") exps.splice(i, 1, true);
-              if (variables[j].variable[tempArrIndex] == "false") exps.splice(i, 1, false);
-            }
+            exps.splice(i, 1, variables[j].variable[tempArrIndex]);
+            // if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].variable[tempArrIndex]));
+            // else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].variable[tempArrIndex]));
+            // else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].variable[tempArrIndex].toString());
+            // else if (variables[j].getDataType() == 'Boolean') {
+            //   if (variables[j].variable[tempArrIndex] == "true") exps.splice(i, 1, true);
+            //   if (variables[j].variable[tempArrIndex] == "false") exps.splice(i, 1, false);
+            // }
           }
         } else {
           if (variables[j].getName() == exps[i]) {
             isVarDeclared = true;
-            if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].value));
-            else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].value));
-            else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].value.toString());
-            else if (variables[j].getDataType() == 'Boolean') {
-              if (variables[j] == "true") exps.splice(i, 1, true);
-              if (variables[j] == "false") exps.splice(i, 1, false);
-            }
-          } else {
-            let v = exps[i];
-            let temp: any;
-            if (!isNaN(parseInt(v)) || !isNaN(parseFloat(v))) {
-              let a = v.split('.');
-              if (a.length > 1) temp = parseFloat(v); else temp = parseInt(v);
-            } else if (v == 'true') { temp = true; }
-            else if (v == 'false') { temp = false; }
-            else { temp = v.toString(); }
-            exps.splice(i, 1, temp);
+            // if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].value));
+            // else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].value));
+            // else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].value.toString());
+            // else if (variables[j].getDataType() == 'Boolean') {
+            //   if (variables[j] == "true") exps.splice(i, 1, true);
+            //   if (variables[j] == "false") exps.splice(i, 1, false);
+            // }
+            exps.splice(i, 1, variables[j].value);
+          }
+          else {
+            // let v = exps[i];
+            // let temp: any;
+            // if (!isNaN(parseInt(v)) || !isNaN(parseFloat(v))) {
+            //   let a = v.split('.');
+            //   if (a.length > 1) temp = parseFloat(v); else temp = parseInt(v);
+            // } else if (v == 'true') { temp = true; }
+            // else if (v == 'false') { temp = false; }
+            // else { temp = v.toString(); }
+            // exps.splice(i, 1, temp);
           }
         }
       }
