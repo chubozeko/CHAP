@@ -83,7 +83,10 @@ if($email != "" AND $pass != "") {
       if($control_Con) {
         # ADMIN PANEL CONNECTION
         # header("Location: ADMINPANEL.php");
-        $response = "Open ADMINPANEL.php";
+        # $response = "Open ADMINPANEL.php";
+        $response->message = "Open ADMINPANEL.php";
+        $response->username = $CHECK_ADMINE;
+        $response->password = $CHECK_ADMINP;
       }
       else {
         ## PART 2: EMAIL AND PASSWORD IS INVALID

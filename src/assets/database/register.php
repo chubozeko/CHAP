@@ -25,7 +25,7 @@ if (isset($data)) {
   $request = json_decode($data);
   $usrname = $request->fullname;
   $srname = $request->surname;
-  $email = $request->email;
+  $entrmail = $request->email;
   $cnfrmpass = $request->confirmpass;
   $pass = $request->password;
   $country = $request->cntry;
@@ -34,13 +34,13 @@ if (isset($data)) {
 
 # ------------------------------------------------------------
 
-//error_reporting(0);
+//error_reporting(0); $entrmail != "" AND
 $error = false;
 
 $email = htmlspecialchars($entrmail);
 
 // Check if form element is NOT  empty
-if ($usrname != "" AND $srname != "" AND $gender != "" AND $country != "" AND $entrmail != "" AND $email != "" AND $pass != "" AND $cnfrmpass != "") {
+if ($usrname != "" AND $srname != "" AND $gender != "" AND $country != "" AND $email != "" AND $pass != "" AND $cnfrmpass != "") {
   // Check if username and surname has less than three characters
 	if (strlen($usrname) < 3 AND strlen($srname) < 3) {
 		$error = True;
@@ -63,7 +63,7 @@ if ($usrname != "" AND $srname != "" AND $gender != "" AND $country != "" AND $e
   }
 	else {
      // Confirm if password is same with the confirm password field
-	   if($entrpass == $cnfrmpass) {
+	   if($pass == $cnfrmpass) {
 		     // User Registration Code Here
          $password = hash('sha256', $pass);
          $sql = "INSERT INTO user_info (user_ip,usrname,usrsurname,email,password,country,gender)

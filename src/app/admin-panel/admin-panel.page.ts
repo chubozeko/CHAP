@@ -11,10 +11,10 @@ export class AdminPanelPage implements OnInit {
 
   ngOnInit() {
     // this.loadScript("");
-    this.loadScript("https://www.gstatic.com/charts/loader.js");
+    //this.loadScript("https://www.gstatic.com/charts/loader.js");
+
+    alert('Opening ADMIN PANEL...');
   }
-
-
 
   public loadScript(url: string) {
     const body = <HTMLDivElement>document.body;

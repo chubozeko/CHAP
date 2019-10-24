@@ -6,23 +6,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home', loadChildren: './home/home.module#HomePageModule' },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
-  { path: 'CodeViewer', loadChildren: './code-viewer/code-viewer.module#CodeViewerPageModule' },
-  { path: 'About', loadChildren: './about/about.module#AboutPageModule' },
-  { path: 'Tutorial', loadChildren: './tutorial/tutorial.module#TutorialPageModule' },
-  { path: 'open-project', loadChildren: './open-project/open-project.module#OpenProjectPageModule' },
   { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' },
   { path: 'admin-panel', loadChildren: './admin-panel/admin-panel.module#AdminPanelPageModule' },
-
-  // { path: 'process', loadChildren: './symbol-dialogs/process/process.module#ProcessPageModule' },
-  // { path: 'declare', loadChildren: './symbol-dialogs/declare/declare.module#DeclarePageModule' },
-  // { path: 'input', loadChildren: './symbol-dialogs/input/input.module#InputPageModule' },
-  // { path: 'output', loadChildren: './symbol-dialogs/output/output.module#OutputPageModule' },
-  // { path: 'if-else', loadChildren: './symbol-dialogs/if-else/if-else.module#IfElsePageModule' },
-  // { path: 'for-loop', loadChildren: './symbol-dialogs/for-loop/for-loop.module#ForLoopPageModule' },
-  // { path: 'while-loop', loadChildren: './symbol-dialogs/while-loop/while-loop.module#WhileLoopPageModule' },
-  // { path: 'do-while-loop', loadChildren: './symbol-dialogs/do-while-loop/do-while-loop.module#DoWhileLoopPageModule' },
-  // { path: 'operation', loadChildren: './symbol-dialogs/operation/operation.module#OperationPageModule' },
-  // { path: 'comment', loadChildren: './symbol-dialogs/comment/comment.module#CommentPageModule' }
+  // { path: 'open-project', loadChildren: './open-project/open-project.module#OpenProjectPageModule' }
 ];
 
 @NgModule({
