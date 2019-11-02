@@ -20,6 +20,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 import { CommentPageModule } from './symbol-dialogs/comment/comment.module';
@@ -72,7 +73,7 @@ import { AdminPanelPageModule } from './admin-panel/admin-panel.module';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
-    Chooser, File, FileOpener, FileTransfer, DocumentViewer, Toast
+    Chooser, File, FileOpener, FileTransfer, FilePath, DocumentViewer, Toast
   ],
   bootstrap: [AppComponent]
 })

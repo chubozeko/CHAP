@@ -71,16 +71,7 @@ export class LoginPage implements OnInit {
   }
 
   openAdminPanel() {
-    // Enable preflight requests for all routes
-    // this.http.options('*', cors(this.corsOptions));
-
-    // this.http.get('http://localhost:80/chap_ums/ADMINPANEL.php', cors(this.corsOptions))
-    //   .map((res: any) => res)
-    //   .subscribe(async res => {
-    //     console.log(res);
-    //   });
-    window.open('https://htcprojecttest.000webhostapp.com', '_self');
-    //this.navCtrl.navigateRoot('/admin-panel');
+    window.open('http://admin.chapchap.ga', '_self');
   }
 
   signUpToCHAP(e) {
@@ -115,7 +106,7 @@ export class LoginPage implements OnInit {
       };
 
       let loader = await this.loading.create({
-        message: 'Processing please wait...',
+        message: 'Processing...',
       });
 
       loader.present().then(() => {
@@ -142,7 +133,6 @@ export class LoginPage implements OnInit {
                 buttons: ['OK']
               });
               alert.present();
-              // this.navCtrl.navigateRoot('/admin-panel');
               this.openAdminPanel();
             } else {
               let alert = await this.alertCtrl.create({

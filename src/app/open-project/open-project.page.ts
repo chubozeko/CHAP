@@ -4,6 +4,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 
@@ -26,6 +27,7 @@ export class OpenProjectPage implements OnInit {
     public file: File,
     public ft: FileTransfer,
     public fileOpener: FileOpener,
+    public filePath: FilePath,
     public document: DocumentViewer,
     public chooser: Chooser,
     public toast: Toast) {
@@ -63,6 +65,7 @@ export class OpenProjectPage implements OnInit {
 
     this.chapFile = e.dataTransfer.files[0];
     this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
+    this.dropzoneText += 'data: ' + this.chapFile.data + '\n';
     this.dropzoneText += 'Last Modified: ' + this.chapFile.lastModifiedDate + '\n';
     this.dropzoneText += 'File Size: ' + this.chapFile.size + ' bytes';
   }
@@ -70,11 +73,25 @@ export class OpenProjectPage implements OnInit {
   public openLocalChap() {
     this.chooser.getFile('*/*')
       .then(file => {
+        this.toast.show('Open File', '2000', 'bottom');
         this.chapFile = file;
         this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
-        this.dropzoneText += 'datauri: ' + file.dataURI + '\n';
+        //this.dropzoneText += 'Last Modified: ' + this.chapFile.lastModifiedDate + '\n';
+        //this.dropzoneText += 'File Size: ' + this.chapFile.size + ' bytes';
+        //this.dropzoneText += 'datauri: ' + this.chapFile.dataURI + '\n';
+        this.dropzoneText += 'data: ' + this.chapFile.data + '\n';
       })
       .catch(e => console.log(e));
+
+    // this.fileOpener.showOpenWithDialog('/Download/Sample.chap', '*/*')
+    //   .then((file) => {
+    //     console.log('Open File');
+    //     this.toast.show('Open File', '1000', 'bottom');
+    //   })
+    //   .catch((e) => {
+    //     console.log('Error opening file', e);
+    //     this.toast.show(e, '1000', 'bottom');
+    //   });
   }
 
   public applyAndCloseModal() { this.modal.dismiss(this.chapFile); }
