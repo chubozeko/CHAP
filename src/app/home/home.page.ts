@@ -38,6 +38,7 @@ import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
 import { OpenProjectPage } from "../open-project/open-project.page";
+import { toBase64String } from "@angular/compiler/src/output/source_map";
 
 @Component({
   selector: "app-home",
@@ -61,6 +62,7 @@ export class HomePage {
   symbols = SYMBOLS;
   newSymbol: any;
   dupSymbol: any;
+  saveFolder = 'CHAP Project Files';
 
   paste_sym_buffer: Array<Declare | Input | Output | Process | IfCase | ForLoop | WhileLoop | DoWhileLoop | Comment>;
 
@@ -131,6 +133,17 @@ export class HomePage {
     // else if (this.platform.is("ios")) { this.fileName = 'ios'; }
     // else if (this.platform.is("desktop")) { this.fileName = 'desktop'; }
     // else if (this.platform.is("pwa")) { this.fileName = 'pwa'; }
+
+    // Creating Save Folder if directory does not exist
+    this.file.createDir(
+      `${this.file.externalRootDirectory}`,
+      this.saveFolder,
+      false
+    ).then(res => {
+      console.log('Directory exists');
+    }).catch(err => {
+      console.log('Directory does not exist');
+    });
   }
 
   public subscribeToDragula() {
@@ -1621,25 +1634,8 @@ export class HomePage {
     modal.onDidDismiss().then(data => {
       if (data.data != undefined) {
         let chapFileName = data.data.name.replace('.chap', '');
-        let fr = new FileReader();
-        //let blob = new Blob([data.data.dataURI]); //, { type: 'application/octet-stream' });
-        //fr.readAsBinaryString(data.data.toBlob());
-        fr.readAsText(data.data);
-        console.log(fr.result);
-        fr.onloadend = () => {
-          this.loadProject(chapFileName, fr.result);
-        };
+        this.loadProject(chapFileName, data.data.data);
       }
-      // this.chooser.getFile('*/*') //"application/chap")
-      //   .then(uri => {
-      //     this.toast.show(uri.data.toString(), '5000', 'center').subscribe(
-      //       toast => {
-      //         console.log(toast);
-      //       }
-      //     );
-      //     console.log(uri);
-      //   })
-      //   .catch(e => console.log(e));
     });
     await modal.present();
   }
@@ -1762,6 +1758,12 @@ export class HomePage {
     let fName = document.getElementById('fileName') as HTMLInputElement;
     fName.value = this.fileName;
     this.toggleSymbolsFAB();
+
+    this.toast.show('\"' + chapFileName + '.chap\" has successfully opened.', '3000', 'bottom').subscribe(
+      toast => {
+        console.log(toast);
+      }
+    );
   }
 
   public loadLoopSymbols(dataSyms, loopBlock) {
@@ -1883,7 +1885,14 @@ export class HomePage {
     } else {
       fileName = this.fileName + '.chap';
       flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
-      this.saveTextAsFile(flowchartJSON, fileName);
+
+      if (this.platform.is("android")) {
+        this.saveToAndroid(flowchartJSON, fileName);
+      } else if (this.platform.is("ios")) {
+        this.saveToIOS(flowchartJSON, fileName);
+      } else if (this.platform.is("desktop")) {
+        this.saveTextAsFile(flowchartJSON, fileName);
+      }
     }
   }
 
@@ -1897,6 +1906,8 @@ export class HomePage {
       e = document.createEvent('MouseEvents'),
       a = document.createElement('a');
 
+    console.log('base64:', btoa(data));
+
     // FOR IE:
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(blob, filename);
@@ -1908,6 +1919,35 @@ export class HomePage {
       e.initEvent('click', true, false);
       a.dispatchEvent(e);
     }
+  }
+
+  public saveToAndroid(fileData, filename) {
+    // this.file.createDir(
+    //   `${this.file.externalRootDirectory}`,
+    //   this.saveFolder,
+    //   false
+    // ).then(res => {
+    //   console.log('Directory exists');
+    // }).catch(err => {
+    //   console.log('Directory does not exist');
+    // });
+
+    this.file.writeFile(
+      `${this.file.externalRootDirectory}/${this.saveFolder}`,
+      `${filename}`,
+      fileData,
+      { replace: true, append: false }
+    ).then(res => {
+      this.toast.show('The project \"' + filename + '\" has successfully saved.', '3000', 'bottom').subscribe(
+        toast => {
+          console.log(toast);
+        }
+      );
+    });
+  }
+
+  public saveToIOS(flowchartJSON, filename) {
+
   }
 
   public debugProgram(e) {

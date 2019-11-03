@@ -49,89 +49,62 @@ export class OpenProjectPage implements OnInit {
   public dragEnter(e) {
     e.preventDefault();
     e.target.style.background = "#9CDCFE";
+    e.target.style.color = "#777777";
   }
 
   public dragLeave(e) {
     e.preventDefault();
     e.target.style.background = "#fff";
-    e.target.style.color = "#ddd";
+    e.target.style.color = "#777777";
   }
 
   public dropped(e) {
     e.preventDefault();
     e.target.style.background = "#fff";
-    e.target.style.color = "#333";
-    e.target.style.fontSize = "12pt";
+    e.target.style.color = "#777777";
+    e.target.style.fontSize = "18pt";
 
-    this.chapFile = e.dataTransfer.files[0];
-    this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
-    this.dropzoneText += 'data: ' + this.chapFile.data + '\n';
-    this.dropzoneText += 'Last Modified: ' + this.chapFile.lastModifiedDate + '\n';
-    this.dropzoneText += 'File Size: ' + this.chapFile.size + ' bytes';
+    let openFile = e.dataTransfer.files[0];
+    console.log(openFile);
+
+    let fr = new FileReader();
+    fr.readAsText(openFile);
+    fr.onloadend = () => {
+      this.chapFile = {
+        name: openFile.name,
+        data: fr.result,
+        dataUri: openFile.dataURI,
+        uri: openFile.uri,
+        mediaType: openFile.mediaType
+      };
+
+      this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
+      //this.dropzoneText += 'data: ' + this.chapFile.data + '\n';
+    };
   }
 
   public openLocalChap() {
     this.chooser.getFile('*/*')
       .then(file => {
-        this.toast.show('Open File', '2000', 'bottom');
-        this.chapFile = file;
+        let openFile = file;
+        var str = String.fromCharCode.apply(null, openFile.data);
+
+        this.chapFile = {
+          name: openFile.name,
+          data: str,
+          dataUri: openFile.dataURI,
+          uri: openFile.uri,
+          mediaType: openFile.mediaType
+        };
+
         this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
-        //this.dropzoneText += 'Last Modified: ' + this.chapFile.lastModifiedDate + '\n';
-        //this.dropzoneText += 'File Size: ' + this.chapFile.size + ' bytes';
-        //this.dropzoneText += 'datauri: ' + this.chapFile.dataURI + '\n';
-        this.dropzoneText += 'data: ' + this.chapFile.data + '\n';
+        //this.dropzoneText += 'data: ' + this.chapFile.data + '\n';
       })
       .catch(e => console.log(e));
-
-    // this.fileOpener.showOpenWithDialog('/Download/Sample.chap', '*/*')
-    //   .then((file) => {
-    //     console.log('Open File');
-    //     this.toast.show('Open File', '1000', 'bottom');
-    //   })
-    //   .catch((e) => {
-    //     console.log('Error opening file', e);
-    //     this.toast.show(e, '1000', 'bottom');
-    //   });
   }
 
   public applyAndCloseModal() { this.modal.dismiss(this.chapFile); }
 
   public closeModal() { this.modal.dismiss(); }
-
-  /* File Opener Tutorial */
-  // public openLocalChap() {
-  //   let filePath = this.file.applicationDirectory + 'www/assets';
-
-  //   if (this.platform.is('android')) {
-  //     let fakeName = Date.now();
-  //     this.file.copyFile(filePath, 'new2.chap', this.file.applicationDirectory, `${fakeName}.chap`)
-  //       .then(result => {
-  //         //this.fileOpener.open(result.nativeURL, 'application/chap');
-  //         this.chapFile = result;
-  //         console.log('Open ', result);
-  //       });
-  //   } else {
-  //     const options: DocumentViewerOptions = {
-  //       title: 'My CHAP'
-  //     }
-  //     //this.document.viewDocument(`${filePath}/new2.chap`, 'application/chap', options);
-  //   }
-  // }
-
-  // public downloadAndOpenChap() {
-  //   let downloadUrl = '';
-  //   let path = this.file.dataDirectory;
-  //   const transfer = this.ft.create();
-
-  //   transfer.download(downloadUrl, `${path}myfile.chap`).then(entry => {
-  //     let url = entry.toURL();
-
-  //     if (this.platform.is('ios')) {
-  //       this.document.viewDocument(url, 'application/chap', {});
-  //     } else {
-  //       this.fileOpener.open(url, 'application/chap');
-  //     }
-  //   });
-  // }
 
 }
