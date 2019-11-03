@@ -1922,16 +1922,6 @@ export class HomePage {
   }
 
   public saveToAndroid(fileData, filename) {
-    // this.file.createDir(
-    //   `${this.file.externalRootDirectory}`,
-    //   this.saveFolder,
-    //   false
-    // ).then(res => {
-    //   console.log('Directory exists');
-    // }).catch(err => {
-    //   console.log('Directory does not exist');
-    // });
-
     this.file.writeFile(
       `${this.file.externalRootDirectory}/${this.saveFolder}`,
       `${filename}`,
