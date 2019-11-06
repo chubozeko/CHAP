@@ -116,11 +116,9 @@ export class LoginPage implements OnInit {
           .map((res: any) => res)
           .subscribe(async res => {
             console.log(res);
-            let resJson = JSON.parse(res);
-            let mes = resJson["message"];
             loader.dismiss();
 
-            if (mes == "Your Login success") {
+            if (res.message == "Your Login success") {
               let alert = await this.alertCtrl.create({
                 header: "CONGRATS",
                 message: "Your Login was Successful",
@@ -128,10 +126,10 @@ export class LoginPage implements OnInit {
               });
               alert.present();
               this.navCtrl.navigateRoot('/home');
-            } else if (mes == "Open Admin Panel") {
+            } else if (res.message == "Open ADMINPANEL.php") {
               let alert = await this.alertCtrl.create({
-                header: "ADMIN PANEL",
-                message: (mes),
+                header: "ADMIN LOGIN",
+                message: "Redirecting to Admin Panel...",
                 buttons: ['OK']
               });
               alert.present();
@@ -139,7 +137,7 @@ export class LoginPage implements OnInit {
             } else {
               let alert = await this.alertCtrl.create({
                 header: "ERROR",
-                message: (mes),
+                message: (res.message),
                 buttons: ['OK']
               });
               alert.present();

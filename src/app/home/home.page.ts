@@ -134,16 +134,18 @@ export class HomePage {
     // else if (this.platform.is("desktop")) { this.fileName = 'desktop'; }
     // else if (this.platform.is("pwa")) { this.fileName = 'pwa'; }
 
-    // Creating Save Folder if directory does not exist
-    this.file.createDir(
-      `${this.file.externalRootDirectory}`,
-      this.saveFolder,
-      false
-    ).then(res => {
-      console.log('Directory exists');
-    }).catch(err => {
-      console.log('Directory does not exist');
-    });
+    // FOR ANDROID: Creating Save Folder if directory does not exist
+    if (this.platform.is("android")) {
+      this.file.createDir(
+        `${this.file.externalRootDirectory}`,
+        this.saveFolder,
+        false
+      ).then(res => {
+        console.log('Directory exists');
+      }).catch(err => {
+        console.log('Directory does not exist');
+      });
+    }
   }
 
   public subscribeToDragula() {

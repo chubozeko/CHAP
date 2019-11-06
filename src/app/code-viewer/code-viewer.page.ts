@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Flowchart } from '../classes/Flowchart';
-import { NavParams, ModalController, AlertController } from '@ionic/angular';
+import { NavParams, ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
+import { Toast } from '@ionic-native/toast/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-code-viewer',
@@ -17,8 +19,17 @@ export class CodeViewerPage implements OnInit {
   lineNumbers: string = '  ';
   flowchart: Flowchart;
   codeFileName: string = '';
+  saveFolder = 'CHAP Project Files';
 
-  constructor(public modal: ModalController, public navP: NavParams, public alertC: AlertController) {
+  constructor(
+    public modal: ModalController,
+    public navP: NavParams,
+    public alertC: AlertController,
+    private toastC: ToastController,
+    private file: File,
+    public platform: Platform,
+    public toast: Toast
+  ) {
     this.flowchart = navP.get('flowchart');
     this.programmingLang = 'PseudoCode';
   }
@@ -94,11 +105,11 @@ export class CodeViewerPage implements OnInit {
 
   public downloadCode() {
     if (this.programmingLang == 'PseudoCode') {
-      this.saveProject('.txt');
+      this.saveProject('Pseudo', '.txt');
     } else if (this.programmingLang == 'C++') {
-      this.saveProject('.cpp');
+      this.saveProject('C++', '.cpp');
     } else if (this.programmingLang == 'Java') {
-      this.saveProject('.java');
+      this.saveProject('Java', '.java');
     }
   }
 
@@ -122,7 +133,14 @@ export class CodeViewerPage implements OnInit {
           text: "OK",
           handler: data => {
             this.codeFileName = data.fileName;
-            this.saveTextAsFile(this.displayCode, this.codeFileName + fileType);
+
+            if (this.platform.is("android")) {
+              this.saveToAndroid(this.displayCode, this.codeFileName + fileType, fileType);
+            } else if (this.platform.is("ios")) {
+              this.saveToIOS(this.displayCode, this.codeFileName + fileType, fileType);
+            } else if (this.platform.is("desktop")) {
+              this.saveTextAsFile(this.displayCode, this.codeFileName + fileType);
+            }
           }
         }
       ]
@@ -132,15 +150,22 @@ export class CodeViewerPage implements OnInit {
     await alert.present();
   }
 
-  async saveProject(fileType: string) {
+  async saveProject(fileType: string, fileExtension: string) {
     let fileName;
     let fName = document.getElementById('fileName') as HTMLInputElement;
 
     if (fName.value == '') {
       await this.showSaveAlert(fileType);
     } else {
-      fileName = fName.value + fileType;
-      this.saveTextAsFile(this.displayCode, fileName);
+      fileName = fName.value + fileExtension;
+
+      if (this.platform.is("android")) {
+        this.saveToAndroid(this.displayCode, fileName, fileType);
+      } else if (this.platform.is("ios")) {
+        this.saveToIOS(this.displayCode, fileName, fileType);
+      } else if (this.platform.is("desktop")) {
+        this.saveTextAsFile(this.displayCode, fileName);
+      }
     }
   }
 
@@ -164,6 +189,38 @@ export class CodeViewerPage implements OnInit {
       e.initEvent('click', true, false);
       a.dispatchEvent(e);
     }
+  }
+
+  public saveToAndroid(displayCode: string, fileName: string, fileType: string) {
+    this.file.writeFile(
+      `${this.file.externalRootDirectory}/${this.saveFolder}`,
+      `${fileName}`,
+      displayCode,
+      { replace: true, append: false }
+    ).then(res => {
+      let fName = document.getElementById('fileName') as HTMLInputElement;
+      this.toast.show('The ' + fileType + ' code for \"' + fName.value + '\" has successfully saved.', '3000', 'bottom').subscribe(
+        toast => {
+          console.log(toast);
+        }
+      );
+    });
+  }
+
+  public saveToIOS(displayCode: string, fileName: string, fileType: string) {
+    this.file.writeFile(
+      `${this.file.externalRootDirectory}/${this.saveFolder}`,
+      `${fileName}`,
+      displayCode,
+      { replace: true, append: false }
+    ).then(res => {
+      let fName = document.getElementById('fileName') as HTMLInputElement;
+      this.toast.show('The ' + fileType + ' code for \"' + fName.value + '\" has successfully saved.', '3000', 'bottom').subscribe(
+        toast => {
+          console.log(toast);
+        }
+      );
+    });
   }
 
   public closeModal() { this.modal.dismiss(); }
