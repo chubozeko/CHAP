@@ -1,12 +1,12 @@
 import { Component, ViewChild, SystemJsNgModuleLoader, Injectable } from "@angular/core";
-import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController, ToastController, Platform } from "@ionic/angular";
+import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController, ToastController, Platform, NavController } from "@ionic/angular";
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
 import { File } from '@ionic-native/file/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DragulaService } from "ng2-dragula";
 import { from } from "rxjs";
 import { type } from "os";
@@ -80,7 +80,8 @@ export class HomePage {
     private http: HttpClient,
     private file: File,
     public platform: Platform,
-    public toast: Toast
+    public toast: Toast,
+    public navCtrl: NavController
     // public navParams: NavParams
   ) { }
 
@@ -112,6 +113,8 @@ export class HomePage {
     sFAB.addEventListener("click", e => this.toggleSymbolsFAB());
     // let printFC = document.getElementById("btn_printFlowchart");
     // printFC.addEventListener('click', (e) => this.printFlowchart());
+    let logOut = document.getElementById("btn_logOut");
+    logOut.addEventListener("click", e => this.logOut());
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
@@ -2024,6 +2027,48 @@ export class HomePage {
       e.initEvent('click', true, false);
       a.dispatchEvent(e);
     }
+  }
+
+  async logOut() {
+    let alert = await this.alertC.create({
+      header: "Log Out",
+      message: "Are you sure you want to log out?",
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Log Out');
+            var headers = new HttpHeaders();
+            headers.append("Accept", 'application/json');
+            headers.append('Content-Type', 'application/json');
+
+            this.http.post('http://www.chapchap.ga/logout.php', {}, {})
+              //this.http.post('https://chapweb.000webhostapp.com/logout.php', data, {})
+              //this.http.post('http://localhost:80/chap_2/logout.php', data, {})
+              .map((res: any) => res)
+              .subscribe(async res => {
+                console.log(res);
+
+                if (res.message == "Log Out") {
+                  this.navCtrl.navigateRoot('/login');
+                } else {
+                  let alert = await this.alertC.create({
+                    header: "ERROR",
+                    message: (res.message),
+                    buttons: ['OK']
+                  });
+                  alert.present();
+                }
+              });
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => { console.log('Cancel'); }
+        }]
+    });
+    alert.present();
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded

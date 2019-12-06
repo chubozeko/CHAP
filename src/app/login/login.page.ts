@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, NavController, AlertController, LoadingController } from '@ionic/angular';
+import { ModalController, NavController, AlertController, LoadingController, Platform } from '@ionic/angular';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SignupPage } from '../signup/signup.page';
 import 'rxjs/add/operator/map';
 import { RequestOptions } from '@angular/http';
+import { Toast } from '@ionic-native/toast/ngx';
 
 const cors = require('cors');
 
@@ -31,7 +32,9 @@ export class LoginPage implements OnInit {
     public formBuilder: FormBuilder,
     public navCtrl: NavController,
     private alertCtrl: AlertController,
-    public loading: LoadingController) {
+    public loading: LoadingController,
+    public platform: Platform,
+    public toast: Toast) {
 
     this.loginForm = this.formBuilder.group({
       email: new FormControl(''),
@@ -119,28 +122,52 @@ export class LoginPage implements OnInit {
             loader.dismiss();
 
             if (res.message == "Your Login success") {
-              let alert = await this.alertCtrl.create({
-                header: "CONGRATS",
-                message: "Your Login was Successful",
-                buttons: ['OK']
-              });
-              alert.present();
+              if (this.platform.is("android") || this.platform.is("ios")) {
+                this.toast.show('Login Successful!.', '3000', 'bottom').subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
+              } else {
+                let alert = await this.alertCtrl.create({
+                  header: "CONGRATS",
+                  message: "Login Successful!",
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
               this.navCtrl.navigateRoot('/home');
             } else if (res.message == "Open ADMINPANEL.php") {
-              let alert = await this.alertCtrl.create({
-                header: "ADMIN LOGIN",
-                message: "Redirecting to Admin Panel...",
-                buttons: ['OK']
-              });
-              alert.present();
+              if (this.platform.is("android") || this.platform.is("ios")) {
+                this.toast.show('Redirecting to Admin Panel...', '3000', 'bottom').subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
+              } else {
+                let alert = await this.alertCtrl.create({
+                  header: "ADMIN LOGIN",
+                  message: "Redirecting to Admin Panel...",
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
               this.openAdminPanel();
             } else {
-              let alert = await this.alertCtrl.create({
-                header: "ERROR",
-                message: (res.message),
-                buttons: ['OK']
-              });
-              alert.present();
+              if (this.platform.is("android") || this.platform.is("ios")) {
+                this.toast.show('ERROR: ' + res.message, '3000', 'bottom').subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
+              } else {
+                let alert = await this.alertCtrl.create({
+                  header: "ERROR",
+                  message: (res.message),
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
             }
           });
       });
