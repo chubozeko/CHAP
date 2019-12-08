@@ -38,6 +38,7 @@ import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
 import { OpenProjectPage } from "../open-project/open-project.page";
+import { AuthService } from '../auth.service';
 import { toBase64String } from "@angular/compiler/src/output/source_map";
 
 @Component({
@@ -81,8 +82,9 @@ export class HomePage {
     private file: File,
     public platform: Platform,
     public toast: Toast,
-    public navCtrl: NavController
-    // public navParams: NavParams
+    public navCtrl: NavController,
+    private auth: AuthService
+    //public navParams: NavParams
   ) { }
 
   ngOnInit() {
@@ -181,13 +183,15 @@ export class HomePage {
         }
       });
 
-    this.dragulaService.createGroup('symbol', {
-      copy: true,
-      removeOnSpill: true,
-      isContainer: (el) => {
-        return el.classList.contains('arrow dropzone');
-      }
-    });
+    if (this.dragulaService.find('symbol') == null) {
+      this.dragulaService.createGroup('symbol', {
+        copy: true,
+        removeOnSpill: true,
+        isContainer: (el) => {
+          return el.classList.contains('arrow dropzone');
+        }
+      });
+    }
   }
 
   public openMenu() {
@@ -2042,7 +2046,8 @@ export class HomePage {
             headers.append("Accept", 'application/json');
             headers.append('Content-Type', 'application/json');
 
-            this.http.post('http://www.chapchap.ga/logout.php', {}, {})
+            console.log(this.auth.sessionToken.session);
+            this.http.post('http://www.chapchap.ga/logout.php', this.auth.sessionToken.session, {})
               //this.http.post('https://chapweb.000webhostapp.com/logout.php', data, {})
               //this.http.post('http://localhost:80/chap_2/logout.php', data, {})
               .map((res: any) => res)
@@ -2050,6 +2055,7 @@ export class HomePage {
                 console.log(res);
 
                 if (res.message == "Log Out") {
+                  this.closeMenu();
                   this.navCtrl.navigateRoot('/login');
                 } else {
                   let alert = await this.alertC.create({

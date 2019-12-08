@@ -37,6 +37,7 @@ import { AboutPageModule } from './about/about.module';
 import { TutorialPageModule } from './tutorial/tutorial.module';
 import { OpenProjectPageModule } from './open-project/open-project.module';
 import { AdminPanelPageModule } from './admin-panel/admin-panel.module';
+import { AuthService } from './auth.service';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { AdminPanelPageModule } from './admin-panel/admin-panel.module';
   providers: [
     StatusBar,
     SplashScreen,
+    AuthService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
     Chooser, File, FileOpener, FileTransfer, FilePath, DocumentViewer, Toast

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, NavController, AlertController, LoadingController, Platform } from '@ionic/angular';
+import { ModalController, NavController, AlertController, LoadingController, Platform, NavParams } from '@ionic/angular';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -7,6 +7,7 @@ import { SignupPage } from '../signup/signup.page';
 import 'rxjs/add/operator/map';
 import { RequestOptions } from '@angular/http';
 import { Toast } from '@ionic-native/toast/ngx';
+import { Navigation } from 'selenium-webdriver';
 
 const cors = require('cors');
 
@@ -34,7 +35,9 @@ export class LoginPage implements OnInit {
     private alertCtrl: AlertController,
     public loading: LoadingController,
     public platform: Platform,
-    public toast: Toast) {
+    public toast: Toast,
+    //public navP: NavParams
+  ) {
 
     this.loginForm = this.formBuilder.group({
       email: new FormControl(''),
@@ -136,6 +139,9 @@ export class LoginPage implements OnInit {
                 });
                 alert.present();
               }
+              //let params = new NavParams({ session: res.session });
+              //this.navP.data = params;
+              this.auth.sessionToken = { session: res.session };
               this.navCtrl.navigateRoot('/home');
             } else if (res.message == "Open ADMINPANEL.php") {
               if (this.platform.is("android") || this.platform.is("ios")) {
