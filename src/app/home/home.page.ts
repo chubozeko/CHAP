@@ -87,6 +87,10 @@ export class HomePage {
     //public navParams: NavParams
   ) { }
 
+  ionViewWillEnter() {
+
+  }
+
   ngOnInit() {
     // Adding Click Listeners to Menu Items
     let debugP = document.getElementById("btn_debugProgram");

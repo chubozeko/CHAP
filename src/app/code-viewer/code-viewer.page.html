@@ -15,10 +15,14 @@
     </ion-select>
   </ion-item>
 
-  <ion-item>
-    <div id="codeLineNumbers">{{lineNumbers}}</div>
-    <p style="margin-left: 5px;">{{displayCode}}</p>
-  </ion-item>
+  <ion-content [scrollEvents]="true">
+    <div *ngFor="let c of code" style="padding: 0 10px;">
+      <div id="sourceCode">
+        <div id="codeLineNumbers">{{c.lineNr}}</div>
+        <div id="codeLine">{{c.codeLine}}</div>
+      </div>
+    </div>
+  </ion-content>
 
 </ion-content>
 

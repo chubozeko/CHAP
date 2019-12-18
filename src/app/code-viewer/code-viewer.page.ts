@@ -3,6 +3,7 @@ import { Flowchart } from '../classes/Flowchart';
 import { NavParams, ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
 import { Toast } from '@ionic-native/toast/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { Code } from './code';
 
 @Component({
   selector: 'app-code-viewer',
@@ -21,6 +22,8 @@ export class CodeViewerPage implements OnInit {
   codeFileName: string = '';
   saveFolder = 'CHAP Project Files';
 
+  code: Array<Code> = [];
+
   constructor(
     public modal: ModalController,
     public navP: NavParams,
@@ -32,6 +35,7 @@ export class CodeViewerPage implements OnInit {
   ) {
     this.flowchart = navP.get('flowchart');
     this.programmingLang = 'PseudoCode';
+    //this.code = new Array<Code>();
   }
 
   ngOnInit() {
@@ -44,9 +48,14 @@ export class CodeViewerPage implements OnInit {
       let temp = code.split('\n');
       for (let i = 0; i < temp.length; i++) {
         this.lineNumbers += i + 1 + ' \n ';
+        let codeLine = new Code();
+        codeLine.lineNr = i + 1;
+        codeLine.codeLine = temp[i];
+        this.code.push(codeLine);
       }
       this.pseudocode = this.flowchart.displayFlowchartPseudoCode();
       this.displayCode = this.pseudocode;
+      console.log(this.code);
     }
     else if (language.value == 'C++') {
       this.lineNumbers = '  ';
@@ -54,52 +63,90 @@ export class CodeViewerPage implements OnInit {
       let temp = code.split('\n');
       for (let i = 0; i < temp.length; i++) {
         this.lineNumbers += i + 1 + ' \n ';
+        let codeLine = new Code();
+        codeLine.lineNr = i + 1;
+        codeLine.codeLine = temp[i];
+        this.code.push(codeLine);
       }
       this.cpluspluscode = this.flowchart.displayCPlusPlusCode();
       this.displayCode = this.cpluspluscode;
+      console.log(this.code);
     } else if (language.value == 'Java') {
       this.lineNumbers = '  ';
       let code = this.flowchart.displayJavaCode();
       let temp = code.split('\n');
       for (let i = 0; i < temp.length; i++) {
         this.lineNumbers += i + 1 + '  \n  ';
+        let codeLine = new Code();
+        codeLine.lineNr = i + 1;
+        codeLine.codeLine = temp[i];
+        this.code.push(codeLine);
       }
       this.javaCode = this.flowchart.displayJavaCode();
       this.displayCode = this.javaCode;
+      console.log(this.code);
     }
 
   }
 
   public changeCode() {
+    this.code.splice(0, this.code.length);
     let language = (document.getElementById("prog_lang") as HTMLIonSelectElement);
     if (language.value == 'PseudoCode') {
       this.lineNumbers = '  ';
       let code = this.flowchart.displayFlowchartPseudoCode();
       let temp = code.split('\n');
       for (let i = 0; i < temp.length; i++) {
-        this.lineNumbers += i + 1 + '  \n  ';
+        this.lineNumbers += i + 1 + ' \n ';
+        let codeLine = new Code();
+        codeLine.lineNr = i + 1;
+        if (temp[i] == "") {
+          codeLine.codeLine = "\n";
+        } else {
+          codeLine.codeLine = temp[i];
+        }
+        this.code.push(codeLine);
       }
       this.pseudocode = this.flowchart.displayFlowchartPseudoCode();
       this.displayCode = this.pseudocode;
+      console.log(this.code);
     }
     else if (language.value == 'C++') {
       this.lineNumbers = '  ';
       let code = this.flowchart.displayCPlusPlusCode();
       let temp = code.split('\n');
       for (let i = 0; i < temp.length; i++) {
-        this.lineNumbers += i + 1 + '  \n  ';
+        this.lineNumbers += i + 1 + ' \n ';
+        let codeLine = new Code();
+        codeLine.lineNr = i + 1;
+        if (temp[i] == "") {
+          codeLine.codeLine = "\n";
+        } else {
+          codeLine.codeLine = temp[i];
+        }
+        this.code.push(codeLine);
       }
       this.cpluspluscode = this.flowchart.displayCPlusPlusCode();
       this.displayCode = this.cpluspluscode;
+      console.log(this.code);
     } else if (language.value == 'Java') {
       this.lineNumbers = '  ';
       let code = this.flowchart.displayJavaCode();
       let temp = code.split('\n');
       for (let i = 0; i < temp.length; i++) {
         this.lineNumbers += i + 1 + '  \n  ';
+        let codeLine = new Code();
+        codeLine.lineNr = i + 1;
+        if (temp[i] == "") {
+          codeLine.codeLine = "\n";
+        } else {
+          codeLine.codeLine = temp[i];
+        }
+        this.code.push(codeLine);
       }
       this.javaCode = this.flowchart.displayJavaCode();
       this.displayCode = this.javaCode;
+      console.log(this.code);
     }
   }
 

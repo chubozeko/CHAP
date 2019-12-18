@@ -28,3 +28,26 @@ ion-label {
 	  border-radius: 10px;
   }
 }
+
+#btn_login:hover {
+  --background: #10dc60;
+  --color: #ffffff;
+}
+
+#btn_signup {
+  --background: #989aa2;
+  --color: #ffffff;
+}
+#btn_signup:hover {
+  --background: #ffce00;
+  --color: #ffffff;
+}
+
+#btn_fbLogin {
+  --background: #3B5998;
+  --color: #ffffff;
+}
+#btn_fbLogin:hover {
+  --background: #ffffff;
+  --color: #3B5998;
+}

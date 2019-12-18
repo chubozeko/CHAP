@@ -133,8 +133,8 @@ export class LoginPage implements OnInit {
                 );
               } else {
                 let alert = await this.alertCtrl.create({
-                  header: "CONGRATS",
-                  message: "Login Successful!",
+                  header: "Login Successful",
+                  message: "Welcome to CHAP,  " + res.name,
                   buttons: ['OK']
                 });
                 alert.present();
