@@ -3,7 +3,7 @@ import { ModalController, Fab, ActionSheetController, MenuController, NavParams,
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
-import { File } from '@ionic-native/file/ngx';
+import { File, FileWriter } from '@ionic-native/file/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -106,9 +106,9 @@ export class HomePage {
     let newProj = document.getElementById("btn_newProject");
     newProj.addEventListener("click", e => this.newProject());
     let openProj = document.getElementById("btn_openProject");
-    openProj.addEventListener("click", e => this.openProject());
+    openProj.addEventListener("click", e => this.openProjectOptions());
     let saveProj = document.getElementById("btn_saveProject");
-    saveProj.addEventListener('click', (e) => this.saveProject());
+    saveProj.addEventListener('click', (e) => this.saveProjectOptions());
     let closeM = document.getElementById("btn_closeMenu");
     closeM.addEventListener("click", e => this.closeMenu());
     // let downloadAPK = document.getElementById("btn_downloadAPK");
@@ -1638,8 +1638,36 @@ export class HomePage {
     this.clearWorkspace();
   }
 
-  async openProject() {
+  async openProjectOptions() {
     this.menu.close();
+    // Open Project From...
+    const actionSheet = await this.arrowsOptionsAS.create({
+      header: 'Open Project From...',
+      buttons: [{
+        text: 'Internal Storage',
+        icon: 'folder-open',
+        handler: () => {
+          this.openProject();
+        }
+      }, {
+        text: 'Database',
+        icon: 'cloud-outline',
+        handler: () => {
+          console.log('Session token: ', this.auth.sessionToken);
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel');
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
+  async openProject() {
     const modal = await this.modalC.create({
       component: OpenProjectPage,
       componentProps: {}
@@ -1883,10 +1911,39 @@ export class HomePage {
     }
   }
 
+  async saveProjectOptions() {
+    this.menu.close();
+    // Open Project From...
+    const actionSheet = await this.arrowsOptionsAS.create({
+      header: 'Save Project to...',
+      buttons: [{
+        text: 'Internal Storage',
+        icon: 'folder',
+        handler: () => {
+          this.saveProject();
+        }
+      }, {
+        text: 'Database',
+        icon: 'cloud-upload',
+        handler: () => {
+          this.saveProjectToDatabase();
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel');
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
   public saveProject() {
     let fileName, flowchartJSON;
 
-    this.menu.close();
+    // this.menu.close();
     let fName = document.getElementById('fileName') as HTMLInputElement;
     this.fileName = fName.value;
 
@@ -1931,6 +1988,8 @@ export class HomePage {
       a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
       e.initEvent('click', true, false);
       a.dispatchEvent(e);
+
+      console.log('A link', a.href);
     }
   }
 
@@ -1951,6 +2010,120 @@ export class HomePage {
 
   public saveToIOS(flowchartJSON, filename) {
 
+  }
+
+  public saveProjectToDatabase() {
+    let fileName, flowchartJSON;
+
+    // this.menu.close();
+    let fName = document.getElementById('fileName') as HTMLInputElement;
+    this.fileName = fName.value;
+
+    if (this.fileName == "") {
+      this.showAlert(
+        'Failed to Save',
+        `Please enter a name for the project in the TextBox above, before saving it.`
+      );
+    } else {
+      fileName = this.fileName + '.chap';
+      flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
+
+      if (!flowchartJSON) {
+        console.error('Console.save: No data');
+        return;
+      }
+      if (!fileName) fileName = 'console.json';
+      var blob = new Blob([flowchartJSON], { type: 'text/plain' });
+
+
+      // FOR IE:
+      // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      //   window.navigator.msSaveOrOpenBlob(blob, fileName);
+      // } else {
+      //   var e = document.createEvent('MouseEvents'), a = document.createElement('a');
+      //   a.download = fileName;
+      //   a.href = window.URL.createObjectURL(blob);
+      //   a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+      // }
+
+      console.log('userid', this.auth.sessionToken.session.user_id);
+
+      let uploadFile = {
+        userid: this.auth.sessionToken.session.user_id,
+        name: fileName,
+        type: blob.type,
+        blob: blob
+      };
+
+      var headers = new HttpHeaders();
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/json');
+
+      this.http.post('http://www.chapchap.ga/saveProject.php', uploadFile, {})
+        //this.http.post('https://chapweb.000webhostapp.com/saveProject.php', uploadFile, {})
+        //this.http.post('http://localhost:80/chap_2/saveProject.php', uploadFile, {})
+        .map((res: any) => res)
+        .subscribe(async res => {
+          console.log(res);
+
+          if (res.message == "Save successful") {
+            if (this.platform.is("android") || this.platform.is("ios")) {
+              this.toast.show('Save successful!.', '3000', 'bottom').subscribe(
+                toast => {
+                  console.log(toast);
+                }
+              );
+            } else {
+              let alert = await this.alertC.create({
+                header: "File Uploaded to database",
+                message: "Save successful",
+                buttons: ['OK']
+              });
+              alert.present();
+            }
+          } else if (res.message == "Invaild File Upload! Please Re-Check your File.") {
+            if (this.platform.is("android") || this.platform.is("ios")) {
+              this.toast.show('Invaild File Upload! Please Re-Check your File.', '3000', 'bottom').subscribe(
+                toast => {
+                  console.log(toast);
+                }
+              );
+            } else {
+              let alert = await this.alertC.create({
+                header: "ERROR",
+                message: "Invaild File Upload! Please Re-Check your File.",
+                buttons: ['OK']
+              });
+              alert.present();
+            }
+          } else {
+            if (this.platform.is("android") || this.platform.is("ios")) {
+              this.toast.show(res.message, '3000', 'bottom').subscribe(
+                toast => {
+                  console.log(toast);
+                }
+              );
+            } else {
+              let alert = await this.alertC.create({
+                header: "ERROR",
+                message: (res.message),
+                buttons: ['OK']
+              });
+              alert.present();
+            }
+          }
+        });
+
+      /*
+      if (this.platform.is("android")) {
+        this.saveToAndroid(flowchartJSON, fileName);
+      } else if (this.platform.is("ios")) {
+        this.saveToIOS(flowchartJSON, fileName);
+      } else if (this.platform.is("desktop")) {
+        this.saveTextAsFile(flowchartJSON, fileName);
+      }
+      */
+    }
   }
 
   public debugProgram(e) {
