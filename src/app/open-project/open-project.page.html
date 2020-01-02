@@ -1,10 +1,10 @@
 <ion-toolbar style="padding: 5px; " color="primary">
   <ion-icon name="folder-open" style="float: left; width: 24px; height: 24px; margin-left: 0; padding-left: 10px;">
   </ion-icon>
-  <ion-title style="float: left;">Upload Project File</ion-title>
+  <ion-title style="float: left;">Open Project File</ion-title>
 </ion-toolbar>
 
-<ion-content padding color="secondary">
+<ion-content id="openInternal" padding color="secondary">
 
   <ion-item>
     <ion-label> Upload a CHAP project (.chap) file to open a project </ion-label>
@@ -14,6 +14,30 @@
     <span>{{dropzoneText}}</span>
     <ion-button (click)="openLocalChap()" color="dark" full class="{{currentPlatform}}">Choose CHAP Project File
     </ion-button>
+  </div>
+
+</ion-content>
+
+<ion-content id="openDatabase" padding color="secondary">
+
+  <ion-item>
+    <ion-label> Select an online CHAP project to open </ion-label>
+  </ion-item>
+
+  <div id="fileDropzone">
+    <ion-list>
+      <ion-radio-group>
+        <ion-list-header>
+          <ion-label>CHAP Files:</ion-label>
+        </ion-list-header>
+
+        <ion-item *ngFor="let f of files">
+          <ion-label>{{f.name}}</ion-label>
+          <ion-radio slot="start" value="{{f.id}}" (click)="selectedFile(f.id)"></ion-radio>
+        </ion-item>
+
+      </ion-radio-group>
+    </ion-list>
   </div>
 
 </ion-content>

@@ -1653,7 +1653,7 @@ export class HomePage {
         text: 'Database',
         icon: 'cloud-outline',
         handler: () => {
-          console.log('Session token: ', this.auth.sessionToken);
+          this.openProjectFromDatabase();
         }
       }, {
         text: 'Cancel',
@@ -1670,7 +1670,24 @@ export class HomePage {
   async openProject() {
     const modal = await this.modalC.create({
       component: OpenProjectPage,
-      componentProps: {}
+      componentProps: { openFrom: 'internal' }
+    });
+    modal.onDidDismiss().then(data => {
+      if (data.data != undefined) {
+        let chapFileName = data.data.name.replace('.chap', '');
+        this.loadProject(chapFileName, data.data.data);
+      }
+    });
+    await modal.present();
+  }
+
+  async openProjectFromDatabase() {
+    const modal = await this.modalC.create({
+      component: OpenProjectPage,
+      componentProps: {
+        openFrom: 'online',
+        userID: this.auth.sessionToken.session.user_id
+      }
     });
     modal.onDidDismiss().then(data => {
       if (data.data != undefined) {
@@ -1684,6 +1701,7 @@ export class HomePage {
   public loadProject(chapFileName, fileData) {
     this.newProject();
     let dataSyms, arrowT, els, p, tlb, flb;
+    console.log(fileData);
     dataSyms = JSON.parse(fileData);
     console.log('symbols data', dataSyms);
 
@@ -2015,7 +2033,6 @@ export class HomePage {
   public saveProjectToDatabase() {
     let fileName, flowchartJSON;
 
-    // this.menu.close();
     let fName = document.getElementById('fileName') as HTMLInputElement;
     this.fileName = fName.value;
 
@@ -2028,32 +2045,13 @@ export class HomePage {
       fileName = this.fileName + '.chap';
       flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
 
-      if (!flowchartJSON) {
-        console.error('Console.save: No data');
-        return;
-      }
-      if (!fileName) fileName = 'console.json';
-      var blob = new Blob([flowchartJSON], { type: 'text/plain' });
-
-
-      // FOR IE:
-      // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      //   window.navigator.msSaveOrOpenBlob(blob, fileName);
-      // } else {
-      //   var e = document.createEvent('MouseEvents'), a = document.createElement('a');
-      //   a.download = fileName;
-      //   a.href = window.URL.createObjectURL(blob);
-      //   a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
-      // }
-
-      console.log('userid', this.auth.sessionToken.session.user_id);
-
       let uploadFile = {
         userid: this.auth.sessionToken.session.user_id,
         name: fileName,
-        type: blob.type,
-        blob: blob
+        type: 'text/plain',
+        blob: flowchartJSON
       };
+      console.log('upload data', uploadFile);
 
       var headers = new HttpHeaders();
       headers.append("Accept", 'application/json');
@@ -2113,16 +2111,6 @@ export class HomePage {
             }
           }
         });
-
-      /*
-      if (this.platform.is("android")) {
-        this.saveToAndroid(flowchartJSON, fileName);
-      } else if (this.platform.is("ios")) {
-        this.saveToIOS(flowchartJSON, fileName);
-      } else if (this.platform.is("desktop")) {
-        this.saveTextAsFile(flowchartJSON, fileName);
-      }
-      */
     }
   }
 

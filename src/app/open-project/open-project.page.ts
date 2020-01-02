@@ -7,6 +7,7 @@ import { File } from '@ionic-native/file/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { Chooser } from '@ionic-native/chooser/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-open-project',
@@ -19,6 +20,10 @@ export class OpenProjectPage implements OnInit {
   chapFile;
   dropzoneText = '';
   currentPlatform;
+  openFrom = '';
+  userID: number;
+  files: any;
+  selectedFileIndex: number = 1;
 
   constructor(
     public modal: ModalController,
@@ -28,10 +33,12 @@ export class OpenProjectPage implements OnInit {
     public ft: FileTransfer,
     public fileOpener: FileOpener,
     public filePath: FilePath,
+    private http: HttpClient,
     public document: DocumentViewer,
     public chooser: Chooser,
     public toast: Toast) {
-
+    this.openFrom = navP.get('openFrom');
+    this.userID = navP.get('userID');
   }
 
   ngOnInit() {
@@ -40,6 +47,20 @@ export class OpenProjectPage implements OnInit {
     this.dropzone.addEventListener("dragleave", e => this.dragLeave(e), false);
     this.dropzone.addEventListener("drop", e => this.dropped(e), false);
     this.dropzone.addEventListener("dragover", function (e) { e.preventDefault(); }, false);
+
+    if (this.openFrom == 'internal') {
+      let s1 = document.getElementById('openInternal');
+      s1.style.display = 'block';
+      let s2 = document.getElementById('openDatabase');
+      s2.style.display = 'none';
+    }
+    else if (this.openFrom == 'online') {
+      let s1 = document.getElementById('openDatabase');
+      s1.style.display = 'block';
+      let s2 = document.getElementById('openInternal');
+      s2.style.display = 'none';
+      this.loadOnlineFiles();
+    }
 
     if (this.platform.is("android")) { this.currentPlatform = 'android'; this.dropzoneText = ''; }
     else if (this.platform.is("ios")) { this.currentPlatform = 'ios'; this.dropzoneText = ''; }
@@ -81,6 +102,53 @@ export class OpenProjectPage implements OnInit {
       this.dropzoneText = 'File Name: ' + this.chapFile.name + '\n';
       //this.dropzoneText += 'data: ' + this.chapFile.data + '\n';
     };
+  }
+
+  public selectedFile(id) {
+    this.selectedFileIndex = id;
+
+    //var str = String.fromCharCode.apply(null, this.files[this.selectedFileIndex - 1].data);
+
+    this.chapFile = {
+      name: this.files[this.selectedFileIndex - 1].name,
+      data: this.files[this.selectedFileIndex - 1].data,
+      dataUri: '',
+      uri: '',
+      mediaType: ''
+    };
+    console.log(this.chapFile);
+  }
+
+  public loadOnlineFiles() {
+    let userDetails = {
+      userid: this.userID
+    };
+
+    var headers = new HttpHeaders();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
+
+    this.http.post('http://www.chapchap.ga/getFiles.php', userDetails, {})
+      //this.http.post('https://chapweb.000webhostapp.com/getFiles.php', userDetails, {})
+      //this.http.post('http://localhost:80/chap_2/getFiles.php', userDetails, {})
+      .map((res: any) => res)
+      .subscribe(async res => {
+        console.log(res);
+
+        if (res.message == "Files Retrieved") {
+          // let alert = await this.alertC.create({
+          //   header: "File Uploaded to database",
+          //   message: "Save successful",
+          //   buttons: ['OK']
+          // });
+          // alert.present();
+          this.files = res.files;
+        } else if (res.message == "No User ID session") {
+
+        } else {
+
+        }
+      });
   }
 
   public openLocalChap() {
