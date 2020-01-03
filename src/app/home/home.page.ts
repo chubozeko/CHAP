@@ -1736,6 +1736,8 @@ export class HomePage {
           this.addSymbol(sym.id, arrowT[i]);
           els = document.getElementsByClassName('symbol');
           p = i + 1;
+          let tempX = sym.getOutputExpression().replace(/`/g, '"');
+          sym.setOutputExpression(tempX);
           els[p].innerHTML = sym.getOutputExpression();
           break;
         case 's_process':
@@ -1856,6 +1858,8 @@ export class HomePage {
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
           els = loopBlock.getElementsByClassName('symbol');
+          let tempX = sym.getOutputExpression().replace(/`/g, '"');
+          sym.setOutputExpression(tempX);
           els[i].innerHTML = sym.getOutputExpression();
           break;
         case 's_process':
@@ -1972,6 +1976,7 @@ export class HomePage {
       );
     } else {
       fileName = this.fileName + '.chap';
+      this.flowchart.prepareFlowchartForSaving();
       flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
 
       if (this.platform.is("android")) {

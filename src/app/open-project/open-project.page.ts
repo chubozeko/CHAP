@@ -106,16 +106,17 @@ export class OpenProjectPage implements OnInit {
 
   public selectedFile(id) {
     this.selectedFileIndex = id;
-
-    //var str = String.fromCharCode.apply(null, this.files[this.selectedFileIndex - 1].data);
-
-    this.chapFile = {
-      name: this.files[this.selectedFileIndex - 1].name,
-      data: this.files[this.selectedFileIndex - 1].data,
-      dataUri: '',
-      uri: '',
-      mediaType: ''
-    };
+    for (let i = 0; i < this.files.length; i++) {
+      if (this.files[i].id == this.selectedFileIndex) {
+        this.chapFile = {
+          name: this.files[i].name,
+          data: this.files[i].data,
+          dataUri: '',
+          uri: '',
+          mediaType: ''
+        };
+      }
+    }
     console.log(this.chapFile);
   }
 

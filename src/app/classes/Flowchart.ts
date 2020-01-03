@@ -745,4 +745,23 @@ export class Flowchart {
     console.log("Symbols", this.SYMBOLS);
     console.log("Temporary symbols", this.tempSymbols);
   }
+
+  prepareFlowchartForSaving() {
+    this.variables.vars = [];
+    this.tempSymbols = [];
+    for (let q = 0; q < this.SYMBOLS.length; q++) {
+      this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
+    }
+
+    for (let i = 0; i < this.tempSymbols.length; i++) {
+      // OUTPUT
+      if (this.tempSymbols[i] instanceof Output) {
+        let tempX = this.tempSymbols[i].getOutputExpression() as string;
+        let y = tempX.replace(/"/g, '`');
+        console.log('old output', this.tempSymbols[i].getOutputExpression());
+        this.tempSymbols[i].setOutputExpression(y);
+        console.log('new output', this.tempSymbols[i].getOutputExpression());
+      }
+    }
+  }
 }
