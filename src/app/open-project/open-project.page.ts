@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams, Platform } from '@ionic/angular';
+import { ModalController, NavParams, Platform, AlertController } from '@ionic/angular';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
@@ -27,6 +27,7 @@ export class OpenProjectPage implements OnInit {
 
   constructor(
     public modal: ModalController,
+    public alertC: AlertController,
     public navP: NavParams,
     public platform: Platform,
     public file: File,
@@ -53,12 +54,16 @@ export class OpenProjectPage implements OnInit {
       s1.style.display = 'block';
       let s2 = document.getElementById('openDatabase');
       s2.style.display = 'none';
+      let s3 = document.getElementById('openDatabaseBtn');
+      s3.style.display = 'none';
     }
     else if (this.openFrom == 'online') {
       let s1 = document.getElementById('openDatabase');
       s1.style.display = 'block';
       let s2 = document.getElementById('openInternal');
       s2.style.display = 'none';
+      let s3 = document.getElementById('openDatabaseBtn');
+      s3.style.display = 'block';
       this.loadOnlineFiles();
     }
 
@@ -120,6 +125,60 @@ export class OpenProjectPage implements OnInit {
     console.log(this.chapFile);
   }
 
+  async deleteFilePrompt() {
+    const alert = await this.alertC.create({
+      header: 'Are you sure you want to delete this file?',
+      buttons: [{
+        text: 'Yes',
+        handler: () => {
+          this.deleteFile();
+        }
+      }, {
+        text: 'No',
+        role: 'cancel',
+        handler: () => { }
+      }]
+    });
+    await alert.present();
+  }
+
+  public deleteFile() {
+    let userDetails = {
+      userid: this.selectedFileIndex
+    };
+
+    var headers = new HttpHeaders();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json');
+
+    this.http.post('http://www.chapchap.ga/deleteFile.php', userDetails, {})
+      //this.http.post('https://chapweb.000webhostapp.com/deleteFile.php', userDetails, {})
+      //this.http.post('http://localhost:80/chap_2/deleteFile.php', userDetails, {})
+      .map((res: any) => res)
+      .subscribe(async res => {
+        console.log(res);
+
+        if (res.message == "File Deleted") {
+          let alert = await this.alertC.create({
+            header: "File Deleted!",
+            message: "",
+            buttons: ['OK']
+          });
+          alert.present();
+          this.loadOnlineFiles();
+        } else if (res.message == "No User ID session") {
+          let alert = await this.alertC.create({
+            header: "Delete Unsuccessful",
+            message: "Please login again to perform this action.",
+            buttons: ['OK']
+          });
+          alert.present();
+        } else {
+
+        }
+      });
+  }
+
   public loadOnlineFiles() {
     let userDetails = {
       userid: this.userID
@@ -137,15 +196,14 @@ export class OpenProjectPage implements OnInit {
         console.log(res);
 
         if (res.message == "Files Retrieved") {
-          // let alert = await this.alertC.create({
-          //   header: "File Uploaded to database",
-          //   message: "Save successful",
-          //   buttons: ['OK']
-          // });
-          // alert.present();
           this.files = res.files;
         } else if (res.message == "No User ID session") {
-
+          let alert = await this.alertC.create({
+            header: "ERROR: Cannot retrieve CHAP Projects",
+            message: "Please login again to perform this action.",
+            buttons: ['OK']
+          });
+          alert.present();
         } else {
 
         }

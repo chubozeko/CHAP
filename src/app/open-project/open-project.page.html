@@ -24,7 +24,7 @@
     <ion-label> Select an online CHAP project to open </ion-label>
   </ion-item>
 
-  <div id="fileDropzone">
+  <div id="fileDropzone" style="overflow-y: auto;">
     <ion-list>
       <ion-radio-group>
         <ion-list-header>
@@ -45,4 +45,6 @@
 <ion-footer id="openFile_modal_footer" color="dark">
   <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
   <ion-button (click)="applyAndCloseModal()" color="dark" full>Open File</ion-button>
+  <ion-button id="openDatabaseBtn" style="float: left" (click)="deleteFilePrompt()" color="dark" full>Delete File
+  </ion-button>
 </ion-footer>
