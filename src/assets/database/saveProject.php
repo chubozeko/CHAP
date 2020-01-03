@@ -1,0 +1,54 @@
+<?php
+
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+  header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+  header('Access-Control-Allow-Credentials: true');
+  header('Access-Control-Max-Age: 86400'); // cache for 1 day
+}
+
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+  if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+  if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+    header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+  exit(0);
+}
+
+require "dbconnect.php";
+require "variable.php";
+
+$data = file_get_contents("php://input");
+if (isset($data)) {
+  $request = json_decode($data);
+  $userid = $request->userid;
+  $name = $request->name;
+  $type = $request->type;
+  $blob = $request->blob;
+
+  # $name = $_FILES['myfile']['name'];
+  # $type = $_FILES['myfile']['type'];
+  # $data = file_get_contents($_FILES['myfile']['tmp_name']);
+}
+
+# $blob != NULL AND 
+if($name != "") {
+
+  $sql = "INSERT INTO user_files (user_id,name,mime,data) VALUES ('$userid','$name','$type','$blob')";
+  $control_Con = mysqli_query($con, $sql);
+
+  if($control_Con) {
+    $response->message = "Save successful";
+    # $response->session = $_SESSION;
+  } else {
+    $response->message = "Error: " . $sql;
+  }
+
+} else {
+  $response->message = "Invaild File Upload! Please Re-Check your File.";
+}
+
+// header('Content-Type: application/json');
+echo json_encode($response);
+
+?>
