@@ -51,6 +51,8 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    this.checkInternetConnection();
+
     const allowedOrigins = [
       'capacitor://localhost',
       'ionic://localhost',
@@ -76,109 +78,149 @@ export class LoginPage implements OnInit {
     btnLogin.addEventListener("click", e => this.logInToCHAP(e));
   }
 
-  openAdminPanel() {
-    window.open('http://admin.chapchap.ga', '_self');
-  }
-
-  signUpToCHAP(e) {
-    this.navCtrl.navigateRoot('/signup');
-  }
-
-  async logInToCHAP(e) {
-    // check to confirm the username and password fields are filled
-    if (this.username.value == "") {
+  async checkInternetConnection() {
+    if (!navigator.onLine) {
+      this.auth.mode = 'offline';
+      //Do task when no internet connection
       let alert = await this.alertCtrl.create({
-        header: 'ATTENTION',
-        message: 'Username field is empty',
-        buttons: ['OK']
-      });
-      alert.present();
-    } else if (this.password.value == "") {
-      let alert = await this.alertCtrl.create({
-        header: "ATTENTION",
-        message: "Password field is empty",
-        buttons: ['OK']
+        header: "Network Error",
+        message: "Please check your internet connection to use CHAP online.",
+        buttons: [
+          {
+            text: 'Use CHAP Offline',
+            cssClass: 'error',
+            handler: () => {
+              this.auth.mode = 'offline';
+              this.navCtrl.navigateRoot('/home');
+            }
+          }, {
+            text: 'Close',
+            role: 'cancel',
+            handler: () => { }
+          }
+        ]
       });
       alert.present();
     } else {
-      var headers = new HttpHeaders();
-      headers.append("Accept", 'application/json');
-      headers.append('Content-Type', 'application/json');
-
-      //let options = new HttpRequest({ headers: headers });
-      let data = {
-        username: this.username.value,
-        password: this.password.value
-      };
-
-      let loader = await this.loading.create({
-        message: 'Processing...',
-      });
-
-      loader.present().then(() => {
-        this.http.post('http://www.chapchap.ga/login.php', data, {})
-          //this.http.post('https://chapweb.000webhostapp.com/login.php', data, {})
-          //this.http.post('http://localhost:80/chap_2/login.php', data, {})
-          .map((res: any) => res)
-          .subscribe(async res => {
-            console.log(res);
-            loader.dismiss();
-
-            if (res.message == "Your Login success") {
-              if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast.show('Login Successful!.', '3000', 'bottom').subscribe(
-                  toast => {
-                    console.log(toast);
-                  }
-                );
-              } else {
-                let alert = await this.alertCtrl.create({
-                  header: "Login Successful",
-                  message: "Welcome to CHAP,  " + res.name,
-                  buttons: ['OK']
-                });
-                alert.present();
-              }
-              //let params = new NavParams({ session: res.session });
-              //this.navP.data = params;
-              this.auth.sessionToken = { session: res.session };
-              this.navCtrl.navigateRoot('/home');
-            } else if (res.message == "Open ADMINPANEL.php") {
-              if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast.show('Redirecting to Admin Panel...', '3000', 'bottom').subscribe(
-                  toast => {
-                    console.log(toast);
-                  }
-                );
-              } else {
-                let alert = await this.alertCtrl.create({
-                  header: "ADMIN LOGIN",
-                  message: "Redirecting to Admin Panel...",
-                  buttons: ['OK']
-                });
-                alert.present();
-              }
-              this.openAdminPanel();
-            } else {
-              if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast.show('ERROR: ' + res.message, '3000', 'bottom').subscribe(
-                  toast => {
-                    console.log(toast);
-                  }
-                );
-              } else {
-                let alert = await this.alertCtrl.create({
-                  header: "ERROR",
-                  message: (res.message),
-                  buttons: ['OK']
-                });
-                alert.present();
-              }
-            }
-          });
-      });
+      this.auth.mode = 'online';
     }
+  }
 
+  openAdminPanel() {
+    this.checkInternetConnection();
+    // Check if it is in Online
+    if (this.auth.mode == 'online') {
+      window.open('http://admin.chapchap.ga', '_self');
+    }
+  }
+
+  signUpToCHAP(e) {
+    this.checkInternetConnection();
+    // Check if it is in Online
+    if (this.auth.mode == 'online') {
+      this.navCtrl.navigateRoot('/signup');
+    }
+  }
+
+  async logInToCHAP(e) {
+    this.checkInternetConnection();
+    if (this.auth.mode == 'online') {
+      // check to confirm the username and password fields are filled
+      if (this.username.value == "") {
+        let alert = await this.alertCtrl.create({
+          header: 'ATTENTION',
+          message: 'Username field is empty',
+          buttons: ['OK']
+        });
+        alert.present();
+      } else if (this.password.value == "") {
+        let alert = await this.alertCtrl.create({
+          header: "ATTENTION",
+          message: "Password field is empty",
+          buttons: ['OK']
+        });
+        alert.present();
+      } else {
+        var headers = new HttpHeaders();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json');
+
+        //let options = new HttpRequest({ headers: headers });
+        let data = {
+          username: this.username.value,
+          password: this.password.value
+        };
+
+        let loader = await this.loading.create({
+          message: 'Processing...',
+        });
+
+        loader.present().then(() => {
+          this.http.post('http://www.chapchap.ga/login.php', data, {})
+            //this.http.post('https://chapweb.000webhostapp.com/login.php', data, {})
+            //this.http.post('http://localhost:80/chap_2/login.php', data, {})
+            .map((res: any) => res)
+            .subscribe(async res => {
+              console.log(res);
+              loader.dismiss();
+
+              if (res.message == "Your Login success") {
+                if (this.platform.is("android") || this.platform.is("ios")) {
+                  this.toast.show('Login Successful!.', '3000', 'bottom').subscribe(
+                    toast => {
+                      console.log(toast);
+                    }
+                  );
+                } else {
+                  let alert = await this.alertCtrl.create({
+                    header: "Login Successful",
+                    message: "Welcome to CHAP,  " + res.name,
+                    buttons: ['OK']
+                  });
+                  alert.present();
+                }
+                //let params = new NavParams({ session: res.session });
+                //this.navP.data = params;
+                this.auth.sessionToken = { session: res.session };
+                this.navCtrl.navigateRoot('/home');
+              } else if (res.message == "Open ADMINPANEL.php") {
+                if (this.platform.is("android") || this.platform.is("ios")) {
+                  this.toast.show('Redirecting to Admin Panel...', '3000', 'bottom').subscribe(
+                    toast => {
+                      console.log(toast);
+                    }
+                  );
+                } else {
+                  let alert = await this.alertCtrl.create({
+                    header: "ADMIN LOGIN",
+                    message: "Redirecting to Admin Panel...",
+                    buttons: ['OK']
+                  });
+                  alert.present();
+                }
+                this.openAdminPanel();
+              } else {
+                if (this.platform.is("android") || this.platform.is("ios")) {
+                  this.toast.show('ERROR: ' + res.message, '3000', 'bottom').subscribe(
+                    toast => {
+                      console.log(toast);
+                    }
+                  );
+                } else {
+                  let alert = await this.alertCtrl.create({
+                    header: "ERROR",
+                    message: (res.message),
+                    buttons: ['OK']
+                  });
+                  alert.present();
+                }
+              }
+            });
+        });
+      }
+    } else {
+
+    }
   }
 
 }

@@ -10,6 +10,7 @@ export class AuthService {
   corsOptions;
   rootURL: string = 'http://localhost:80/chap_ums/';
   sessionToken: any;
+  mode: string;
 
   constructor(private http: HttpClient) { }
 

@@ -121,6 +121,12 @@ export class HomePage {
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let logOut = document.getElementById("btn_logOut");
     logOut.addEventListener("click", e => this.logOut());
+    let goOnline = document.getElementById("btn_goOnline");
+    goOnline.addEventListener("click", e => {
+      this.closeMenu();
+      this.auth.mode = 'online';
+      this.navCtrl.navigateRoot('/login');
+    });
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
@@ -155,6 +161,16 @@ export class HomePage {
         console.log('Directory does not exist');
       });
     }
+
+    // Check if it is Offline Mode
+    if (this.auth.mode == 'offline') {
+      logOut.style.display = 'none';
+      goOnline.style.display = 'block';
+    } else {
+      logOut.style.display = 'block';
+      goOnline.style.display = 'none';
+    }
+
   }
 
   public subscribeToDragula() {
@@ -199,6 +215,22 @@ export class HomePage {
   }
 
   public openMenu() {
+    let logOut = document.getElementById("btn_logOut");
+    logOut.addEventListener("click", e => this.logOut());
+    let goOnline = document.getElementById("btn_goOnline");
+    goOnline.addEventListener("click", e => {
+      this.closeMenu();
+      this.auth.mode = 'online';
+      this.navCtrl.navigateRoot('/login');
+    });
+    // Check if it is Offline Mode
+    if (this.auth.mode == 'offline') {
+      logOut.style.display = 'none';
+      goOnline.style.display = 'block';
+    } else {
+      logOut.style.display = 'block';
+      goOnline.style.display = 'none';
+    }
     this.menu.open();
   }
 
@@ -1653,6 +1685,7 @@ export class HomePage {
         text: 'Database',
         icon: 'cloud-outline',
         handler: () => {
+          this.checkInternetConnection();
           this.openProjectFromDatabase();
         }
       }, {
@@ -1682,20 +1715,42 @@ export class HomePage {
   }
 
   async openProjectFromDatabase() {
-    const modal = await this.modalC.create({
-      component: OpenProjectPage,
-      componentProps: {
-        openFrom: 'online',
-        userID: this.auth.sessionToken.session.user_id
-      }
-    });
-    modal.onDidDismiss().then(data => {
-      if (data.data != undefined) {
-        let chapFileName = data.data.name.replace('.chap', '');
-        this.loadProject(chapFileName, data.data.data);
-      }
-    });
-    await modal.present();
+    // Check if it is in Offline Mode
+    if (this.auth.mode == 'offline') {
+      let alert = await this.alertC.create({
+        header: "Offline Mode",
+        message: "Please turn on your internet connection to use CHAP online.",
+        buttons: [
+          {
+            text: 'Go Online',
+            handler: () => {
+              this.auth.mode = 'online';
+              this.navCtrl.navigateRoot('/login');
+            }
+          }, {
+            text: 'Close',
+            role: 'cancel',
+            handler: () => { }
+          }
+        ]
+      });
+      alert.present();
+    } else {
+      const modal = await this.modalC.create({
+        component: OpenProjectPage,
+        componentProps: {
+          openFrom: 'online',
+          userID: this.auth.sessionToken.session.user_id
+        }
+      });
+      modal.onDidDismiss().then(data => {
+        if (data.data != undefined) {
+          let chapFileName = data.data.name.replace('.chap', '');
+          this.loadProject(chapFileName, data.data.data);
+        }
+      });
+      await modal.present();
+    }
   }
 
   public loadProject(chapFileName, fileData) {
@@ -1948,6 +2003,7 @@ export class HomePage {
         text: 'Database',
         icon: 'cloud-upload',
         handler: () => {
+          this.checkInternetConnection();
           this.saveProjectToDatabase();
         }
       }, {
@@ -2035,87 +2091,109 @@ export class HomePage {
 
   }
 
-  public saveProjectToDatabase() {
-    let fileName, flowchartJSON;
-
-    let fName = document.getElementById('fileName') as HTMLInputElement;
-    this.fileName = fName.value;
-
-    if (this.fileName == "") {
-      this.showAlert(
-        'Failed to Save',
-        `Please enter a name for the project in the TextBox above, before saving it.`
-      );
-    } else {
-      fileName = this.fileName + '.chap';
-      flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
-
-      let uploadFile = {
-        userid: this.auth.sessionToken.session.user_id,
-        name: fileName,
-        type: 'text/plain',
-        blob: flowchartJSON
-      };
-      console.log('upload data', uploadFile);
-
-      var headers = new HttpHeaders();
-      headers.append("Accept", 'application/json');
-      headers.append('Content-Type', 'application/json');
-
-      this.http.post('http://www.chapchap.ga/saveProject.php', uploadFile, {})
-        //this.http.post('https://chapweb.000webhostapp.com/saveProject.php', uploadFile, {})
-        //this.http.post('http://localhost:80/chap_2/saveProject.php', uploadFile, {})
-        .map((res: any) => res)
-        .subscribe(async res => {
-          console.log(res);
-
-          if (res.message == "Save successful") {
-            if (this.platform.is("android") || this.platform.is("ios")) {
-              this.toast.show('Save successful!.', '3000', 'bottom').subscribe(
-                toast => {
-                  console.log(toast);
-                }
-              );
-            } else {
-              let alert = await this.alertC.create({
-                header: "File Uploaded to database",
-                message: "Save successful",
-                buttons: ['OK']
-              });
-              alert.present();
+  async saveProjectToDatabase() {
+    // Check if it is in Offline Mode
+    if (this.auth.mode == 'offline') {
+      let alert = await this.alertC.create({
+        header: "Offline Mode",
+        message: "Please turn on your internet connection to use CHAP online.",
+        buttons: [
+          {
+            text: 'Go Online',
+            handler: () => {
+              this.auth.mode = 'online';
+              this.navCtrl.navigateRoot('/login');
             }
-          } else if (res.message == "Invaild File Upload! Please Re-Check your File.") {
-            if (this.platform.is("android") || this.platform.is("ios")) {
-              this.toast.show('Invaild File Upload! Please Re-Check your File.', '3000', 'bottom').subscribe(
-                toast => {
-                  console.log(toast);
-                }
-              );
-            } else {
-              let alert = await this.alertC.create({
-                header: "ERROR",
-                message: "Invaild File Upload! Please Re-Check your File.",
-                buttons: ['OK']
-              });
-              alert.present();
-            }
-          } else {
-            if (this.platform.is("android") || this.platform.is("ios")) {
-              this.toast.show(res.message, '3000', 'bottom').subscribe(
-                toast => {
-                  console.log(toast);
-                }
-              );
-            } else {
-              let alert = await this.alertC.create({
-                header: "ERROR",
-                message: (res.message),
-                buttons: ['OK']
-              });
-              alert.present();
-            }
+          }, {
+            text: 'Close',
+            role: 'cancel',
+            handler: () => { }
           }
-        });
+        ]
+      });
+      alert.present();
+    } else {
+      let fileName, flowchartJSON;
+
+      let fName = document.getElementById('fileName') as HTMLInputElement;
+      this.fileName = fName.value;
+
+      if (this.fileName == "") {
+        this.showAlert(
+          'Failed to Save',
+          `Please enter a name for the project in the TextBox above, before saving it.`
+        );
+      } else {
+        fileName = this.fileName + '.chap';
+        flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
+
+        let uploadFile = {
+          userid: this.auth.sessionToken.session.user_id,
+          name: fileName,
+          type: 'text/plain',
+          blob: flowchartJSON
+        };
+        console.log('upload data', uploadFile);
+
+        var headers = new HttpHeaders();
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/json');
+
+        this.http.post('http://www.chapchap.ga/saveProject.php', uploadFile, {})
+          //this.http.post('https://chapweb.000webhostapp.com/saveProject.php', uploadFile, {})
+          //this.http.post('http://localhost:80/chap_2/saveProject.php', uploadFile, {})
+          .map((res: any) => res)
+          .subscribe(async res => {
+            console.log(res);
+
+            if (res.message == "Save successful") {
+              if (this.platform.is("android") || this.platform.is("ios")) {
+                this.toast.show('Save successful!.', '3000', 'bottom').subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
+              } else {
+                let alert = await this.alertC.create({
+                  header: "File Uploaded to database",
+                  message: "Save successful",
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+            } else if (res.message == "Invaild File Upload! Please Re-Check your File.") {
+              if (this.platform.is("android") || this.platform.is("ios")) {
+                this.toast.show('Invaild File Upload! Please Re-Check your File.', '3000', 'bottom').subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
+              } else {
+                let alert = await this.alertC.create({
+                  header: "ERROR",
+                  message: "Invaild File Upload! Please Re-Check your File.",
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+            } else {
+              if (this.platform.is("android") || this.platform.is("ios")) {
+                this.toast.show(res.message, '3000', 'bottom').subscribe(
+                  toast => {
+                    console.log(toast);
+                  }
+                );
+              } else {
+                let alert = await this.alertC.create({
+                  header: "ERROR",
+                  message: (res.message),
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+            }
+          });
+      }
     }
   }
 
@@ -2204,47 +2282,78 @@ export class HomePage {
   }
 
   async logOut() {
-    let alert = await this.alertC.create({
-      header: "Log Out",
-      message: "Are you sure you want to log out?",
-      buttons: [
-        {
-          text: 'Yes',
-          handler: () => {
-            console.log('Log Out');
-            var headers = new HttpHeaders();
-            headers.append("Accept", 'application/json');
-            headers.append('Content-Type', 'application/json');
-
-            console.log(this.auth.sessionToken.session);
-            this.http.post('http://www.chapchap.ga/logout.php', this.auth.sessionToken.session, {})
-              //this.http.post('https://chapweb.000webhostapp.com/logout.php', data, {})
-              //this.http.post('http://localhost:80/chap_2/logout.php', data, {})
-              .map((res: any) => res)
-              .subscribe(async res => {
-                console.log(res);
-
-                if (res.message == "Log Out") {
-                  this.closeMenu();
-                  this.navCtrl.navigateRoot('/login');
-                } else {
-                  let alert = await this.alertC.create({
-                    header: "ERROR",
-                    message: (res.message),
-                    buttons: ['OK']
-                  });
-                  alert.present();
-                }
-              });
+    this.checkInternetConnection();
+    // Check if it is in Offline Mode
+    if (this.auth.mode == 'offline') {
+      let alert = await this.alertC.create({
+        header: "Offline Mode",
+        message: "Please turn on your internet connection to use CHAP online.",
+        buttons: [
+          {
+            text: 'Go Online',
+            handler: () => {
+              this.auth.mode = 'online';
+              this.navCtrl.navigateRoot('/login');
+            }
+          }, {
+            text: 'Close',
+            role: 'cancel',
+            handler: () => { }
           }
-        },
-        {
-          text: 'No',
-          role: 'cancel',
-          handler: () => { console.log('Cancel'); }
-        }]
-    });
-    alert.present();
+        ]
+      });
+      alert.present();
+    } else {
+      let alert = await this.alertC.create({
+        header: "Log Out",
+        message: "Are you sure you want to log out?",
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              console.log('Log Out');
+              var headers = new HttpHeaders();
+              headers.append("Accept", 'application/json');
+              headers.append('Content-Type', 'application/json');
+
+              console.log(this.auth.sessionToken.session);
+              this.http.post('http://www.chapchap.ga/logout.php', this.auth.sessionToken.session, {})
+                //this.http.post('https://chapweb.000webhostapp.com/logout.php', data, {})
+                //this.http.post('http://localhost:80/chap_2/logout.php', data, {})
+                .map((res: any) => res)
+                .subscribe(async res => {
+                  console.log(res);
+
+                  if (res.message == "Log Out") {
+                    this.closeMenu();
+                    this.navCtrl.navigateRoot('/login');
+                  } else {
+                    let alert = await this.alertC.create({
+                      header: "ERROR",
+                      message: (res.message),
+                      buttons: ['OK']
+                    });
+                    alert.present();
+                  }
+                });
+            }
+          },
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => { console.log('Cancel'); }
+          }]
+      });
+      alert.present();
+    }
+  }
+
+  async checkInternetConnection() {
+    if (!navigator.onLine) {
+      this.auth.mode = 'offline';
+    } else {
+      this.auth.mode = 'online';
+    }
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
