@@ -182,6 +182,7 @@ export class LoginPage implements OnInit {
                 //let params = new NavParams({ session: res.session });
                 //this.navP.data = params;
                 this.auth.sessionToken = { session: res.session };
+
                 this.navCtrl.navigateRoot('/home');
               } else if (res.message == "Open ADMINPANEL.php") {
                 if (this.platform.is("android") || this.platform.is("ios")) {

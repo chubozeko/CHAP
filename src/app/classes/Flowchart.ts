@@ -757,10 +757,70 @@ export class Flowchart {
       // OUTPUT
       if (this.tempSymbols[i] instanceof Output) {
         let tempX = this.tempSymbols[i].getOutputExpression() as string;
-        let y = tempX.replace(/"/g, '`');
+        let y = tempX.replace(/\"/g, "`");
         console.log('old output', this.tempSymbols[i].getOutputExpression());
         this.tempSymbols[i].setOutputExpression(y);
         console.log('new output', this.tempSymbols[i].getOutputExpression());
+      }
+      // IF CASE
+      else if (this.tempSymbols[i] instanceof IfCase) {
+        let ifSymbol = new IfCase();
+        ifSymbol = this.tempSymbols[i];
+        for (let j = 0; j < ifSymbol.trueBlockSymbols.length; j++) {
+          let tempS = ifSymbol.getSymbolFromTrueBlock(j);
+          if (tempS instanceof Output) {
+            let tempX = tempS.getOutputExpression() as string;
+            let y = tempX.replace(/\"/g, "`");
+            tempS.setOutputExpression(y);
+          }
+        }
+        for (let j = 0; j < ifSymbol.falseBlockSymbols.length; j++) {
+          let tempS = ifSymbol.getSymbolFromFalseBlock(j);
+          if (tempS instanceof Output) {
+            let tempX = tempS.getOutputExpression() as string;
+            let y = tempX.replace(/\"/g, "`");
+            tempS.setOutputExpression(y);
+          }
+        }
+      }
+      // WHILE LOOP
+      else if (this.tempSymbols[i] instanceof WhileLoop) {
+        let whileSymbol = new WhileLoop();
+        whileSymbol = this.tempSymbols[i];
+        for (let j = 0; j < whileSymbol.trueLoopBlock.length; j++) {
+          let tempS = whileSymbol.getSymbolFromTrueBlock(j);
+          if (tempS instanceof Output) {
+            let tempX = tempS.getOutputExpression() as string;
+            let y = tempX.replace(/\"/g, "`");
+            tempS.setOutputExpression(y);
+          }
+        }
+      }
+      // FOR LOOP
+      else if (this.tempSymbols[i] instanceof ForLoop) {
+        let forSymbol = new ForLoop();
+        forSymbol = this.tempSymbols[i];
+        for (let j = 0; j < forSymbol.trueLoopBlock.length; j++) {
+          let tempS = forSymbol.getSymbolFromTrueBlock(j);
+          if (tempS instanceof Output) {
+            let tempX = tempS.getOutputExpression() as string;
+            let y = tempX.replace(/\"/g, "`");
+            tempS.setOutputExpression(y);
+          }
+        }
+      }
+      // DO WHILE LOOP
+      else if (this.tempSymbols[i] instanceof DoWhileLoop) {
+        let doWhileSymbol = new DoWhileLoop();
+        doWhileSymbol = this.tempSymbols[i];
+        for (let j = 0; j < doWhileSymbol.trueLoopBlock.length; j++) {
+          let tempS = doWhileSymbol.getSymbolFromTrueBlock(j);
+          if (tempS instanceof Output) {
+            let tempX = tempS.getOutputExpression() as string;
+            let y = tempX.replace(/\"/g, "`");
+            tempS.setOutputExpression(y);
+          }
+        }
       }
     }
   }

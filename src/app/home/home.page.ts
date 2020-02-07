@@ -124,7 +124,7 @@ export class HomePage {
     let goOnline = document.getElementById("btn_goOnline");
     goOnline.addEventListener("click", e => {
       this.closeMenu();
-      this.auth.mode = 'online';
+      //this.auth.mode = 'online';
       this.navCtrl.navigateRoot('/login');
     });
 
@@ -216,13 +216,7 @@ export class HomePage {
 
   public openMenu() {
     let logOut = document.getElementById("btn_logOut");
-    logOut.addEventListener("click", e => this.logOut());
     let goOnline = document.getElementById("btn_goOnline");
-    goOnline.addEventListener("click", e => {
-      this.closeMenu();
-      this.auth.mode = 'online';
-      this.navCtrl.navigateRoot('/login');
-    });
     // Check if it is Offline Mode
     if (this.auth.mode == 'offline') {
       logOut.style.display = 'none';
@@ -1724,7 +1718,7 @@ export class HomePage {
           {
             text: 'Go Online',
             handler: () => {
-              this.auth.mode = 'online';
+              //this.auth.mode = 'online';
               this.navCtrl.navigateRoot('/login');
             }
           }, {
@@ -1753,7 +1747,7 @@ export class HomePage {
     }
   }
 
-  public loadProject(chapFileName, fileData) {
+  public loadProject(chapFileName, fileData: string) {
     this.newProject();
     let dataSyms, arrowT, els, p, tlb, flb;
     console.log(fileData);
@@ -2020,7 +2014,6 @@ export class HomePage {
 
   public saveProject() {
     let fileName, flowchartJSON;
-
     // this.menu.close();
     let fName = document.getElementById('fileName') as HTMLInputElement;
     this.fileName = fName.value;
@@ -2101,7 +2094,7 @@ export class HomePage {
           {
             text: 'Go Online',
             handler: () => {
-              this.auth.mode = 'online';
+              //this.auth.mode = 'online';
               this.navCtrl.navigateRoot('/login');
             }
           }, {
@@ -2125,6 +2118,7 @@ export class HomePage {
         );
       } else {
         fileName = this.fileName + '.chap';
+        this.flowchart.prepareFlowchartForSaving();
         flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
 
         let uploadFile = {
@@ -2292,7 +2286,7 @@ export class HomePage {
           {
             text: 'Go Online',
             handler: () => {
-              this.auth.mode = 'online';
+              //this.auth.mode = 'online';
               this.navCtrl.navigateRoot('/login');
             }
           }, {
