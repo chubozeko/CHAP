@@ -6,7 +6,9 @@ export class Start {
 
   startSymbol: any = document.getElementById('s_start');
 
-  constructor() { }
+  constructor() {
+
+  }
 
   setStartSymbol(symbol: any) { this.startSymbol = symbol; }
   getStartSymbol() { return this.startSymbol; }
@@ -18,7 +20,13 @@ export class Start {
   }
 
   getJavaCode() {
-    return `import java.io.*; \nimport java.util.*; \nimport java.lang.Math; \n\npublic class ChapJavaApp {\n\tpublic static void main(String[] args) {\n`;
+    let fName = document.getElementById('fileName') as HTMLInputElement;
+    let className = fName.value.replace(/ /g, "");
+    if (className == '') {
+      return `import java.io.*; \nimport java.util.*; \nimport java.lang.Math; \n\npublic class JavaClass {\n\tpublic static void main(String[] args) {\n`;
+    } else {
+      return `import java.io.*; \nimport java.util.*; \nimport java.lang.Math; \n\npublic class ` + className + ` {\n\tpublic static void main(String[] args) {\n`;
+    }
   }
 
 }
