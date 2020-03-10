@@ -8,20 +8,29 @@ import { ModalController } from '@ionic/angular';
 })
 export class FeedbackPage implements OnInit {
 
-  commentValue: string = "";
+  feedback;
+  comment_ph: string = "";
 
   constructor(public modal: ModalController) { }
 
   ngOnInit() {
+    this.comment_ph = `Leave a comment or share your opinions on CHAP: `;
   }
 
   public submitComment() {
+    let rating = (document.getElementById("fb_rating") as HTMLIonRangeElement);
     let comment = (document.getElementById("ta_comment") as HTMLIonTextareaElement);
-    this.commentValue = comment.value;
+    // this.feedback.rating = rating.value;
+    // this.feedback.comment = comment.value;
 
-    console.log(this.commentValue);
+    this.feedback = {
+      rating: rating.value,
+      comment: comment.value
+    }
+
+    console.log(this.feedback);
   }
 
-  public closeModal() { this.modal.dismiss(); }
+  public closeModal() { this.modal.dismiss(this.feedback); }
 
 }

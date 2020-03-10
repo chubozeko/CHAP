@@ -2354,6 +2354,8 @@ export class HomePage {
   }
 
   async openFeedback() {
+    this.closeMenu();
+
     const modal = await this.modalC.create({
       component: FeedbackPage,
     });

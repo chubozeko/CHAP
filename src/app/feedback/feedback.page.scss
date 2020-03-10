@@ -16,6 +16,15 @@
   font-size: 14pt;
 }
 
+#fb_rating {
+  --bar-background-active: #10dc60;
+  --bar-background: #DDDDDD;
+  --knob-background: #333333;
+  --knob-size: 10px;
+  --pin-color: #DDDDDD;
+  --bar-height: 5px;
+}
+
 .scrollbar {
 	height: 100%; width: 100%;
 	overflow-y: scroll;

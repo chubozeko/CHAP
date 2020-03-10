@@ -5,12 +5,14 @@
 </ion-toolbar>
 
 <ion-content padding color="secondary">
-  <ion-item color="secondary">
-    <ion-label style="color: #333; text-align: center; font-weight: bold;">
-      Leave a comment or share your opinions on CHAP: </ion-label>
+
+  <ion-item>
+    <ion-label position="stacked"> Rating: </ion-label>
+    <ion-range id="fb_rating" min="0" max="10" step="1" snaps="true" ticks="true" pin="true"></ion-range>
   </ion-item>
+
   <div id="feedbackText">
-    <ion-textarea id="ta_comment" autoGrow style="height: 100%;"></ion-textarea>
+    <ion-textarea id="ta_comment" placeholder="{{ comment_ph }}" autoGrow style="height: 100%;"></ion-textarea>
   </div>
 
 </ion-content>
