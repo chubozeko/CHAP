@@ -38,7 +38,7 @@ import { TutorialPageModule } from './tutorial/tutorial.module';
 import { OpenProjectPageModule } from './open-project/open-project.module';
 import { AdminPanelPageModule } from './admin-panel/admin-panel.module';
 import { AuthService } from './auth.service';
-
+import { FeedbackPageModule } from './feedback/feedback.module';
 
 @NgModule({
   declarations: [
@@ -67,7 +67,8 @@ import { AuthService } from './auth.service';
     InterceptorModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminPanelPageModule
+    AdminPanelPageModule,
+    FeedbackPageModule
   ],
   providers: [
     StatusBar,

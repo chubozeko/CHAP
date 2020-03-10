@@ -40,6 +40,7 @@ import { DoWhileLoop } from "../classes/DoWhileLoop";
 import { OpenProjectPage } from "../open-project/open-project.page";
 import { AuthService } from '../auth.service';
 import { toBase64String } from "@angular/compiler/src/output/source_map";
+import { FeedbackPage } from "../feedback/feedback.page";
 
 @Component({
   selector: "app-home",
@@ -119,6 +120,8 @@ export class HomePage {
     sFAB.addEventListener("click", e => this.toggleSymbolsFAB());
     // let printFC = document.getElementById("btn_printFlowchart");
     // printFC.addEventListener('click', (e) => this.printFlowchart());
+    let feedbackBtn = document.getElementById("btn_feedbackPage");
+    feedbackBtn.addEventListener('click', (e) => this.openFeedback());
     let logOut = document.getElementById("btn_logOut");
     logOut.addEventListener("click", e => this.logOut());
     let goOnline = document.getElementById("btn_goOnline");
@@ -2348,6 +2351,17 @@ export class HomePage {
     } else {
       this.auth.mode = 'online';
     }
+  }
+
+  async openFeedback() {
+    const modal = await this.modalC.create({
+      component: FeedbackPage,
+    });
+
+    modal.onDidDismiss().then(data => {
+
+    });
+    await modal.present();
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
