@@ -2358,6 +2358,9 @@ export class HomePage {
 
     const modal = await this.modalC.create({
       component: FeedbackPage,
+      componentProps: {
+        userID: this.auth.sessionToken.session.user_id
+      }
     });
 
     modal.onDidDismiss().then(data => {
