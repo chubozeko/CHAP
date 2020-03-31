@@ -76,6 +76,8 @@ export class LoginPage implements OnInit {
     btnSignUp.addEventListener("click", e => this.signUpToCHAP(e));
     let btnLogin = document.getElementById("btn_login");
     btnLogin.addEventListener("click", e => this.logInToCHAP(e));
+    let btnOffline = document.getElementById("btn_offline");
+    btnOffline.addEventListener("click", e => this.useCHAPOffline(e));
   }
 
   async checkInternetConnection() {
@@ -91,6 +93,7 @@ export class LoginPage implements OnInit {
             cssClass: 'error',
             handler: () => {
               this.auth.mode = 'offline';
+              this.auth.isLoggedIn = false;
               this.navCtrl.navigateRoot('/home');
             }
           }, {
@@ -104,6 +107,12 @@ export class LoginPage implements OnInit {
     } else {
       this.auth.mode = 'online';
     }
+  }
+
+  useCHAPOffline(e) {
+    this.auth.mode = 'offline';
+    this.auth.isLoggedIn = false;
+    this.navCtrl.navigateRoot('/home');
   }
 
   openAdminPanel() {
@@ -182,7 +191,7 @@ export class LoginPage implements OnInit {
                 //let params = new NavParams({ session: res.session });
                 //this.navP.data = params;
                 this.auth.sessionToken = { session: res.session };
-
+                this.auth.isLoggedIn = true;
                 this.navCtrl.navigateRoot('/home');
               } else if (res.message == "Open ADMINPANEL.php") {
                 if (this.platform.is("android") || this.platform.is("ios")) {

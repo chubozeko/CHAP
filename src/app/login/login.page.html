@@ -10,10 +10,10 @@
     <form [formGroup]="loginForm">
       <div>
         <!-- formControlName="facebook"  -->
-        <ion-button id="btn_fbLogin" shape="round" slot="start" expand="block">
+        <!-- <ion-button id="btn_fbLogin" shape="round" slot="start" expand="block">
           <ion-icon name="logo-facebook"></ion-icon>
           &nbsp; Login with Facebook
-        </ion-button>
+        </ion-button> -->
         <!-- formControlName="google"  -->
         <!-- <ion-button shape="round" slot="start" expand="block" style="--background: #D44638;">
           <ion-icon name="logo-google"></ion-icon>
@@ -26,9 +26,9 @@
         </ion-button> -->
       </div>
 
-      <ion-label style="display: flex; font-size: 12pt; justify-content: center; padding: 20px;" color="primary">
+      <!-- <ion-label style="display: flex; font-size: 12pt; justify-content: center; padding: 20px;" color="primary">
         - OR -
-      </ion-label>
+      </ion-label> -->
 
       <div>
         <ion-item>
@@ -51,6 +51,15 @@
         <ion-button id="btn_signup" style="padding: 10px 0;" expand="block">Sign Up
         </ion-button>
       </div>
+
+      <ion-label style="display: flex; font-size: 12pt; justify-content: center; padding: 20px;" color="primary">
+        - OR -
+      </ion-label>
+
+      <ion-button id="btn_offline" slot="start" expand="block">
+        Go Offline
+      </ion-button>
+
     </form>
   </ion-content>
 </ion-card>

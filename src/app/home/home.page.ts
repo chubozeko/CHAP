@@ -1732,7 +1732,7 @@ export class HomePage {
         ]
       });
       alert.present();
-    } else {
+    } else if (this.auth.isLoggedIn) {
       const modal = await this.modalC.create({
         component: OpenProjectPage,
         componentProps: {
@@ -1747,6 +1747,25 @@ export class HomePage {
         }
       });
       await modal.present();
+    } else {
+      let alert = await this.alertC.create({
+        header: "Cannot Open Online Projects",
+        message: "Please log in to use CHAP online.",
+        buttons: [
+          {
+            text: 'Login',
+            handler: () => {
+              //this.auth.mode = 'online';
+              this.navCtrl.navigateRoot('/login');
+            }
+          }, {
+            text: 'Use Offline Mode',
+            role: 'cancel',
+            handler: () => { }
+          }
+        ]
+      });
+      alert.present();
     }
   }
 
@@ -2108,7 +2127,7 @@ export class HomePage {
         ]
       });
       alert.present();
-    } else {
+    } else if (this.auth.isLoggedIn) {
       let fileName, flowchartJSON;
 
       let fName = document.getElementById('fileName') as HTMLInputElement;
@@ -2191,6 +2210,25 @@ export class HomePage {
             }
           });
       }
+    } else {
+      let alert = await this.alertC.create({
+        header: "Cannot Save Online",
+        message: "Please log in to save your CHAP projects online.",
+        buttons: [
+          {
+            text: 'Login',
+            handler: () => {
+              //this.auth.mode = 'online';
+              this.navCtrl.navigateRoot('/login');
+            }
+          }, {
+            text: 'Use Offline Mode',
+            role: 'cancel',
+            handler: () => { }
+          }
+        ]
+      });
+      alert.present();
     }
   }
 

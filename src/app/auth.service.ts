@@ -11,6 +11,7 @@ export class AuthService {
   rootURL: string = 'http://localhost:80/chap_ums/';
   sessionToken: any;
   mode: string;
+  isLoggedIn: boolean;
 
   constructor(private http: HttpClient) { }
 
