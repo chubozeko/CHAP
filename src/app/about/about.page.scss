@@ -6,12 +6,25 @@
   background-color: #333;
 }
 
-#p_about{
+#p_about, p{
   padding: 5px;
   background-color: #ddd;
   white-space: pre-wrap; 
   color: #000; 
   text-align: justify;
+}
+
+strong {
+  color: #000; 
+  font-weight: bold;
+}
+
+.view {
+  display: block;
+}
+
+.hide {
+  display: none;
 }
 
 .scrollbar {
