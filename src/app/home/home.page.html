@@ -1,11 +1,59 @@
 <ion-header></ion-header>
 
 <ion-toolbar color="primary">
-  <button menuToggle="right" style="background-color: #333;" (click)="openMenu()">
-    <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/menu.png" />
+  <ion-buttons slot="start">
+    <ion-button menuToggle="right" style="background-color: #333;" (click)="openMenu()">
+      <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/menu.png" />
+    </ion-button>
+    <ion-button>
+      <ion-img style="width: 32px; height: 32px;" src="./assets/icon/chap_logo.png"></ion-img>
+    </ion-button>
+  </ion-buttons>
+  <ion-input clearInput type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}"></ion-input>
+  <!-- Menu Toolbar Buttons -->
+  <ion-buttons slot="end">
+    <ion-button (click)="newProject()">
+      <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+    </ion-button>
+    <ion-button (click)="openProjectOptions()">
+      <ion-icon slot="icon-only" name="folder-open"></ion-icon>
+    </ion-button>
+    <ion-button (click)="saveProjectOptions()">
+      <ion-icon slot="icon-only" name="save"></ion-icon>
+    </ion-button>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <ion-button (click)="clearWorkspace()">
+      <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-button>
+    <ion-button (click)="debugProgram()">
+      <ion-icon slot="icon-only" name="bug"></ion-icon>
+    </ion-button>
+    <ion-button (click)="generatePseudoCode()">
+      <ion-icon slot="icon-only" name="code"></ion-icon>
+    </ion-button>
+    <ion-button (click)="openTutorialPage()">
+      <ion-icon slot="icon-only" name="help-circle"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+  <!-- <button (click)="openMenu()">
+    <ion-icon name="add-circle-outline"></ion-icon>
   </button> &nbsp;
-  <img style="width: 36px; height: 36px;" src="./assets/icon/chap_logo.png" /> &nbsp;
-  <input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}">
+  <button style="background-color: #333;" (click)="openMenu()">
+    <ion-icon name="folder-open"></ion-icon>
+  </button> &nbsp;
+  <button style="background-color: #333;" (click)="openMenu()">
+    <ion-icon name="save"></ion-icon>
+  </button> &nbsp;
+  <button style="background-color: #333;" (click)="openMenu()">
+    <ion-icon name="bug"></ion-icon>
+  </button> &nbsp;
+  <button style="background-color: #333;" (click)="openMenu()">
+    <ion-icon name="code"></ion-icon>
+  </button> &nbsp;
+  <button style="background-color: #333;" (click)="openMenu()">
+    <ion-icon name="help-circle"></ion-icon>
+  </button> &nbsp; -->
 </ion-toolbar>
 
 <ion-content>
