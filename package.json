@@ -59,6 +59,7 @@
     "hammerjs": "^2.0.8",
     "html2canvas": "^1.0.0-alpha.12",
     "interactjs": "^1.3.4",
+    "ionic": "^5.4.16",
     "ionicons": "^5.0.1",
     "mathjs": "^6.1.0",
     "ng2-dragula": "^2.1.1",
