@@ -1,6 +1,7 @@
 <ion-header></ion-header>
 
 <ion-toolbar color="primary">
+
   <ion-buttons slot="start">
     <ion-button menuToggle="right" style="background-color: #333;" (click)="openMenu()">
       <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/menu.png" />
@@ -9,31 +10,64 @@
       <ion-img style="width: 32px; height: 32px;" src="./assets/icon/chap_logo.png"></ion-img>
     </ion-button>
   </ion-buttons>
-  <ion-input clearInput type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}"></ion-input>
+
+  <ion-input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}" clearInput></ion-input>
+
   <!-- Menu Toolbar Buttons -->
   <ion-buttons slot="end">
-    <ion-button (click)="newProject()">
-      <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
-    </ion-button>
-    <ion-button (click)="openProjectOptions()">
-      <ion-icon slot="icon-only" name="folder-open"></ion-icon>
-    </ion-button>
-    <ion-button (click)="saveProjectOptions()">
-      <ion-icon slot="icon-only" name="save"></ion-icon>
-    </ion-button>
+    <ion-input type="text" id="toolbar-tooltip" value="{{toolbarTooltip}}" readonly></ion-input>
+
+    <div class="tooltip">
+      <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
+        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 120px;">New Project</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="openProjectOptions()">
+        <ion-icon slot="icon-only" name="folder-open"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 120px;">Open Project</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="saveProjectOptions()">
+        <ion-icon slot="icon-only" name="save"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 120px;">Save Project</span>
+    </div>
+
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <ion-button (click)="clearWorkspace()">
-      <ion-icon slot="icon-only" name="close"></ion-icon>
-    </ion-button>
-    <ion-button (click)="debugProgram()">
-      <ion-icon slot="icon-only" name="bug"></ion-icon>
-    </ion-button>
-    <ion-button (click)="generatePseudoCode()">
-      <ion-icon slot="icon-only" name="code"></ion-icon>
-    </ion-button>
-    <ion-button (click)="openTutorialPage()">
-      <ion-icon slot="icon-only" name="help-circle"></ion-icon>
-    </ion-button>
+
+    <div class="tooltip">
+      <ion-button (click)="clearWorkspace()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Clear Workspace</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="debugProgram()">
+        <ion-icon slot="icon-only" name="bug"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Debug Program</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="generatePseudoCode()">
+        <ion-icon slot="icon-only" name="code"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Generate Code</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="openTutorialPage()">
+        <ion-icon slot="icon-only" name="help-circle"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 80px;">Tutorial</span>
+    </div>
+
   </ion-buttons>
 
   <!-- <button (click)="openMenu()">
@@ -65,6 +99,7 @@
     <div id="workspace" appEditor>
 
       <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
+
       <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols">
       </div>
       <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>

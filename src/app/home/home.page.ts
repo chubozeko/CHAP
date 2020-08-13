@@ -54,6 +54,7 @@ export class HomePage {
   flowchart: Flowchart = new Flowchart(this.alertC);
   title = "CHAP";
   fileName = "";
+  toolbarTooltip = "";
   consoleButtonText = "Open Console";
   isConsoleOpen = false;
   isCutCopyReady = false;
@@ -93,6 +94,19 @@ export class HomePage {
   }
 
   ngOnInit() {
+    // Adding Hover Listeners to Toolbar Buttons
+    let tbButtons = document.getElementsByClassName("tooltip");
+    for (let i = 0; i < tbButtons.length; i++) {
+      // Mouse Over (Hover)
+      tbButtons[i].addEventListener("mouseover", (e) => {
+        this.toolbarTooltip = tbButtons[i].getElementsByClassName("tooltiptext")[0].innerHTML;
+      });
+      // Mouse Exit
+      tbButtons[i].addEventListener("mouseleave", (e) => {
+        this.toolbarTooltip = "";
+      });
+    }
+
     // Adding Click Listeners to Menu Items
     let debugP = document.getElementById("btn_debugProgram");
     debugP.addEventListener("click", e => this.debugProgram(e));
