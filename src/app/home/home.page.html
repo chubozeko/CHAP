@@ -96,15 +96,13 @@
 
     <!-- <canvas id="canvas" style="display: none"></canvas> -->
 
-    <div id="workspace" appEditor>
+    <div id="left_symbols">
+      <ion-card id="symbolsTitle">
+        <ion-text style="padding: 5px; font-size: 12pt; font-weight: bold;">SYMBOLS:</ion-text>
+      </ion-card>
+      <div id="symbolsList" dragula="symbol">
 
-      <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
-
-      <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols">
-      </div>
-      <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
-
-      <div id="symbolsList" dragula="symbol" class="scrollbar">
+        <!-- class="scrollbar" -->
         <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
           <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id, $event)">
             {{s.s_name}}
@@ -112,29 +110,35 @@
         </ion-card>
       </div>
 
+      <ion-fab-button id="symbolsFAB" color="light" style="padding: 15px;">
+        <img src="./assets/icon/symbols_icon.png" alt="">
+      </ion-fab-button>
+
     </div>
 
-    <div class="sidebar">
-      <div>
-        <ion-fab-button id="symbolsFAB" color="light" style="padding: 15px;">
-          <img src="./assets/icon/symbols_icon.png" alt="">
-        </ion-fab-button>
-      </div>
-
-      <div>
-        <div id="consoleBtns">
-          <ion-button size="small" color="danger" style="float: right;" (click)="clearConsole()">
-            <ion-icon name="backspace"></ion-icon>
-          </ion-button>
-          <ion-button size="small" color="primary" style="float: right;" (click)="toggleConsole()">
-            <!-- <ion-icon name="terminal-outline"></ion-icon> -->
-            {{consoleButtonText}}
-          </ion-button>
+    <div id="right_ws">
+      <div id="workspace" appEditor>
+        <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
+        <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols">
         </div>
-        <textarea id="console" class="toggleConsole" rows="4" disabled="true" contenteditable="false"
-          style="color: #ddd; display: none;"></textarea>
+        <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
       </div>
 
+      <div class="sidebar">
+        <div>
+          <div id="consoleBtns">
+            <ion-button size="small" color="danger" style="float: right;" (click)="clearConsole()">
+              <ion-icon name="backspace"></ion-icon>
+            </ion-button>
+            <ion-button size="small" color="primary" style="float: right;" (click)="toggleConsole()">
+              <!-- <ion-icon name="terminal-outline"></ion-icon> -->
+              {{consoleButtonText}}
+            </ion-button>
+          </div>
+          <textarea id="console" class="toggleConsole" rows="4" disabled="true" contenteditable="false"
+            style="color: #ddd; display: none;"></textarea>
+        </div>
+      </div>
     </div>
 
     <ul id="control_loop_list">

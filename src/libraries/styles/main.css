@@ -34,12 +34,28 @@
 #toolbar, #lowerbar, #upperbar{ margin: 0; padding: 0; }
 
 /* SIDEBAR */
-.wrapper > #workspace{ background: #ddd; padding: 1em; }
-.wrapper{
+.wrapper > #right_ws > #workspace{ background: #ddd; padding: 1em; }
+.wrapper {
+    display: grid;
+    /* grid-template-columns: 100px auto; */
+    grid-template-columns: 0fr 1fr;
+    height: 100%;
+}
+.showSymbolPanel { grid-template-columns: 100px auto; }
+#left_symbols {
+    float: left; 
+    /* background-color: aqua; */
+    background-color: #ddd;
+    display: block;
+    align-items: center;
+}
+#right_ws {
     display: grid;
     grid-template-rows: 5fr 1fr;
+    /* grid-template-columns: 1fr 5fr; */
     grid-column-gap: 0.25em;
     height: 100%;
+    overflow: auto;
 }
 .sidebar{ 
     background: #ddd; 
@@ -87,7 +103,7 @@ li a{
 }
 li a:hover{ color: #039be5; } 
 #workspace > div{ margin: auto; }
-#workspace{ overflow: auto; }
+/* #workspace{ overflow: auto; } */
 
 /*** DROP-DOWN MENU [placeholder styles] ***/
 #lowerbar {

@@ -201,7 +201,6 @@ export class HomePage {
         target.setAttribute('style', 'background: #000000');
         target.removeChild(target.children[0]);
         this.addSymbol(this.selectedSymbol, el.children[0]);
-        // this.symbolsFAB.close();
       });
 
     this.dragulaService.over('symbol')
@@ -1049,18 +1048,25 @@ export class HomePage {
   public toggleSymbolsFAB() {
     let symbolsList = document.getElementById("symbolsList");
     let symbolsFAB = document.getElementById("symbolsFAB");
+    let symbolsTitle = document.getElementById("symbolsTitle");
     if (symbolsFAB.classList.contains('toggleSymFAB')) {
+      let ss = document.getElementsByClassName("wrapper");
+      ss[0].classList.remove('showSymbolPanel');
       // Close Symbols List
       symbolsFAB.classList.remove('toggleSymFAB');
       symbolsFAB.innerHTML = '<img src="./assets/icon/symbols_icon.png" alt="">';
       symbolsList.style.display = 'none';
+      symbolsTitle.style.display = 'none';
     } else {
+      let ss = document.getElementsByClassName("wrapper");
+      ss[0].classList.add('showSymbolPanel');
       // Show Symbols List
       symbolsFAB.classList.add('toggleSymFAB');
       symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
       symbolsList.style.display = 'block';
-      symbolsList.style.position = 'absolute';
-      symbolsList.style.bottom = '80px';
+      symbolsTitle.style.display = 'block';
+      // symbolsList.style.position = 'absolute';
+      // symbolsList.style.bottom = '80px';
     }
   }
 
@@ -1070,18 +1076,25 @@ export class HomePage {
     // Get symbols FAB
     let symbolsFAB = document.getElementById("symbolsFAB");
     let symbolsList = document.getElementById("symbolsList");
+    let symbolsTitle = document.getElementById("symbolsTitle");
     // Get the active arrow/branch
     let arrows = document.getElementsByClassName("dropzone active-arrow");
     // Check if there are other active arrows/branches
     if (arrows.length < 1) {
       t.classList.add("active-arrow");
+
       if (!symbolsFAB.classList.contains('toggleSymFAB')) {
+        let ss = document.getElementsByClassName("wrapper");
+        ss[0].classList.add('showSymbolPanel');
+        // Show Symbols List
         symbolsFAB.classList.add('toggleSymFAB');
         symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
         symbolsList.style.display = 'block';
-        symbolsList.style.position = 'absolute';
-        symbolsList.style.bottom = '80px';
+        symbolsTitle.style.display = 'block';
+        // symbolsList.style.position = 'absolute';
+        // symbolsList.style.bottom = '80px';
       }
+
     } else {
       let branches = document.getElementsByClassName("dropzone active-arrow");
       for (let i = 0; i < branches.length; i++) {
@@ -1090,13 +1103,19 @@ export class HomePage {
       t.classList.add("active-arrow");
       // Open symbols FAB
       this.toggleSymbolsFAB();
+
       if (!symbolsFAB.classList.contains('toggleSymFAB')) {
+        let ss = document.getElementsByClassName("wrapper");
+        ss[0].classList.add('showSymbolPanel');
+        // Show Symbols List
         symbolsFAB.classList.add('toggleSymFAB');
         symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
         symbolsList.style.display = 'block';
-        symbolsList.style.position = 'absolute';
-        symbolsList.style.bottom = '80px';
+        symbolsTitle.style.display = 'block';
+        // symbolsList.style.position = 'absolute';
+        // symbolsList.style.bottom = '80px';
       }
+
     }
   }
 
@@ -1603,7 +1622,6 @@ export class HomePage {
         .on("hold", e => this.openArrowsAS(e));
     }
 
-    this.toggleSymbolsFAB();
     console.log(this.flowchart.SYMBOLS);
   }
 

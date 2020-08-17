@@ -5,22 +5,20 @@
 
 // Tooltips
 #toolbar-tooltip {
-  // visibility: hidden;
   background-color: black;
   color: #ddd;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-  // position: absolute;
-  // width: 140px;
   height: 60%;
+  width: 150px;
 }
 
 /* Tooltip container */
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  border-bottom: 1px dotted black;
 }
 
 /* Tooltip text */
@@ -54,6 +52,7 @@
 }
 .toggleConsole {
   display: none;
+  margin-bottom: 0px;
 }
 #consoleBtns {
   position: absolute;
@@ -62,17 +61,30 @@
 }
 
 // Symbols FAB & List
+#symbolsTitle {
+  display: none;
+  background-color: #333333;
+  color: #ddd;
+  padding: 5px; 
+  width: 100px; 
+  height: 30px; 
+  justify-content: center;
+}
+
 #symbolsFAB {
   position: absolute;
   bottom: 0px; left: 0px;
 }
 #symbolsList {
   display: none;
-  position: absolute; resize: none;
+  // display: block;
+  position: relative;
+  resize: none;
   background-color: #ddd;
   font-family: Consolas, monaco, monospace; 
-  padding: 2px; 
-  bottom: 10px;
+  padding: 10px;
+  // top: 10px;
+  // bottom: 10px;
 }
 .scrollbar {
 	height: 360px; width: 90px;
