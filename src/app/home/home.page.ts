@@ -57,6 +57,7 @@ export class HomePage {
   toolbarTooltip = "";
   consoleButtonText = "Open Console";
   isConsoleOpen = false;
+  isSymbolsFABOpen = false;
   isCutCopyReady = false;
   fs;
   workspace;
@@ -103,6 +104,19 @@ export class HomePage {
       });
       // Mouse Exit
       tbButtons[i].addEventListener("mouseleave", (e) => {
+        this.toolbarTooltip = "";
+      });
+    }
+
+    // Adding Hover Listeners to Symbols List
+    let symList = document.getElementsByClassName("s_tooltip");
+    for (let i = 0; i < symList.length; i++) {
+      // Mouse Over (Hover)
+      symList[i].addEventListener("mouseover", (e) => {
+        this.toolbarTooltip = symList[i].innerHTML;
+      });
+      // Mouse Exit
+      symList[i].addEventListener("mouseleave", (e) => {
         this.toolbarTooltip = "";
       });
     }
@@ -1090,6 +1104,10 @@ export class HomePage {
       symbolsFAB.innerHTML = '<img src="./assets/icon/symbols_icon.png" alt="">';
       symbolsList.style.display = 'none';
       symbolsTitle.style.display = 'none';
+      this.isSymbolsFABOpen = false;
+      if (this.isConsoleOpen) {
+        document.getElementById("console").style.marginLeft = '100px';
+      }
     } else {
       let ss = document.getElementsByClassName("wrapper");
       ss[0].classList.add('showSymbolPanel');
@@ -1098,8 +1116,12 @@ export class HomePage {
       symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
       symbolsList.style.display = 'block';
       symbolsTitle.style.display = 'block';
+      this.isSymbolsFABOpen = true;
       // symbolsList.style.position = 'absolute';
       // symbolsList.style.bottom = '80px';
+      if (this.isConsoleOpen) {
+        document.getElementById("console").style.marginLeft = '0px';
+      }
     }
   }
 
@@ -1680,6 +1702,10 @@ export class HomePage {
       console1.style.display = 'block';
       console1.style.position = 'absolute';
       console1.style.bottom = '0';
+      if (!this.isSymbolsFABOpen)
+        console1.style.marginLeft = '100px';
+      else
+        console1.style.marginLeft = '0px';
       consoleBtns.style.position = 'absolute';
       consoleBtns.style.right = '5px';
       consoleBtns.style.bottom = console1.offsetHeight + 'px';
@@ -1722,7 +1748,7 @@ export class HomePage {
     workspace.appendChild(startSym);
     workspace.appendChild(arrowInit);
     workspace.appendChild(stopSym);
-    workspace.appendChild(symbolsList);
+    // workspace.appendChild(symbolsList);
     this.flowchart = new Flowchart(this.alertC);
   }
 

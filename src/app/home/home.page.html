@@ -15,7 +15,7 @@
 
   <!-- Menu Toolbar Buttons -->
   <ion-buttons slot="end">
-    <ion-input type="text" id="toolbar-tooltip2" value="{{toolbarTooltip}}" readonly></ion-input>
+    <ion-input type="text" id="toolbar-tooltip" value="{{toolbarTooltip}}" readonly></ion-input>
 
     <div class="tooltip">
       <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
@@ -101,10 +101,9 @@
         <ion-text style="padding: 5px; font-size: 12pt; font-weight: bold;">SYMBOLS:</ion-text>
       </ion-card>
       <div id="symbolsList" dragula="symbol">
-
         <!-- class="scrollbar" -->
         <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
-          <div id="{{s.id}}" class="symbol" (click)="addSymbol(s.id, $event)">
+          <div id="{{s.id}}" class="symbol s_tooltip" (click)="addSymbol(s.id, $event)">
             {{s.s_name}}
           </div>
         </ion-card>
