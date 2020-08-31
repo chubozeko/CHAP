@@ -263,6 +263,7 @@ export class HomePage {
       try {
         let dec = data.data as Declare;
         e.target.innerHTML = dec.getDeclareExpression();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -286,6 +287,7 @@ export class HomePage {
       try {
         let input = data.data as Input;
         e.target.innerHTML = input.getInputExpression();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -309,6 +311,7 @@ export class HomePage {
       try {
         let output = data.data as Output;
         e.target.innerHTML = output.getOutputExpression();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -332,6 +335,7 @@ export class HomePage {
       try {
         let proc = data.data as Process;
         e.target.innerHTML = proc.getProcessExpression();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -355,6 +359,7 @@ export class HomePage {
       try {
         let com = data.data as Comment;
         e.target.innerHTML = com.getCommentExpression();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -379,6 +384,7 @@ export class HomePage {
       try {
         let ifcase = data.data as IfCase;
         e.target.innerHTML = ifcase.getIfStatement();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -403,6 +409,7 @@ export class HomePage {
       try {
         let whileloop = data.data as WhileLoop;
         e.target.innerHTML = whileloop.getWhileExpression();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -427,6 +434,7 @@ export class HomePage {
       try {
         let forloop = data.data as ForLoop;
         e.target.innerHTML = forloop.getForExpression();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -451,12 +459,37 @@ export class HomePage {
       try {
         let dowhileloop = data.data as DoWhileLoop;
         e.target.innerHTML = dowhileloop.getDoWhileExpression();
+        this.resizeLoopBlocks(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
       }
     });
     await modal.present();
+  }
+
+  public resizeLoopBlocks(symbol) {
+    if (symbol.parentElement.parentElement.classList.contains("if_div")) {
+      if (symbol.parentElement.id == "ifTrueBlock" || symbol.parentElement.id == "ifFalseBlock") {
+        let ifDiv = symbol.parentElement.parentElement as HTMLDivElement;
+        let ifSymbol = ifDiv.getElementsByClassName("if_sym")[0] as HTMLDivElement;
+        let falseBlock = ifDiv.getElementsByClassName("ifFalseBlock")[0] as HTMLDivElement;
+        let trueBlock = ifDiv.getElementsByClassName("ifTrueBlock")[0] as HTMLDivElement;
+        // Resize to the Block with the larger width
+        let gridStr: string = "";
+        if (trueBlock.offsetWidth >= falseBlock.offsetWidth) {
+          gridStr = trueBlock.offsetWidth + "px max-content "
+            + ifSymbol.offsetWidth + "px max-content "
+            + trueBlock.offsetWidth + "px";
+        } else if (falseBlock.offsetWidth >= trueBlock.offsetWidth) {
+          gridStr = falseBlock.offsetWidth + "px max-content "
+            + ifSymbol.offsetWidth + "px max-content "
+            + falseBlock.offsetWidth + "px";
+        }
+        console.log("If Widths: " + gridStr);
+        ifDiv.style.gridTemplateColumns = gridStr;
+      }
+    }
   }
 
   async openSymbolsAS(event) {

@@ -6,29 +6,45 @@
 <ion-content padding color="secondary">
 
   <ion-item>
-    <input id="for_var_name" type="text" placeholder="Variable Name" value="" />
+    <ion-input type="text" id="forloop_tooltip_info" value="{{toolTipInfoText}}" readonly></ion-input>
   </ion-item>
 
   <ion-item>
-    <input id="for_start_val" type="text" placeholder="Start Value" value="" /> <br/>
-    <input id="for_end_val" type="text" placeholder="End Value" value="" />
+    <ion-input id="for_var_name" type="text" placeholder="Variable Name" value="" class="forloop_elements"
+      data-text="Enter a variable to assign"></ion-input>
   </ion-item>
 
   <ion-item>
+    <ion-input id="for_start_val" type="text" placeholder="Start Value" value="" class="forloop_elements"
+      data-text="Enter the starting value"></ion-input>
+    <br />
+    <ion-input id="for_end_val" type="text" placeholder="End Value" value="" class="forloop_elements"
+      data-text="Enter the ending value"></ion-input>
+  </ion-item>
+
+  <ion-item class="forloop_elements" data-text="Whether the loop step value will be Increasing or Decreasing">
     <ion-label>Step Direction: </ion-label>
-    <ion-select id="for_step_dir" [value]="" [(ngModel)]="stepDirection" ok-text="Confirm" cancel-text="Cancel" color="primary">
-      <ion-select-option value="Increasing">Increasing</ion-select-option>
-      <ion-select-option value="Decreasing">Decreasing</ion-select-option>
-    </ion-select>
+    <ion-radio-group id="for_step_dir" [value]="" [(ngModel)]="stepDirection" ok-text="Confirm" cancel-text="Cancel"
+      color="primary">
+      <ion-item>
+        <ion-radio value="Increasing">Increasing</ion-radio>
+        <ion-label>Increasing</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-radio value="Decreasing">Decreasing</ion-radio>
+        <ion-label>Decreasing</ion-label>
+      </ion-item>
+    </ion-radio-group>
   </ion-item>
 
   <ion-item>
-    <input id="for_step_val" type="text" placeholder="Step By" value="" />
+    <ion-input id="for_step_val" type="text" placeholder="Step By" value="" class="forloop_elements"
+      data-text="Enter the Step value"></ion-input>
   </ion-item>
 
 </ion-content>
 
 <ion-footer id="for_modal_footer" color="dark">
   <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
-  <ion-button (click)="applyAndCloseModal()" color="dark" full >Apply</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
 </ion-footer>

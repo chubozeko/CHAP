@@ -139,9 +139,28 @@
 
 .if_div, .while_div, .for_div, .do_while_div{
   display: grid;
-  grid-template-columns: repeat(5, 70px);
+  // grid-template-columns: repeat(5, 70px);
+  grid-template-columns: max-content 70px max-content 70px max-content;
   align-items: center;
   justify-content: center;
+}
+
+// If, While, For, Do While DIVS
+.if_div {
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
+}
+.while_div {
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
+}
+.for_div {
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
+}
+.do_while_div {
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
 }
 
 ion-card{
@@ -165,15 +184,37 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 }
 
 .arrows { 
-  width: 70px; height: 35px;
+  // width: 70px;
+  width: max-content;
+  min-width: 70px;
+  max-width: 180px;
+  height: max-content;
+  min-height: 35px;
   cursor: pointer; color: #F8F8F8;
+  margin: auto;
 }
 
 .symbol, .arrow{ 
-  width: 70px; height: 35px;
-  text-align: center; vertical-align: middle;
-  line-height: 35px; font-size: 8pt;
+  // width: 70px;
+  width: max-content;
+  min-width: 70px;
+  max-width: 180px;
+  height: max-content;
+  min-height: 35px;
+  max-height: 105px;
+  // white-space: pre;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center; 
+  // vertical-align: middle;
+  align-content: center;
+  justify-content: center;
+  // line-height: 1.5;
+  // line-height: normal;
+  font-size: 8pt;
   color: #000000; cursor: pointer;
+  margin: auto;
 }
 
 #s_start, #s_stop{
@@ -183,7 +224,8 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 }
 #s_declare{
   background-image: url("/assets/icon/declare.png");
-  background-size: 70px 35px;
+  // background-size: 70px 35px;
+  background-size: 100% 100%;
   -webkit-clip-path: inset(0 0 0 0);
   clip-path: inset(0 0 0 0);
 }
@@ -229,6 +271,7 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   background: #000000;
   -webkit-clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
   clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
+  margin: auto;
 }
 
 #arrow_up{

@@ -6,7 +6,13 @@
 <ion-content padding color="secondary">
 
   <ion-item>
-    <input id="declare_var_name" type="text" placeholder="Variable Name" value="" />
+    <ion-input type="text" id="declare_tooltip_info" value="{{toolTipInfoText}}" readonly></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input id="declare_var_name" type="text" placeholder="Variable Name" value="" class="declare_elements"
+      data-text="Enter a variable name">
+    </ion-input>
   </ion-item>
 
   <ion-item>
@@ -20,35 +26,37 @@
       </ion-select> -->
       <ion-radio-group id="declare_data_type" [value]="" [(ngModel)]="dataType" ok-text="Confirm" cancel-text="Cancel"
         color="primary">
-        <ion-item>
+        <ion-item class="declare_elements" data-text="A whole number">
           <ion-radio value="Integer">Integer</ion-radio>
           <ion-label>Integer</ion-label>
+          <!-- <span class="tooltiptext"></span> -->
         </ion-item>
-        <ion-item>
+        <ion-item class="declare_elements" data-text="A decimal number">
           <ion-radio value="Real">Real</ion-radio>
           <ion-label>Real</ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item class="declare_elements" data-text="A string of text">
           <ion-radio value="String">String</ion-radio>
           <ion-label>String</ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item class="declare_elements" data-text="A binary value that can be either 'True' or 'False'">
           <ion-radio value="Boolean">Boolean</ion-radio>
-          <ion-label>Boolean</ion-label>
+          <ion-label>Boolean
+          </ion-label>
         </ion-item>
       </ion-radio-group>
     </ion-list>
   </ion-item>
 
-  <ion-item>
+  <ion-item class="declare_elements" data-text="A collection of elements of the same data type">
     <ion-checkbox id="declare_array_cb" style="float: left;" color="primary" (ionChange)="toggleArraySize()">
     </ion-checkbox>
     <ion-label style="float: left;">Array?</ion-label>
   </ion-item>
 
   <ion-item>
-    <input id="declare_array_size" type="text" placeholder="Array Size" value="" style="float: left;"
-      disabled="false" />
+    <ion-input id="declare_array_size" type="text" placeholder="Array Size" value="" style="float: left;"
+      disabled="false" class="declare_elements" data-text="Enter the size of the array"></ion-input>
   </ion-item>
 
 </ion-content>

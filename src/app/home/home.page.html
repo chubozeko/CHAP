@@ -15,7 +15,7 @@
 
   <!-- Menu Toolbar Buttons -->
   <ion-buttons slot="end">
-    <ion-input type="text" id="toolbar-tooltip" value="{{toolbarTooltip}}" readonly></ion-input>
+    <ion-input type="text" id="toolbar-tooltip2" value="{{toolbarTooltip}}" readonly></ion-input>
 
     <div class="tooltip">
       <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
@@ -152,18 +152,18 @@
           <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
             False</div>
           <div id="arrow_left" class="arrows dropzone"></div>
-          <div id="s_if_case" class="symbol" (click)="addSymbol('s_if_case', $event)">If</div>
+          <div id="s_if_case" class="symbol if_sym" (click)="addSymbol('s_if_case', $event)">If</div>
           <div id="arrow_right" class="arrows dropzone"></div>
           <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
             True</div>
 
-          <div id="ifFalseBlock">
+          <div id="ifFalseBlock" class="ifFalseBlock">
             <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
           </div>
           <div></div>
           <div></div>
           <div></div>
-          <div id="ifTrueBlock">
+          <div id="ifTrueBlock" class="ifTrueBlock">
             <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
           </div>
 

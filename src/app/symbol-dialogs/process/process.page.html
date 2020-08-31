@@ -6,20 +6,26 @@
 <ion-content padding color="secondary">
 
   <ion-item>
-    <input id="process_var_name" type="text" placeholder="Variable" value="" />
+    <ion-input type="text" id="process_tooltip_info" value="{{toolTipInfoText}}" readonly></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input id="process_var_name" type="text" placeholder="Variable" value="" class="process_elements"
+      data-text="Enter a variable to assign"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label style="text-align: center;">=</ion-label>
   </ion-item>
-  
+
   <ion-item>
-    <input id="process_expression" type="text" placeholder="Expression" value="" style="float: left; " />
+    <ion-input id="process_expression" type="text" placeholder="Expression" value="" style="float: left; "
+      class="process_elements" data-text="Enter an expression"></ion-input>
   </ion-item>
 
 </ion-content>
 
 <ion-footer id="process_modal_footer" color="dark">
   <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
-  <ion-button (click)="applyAndCloseModal()" color="dark" full >Apply</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
 </ion-footer>
