@@ -1,22 +1,21 @@
 <ion-toolbar style="padding: 5px; " color="primary">
-    <div id="if_case_sym">If-Case</div>
-    <ion-title style="float: left;">If-Case Properties</ion-title>
-  </ion-toolbar>
-  
-  <ion-content padding color="secondary">
-  
-    <ion-item>
-      <ion-label>Enter a conditional expression: </ion-label>
-    </ion-item>
+  <div id="if_case_sym">If-Case</div>
+  <ion-title style="float: left; margin: 5.5px;">If-Case Properties</ion-title>
+</ion-toolbar>
 
-    <ion-item>
-      <textarea id="if_expression" rows="5"></textarea>
-    </ion-item>
-  
-  </ion-content>
-  
-  <ion-footer id="if_case_modal_footer" color="dark">
-    <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
-    <ion-button (click)="applyAndCloseModal()" color="dark" full >Apply</ion-button>
-  </ion-footer>
-  
+<ion-content padding color="secondary">
+
+  <ion-item>
+    <ion-label>Enter a conditional expression: </ion-label>
+  </ion-item>
+
+  <ion-item>
+    <textarea id="if_expression" rows="5"></textarea>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer id="if_case_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
+</ion-footer>
