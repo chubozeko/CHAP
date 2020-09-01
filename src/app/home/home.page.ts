@@ -491,14 +491,18 @@ export class HomePage {
         let trueBlock = ifDiv.getElementsByClassName("ifTrueBlock")[0] as HTMLDivElement;
         // Resize to the Block with the larger width
         let gridStr: string = "";
-        if (trueBlock.offsetWidth >= falseBlock.offsetWidth) {
+        if (trueBlock.offsetWidth > falseBlock.offsetWidth) {
           gridStr = trueBlock.offsetWidth + "px max-content "
             + ifSymbol.offsetWidth + "px max-content "
             + trueBlock.offsetWidth + "px";
-        } else if (falseBlock.offsetWidth >= trueBlock.offsetWidth) {
+        } else if (falseBlock.offsetWidth > trueBlock.offsetWidth) {
           gridStr = falseBlock.offsetWidth + "px max-content "
             + ifSymbol.offsetWidth + "px max-content "
             + falseBlock.offsetWidth + "px";
+        } else {
+          gridStr = falseBlock.offsetWidth + "px max-content "
+            + ifSymbol.offsetWidth + "px max-content "
+            + trueBlock.offsetWidth + "px";
         }
         console.log("If Widths: " + gridStr);
         ifDiv.style.gridTemplateColumns = gridStr;

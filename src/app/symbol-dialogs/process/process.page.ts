@@ -10,7 +10,7 @@ import { Process } from '../../classes/Process';
 export class ProcessPage implements OnInit {
 
   symbol: Process;
-  toolTipInfoText: string = 'INFO: Hover over an option to view more information.';
+  toolTipInfoText: string = 'INFO: Hover over any option to view more information.';
 
   constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol');
@@ -32,7 +32,7 @@ export class ProcessPage implements OnInit {
         this.toolTipInfoText = processElements[i].getAttribute("data-text");
       });
       processElements[i].addEventListener("mouseleave", (e) => {
-        this.toolTipInfoText = "INFO: Hover over an option to view more information.";
+        this.toolTipInfoText = "INFO: Hover over any option to view more information.";
       });
     }
   }

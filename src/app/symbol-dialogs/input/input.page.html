@@ -5,12 +5,19 @@
 
 <ion-content padding color="secondary">
 
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ion-text style="color: #dddddd; padding: 10px;">
+      Receives an input for a variable of a given data type
+    </ion-text>
+  </ion-item>
+
   <ion-item>
     <ion-label>Enter a variable name to input: </ion-label>
   </ion-item>
 
   <ion-item>
-    <ion-input id="input_var_name" value=""></ion-input>
+    <ion-input id="input_var_name" [value]=""></ion-input>
   </ion-item>
 
 </ion-content>

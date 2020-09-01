@@ -5,12 +5,34 @@
 
 <ion-content padding color="secondary">
 
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ul>
+      <li>
+        <ion-text style="color: #dddddd; padding: 5px;">
+          Displays a given statement on the Console
+        </ion-text>
+      </li>
+      <li>
+        <ion-text style="color: #dddddd; padding: 5px;">
+          String expressions can be displayed by wrapping them in quotation marks (“ ”).
+        </ion-text>
+      </li>
+      <li>
+        <ion-text style="color: #dddddd; padding: 5px;">
+          Variables and String expressions can be linked with an ampersand (&).
+        </ion-text>
+      </li>
+    </ul>
+
+  </ion-item>
+
   <ion-item>
     <ion-label>Enter an expression to Output on console: </ion-label>
   </ion-item>
 
   <ion-item>
-    <textarea id="output_expression" rows="5"></textarea>
+    <ion-textarea id="output_expression" rows="5"></ion-textarea>
   </ion-item>
 
 </ion-content>

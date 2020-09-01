@@ -5,13 +5,20 @@
 
 <ion-content padding color="secondary">
 
-  <ion-item>
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ion-text style="color: #dddddd; padding: 10px;">
+      Carries out arithmetic operations using basic mathematical operators
+    </ion-text>
+  </ion-item>
+
+  <ion-item color="primary">
     <ion-input type="text" id="process_tooltip_info" value="{{toolTipInfoText}}" readonly></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-input id="process_var_name" type="text" placeholder="Variable" value="" class="process_elements"
-      data-text="Enter a variable to assign"></ion-input>
+      data-text="Enter a variable to assign a value to"></ion-input>
   </ion-item>
 
   <ion-item>
@@ -20,7 +27,7 @@
 
   <ion-item>
     <ion-input id="process_expression" type="text" placeholder="Expression" value="" style="float: left; "
-      class="process_elements" data-text="Enter an expression"></ion-input>
+      class="process_elements" data-text="Enter an expression or value to assign to the variable"></ion-input>
   </ion-item>
 
 </ion-content>

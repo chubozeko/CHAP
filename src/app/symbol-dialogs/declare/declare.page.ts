@@ -11,7 +11,7 @@ export class DeclarePage implements OnInit {
 
   symbol: Declare;
   dataType: string = '';
-  toolTipInfoText: string = 'INFO: Hover over an option to view more information.';
+  toolTipInfoText: string = 'INFO: Hover over any option to view more information.';
 
   constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol');
@@ -46,7 +46,7 @@ export class DeclarePage implements OnInit {
         this.toolTipInfoText = declareElements[i].getAttribute("data-text");
       });
       declareElements[i].addEventListener("mouseleave", (e) => {
-        this.toolTipInfoText = "INFO: Hover over an option to view more information.";
+        this.toolTipInfoText = "INFO: Hover over any option to view more information.";
       });
     }
   }

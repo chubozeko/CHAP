@@ -11,7 +11,7 @@ export class ForLoopPage implements OnInit {
 
   symbol: ForLoop;
   stepDirection: string = "";
-  toolTipInfoText: string = 'INFO: Hover over an option to view more information.';
+  toolTipInfoText: string = 'INFO: Hover over any option to view more information.';
 
   constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol');
@@ -44,7 +44,7 @@ export class ForLoopPage implements OnInit {
         this.toolTipInfoText = forLoopElements[i].getAttribute("data-text");
       });
       forLoopElements[i].addEventListener("mouseleave", (e) => {
-        this.toolTipInfoText = "INFO: Hover over an option to view more information.";
+        this.toolTipInfoText = "INFO: Hover over any option to view more information.";
       });
     }
   }
