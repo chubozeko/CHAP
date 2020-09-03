@@ -163,16 +163,26 @@
   grid-template-columns: max-content 70px max-content 70px max-content;
 }
 
-.ifFalseBlock, .ifTrueBlock {
+.ifFalseBlock, .ifTrueBlock, 
+.forFalseBlock, .forTrueBlock,
+.whileFalseBlock, .whileTrueBlock,
+.doWhileFalseBlock, .doWhileTrueBlock {
   // display: flex;
+  min-width: 70px;
   width: max-content;
+  min-height: 35px;
   height: max-content;
   align-content: center;
   // justify-content: center;
   margin: auto;
 }
 
-.ifFalseBlock > div, .ifTrueBlock > div { margin: auto; }
+.ifFalseBlock > div, .ifTrueBlock > div, 
+.forFalseBlock > div, .forTrueBlock > div,
+.whileFalseBlock > div, .whileTrueBlock > div,
+.doWhileFalseBlock > div, .doWhileTrueBlock > div { 
+  margin: auto; 
+}
 
 ion-card{
   width: 105px; height: 105px;

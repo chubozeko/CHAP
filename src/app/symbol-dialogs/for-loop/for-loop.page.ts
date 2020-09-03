@@ -19,19 +19,19 @@ export class ForLoopPage implements OnInit {
   }
 
   ngOnInit() {
-    let var_name = (document.getElementById("for_var_name") as HTMLInputElement);
+    let var_name = (document.getElementById("for_var_name") as HTMLIonInputElement);
     var_name.value = this.symbol.getVariableName();
 
-    let start_value = (document.getElementById("for_start_val") as HTMLInputElement);
+    let start_value = (document.getElementById("for_start_val") as HTMLIonInputElement);
     start_value.value = this.symbol.getStartValue().toString();
 
-    let end_value = (document.getElementById("for_end_val") as HTMLInputElement);
+    let end_value = (document.getElementById("for_end_val") as HTMLIonInputElement);
     end_value.value = this.symbol.getEndValue().toString();
 
     let step_direction = (document.getElementById("for_step_dir") as HTMLIonSelectElement);
     step_direction.value = this.symbol.getStepDirection();
 
-    let step_value = (document.getElementById("for_step_val") as HTMLInputElement);
+    let step_value = (document.getElementById("for_step_val") as HTMLIonInputElement);
     step_value.value = this.symbol.getStepValue().toString();
 
     this.initializeHoverEvents();
@@ -50,19 +50,19 @@ export class ForLoopPage implements OnInit {
   }
 
   public applyAndCloseModal() {
-    let var_name = (document.getElementById("for_var_name") as HTMLInputElement);
+    let var_name = (document.getElementById("for_var_name") as HTMLIonInputElement);
     this.symbol.setVariableName(var_name.value);
 
-    let start_value = (document.getElementById("for_start_val") as HTMLInputElement);
+    let start_value = (document.getElementById("for_start_val") as HTMLIonInputElement);
     this.symbol.setStartValue(Number(start_value.value));
 
-    let end_value = (document.getElementById("for_end_val") as HTMLInputElement);
+    let end_value = (document.getElementById("for_end_val") as HTMLIonInputElement);
     this.symbol.setEndValue(Number(end_value.value));
 
     let step_direction = (document.getElementById("for_step_dir") as HTMLIonSelectElement);
     this.symbol.setStepDirection(step_direction.value);
 
-    let step_value = (document.getElementById("for_step_val") as HTMLInputElement);
+    let step_value = (document.getElementById("for_step_val") as HTMLIonInputElement);
     this.symbol.setStepValue(Number(step_value.value));
 
     this.symbol.setForExpression();

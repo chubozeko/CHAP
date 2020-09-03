@@ -277,7 +277,7 @@ export class HomePage {
       try {
         let dec = data.data as Declare;
         e.target.innerHTML = dec.getDeclareExpression();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -301,7 +301,7 @@ export class HomePage {
       try {
         let input = data.data as Input;
         e.target.innerHTML = input.getInputExpression();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -325,7 +325,7 @@ export class HomePage {
       try {
         let output = data.data as Output;
         e.target.innerHTML = output.getOutputExpression();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -349,7 +349,7 @@ export class HomePage {
       try {
         let proc = data.data as Process;
         e.target.innerHTML = proc.getProcessExpression();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -373,7 +373,7 @@ export class HomePage {
       try {
         let com = data.data as Comment;
         e.target.innerHTML = com.getCommentExpression();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -398,7 +398,7 @@ export class HomePage {
       try {
         let ifcase = data.data as IfCase;
         e.target.innerHTML = ifcase.getIfStatement();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -423,7 +423,7 @@ export class HomePage {
       try {
         let whileloop = data.data as WhileLoop;
         e.target.innerHTML = whileloop.getWhileExpression();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -448,7 +448,7 @@ export class HomePage {
       try {
         let forloop = data.data as ForLoop;
         e.target.innerHTML = forloop.getForExpression();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -473,7 +473,7 @@ export class HomePage {
       try {
         let dowhileloop = data.data as DoWhileLoop;
         e.target.innerHTML = dowhileloop.getDoWhileExpression();
-        this.resizeLoopBlocks(e.target);
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -482,7 +482,23 @@ export class HomePage {
     await modal.present();
   }
 
-  public resizeLoopBlocks(symbol) {
+  public resizeSymbols(symbol) {
+    if ((symbol.parentElement.parentElement.classList.contains("if_div"))
+      || (symbol.parentElement.classList.contains("if_div"))) {
+      this.resizeIfCaseBlocks(symbol);
+    } else if ((symbol.parentElement.parentElement.classList.contains("for_div"))
+      || (symbol.parentElement.classList.contains("for_div"))) {
+      this.resizeForLoopBlocks(symbol);
+    } else if ((symbol.parentElement.parentElement.classList.contains("while_div"))
+      || (symbol.parentElement.classList.contains("while_div"))) {
+      this.resizeWhileLoopBlocks(symbol);
+    } else if ((symbol.parentElement.parentElement.classList.contains("do_while_div"))
+      || (symbol.parentElement.classList.contains("do_while_div"))) {
+      this.resizeDoWhileLoopBlocks(symbol);
+    }
+  }
+
+  public resizeIfCaseBlocks(symbol) {
     // If Case Symbols
     if (symbol.parentElement.parentElement.classList.contains("if_div")) {
       if (symbol.parentElement.id == "ifTrueBlock" || symbol.parentElement.id == "ifFalseBlock") {
@@ -514,8 +530,6 @@ export class HomePage {
           trueBlock.style.margin = "0px";
           falseBlock.style.margin = "0px";
         }
-        console.log("If Widths: " + gridStr);
-        // ifDiv.style.gridTemplateColumns = gridStr;
       }
     } else if (symbol.parentElement.classList.contains("if_div")) {
       // If Symbol
@@ -537,6 +551,99 @@ export class HomePage {
           + trueBlock.offsetWidth + "px";
       }
       ifDiv.style.gridTemplateColumns = gridStr;
+      symbol.style.margin = "0px";
+    }
+  }
+
+  public resizeForLoopBlocks(symbol) {
+    // For Loop Symbols
+    if (symbol.parentElement.parentElement.classList.contains("for_div")) {
+      if (symbol.parentElement.id == "forTrueBlock" || symbol.parentElement.id == "forFalseBlock") {
+        let forDiv = symbol.parentElement.parentElement as HTMLDivElement;
+        let forSymbol = forDiv.getElementsByClassName("for_sym")[0] as HTMLDivElement;
+        let falseBlock = forDiv.getElementsByClassName("forFalseBlock")[0] as HTMLDivElement;
+        let trueBlock = forDiv.getElementsByClassName("forTrueBlock")[0] as HTMLDivElement;
+        // Resize to the Block with the larger width
+        let gridStr: string = "";
+        gridStr = trueBlock.offsetWidth + "px max-content "
+          + forSymbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+        forDiv.style.gridTemplateColumns = gridStr;
+        trueBlock.style.margin = "0px";
+        falseBlock.style.margin = "0px";
+      }
+    } else if (symbol.parentElement.classList.contains("for_div")) {
+      // For Symbol
+      let forDiv = symbol.parentElement as HTMLDivElement;
+      let falseBlock = forDiv.getElementsByClassName("forFalseBlock")[0] as HTMLDivElement;
+      let trueBlock = forDiv.getElementsByClassName("forTrueBlock")[0] as HTMLDivElement;
+      let gridStr = "";
+      gridStr = trueBlock.offsetWidth + "px max-content "
+        + symbol.offsetWidth + "px max-content "
+        + trueBlock.offsetWidth + "px";
+      forDiv.style.gridTemplateColumns = gridStr;
+      symbol.style.margin = "0px";
+    }
+  }
+
+  public resizeWhileLoopBlocks(symbol) {
+    // While Loop Symbols
+    if (symbol.parentElement.parentElement.classList.contains("while_div")) {
+      if (symbol.parentElement.id == "whileTrueBlock") {
+        let whileDiv = symbol.parentElement.parentElement as HTMLDivElement;
+        let whileSymbol = whileDiv.getElementsByClassName("while_sym")[0] as HTMLDivElement;
+        let falseBlock = whileDiv.getElementsByClassName("whileFalseBlock")[0] as HTMLDivElement;
+        let trueBlock = whileDiv.getElementsByClassName("whileTrueBlock")[0] as HTMLDivElement;
+        // Resize to the Block with the larger width
+        let gridStr: string = "";
+        gridStr = trueBlock.offsetWidth + "px max-content "
+          + whileSymbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+        whileDiv.style.gridTemplateColumns = gridStr;
+        trueBlock.style.margin = "0px";
+        falseBlock.style.margin = "0px";
+      }
+    } else if (symbol.parentElement.classList.contains("while_div")) {
+      // While Symbol
+      let whileDiv = symbol.parentElement as HTMLDivElement;
+      let falseBlock = whileDiv.getElementsByClassName("whileFalseBlock")[0] as HTMLDivElement;
+      let trueBlock = whileDiv.getElementsByClassName("whileTrueBlock")[0] as HTMLDivElement;
+      let gridStr = "";
+      gridStr = trueBlock.offsetWidth + "px max-content "
+        + symbol.offsetWidth + "px max-content "
+        + trueBlock.offsetWidth + "px";
+      whileDiv.style.gridTemplateColumns = gridStr;
+      symbol.style.margin = "0px";
+    }
+  }
+
+  public resizeDoWhileLoopBlocks(symbol) {
+    // Do While Loop Symbols
+    if (symbol.parentElement.parentElement.classList.contains("do_while_div")) {
+      if (symbol.parentElement.id == "doWhileTrueBlock") {
+        let doWhileDiv = symbol.parentElement.parentElement as HTMLDivElement;
+        let doWhileSymbol = doWhileDiv.getElementsByClassName("do_while_sym")[0] as HTMLDivElement;
+        let falseBlock = doWhileDiv.getElementsByClassName("doWhileFalseBlock")[0] as HTMLDivElement;
+        let trueBlock = doWhileDiv.getElementsByClassName("doWhileTrueBlock")[0] as HTMLDivElement;
+        // Resize to the Block with the larger width
+        let gridStr: string = "";
+        gridStr = trueBlock.offsetWidth + "px max-content "
+          + doWhileSymbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+        doWhileDiv.style.gridTemplateColumns = gridStr;
+        trueBlock.style.margin = "0px";
+        falseBlock.style.margin = "0px";
+      }
+    } else if (symbol.parentElement.classList.contains("do_while_div")) {
+      // Do While Symbol
+      let doWhileDiv = symbol.parentElement as HTMLDivElement;
+      let falseBlock = doWhileDiv.getElementsByClassName("doWhileFalseBlock")[0] as HTMLDivElement;
+      let trueBlock = doWhileDiv.getElementsByClassName("doWhileTrueBlock")[0] as HTMLDivElement;
+      let gridStr = "";
+      gridStr = trueBlock.offsetWidth + "px max-content "
+        + symbol.offsetWidth + "px max-content "
+        + trueBlock.offsetWidth + "px";
+      doWhileDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
     }
   }
