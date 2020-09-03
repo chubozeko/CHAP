@@ -483,6 +483,7 @@ export class HomePage {
   }
 
   public resizeLoopBlocks(symbol) {
+    // If Case Symbols
     if (symbol.parentElement.parentElement.classList.contains("if_div")) {
       if (symbol.parentElement.id == "ifTrueBlock" || symbol.parentElement.id == "ifFalseBlock") {
         let ifDiv = symbol.parentElement.parentElement as HTMLDivElement;
@@ -495,18 +496,48 @@ export class HomePage {
           gridStr = trueBlock.offsetWidth + "px max-content "
             + ifSymbol.offsetWidth + "px max-content "
             + trueBlock.offsetWidth + "px";
+          ifDiv.style.gridTemplateColumns = gridStr;
+          trueBlock.style.margin = "0px";
+          falseBlock.style.margin = "auto";
         } else if (falseBlock.offsetWidth > trueBlock.offsetWidth) {
           gridStr = falseBlock.offsetWidth + "px max-content "
             + ifSymbol.offsetWidth + "px max-content "
             + falseBlock.offsetWidth + "px";
+          ifDiv.style.gridTemplateColumns = gridStr;
+          trueBlock.style.margin = "auto";
+          falseBlock.style.margin = "0px";
         } else {
           gridStr = falseBlock.offsetWidth + "px max-content "
             + ifSymbol.offsetWidth + "px max-content "
             + trueBlock.offsetWidth + "px";
+          ifDiv.style.gridTemplateColumns = gridStr;
+          trueBlock.style.margin = "0px";
+          falseBlock.style.margin = "0px";
         }
         console.log("If Widths: " + gridStr);
-        ifDiv.style.gridTemplateColumns = gridStr;
+        // ifDiv.style.gridTemplateColumns = gridStr;
       }
+    } else if (symbol.parentElement.classList.contains("if_div")) {
+      // If Symbol
+      let ifDiv = symbol.parentElement as HTMLDivElement;
+      let falseBlock = ifDiv.getElementsByClassName("ifFalseBlock")[0] as HTMLDivElement;
+      let trueBlock = ifDiv.getElementsByClassName("ifTrueBlock")[0] as HTMLDivElement;
+      let gridStr = "";
+      if (trueBlock.offsetWidth > falseBlock.offsetWidth) {
+        gridStr = trueBlock.offsetWidth + "px max-content "
+          + symbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+      } else if (trueBlock.offsetWidth < falseBlock.offsetWidth) {
+        gridStr = falseBlock.offsetWidth + "px max-content "
+          + symbol.offsetWidth + "px max-content "
+          + falseBlock.offsetWidth + "px";
+      } else {
+        gridStr = falseBlock.offsetWidth + "px max-content "
+          + symbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+      }
+      ifDiv.style.gridTemplateColumns = gridStr;
+      symbol.style.margin = "0px";
     }
   }
 

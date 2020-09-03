@@ -51,7 +51,7 @@
 .s_tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
+  // border-bottom: 1px dotted black;
 }
 .s_tooltip .s_tooltiptext, .s_tooltiptext {
   visibility: hidden;
@@ -164,12 +164,15 @@
 }
 
 .ifFalseBlock, .ifTrueBlock {
-  max-width: max-content;
-  max-height: max-content;
-  align-items: center;
-  justify-content: center;
+  // display: flex;
+  width: max-content;
+  height: max-content;
+  align-content: center;
+  // justify-content: center;
   margin: auto;
 }
+
+.ifFalseBlock > div, .ifTrueBlock > div { margin: auto; }
 
 ion-card{
   width: 105px; height: 105px;
