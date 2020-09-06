@@ -10,24 +10,24 @@ export class InputPage implements OnInit {
 
   symbol;
 
-  constructor(public modal: ModalController, public navP: NavParams) { 
-    this.symbol = navP.get('symbol'); 
+  constructor(public modal: ModalController, public navP: NavParams) {
+    this.symbol = navP.get('symbol');
   }
 
   ngOnInit() {
-    let var_name = (document.getElementById("input_var_name") as HTMLInputElement);
+    let var_name = (document.getElementById("input_var_name") as HTMLIonInputElement);
     var_name.value = this.symbol.getVariableName();
   }
 
-  public applyAndCloseModal(){
+  public applyAndCloseModal() {
 
-    let var_name = (document.getElementById("input_var_name") as HTMLInputElement);
-    this.symbol.setVariableName( var_name.value );
+    let var_name = (document.getElementById("input_var_name") as HTMLIonInputElement);
+    this.symbol.setVariableName(var_name.value);
 
-    this.modal.dismiss( this.symbol );
+    this.modal.dismiss(this.symbol);
   }
 
-  public closeModal(){
+  public closeModal() {
     this.modal.dismiss();
   }
 

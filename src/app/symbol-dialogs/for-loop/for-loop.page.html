@@ -1,34 +1,57 @@
 <ion-toolbar style="padding: 5px; " color="primary">
   <div id="for_sym">For Loop</div>
-  <ion-title style="float: left;">For Loop Properties</ion-title>
+  <ion-title style="float: left; margin: 5.5px;">For Loop Properties</ion-title>
 </ion-toolbar>
 
 <ion-content padding color="secondary">
 
-  <ion-item>
-    <input id="for_var_name" type="text" placeholder="Variable Name" value="" />
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ion-text style="color: #dddddd; padding: 10px;">
+      A loop structure which repeatedly executes a block of statements for a given number of iterations.
+    </ion-text>
+  </ion-item>
+
+  <ion-item color="primary">
+    <ion-input type="text" id="forloop_tooltip_info" value="{{toolTipInfoText}}" readonly></ion-input>
   </ion-item>
 
   <ion-item>
-    <input id="for_start_val" type="text" placeholder="Start Value" value="" /> <br/>
-    <input id="for_end_val" type="text" placeholder="End Value" value="" />
+    <ion-input id="for_var_name" type="text" placeholder="Variable Name" [value]="" class="forloop_elements"
+      data-text="Enter an iteration variable"></ion-input>
   </ion-item>
 
   <ion-item>
+    <ion-input id="for_start_val" type="text" placeholder="Start Value" [value]="" class="forloop_elements"
+      data-text="Enter the initial value of the iteration variable"></ion-input>
+    <br />
+    <ion-input id="for_end_val" type="text" placeholder="End Value" [value]="" class="forloop_elements"
+      data-text="Enter the ending value of the iteration variable"></ion-input>
+  </ion-item>
+
+  <ion-item class="forloop_elements" data-text="Choose whether the iteration variable increases or decreases">
     <ion-label>Step Direction: </ion-label>
-    <ion-select id="for_step_dir" [value]="" [(ngModel)]="stepDirection" ok-text="Confirm" cancel-text="Cancel" color="primary">
-      <ion-select-option value="Increasing">Increasing</ion-select-option>
-      <ion-select-option value="Decreasing">Decreasing</ion-select-option>
-    </ion-select>
+    <ion-radio-group id="for_step_dir" [value]="" [(ngModel)]="stepDirection" ok-text="Confirm" cancel-text="Cancel"
+      color="primary">
+      <ion-item>
+        <ion-radio value="Increasing">Increasing</ion-radio>
+        <ion-label>Increasing</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-radio value="Decreasing">Decreasing</ion-radio>
+        <ion-label>Decreasing</ion-label>
+      </ion-item>
+    </ion-radio-group>
   </ion-item>
 
   <ion-item>
-    <input id="for_step_val" type="text" placeholder="Step By" value="" />
+    <ion-input id="for_step_val" type="text" placeholder="Step By" [value]="" class="forloop_elements"
+      data-text="Enter the step value between each iteration"></ion-input>
   </ion-item>
 
 </ion-content>
 
 <ion-footer id="for_modal_footer" color="dark">
   <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
-  <ion-button (click)="applyAndCloseModal()" color="dark" full >Apply</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
 </ion-footer>

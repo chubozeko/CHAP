@@ -22,6 +22,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
+// import { TooltipsModule } from 'ionic';
 
 import { CommentPageModule } from './symbol-dialogs/comment/comment.module';
 import { DeclarePageModule } from './symbol-dialogs/declare/declare.module';
@@ -68,7 +69,8 @@ import { FeedbackPageModule } from './feedback/feedback.module';
     FormsModule,
     ReactiveFormsModule,
     AdminPanelPageModule,
-    FeedbackPageModule
+    FeedbackPageModule,
+    // TooltipsModule
   ],
   providers: [
     StatusBar,

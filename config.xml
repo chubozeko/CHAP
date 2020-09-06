@@ -22,7 +22,13 @@
     <preference name="ShowSplashScreen" value="false" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="mdpi" src="src/assets/icon.png" />
+        <icon density="*" src="src/assets/icon.png" />
+        <icon density="ldpi" src="res/android/drawable-ldpi/icon.png" />
+        <icon density="mdpi" src="res/android/drawable-mdpi/icon.png" />
+        <icon density="hdpi" src="res/android/drawable-hdpi/icon.png" />
+        <icon density="xhdpi" src="res/android/drawable-xhdpi/icon.png" />
+        <icon density="xxhdpi" src="res/android/drawable-xxhdpi/icon.png" />
+        <icon density="xxxhdpi" src="res/android/drawable-xxxhdpi/icon.png" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:largeHeap="true" />
         </edit-config>

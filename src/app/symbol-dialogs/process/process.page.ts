@@ -10,7 +10,9 @@ import { Process } from '../../classes/Process';
 export class ProcessPage implements OnInit {
 
   symbol: Process;
-  constructor(public modal: ModalController, public navP: NavParams) { 
+  toolTipInfoText: string = 'INFO: Hover over any option to view more information.';
+
+  constructor(public modal: ModalController, public navP: NavParams) {
     this.symbol = navP.get('symbol');
   }
 
@@ -19,19 +21,33 @@ export class ProcessPage implements OnInit {
     var_name.value = this.symbol.getVariableName();
     let p_exp = (document.getElementById("process_expression") as HTMLInputElement);
     p_exp.value = this.symbol.getExpression();
+
+    this.initializeHoverEvents();
   }
 
-  public applyAndCloseModal(){
+  public initializeHoverEvents() {
+    let processElements = document.getElementsByClassName("process_elements");
+    for (let i = 0; i < processElements.length; i++) {
+      processElements[i].addEventListener("mouseover", (e) => {
+        this.toolTipInfoText = processElements[i].getAttribute("data-text");
+      });
+      processElements[i].addEventListener("mouseleave", (e) => {
+        this.toolTipInfoText = "INFO: Hover over any option to view more information.";
+      });
+    }
+  }
+
+  public applyAndCloseModal() {
 
     let var_name = (document.getElementById("process_var_name") as HTMLInputElement);
-    this.symbol.setVariableName( var_name.value );
+    this.symbol.setVariableName(var_name.value);
 
     let p_exp = (document.getElementById("process_expression") as HTMLInputElement);
-    this.symbol.setExpression( p_exp.value );
+    this.symbol.setExpression(p_exp.value);
 
-    this.modal.dismiss( this.symbol );
+    this.modal.dismiss(this.symbol);
   }
 
-  public closeModal(){ this.modal.dismiss(); }
+  public closeModal() { this.modal.dismiss(); }
 
 }

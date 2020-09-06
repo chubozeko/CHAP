@@ -54,8 +54,10 @@ export class HomePage {
   flowchart: Flowchart = new Flowchart(this.alertC);
   title = "CHAP";
   fileName = "";
+  toolbarTooltip = "";
   consoleButtonText = "Open Console";
   isConsoleOpen = false;
+  isSymbolsFABOpen = false;
   isCutCopyReady = false;
   fs;
   workspace;
@@ -93,6 +95,32 @@ export class HomePage {
   }
 
   ngOnInit() {
+    // Adding Hover Listeners to Toolbar Buttons
+    let tbButtons = document.getElementsByClassName("tooltip");
+    for (let i = 0; i < tbButtons.length; i++) {
+      // Mouse Over (Hover)
+      tbButtons[i].addEventListener("mouseover", (e) => {
+        this.toolbarTooltip = tbButtons[i].getElementsByClassName("tooltiptext")[0].innerHTML;
+      });
+      // Mouse Exit
+      tbButtons[i].addEventListener("mouseleave", (e) => {
+        this.toolbarTooltip = "";
+      });
+    }
+
+    // Adding Hover Listeners to Symbols List
+    let symList = document.getElementsByClassName("s_tooltip");
+    for (let i = 0; i < symList.length; i++) {
+      // Mouse Over (Hover)
+      symList[i].addEventListener("mouseover", (e) => {
+        this.toolbarTooltip = symList[i].innerHTML;
+      });
+      // Mouse Exit
+      symList[i].addEventListener("mouseleave", (e) => {
+        this.toolbarTooltip = "";
+      });
+    }
+
     // Adding Click Listeners to Menu Items
     let debugP = document.getElementById("btn_debugProgram");
     debugP.addEventListener("click", e => this.debugProgram(e));
@@ -187,7 +215,6 @@ export class HomePage {
         target.setAttribute('style', 'background: #000000');
         target.removeChild(target.children[0]);
         this.addSymbol(this.selectedSymbol, el.children[0]);
-        // this.symbolsFAB.close();
       });
 
     this.dragulaService.over('symbol')
@@ -250,6 +277,7 @@ export class HomePage {
       try {
         let dec = data.data as Declare;
         e.target.innerHTML = dec.getDeclareExpression();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -273,6 +301,7 @@ export class HomePage {
       try {
         let input = data.data as Input;
         e.target.innerHTML = input.getInputExpression();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -296,6 +325,7 @@ export class HomePage {
       try {
         let output = data.data as Output;
         e.target.innerHTML = output.getOutputExpression();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -319,6 +349,7 @@ export class HomePage {
       try {
         let proc = data.data as Process;
         e.target.innerHTML = proc.getProcessExpression();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -342,6 +373,7 @@ export class HomePage {
       try {
         let com = data.data as Comment;
         e.target.innerHTML = com.getCommentExpression();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -366,6 +398,7 @@ export class HomePage {
       try {
         let ifcase = data.data as IfCase;
         e.target.innerHTML = ifcase.getIfStatement();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -390,6 +423,7 @@ export class HomePage {
       try {
         let whileloop = data.data as WhileLoop;
         e.target.innerHTML = whileloop.getWhileExpression();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -414,6 +448,7 @@ export class HomePage {
       try {
         let forloop = data.data as ForLoop;
         e.target.innerHTML = forloop.getForExpression();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -438,12 +473,179 @@ export class HomePage {
       try {
         let dowhileloop = data.data as DoWhileLoop;
         e.target.innerHTML = dowhileloop.getDoWhileExpression();
+        this.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
       }
     });
     await modal.present();
+  }
+
+  public resizeSymbols(symbol) {
+    if ((symbol.parentElement.parentElement.classList.contains("if_div"))
+      || (symbol.parentElement.classList.contains("if_div"))) {
+      this.resizeIfCaseBlocks(symbol);
+    } else if ((symbol.parentElement.parentElement.classList.contains("for_div"))
+      || (symbol.parentElement.classList.contains("for_div"))) {
+      this.resizeForLoopBlocks(symbol);
+    } else if ((symbol.parentElement.parentElement.classList.contains("while_div"))
+      || (symbol.parentElement.classList.contains("while_div"))) {
+      this.resizeWhileLoopBlocks(symbol);
+    } else if ((symbol.parentElement.parentElement.classList.contains("do_while_div"))
+      || (symbol.parentElement.classList.contains("do_while_div"))) {
+      this.resizeDoWhileLoopBlocks(symbol);
+    }
+  }
+
+  public resizeIfCaseBlocks(symbol) {
+    // If Case Symbols
+    if (symbol.parentElement.parentElement.classList.contains("if_div")) {
+      if (symbol.parentElement.id == "ifTrueBlock" || symbol.parentElement.id == "ifFalseBlock") {
+        let ifDiv = symbol.parentElement.parentElement as HTMLDivElement;
+        let ifSymbol = ifDiv.getElementsByClassName("if_sym")[0] as HTMLDivElement;
+        let falseBlock = ifDiv.getElementsByClassName("ifFalseBlock")[0] as HTMLDivElement;
+        let trueBlock = ifDiv.getElementsByClassName("ifTrueBlock")[0] as HTMLDivElement;
+        // Resize to the Block with the larger width
+        let gridStr: string = "";
+        if (trueBlock.offsetWidth > falseBlock.offsetWidth) {
+          gridStr = trueBlock.offsetWidth + "px max-content "
+            + ifSymbol.offsetWidth + "px max-content "
+            + trueBlock.offsetWidth + "px";
+          ifDiv.style.gridTemplateColumns = gridStr;
+          trueBlock.style.margin = "0px";
+          falseBlock.style.margin = "auto";
+        } else if (falseBlock.offsetWidth > trueBlock.offsetWidth) {
+          gridStr = falseBlock.offsetWidth + "px max-content "
+            + ifSymbol.offsetWidth + "px max-content "
+            + falseBlock.offsetWidth + "px";
+          ifDiv.style.gridTemplateColumns = gridStr;
+          trueBlock.style.margin = "auto";
+          falseBlock.style.margin = "0px";
+        } else {
+          gridStr = falseBlock.offsetWidth + "px max-content "
+            + ifSymbol.offsetWidth + "px max-content "
+            + trueBlock.offsetWidth + "px";
+          ifDiv.style.gridTemplateColumns = gridStr;
+          trueBlock.style.margin = "0px";
+          falseBlock.style.margin = "0px";
+        }
+      }
+    } else if (symbol.parentElement.classList.contains("if_div")) {
+      // If Symbol
+      let ifDiv = symbol.parentElement as HTMLDivElement;
+      let falseBlock = ifDiv.getElementsByClassName("ifFalseBlock")[0] as HTMLDivElement;
+      let trueBlock = ifDiv.getElementsByClassName("ifTrueBlock")[0] as HTMLDivElement;
+      let gridStr = "";
+      if (trueBlock.offsetWidth > falseBlock.offsetWidth) {
+        gridStr = trueBlock.offsetWidth + "px max-content "
+          + symbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+      } else if (trueBlock.offsetWidth < falseBlock.offsetWidth) {
+        gridStr = falseBlock.offsetWidth + "px max-content "
+          + symbol.offsetWidth + "px max-content "
+          + falseBlock.offsetWidth + "px";
+      } else {
+        gridStr = falseBlock.offsetWidth + "px max-content "
+          + symbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+      }
+      ifDiv.style.gridTemplateColumns = gridStr;
+      symbol.style.margin = "0px";
+    }
+  }
+
+  public resizeForLoopBlocks(symbol) {
+    // For Loop Symbols
+    if (symbol.parentElement.parentElement.classList.contains("for_div")) {
+      if (symbol.parentElement.id == "forTrueBlock" || symbol.parentElement.id == "forFalseBlock") {
+        let forDiv = symbol.parentElement.parentElement as HTMLDivElement;
+        let forSymbol = forDiv.getElementsByClassName("for_sym")[0] as HTMLDivElement;
+        let falseBlock = forDiv.getElementsByClassName("forFalseBlock")[0] as HTMLDivElement;
+        let trueBlock = forDiv.getElementsByClassName("forTrueBlock")[0] as HTMLDivElement;
+        // Resize to the Block with the larger width
+        let gridStr: string = "";
+        gridStr = trueBlock.offsetWidth + "px max-content "
+          + forSymbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+        forDiv.style.gridTemplateColumns = gridStr;
+        trueBlock.style.margin = "0px";
+        falseBlock.style.margin = "0px";
+      }
+    } else if (symbol.parentElement.classList.contains("for_div")) {
+      // For Symbol
+      let forDiv = symbol.parentElement as HTMLDivElement;
+      let falseBlock = forDiv.getElementsByClassName("forFalseBlock")[0] as HTMLDivElement;
+      let trueBlock = forDiv.getElementsByClassName("forTrueBlock")[0] as HTMLDivElement;
+      let gridStr = "";
+      gridStr = trueBlock.offsetWidth + "px max-content "
+        + symbol.offsetWidth + "px max-content "
+        + trueBlock.offsetWidth + "px";
+      forDiv.style.gridTemplateColumns = gridStr;
+      symbol.style.margin = "0px";
+    }
+  }
+
+  public resizeWhileLoopBlocks(symbol) {
+    // While Loop Symbols
+    if (symbol.parentElement.parentElement.classList.contains("while_div")) {
+      if (symbol.parentElement.id == "whileTrueBlock") {
+        let whileDiv = symbol.parentElement.parentElement as HTMLDivElement;
+        let whileSymbol = whileDiv.getElementsByClassName("while_sym")[0] as HTMLDivElement;
+        let falseBlock = whileDiv.getElementsByClassName("whileFalseBlock")[0] as HTMLDivElement;
+        let trueBlock = whileDiv.getElementsByClassName("whileTrueBlock")[0] as HTMLDivElement;
+        // Resize to the Block with the larger width
+        let gridStr: string = "";
+        gridStr = trueBlock.offsetWidth + "px max-content "
+          + whileSymbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+        whileDiv.style.gridTemplateColumns = gridStr;
+        trueBlock.style.margin = "0px";
+        falseBlock.style.margin = "0px";
+      }
+    } else if (symbol.parentElement.classList.contains("while_div")) {
+      // While Symbol
+      let whileDiv = symbol.parentElement as HTMLDivElement;
+      let falseBlock = whileDiv.getElementsByClassName("whileFalseBlock")[0] as HTMLDivElement;
+      let trueBlock = whileDiv.getElementsByClassName("whileTrueBlock")[0] as HTMLDivElement;
+      let gridStr = "";
+      gridStr = trueBlock.offsetWidth + "px max-content "
+        + symbol.offsetWidth + "px max-content "
+        + trueBlock.offsetWidth + "px";
+      whileDiv.style.gridTemplateColumns = gridStr;
+      symbol.style.margin = "0px";
+    }
+  }
+
+  public resizeDoWhileLoopBlocks(symbol) {
+    // Do While Loop Symbols
+    if (symbol.parentElement.parentElement.classList.contains("do_while_div")) {
+      if (symbol.parentElement.id == "doWhileTrueBlock") {
+        let doWhileDiv = symbol.parentElement.parentElement as HTMLDivElement;
+        let doWhileSymbol = doWhileDiv.getElementsByClassName("do_while_sym")[0] as HTMLDivElement;
+        let falseBlock = doWhileDiv.getElementsByClassName("doWhileFalseBlock")[0] as HTMLDivElement;
+        let trueBlock = doWhileDiv.getElementsByClassName("doWhileTrueBlock")[0] as HTMLDivElement;
+        // Resize to the Block with the larger width
+        let gridStr: string = "";
+        gridStr = trueBlock.offsetWidth + "px max-content "
+          + doWhileSymbol.offsetWidth + "px max-content "
+          + trueBlock.offsetWidth + "px";
+        doWhileDiv.style.gridTemplateColumns = gridStr;
+        trueBlock.style.margin = "0px";
+        falseBlock.style.margin = "0px";
+      }
+    } else if (symbol.parentElement.classList.contains("do_while_div")) {
+      // Do While Symbol
+      let doWhileDiv = symbol.parentElement as HTMLDivElement;
+      let falseBlock = doWhileDiv.getElementsByClassName("doWhileFalseBlock")[0] as HTMLDivElement;
+      let trueBlock = doWhileDiv.getElementsByClassName("doWhileTrueBlock")[0] as HTMLDivElement;
+      let gridStr = "";
+      gridStr = trueBlock.offsetWidth + "px max-content "
+        + symbol.offsetWidth + "px max-content "
+        + trueBlock.offsetWidth + "px";
+      doWhileDiv.style.gridTemplateColumns = gridStr;
+      symbol.style.margin = "0px";
+    }
   }
 
   async openSymbolsAS(event) {
@@ -1035,18 +1237,33 @@ export class HomePage {
   public toggleSymbolsFAB() {
     let symbolsList = document.getElementById("symbolsList");
     let symbolsFAB = document.getElementById("symbolsFAB");
+    let symbolsTitle = document.getElementById("symbolsTitle");
     if (symbolsFAB.classList.contains('toggleSymFAB')) {
+      let ss = document.getElementsByClassName("wrapper");
+      ss[0].classList.remove('showSymbolPanel');
       // Close Symbols List
       symbolsFAB.classList.remove('toggleSymFAB');
       symbolsFAB.innerHTML = '<img src="./assets/icon/symbols_icon.png" alt="">';
       symbolsList.style.display = 'none';
+      symbolsTitle.style.display = 'none';
+      this.isSymbolsFABOpen = false;
+      if (this.isConsoleOpen) {
+        document.getElementById("console").style.marginLeft = '100px';
+      }
     } else {
+      let ss = document.getElementsByClassName("wrapper");
+      ss[0].classList.add('showSymbolPanel');
       // Show Symbols List
       symbolsFAB.classList.add('toggleSymFAB');
       symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
       symbolsList.style.display = 'block';
-      symbolsList.style.position = 'absolute';
-      symbolsList.style.bottom = '80px';
+      symbolsTitle.style.display = 'block';
+      this.isSymbolsFABOpen = true;
+      // symbolsList.style.position = 'absolute';
+      // symbolsList.style.bottom = '80px';
+      if (this.isConsoleOpen) {
+        document.getElementById("console").style.marginLeft = '0px';
+      }
     }
   }
 
@@ -1056,18 +1273,25 @@ export class HomePage {
     // Get symbols FAB
     let symbolsFAB = document.getElementById("symbolsFAB");
     let symbolsList = document.getElementById("symbolsList");
+    let symbolsTitle = document.getElementById("symbolsTitle");
     // Get the active arrow/branch
     let arrows = document.getElementsByClassName("dropzone active-arrow");
     // Check if there are other active arrows/branches
     if (arrows.length < 1) {
       t.classList.add("active-arrow");
+
       if (!symbolsFAB.classList.contains('toggleSymFAB')) {
+        let ss = document.getElementsByClassName("wrapper");
+        ss[0].classList.add('showSymbolPanel');
+        // Show Symbols List
         symbolsFAB.classList.add('toggleSymFAB');
         symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
         symbolsList.style.display = 'block';
-        symbolsList.style.position = 'absolute';
-        symbolsList.style.bottom = '80px';
+        symbolsTitle.style.display = 'block';
+        // symbolsList.style.position = 'absolute';
+        // symbolsList.style.bottom = '80px';
       }
+
     } else {
       let branches = document.getElementsByClassName("dropzone active-arrow");
       for (let i = 0; i < branches.length; i++) {
@@ -1076,13 +1300,19 @@ export class HomePage {
       t.classList.add("active-arrow");
       // Open symbols FAB
       this.toggleSymbolsFAB();
+
       if (!symbolsFAB.classList.contains('toggleSymFAB')) {
+        let ss = document.getElementsByClassName("wrapper");
+        ss[0].classList.add('showSymbolPanel');
+        // Show Symbols List
         symbolsFAB.classList.add('toggleSymFAB');
         symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
         symbolsList.style.display = 'block';
-        symbolsList.style.position = 'absolute';
-        symbolsList.style.bottom = '80px';
+        symbolsTitle.style.display = 'block';
+        // symbolsList.style.position = 'absolute';
+        // symbolsList.style.bottom = '80px';
       }
+
     }
   }
 
@@ -1589,7 +1819,6 @@ export class HomePage {
         .on("hold", e => this.openArrowsAS(e));
     }
 
-    this.toggleSymbolsFAB();
     console.log(this.flowchart.SYMBOLS);
   }
 
@@ -1615,6 +1844,10 @@ export class HomePage {
       console1.style.display = 'block';
       console1.style.position = 'absolute';
       console1.style.bottom = '0';
+      if (!this.isSymbolsFABOpen)
+        console1.style.marginLeft = '100px';
+      else
+        console1.style.marginLeft = '0px';
       consoleBtns.style.position = 'absolute';
       consoleBtns.style.right = '5px';
       consoleBtns.style.bottom = console1.offsetHeight + 'px';
@@ -1657,7 +1890,7 @@ export class HomePage {
     workspace.appendChild(startSym);
     workspace.appendChild(arrowInit);
     workspace.appendChild(stopSym);
-    workspace.appendChild(symbolsList);
+    // workspace.appendChild(symbolsList);
     this.flowchart = new Flowchart(this.alertC);
   }
 

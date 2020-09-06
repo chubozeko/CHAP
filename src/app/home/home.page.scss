@@ -3,6 +3,75 @@
 .symbol.large { -webkit-transform: scale(1.25); transform: scale(1.25); }
 .rotate { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
 
+// Tooltips
+#toolbar-tooltip {
+  background-color: black;
+  color: #ddd;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  height: 60%;
+  width: 150px;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+.tooltip .tooltiptext, .tooltiptext {
+  visibility: hidden;
+  background-color: black;
+  color: #ddd;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  top: 2px;
+  right: 105%;
+  // left: 50%;
+  // margin-left: -60px;
+}
+
+// .tooltip:hover .tooltiptext {
+//   visibility: visible;
+// }
+
+/* SYMBOLS Tooltip */
+// #toolbar-tooltip {
+//   background-color: black;
+//   color: #ddd;
+//   text-align: center;
+//   border-radius: 6px;
+//   padding: 5px 0;
+//   height: 60%;
+//   width: 150px;
+// }
+.s_tooltip {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black;
+}
+.s_tooltip .s_tooltiptext, .s_tooltiptext {
+  visibility: hidden;
+  background-color: black;
+  color: #ddd;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  top: 2px;
+  //right: 105%;
+  left: 50%;
+  margin-left: -60px;
+}
+.s_tooltip:hover .s_tooltiptext {
+  visibility: visible;
+}
+
 // Console & Console Buttons
 #consoleInput{
   background-color: #333; color: #ddd; 
@@ -11,6 +80,7 @@
 }
 .toggleConsole {
   display: none;
+  margin-bottom: 0px;
 }
 #consoleBtns {
   position: absolute;
@@ -19,17 +89,30 @@
 }
 
 // Symbols FAB & List
+#symbolsTitle {
+  display: none;
+  background-color: #333333;
+  color: #ddd;
+  padding: 5px; 
+  width: 100px; 
+  height: 30px; 
+  justify-content: center;
+}
+
 #symbolsFAB {
   position: absolute;
   bottom: 0px; left: 0px;
 }
 #symbolsList {
   display: none;
-  position: absolute; resize: none;
+  // display: block;
+  position: relative;
+  resize: none;
   background-color: #ddd;
   font-family: Consolas, monaco, monospace; 
-  padding: 2px; 
-  bottom: 10px;
+  padding: 10px;
+  // top: 10px;
+  // bottom: 10px;
 }
 .scrollbar {
 	height: 360px; width: 90px;
@@ -56,9 +139,49 @@
 
 .if_div, .while_div, .for_div, .do_while_div{
   display: grid;
-  grid-template-columns: repeat(5, 70px);
+  // grid-template-columns: repeat(5, 70px);
+  grid-template-columns: max-content 70px max-content 70px max-content;
   align-items: center;
   justify-content: center;
+}
+
+// If, While, For, Do While DIVS
+.if_div {
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
+}
+.while_div {
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
+}
+.for_div {
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
+}
+.do_while_div {
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
+}
+
+.ifFalseBlock, .ifTrueBlock, 
+.forFalseBlock, .forTrueBlock,
+.whileFalseBlock, .whileTrueBlock,
+.doWhileFalseBlock, .doWhileTrueBlock {
+  // display: flex;
+  min-width: 70px;
+  width: max-content;
+  min-height: 35px;
+  height: max-content;
+  align-content: center;
+  // justify-content: center;
+  margin: auto;
+}
+
+.ifFalseBlock > div, .ifTrueBlock > div, 
+.forFalseBlock > div, .forTrueBlock > div,
+.whileFalseBlock > div, .whileTrueBlock > div,
+.doWhileFalseBlock > div, .doWhileTrueBlock > div { 
+  margin: auto; 
 }
 
 ion-card{
@@ -82,15 +205,37 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 }
 
 .arrows { 
-  width: 70px; height: 35px;
+  // width: 70px;
+  width: max-content;
+  min-width: 70px;
+  max-width: 180px;
+  height: max-content;
+  min-height: 35px;
   cursor: pointer; color: #F8F8F8;
+  margin: auto;
 }
 
 .symbol, .arrow{ 
-  width: 70px; height: 35px;
-  text-align: center; vertical-align: middle;
-  line-height: 35px; font-size: 8pt;
+  // width: 70px;
+  width: max-content;
+  min-width: 70px;
+  max-width: 180px;
+  height: max-content;
+  min-height: 35px;
+  max-height: 105px;
+  // white-space: pre;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center; 
+  // vertical-align: middle;
+  align-content: center;
+  justify-content: center;
+  // line-height: 1.5;
+  // line-height: normal;
+  font-size: 8pt;
   color: #000000; cursor: pointer;
+  margin: auto;
 }
 
 #s_start, #s_stop{
@@ -100,7 +245,8 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 }
 #s_declare{
   background-image: url("/assets/icon/declare.png");
-  background-size: 70px 35px;
+  // background-size: 70px 35px;
+  background-size: 100% 100%;
   -webkit-clip-path: inset(0 0 0 0);
   clip-path: inset(0 0 0 0);
 }
@@ -146,6 +292,7 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   background: #000000;
   -webkit-clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
   clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
+  margin: auto;
 }
 
 #arrow_up{
