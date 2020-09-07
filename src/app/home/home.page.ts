@@ -123,23 +123,23 @@ export class HomePage {
 
     // Adding Click Listeners to Menu Items
     let debugP = document.getElementById("btn_debugProgram");
-    debugP.addEventListener("click", e => this.debugProgram(e));
+    debugP.addEventListener("click", () => this.debugProgram());
     let genCode = document.getElementById("btn_generateCode");
-    genCode.addEventListener("click", e => this.generatePseudoCode(e));
+    genCode.addEventListener("click", () => this.generatePseudoCode());
     let clearWS = document.getElementById("btn_clearWorkspace");
-    clearWS.addEventListener("click", e => this.clearWorkspace());
+    clearWS.addEventListener("click", () => this.clearWorkspace());
     let aboutPg = document.getElementById("btn_aboutPage");
-    aboutPg.addEventListener("click", e => this.openAboutPage(e));
+    aboutPg.addEventListener("click", () => this.openAboutPage());
     let tutorPg = document.getElementById("btn_tutorialPage");
-    tutorPg.addEventListener("click", e => this.openTutorialPage(e));
+    tutorPg.addEventListener("click", () => this.openTutorialPage());
     let newProj = document.getElementById("btn_newProject");
-    newProj.addEventListener("click", e => this.newProject());
+    newProj.addEventListener("click", () => this.newProject());
     let openProj = document.getElementById("btn_openProject");
-    openProj.addEventListener("click", e => this.openProjectOptions());
+    openProj.addEventListener("click", () => this.openProjectOptions());
     let saveProj = document.getElementById("btn_saveProject");
-    saveProj.addEventListener('click', (e) => this.saveProjectOptions());
+    saveProj.addEventListener('click', () => this.saveProjectOptions());
     let closeM = document.getElementById("btn_closeMenu");
-    closeM.addEventListener("click", e => this.closeMenu());
+    closeM.addEventListener("click", () => this.closeMenu());
     // let downloadAPK = document.getElementById("btn_downloadAPK");
     // downloadAPK.addEventListener("click", (e) => {
     //   window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
@@ -531,6 +531,7 @@ export class HomePage {
           falseBlock.style.margin = "0px";
         }
       }
+      this.resizeIfCaseArrows(symbol.parentElement, true);
     } else if (symbol.parentElement.classList.contains("if_div")) {
       // If Symbol
       let ifDiv = symbol.parentElement as HTMLDivElement;
@@ -552,6 +553,7 @@ export class HomePage {
       }
       ifDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
+      this.resizeIfCaseArrows(symbol, false);
     }
   }
 
@@ -645,6 +647,53 @@ export class HomePage {
         + trueBlock.offsetWidth + "px";
       doWhileDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
+    }
+  }
+
+  public resizeIfCaseArrows(symbol, resizeBlocks: boolean) {
+    // If Case Symbols
+    if (resizeBlocks) {
+      // Resize arrows to the Left and Right
+      let ifDiv = symbol.parentElement as HTMLDivElement;
+      let leftArrowPieces = ifDiv.getElementsByClassName("arrowPiece left");
+      for (let i = 0; i < leftArrowPieces.length; i++) {
+        let aPiece = leftArrowPieces[i] as HTMLDivElement;
+        let gridStr = "";
+        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        gridStr = z + "px 35px " + z + "px";
+        aPiece.style.gridTemplateColumns = gridStr;
+        let arrowP = aPiece.getElementsByClassName("dropzone");
+        for (let j = 0; j < arrowP.length; j++) {
+          let p = arrowP[j] as HTMLDivElement;
+          p.style.width = z + "px";
+        }
+      }
+      let rightArrowPieces = ifDiv.getElementsByClassName("arrowPiece right");
+      for (let i = 0; i < rightArrowPieces.length; i++) {
+        let aPiece = rightArrowPieces[i] as HTMLDivElement;
+        let gridStr = "";
+        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        gridStr = z + "px 35px " + z + "px";
+        aPiece.style.gridTemplateColumns = gridStr;
+        let arrowP = aPiece.getElementsByClassName("dropzone");
+        for (let j = 0; j < arrowP.length; j++) {
+          let p = arrowP[j] as HTMLDivElement;
+          p.style.width = z + "px";
+        }
+      }
+
+    } else {
+      // Resize arrows below If Symbol
+      let ifDiv = symbol.parentElement as HTMLDivElement;
+      let arrowPiece = ifDiv.getElementsByClassName("arrowPiece bottom_center")[0] as HTMLDivElement;
+      let gridStr = "";
+      let z = (arrowPiece.offsetWidth / 2) - (35 / 2);
+      gridStr = z + "px 35px " + z + "px";
+      arrowPiece.style.gridTemplateColumns = gridStr;
+      let right1 = arrowPiece.getElementsByClassName("arrow_right")[0] as HTMLDivElement;
+      let left1 = arrowPiece.getElementsByClassName("arrow_left")[0] as HTMLDivElement;
+      right1.style.width = z + "px";
+      left1.style.width = z + "px";
     }
   }
 
@@ -2465,7 +2514,7 @@ export class HomePage {
     }
   }
 
-  public debugProgram(e) {
+  public debugProgram() {
     this.menu.close();
     this.clearConsole();
     if (this.isConsoleOpen == false) {
@@ -2474,12 +2523,12 @@ export class HomePage {
     this.flowchart.validateFlowchart(0, this.flowchart.SYMBOLS.length);
   }
 
-  public generatePseudoCode(e) {
-    this.openCodeViewer(this.flowchart, e);
+  public generatePseudoCode() {
+    this.openCodeViewer(this.flowchart);
     this.menu.close();
   }
 
-  async openCodeViewer(flowchart, e) {
+  async openCodeViewer(flowchart) {
     const modal = await this.modalC.create({
       component: CodeViewerPage,
       componentProps: { flowchart: flowchart }
@@ -2490,7 +2539,7 @@ export class HomePage {
     await modal.present();
   }
 
-  async openAboutPage(e) {
+  async openAboutPage() {
     this.menu.close();
     const modal = await this.modalC.create({
       component: AboutPage
@@ -2498,7 +2547,7 @@ export class HomePage {
     await modal.present();
   }
 
-  async openTutorialPage(e) {
+  async openTutorialPage() {
     this.menu.close();
     const modal = await this.modalC.create({
       component: TutorialPage

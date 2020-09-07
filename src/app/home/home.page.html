@@ -148,13 +148,24 @@
     <ul id="control_loop_list">
       <li>
         <div class="if_div">
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
-            False</div>
-          <div id="arrow_left" class="arrows dropzone"></div>
+          <div class="arrowPiece left">
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+            <div id="s_terminator"
+              style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+              False</div>
+            <div class="arrow_left dropzone" style="width: 17.5px;"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrows dropzone"></div>
           <div id="s_if_case" class="symbol if_sym" (click)="addSymbol('s_if_case', $event)">If</div>
-          <div id="arrow_right" class="arrows dropzone"></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
-            True</div>
+          <div id="arrow_horizontal" class="arrows dropzone"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_right dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"
+              style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+              True</div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
 
           <div id="ifFalseBlock" class="ifFalseBlock">
             <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
@@ -166,11 +177,23 @@
             <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
           </div>
 
-          <div id="s_terminator"></div>
-          <div id="arrow_right" class="arrows dropzone"></div>
-          <div id="s_terminator"></div>
-          <div id="arrow_left" class="arrows dropzone"></div>
-          <div id="s_terminator"></div>
+          <div class="arrowPiece left">
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+            <div id="s_terminator"></div>
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrows dropzone"></div>
+          <div class="arrowPiece bottom_center">
+            <div class="arrow_right dropzone"></div>
+            <div id="s_terminator"></div>
+            <div class="arrow_left dropzone"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrows dropzone"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"></div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
         </div>
       </li>
       <li>

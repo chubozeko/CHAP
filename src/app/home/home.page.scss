@@ -371,3 +371,31 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
   clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
 }
+
+// Arrow Resizing
+.arrowPiece {
+  min-width: 70px;
+  display: grid;
+  grid-template-columns: 17.5px 35px 17.5px;
+}
+.arrow_left{
+  background: #000000;
+  -webkit-clip-path: polygon(0 50%, 25% 25%, 25% 40%, 100% 40%, 100% 60%, 25% 60%, 25% 75%);
+  clip-path: polygon(0 50%, 25% 25%, 25% 40%, 100% 40%, 100% 60%, 25% 60%, 25% 75%);
+  width: max-content;
+  min-width: 17.5px;
+}
+.arrow_right{
+  background: #000000;
+  -webkit-clip-path: polygon(0 40%, 0 60%, 75% 60%, 75% 75%, 100% 50%, 75% 25%, 75% 40%);
+  clip-path: polygon(0 40%, 0 60%, 75% 60%, 75% 75%, 100% 50%, 75% 25%, 75% 40%);
+  width: max-content;
+  min-width: 17.5px;
+}
+.arrow_horizontal {	
+  background: #000000;
+  -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
+  clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
+  width: max-content;
+  // min-width: 17.5px;
+}
