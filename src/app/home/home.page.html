@@ -201,9 +201,15 @@
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div id="s_for_loop" class="symbol for_sym" (click)="addSymbol('s_for_loop',$event)">For</div>
-          <div id="arrow_right" class="arrows"></div>
-          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
-            Next</div>
+          <div id="arrow_horizontal" class="arrows"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_right dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"
+              style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+              Next</div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
 
           <div class="forFalseBlock"></div>
           <div></div>
@@ -215,9 +221,17 @@
 
           <div></div>
           <div></div>
-          <div id="arrows_down_down_right" class="arrows"></div>
+          <div class="arrowPiece bottom_center" style="grid-template-columns: 0px 70px 0px;">
+            <div class="blank_arrow_left dropzone" style="background-color: transparent; width: 0%;"></div>
+            <div id="arrows_down_down_right" class="arrows"></div>
+            <div class="arrow_horizontal dropzone" style="width: 0%;"></div>
+          </div>
           <div id="arrow_horizontal" class="arrows"></div>
-          <div id="s_terminator"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"></div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
 
           <div></div>
           <div></div>

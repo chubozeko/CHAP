@@ -574,6 +574,7 @@ export class HomePage {
         trueBlock.style.margin = "0px";
         falseBlock.style.margin = "0px";
       }
+      this.resizeForLoopArrows(symbol.parentElement, true);
     } else if (symbol.parentElement.classList.contains("for_div")) {
       // For Symbol
       let forDiv = symbol.parentElement as HTMLDivElement;
@@ -585,6 +586,7 @@ export class HomePage {
         + trueBlock.offsetWidth + "px";
       forDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
+      this.resizeForLoopArrows(symbol.parentElement, false);
     }
   }
 
@@ -692,6 +694,55 @@ export class HomePage {
       arrowPiece.style.gridTemplateColumns = gridStr;
       let right1 = arrowPiece.getElementsByClassName("arrow_right")[0] as HTMLDivElement;
       let left1 = arrowPiece.getElementsByClassName("arrow_left")[0] as HTMLDivElement;
+      right1.style.width = z + "px";
+      left1.style.width = z + "px";
+    }
+  }
+
+  public resizeForLoopArrows(symbol, resizeBlocks: boolean) {
+    // For Loop Symbols
+    if (resizeBlocks) {
+      // Resize arrows to the Left and Right
+      let forDiv = symbol.parentElement as HTMLDivElement;
+      /*
+      let leftArrowPieces = forDiv.getElementsByClassName("arrowPiece left");
+      for (let i = 0; i < leftArrowPieces.length; i++) {
+        let aPiece = leftArrowPieces[i] as HTMLDivElement;
+        let gridStr = "";
+        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        gridStr = z + "px 35px " + z + "px";
+        aPiece.style.gridTemplateColumns = gridStr;
+        let arrowP = aPiece.getElementsByClassName("dropzone");
+        for (let j = 0; j < arrowP.length; j++) {
+          let p = arrowP[j] as HTMLDivElement;
+          p.style.width = z + "px";
+        }
+      }
+      */
+      let rightArrowPieces = forDiv.getElementsByClassName("arrowPiece right");
+      for (let i = 0; i < rightArrowPieces.length; i++) {
+        let aPiece = rightArrowPieces[i] as HTMLDivElement;
+        let gridStr = "";
+        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        gridStr = z + "px 35px " + z + "px";
+        aPiece.style.gridTemplateColumns = gridStr;
+        let arrowP = aPiece.getElementsByClassName("dropzone");
+        for (let j = 0; j < arrowP.length; j++) {
+          let p = arrowP[j] as HTMLDivElement;
+          p.style.width = z + "px";
+        }
+      }
+
+    } else {
+      // Resize arrows below For Symbol
+      let forDiv = symbol.parentElement as HTMLDivElement;
+      let arrowPiece = forDiv.getElementsByClassName("arrowPiece bottom_center")[0] as HTMLDivElement;
+      let gridStr = "";
+      let z = (arrowPiece.offsetWidth / 2) - (70 / 2);
+      gridStr = z + "px 70px " + z + "px";
+      arrowPiece.style.gridTemplateColumns = gridStr;
+      let right1 = arrowPiece.getElementsByClassName("arrow_horizontal")[0] as HTMLDivElement;
+      let left1 = arrowPiece.getElementsByClassName("blank_arrow_left")[0] as HTMLDivElement;
       right1.style.width = z + "px";
       left1.style.width = z + "px";
     }
