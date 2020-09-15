@@ -640,6 +640,7 @@ export class HomePage {
         trueBlock.style.margin = "0px";
         falseBlock.style.margin = "0px";
       }
+      this.resizeDoWhileLoopArrows(symbol.parentElement, true);
     } else if (symbol.parentElement.classList.contains("do_while_div")) {
       // Do While Symbol
       let doWhileDiv = symbol.parentElement as HTMLDivElement;
@@ -651,6 +652,7 @@ export class HomePage {
         + trueBlock.offsetWidth + "px";
       doWhileDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
+      this.resizeDoWhileLoopArrows(symbol.parentElement, false);
     }
   }
 
@@ -753,12 +755,45 @@ export class HomePage {
         }
       }
     } else {
-      // Resize arrows below For Symbol
+      // Resize arrows below While Symbol
       let whileDiv = symbol.parentElement as HTMLDivElement;
       let arrowPiece = whileDiv.getElementsByClassName("arrowPiece bottom_center")[0] as HTMLDivElement;
       let gridStr = "";
       let z = (arrowPiece.offsetWidth / 2) - (70 / 2);
       gridStr = z + "px 70px " + z + "px";
+      arrowPiece.style.gridTemplateColumns = gridStr;
+      let right1 = arrowPiece.getElementsByClassName("arrow_horizontal")[0] as HTMLDivElement;
+      let left1 = arrowPiece.getElementsByClassName("blank_arrow_left")[0] as HTMLDivElement;
+      right1.style.width = z + "px";
+      left1.style.width = z + "px";
+    }
+  }
+
+  public resizeDoWhileLoopArrows(symbol, resizeBlocks: boolean) {
+    // Do Loop Symbols
+    if (resizeBlocks) {
+      // Resize arrows to the Left and Right
+      let doWhileDiv = symbol.parentElement as HTMLDivElement;
+      let rightArrowPieces = doWhileDiv.getElementsByClassName("arrowPiece right");
+      for (let i = 0; i < rightArrowPieces.length; i++) {
+        let aPiece = rightArrowPieces[i] as HTMLDivElement;
+        let gridStr = "";
+        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        gridStr = z + "px 35px " + z + "px";
+        aPiece.style.gridTemplateColumns = gridStr;
+        let arrowP = aPiece.getElementsByClassName("dropzone");
+        for (let j = 0; j < arrowP.length; j++) {
+          let p = arrowP[j] as HTMLDivElement;
+          p.style.width = z + "px";
+        }
+      }
+    } else {
+      // Resize arrows below Do While Symbol
+      let doWhileDiv = symbol.parentElement as HTMLDivElement;
+      let arrowPiece = doWhileDiv.getElementsByClassName("arrowPiece bottom_center")[0] as HTMLDivElement;
+      let gridStr = "";
+      let z = (arrowPiece.offsetWidth / 2) - (35 / 2);
+      gridStr = z + "px 35px " + z + "px";
       arrowPiece.style.gridTemplateColumns = gridStr;
       let right1 = arrowPiece.getElementsByClassName("arrow_horizontal")[0] as HTMLDivElement;
       let left1 = arrowPiece.getElementsByClassName("blank_arrow_left")[0] as HTMLDivElement;
