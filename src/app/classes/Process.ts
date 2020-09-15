@@ -108,16 +108,40 @@ export class Process {
       default: break;
     }
 
-    // Remove empty elements [""] from parsedValues
-    for (let i = 0; i < parsedValues.length; i++) { if (isNaN(parsedValues[i])) parsedValues.splice(i, 1, ""); }
-    // Create newExpression with parsed values instead of variable names
-    let newExpression = "";
-    for (let j = 0; j < operators.length; j++) {
-      newExpression += parsedValues[j] + operators[j];
+    if (dataType != 'String') {
+      // Remove empty elements [""] from parsedValues
+      for (let i = 0; i < parsedValues.length; i++) { if (isNaN(parsedValues[i])) parsedValues.splice(i, 1, ""); }
+      // Create newExpression with parsed values instead of variable names
+      let newExpression = "";
+      for (let j = 0; j < operators.length; j++) {
+        newExpression += parsedValues[j] + operators[j];
+      }
+      newExpression += parsedValues[parsedValues.length - 1];
+      // Evaluate the expression and return the result
+      result = math.evaluate(newExpression);
+    } else {
+      let op = '', oper1, oper2, j = 0;
+      if (operators.length != 0) {
+        while (operators.length != 0) {
+          if (operators.indexOf('%') != -1) { j = operators.indexOf('%'); }
+          else if (operators.indexOf('/') != -1) { j = operators.indexOf('/'); }
+          else if (operators.indexOf('*') != -1) { j = operators.indexOf('*'); }
+          else if (operators.indexOf('+') != -1) { j = operators.indexOf('+'); }
+          else if (operators.indexOf('-') != -1) { j = operators.indexOf('-'); }
+
+          op = operators[j];
+          oper1 = parsedValues[j];
+          oper2 = parsedValues[j + 1];
+          result = this.calculateStringExpression(oper1, oper2, op);
+
+          operators.splice(j, 1);
+          parsedValues.splice(j, 2, result);
+        }
+      } else {
+        result = this.calculateStringExpression(parsedValues[0], "", "+");
+      }
     }
-    newExpression += parsedValues[parsedValues.length - 1];
-    // Evaluate the expression and return the result
-    result = math.evaluate(newExpression);
+
     return result;
   }
 

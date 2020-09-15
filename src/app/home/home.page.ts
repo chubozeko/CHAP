@@ -586,6 +586,8 @@ export class HomePage {
         + trueBlock.offsetWidth + "px";
       forDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
+      symbol.style.clipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.webkitClipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
       this.resizeForLoopArrows(symbol.parentElement, false);
     }
   }
@@ -619,6 +621,8 @@ export class HomePage {
         + trueBlock.offsetWidth + "px";
       whileDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
+      symbol.style.clipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.webkitClipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
       this.resizeWhileLoopArrows(symbol.parentElement, false);
     }
   }
@@ -652,6 +656,8 @@ export class HomePage {
         + trueBlock.offsetWidth + "px";
       doWhileDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
+      symbol.style.clipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.webkitClipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
       this.resizeDoWhileLoopArrows(symbol.parentElement, false);
     }
   }
