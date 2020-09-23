@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import {
   NavController,
   AlertController,
-  LoadingController,
+  LoadingController,, ModalController
 } from "@ionic/angular";
 import { HttpClient, HttpHeaders, HttpRequest } from "@angular/common/http";
 import { AuthService } from "../auth.service";
@@ -26,17 +26,20 @@ export class SignupPage implements OnInit {
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
+    public modalC: ModalController,
     private http: HttpClient,
     public loading: LoadingController,
-    private auth: AuthService
-  ) {}
+    private auth: AuthService,
+  ) { }
 
   ngOnInit() {
     // Adding Click Listeners to Buttons
     let btnCreateAcc = document.getElementById("btn_createAccount");
     btnCreateAcc.addEventListener("click", (e) => this.createAccount(e));
-    let btnBackToLogin = document.getElementById("btn_backToLogin");
-    btnBackToLogin.addEventListener("click", (e) => this.backToLogIn(e));
+    let btn_SignUpClose = document.getElementById("btn_SignUpClose");
+    btn_SignUpClose.addEventListener("click", (e) => {
+      this.modalC.dismiss();
+    });
 
     this.gender = document.getElementById("gender") as HTMLIonSelectElement;
     this.cntry = document.getElementById("cntry") as HTMLIonSelectElement;
@@ -62,7 +65,7 @@ export class SignupPage implements OnInit {
           {
             text: "Close",
             role: "cancel",
-            handler: () => {},
+            handler: () => { },
           },
         ],
       });

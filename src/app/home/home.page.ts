@@ -1,17 +1,32 @@
-import { Component, ViewChild, SystemJsNgModuleLoader, Injectable } from "@angular/core";
-import { ModalController, Fab, ActionSheetController, MenuController, NavParams, AlertController, ToastController, Platform, NavController } from "@ionic/angular";
+import {
+  Component,
+  ViewChild,
+  SystemJsNgModuleLoader,
+  Injectable,
+} from "@angular/core";
+import {
+  ModalController,
+  Fab,
+  ActionSheetController,
+  MenuController,
+  NavParams,
+  AlertController,
+  ToastController,
+  Platform,
+  NavController,
+} from "@ionic/angular";
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
-import { File, FileWriter } from '@ionic-native/file/ngx';
-import { Chooser } from '@ionic-native/chooser/ngx';
-import { Toast } from '@ionic-native/toast/ngx';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { File, FileWriter } from "@ionic-native/file/ngx";
+import { Chooser } from "@ionic-native/chooser/ngx";
+import { Toast } from "@ionic-native/toast/ngx";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DragulaService } from "ng2-dragula";
 import { from } from "rxjs";
 import { type } from "os";
 
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
 import { InputPage } from "../symbol-dialogs/input/input.page";
@@ -38,14 +53,14 @@ import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
 import { OpenProjectPage } from "../open-project/open-project.page";
-import { AuthService } from '../auth.service';
+import { AuthService } from "../auth.service";
 import { toBase64String } from "@angular/compiler/src/output/source_map";
 import { FeedbackPage } from "../feedback/feedback.page";
 
 @Component({
   selector: "app-home",
   templateUrl: "home.page.html",
-  styleUrls: ["home.page.scss"]
+  styleUrls: ["home.page.scss"],
 })
 @Injectable()
 export class HomePage {
@@ -66,9 +81,19 @@ export class HomePage {
   symbols = SYMBOLS;
   newSymbol: any;
   dupSymbol: any;
-  saveFolder = 'CHAP Project Files';
+  saveFolder = "CHAP Project Files";
 
-  paste_sym_buffer: Array<Declare | Input | Output | Process | IfCase | ForLoop | WhileLoop | DoWhileLoop | Comment>;
+  paste_sym_buffer: Array<
+    | Declare
+    | Input
+    | Output
+    | Process
+    | IfCase
+    | ForLoop
+    | WhileLoop
+    | DoWhileLoop
+    | Comment
+  >;
 
   items: Array<any> = [];
 
@@ -87,12 +112,10 @@ export class HomePage {
     public toast: Toast,
     public navCtrl: NavController,
     private auth: AuthService
-    //public navParams: NavParams
-  ) { }
+  ) //public navParams: NavParams
+  {}
 
-  ionViewWillEnter() {
-
-  }
+  ionViewWillEnter() {}
 
   ngOnInit() {
     // Adding Hover Listeners to Toolbar Buttons
@@ -100,7 +123,9 @@ export class HomePage {
     for (let i = 0; i < tbButtons.length; i++) {
       // Mouse Over (Hover)
       tbButtons[i].addEventListener("mouseover", (e) => {
-        this.toolbarTooltip = tbButtons[i].getElementsByClassName("tooltiptext")[0].innerHTML;
+        this.toolbarTooltip = tbButtons[i].getElementsByClassName(
+          "tooltiptext"
+        )[0].innerHTML;
       });
       // Mouse Exit
       tbButtons[i].addEventListener("mouseleave", (e) => {
@@ -137,7 +162,7 @@ export class HomePage {
     let openProj = document.getElementById("btn_openProject");
     openProj.addEventListener("click", () => this.openProjectOptions());
     let saveProj = document.getElementById("btn_saveProject");
-    saveProj.addEventListener('click', () => this.saveProjectOptions());
+    saveProj.addEventListener("click", () => this.saveProjectOptions());
     let closeM = document.getElementById("btn_closeMenu");
     closeM.addEventListener("click", () => this.closeMenu());
     // let downloadAPK = document.getElementById("btn_downloadAPK");
@@ -145,35 +170,45 @@ export class HomePage {
     //   window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
     // });
     let sFAB = document.getElementById("symbolsFAB");
-    sFAB.addEventListener("click", e => this.toggleSymbolsFAB());
+    sFAB.addEventListener("click", (e) => this.toggleSymbolsFAB());
     // let printFC = document.getElementById("btn_printFlowchart");
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let feedbackBtn = document.getElementById("btn_feedbackPage");
-    feedbackBtn.addEventListener('click', (e) => this.openFeedback());
+    feedbackBtn.addEventListener("click", (e) => this.openFeedback());
     let logOut = document.getElementById("btn_logOut");
-    logOut.addEventListener("click", e => this.logOut());
+    logOut.addEventListener("click", (e) => this.logOut());
     let goOnline = document.getElementById("btn_goOnline");
-    goOnline.addEventListener("click", e => {
+    goOnline.addEventListener("click", (e) => {
       this.closeMenu();
       //this.auth.mode = 'online';
-      this.navCtrl.navigateRoot('/login');
+      this.navCtrl.navigateRoot("/login");
     });
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
     this.workspace = document.getElementById("workspace");
     this.branch = document.getElementById("arrow");
-    this.branch.addEventListener("click", e => this.openSymbolsFAB(e));
+    this.branch.addEventListener("click", (e) => this.openSymbolsFAB(e));
     interact(this.branch)
       .gesturable({ hold: 1500 })
-      .on("tap", e => this.openSymbolsFAB(e))
-      .on("hold", e => this.openArrowsAS(e));
+      .on("tap", (e) => this.openSymbolsFAB(e))
+      .on("hold", (e) => this.openArrowsAS(e));
 
     /*** Dragula DRAG & DROP configs ***/
     this.subscribeToDragula();
 
     // Initialize Paste buffers
-    this.paste_sym_buffer = new Array<Declare | Input | Output | Process | IfCase | ForLoop | WhileLoop | DoWhileLoop | Comment>();
+    this.paste_sym_buffer = new Array<
+      | Declare
+      | Input
+      | Output
+      | Process
+      | IfCase
+      | ForLoop
+      | WhileLoop
+      | DoWhileLoop
+      | Comment
+    >();
 
     // if (this.platform.is("android")) { this.fileName = 'android'; }
     // else if (this.platform.is("ios")) { this.fileName = 'ios'; }
@@ -182,64 +217,64 @@ export class HomePage {
 
     // FOR ANDROID: Creating Save Folder if directory does not exist
     if (this.platform.is("android")) {
-      this.file.createDir(
-        `${this.file.externalRootDirectory}`,
-        this.saveFolder,
-        false
-      ).then(res => {
-        console.log('Directory exists');
-      }).catch(err => {
-        console.log('Directory does not exist');
-      });
+      this.file
+        .createDir(`${this.file.externalRootDirectory}`, this.saveFolder, false)
+        .then((res) => {
+          console.log("Directory exists");
+        })
+        .catch((err) => {
+          console.log("Directory does not exist");
+        });
     }
 
     // Check if it is Offline Mode
-    if (this.auth.mode == 'offline') {
-      logOut.style.display = 'none';
-      goOnline.style.display = 'block';
+    if (this.auth.mode == "offline") {
+      logOut.style.display = "none";
+      goOnline.style.display = "block";
     } else {
-      logOut.style.display = 'block';
-      goOnline.style.display = 'none';
+      logOut.style.display = "block";
+      goOnline.style.display = "none";
     }
-
   }
 
   public subscribeToDragula() {
-    this.dragulaService.drag('symbol')
-      .subscribe(({ name, el, source }) => {
-        this.selectedSymbol = el.children[0].id;
-      });
+    this.dragulaService.drag("symbol").subscribe(({ name, el, source }) => {
+      this.selectedSymbol = el.children[0].id;
+    });
 
-    this.dragulaService.drop('symbol')
+    this.dragulaService
+      .drop("symbol")
       .subscribe(({ name, el, target, source }) => {
-        target.setAttribute('style', 'background: #000000');
+        target.setAttribute("style", "background: #000000");
         target.removeChild(target.children[0]);
         this.addSymbol(this.selectedSymbol, el.children[0]);
       });
 
-    this.dragulaService.over('symbol')
+    this.dragulaService
+      .over("symbol")
       .subscribe(({ name, el, container, source }) => {
-        if (container.className == 'arrow dropzone') {
+        if (container.className == "arrow dropzone") {
           container.classList.add("active-arrow");
-          container.setAttribute('style', 'background: #9CDCFE');
+          container.setAttribute("style", "background: #9CDCFE");
         }
       });
 
-    this.dragulaService.out('symbol')
+    this.dragulaService
+      .out("symbol")
       .subscribe(({ name, el, container, source }) => {
-        if (container.className == 'arrow dropzone active-arrow') {
+        if (container.className == "arrow dropzone active-arrow") {
           container.classList.remove("active-arrow");
-          container.setAttribute('style', 'background: #000000');
+          container.setAttribute("style", "background: #000000");
         }
       });
 
-    if (this.dragulaService.find('symbol') == null) {
-      this.dragulaService.createGroup('symbol', {
+    if (this.dragulaService.find("symbol") == null) {
+      this.dragulaService.createGroup("symbol", {
         copy: true,
         removeOnSpill: true,
         isContainer: (el) => {
-          return el.classList.contains('arrow dropzone');
-        }
+          return el.classList.contains("arrow dropzone");
+        },
       });
     }
   }
@@ -248,12 +283,12 @@ export class HomePage {
     let logOut = document.getElementById("btn_logOut");
     let goOnline = document.getElementById("btn_goOnline");
     // Check if it is Offline Mode
-    if (this.auth.mode == 'offline') {
-      logOut.style.display = 'none';
-      goOnline.style.display = 'block';
+    if (this.auth.mode == "offline") {
+      logOut.style.display = "none";
+      goOnline.style.display = "block";
     } else {
-      logOut.style.display = 'block';
-      goOnline.style.display = 'none';
+      logOut.style.display = "block";
+      goOnline.style.display = "none";
     }
     this.menu.open();
   }
@@ -265,10 +300,10 @@ export class HomePage {
   async openDeclareModal(symbol, e) {
     const modal = await this.modalC.create({
       component: DeclarePage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("symbol active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -289,10 +324,10 @@ export class HomePage {
   async openInputModal(symbol, e) {
     const modal = await this.modalC.create({
       component: InputPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("symbol active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -313,10 +348,10 @@ export class HomePage {
   async openOutputModal(symbol, e) {
     const modal = await this.modalC.create({
       component: OutputPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("symbol active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -337,10 +372,10 @@ export class HomePage {
   async openProcessModal(symbol, e) {
     const modal = await this.modalC.create({
       component: ProcessPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("symbol active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -361,10 +396,10 @@ export class HomePage {
   async openCommentModal(symbol, e) {
     const modal = await this.modalC.create({
       component: CommentPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("symbol active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -386,10 +421,10 @@ export class HomePage {
     //console.log(symbol);
     const modal = await this.modalC.create({
       component: IfElsePage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("symbol active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -411,10 +446,10 @@ export class HomePage {
     console.log(symbol);
     const modal = await this.modalC.create({
       component: WhileLoopPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -436,10 +471,10 @@ export class HomePage {
     // console.log(symbol);
     const modal = await this.modalC.create({
       component: ForLoopPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("symbol active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -461,10 +496,10 @@ export class HomePage {
     console.log(symbol);
     const modal = await this.modalC.create({
       component: DoWhileLoopPage,
-      componentProps: { symbol: symbol }
+      componentProps: { symbol: symbol },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let s = document.getElementsByClassName("active-symbol");
       for (let i = 0; i < s.length; i++) {
         s[i].classList.remove("active-symbol");
@@ -483,17 +518,25 @@ export class HomePage {
   }
 
   public resizeSymbols(symbol) {
-    if ((symbol.parentElement.parentElement.classList.contains("if_div"))
-      || (symbol.parentElement.classList.contains("if_div"))) {
+    if (
+      symbol.parentElement.parentElement.classList.contains("if_div") ||
+      symbol.parentElement.classList.contains("if_div")
+    ) {
       this.resizeIfCaseBlocks(symbol);
-    } else if ((symbol.parentElement.parentElement.classList.contains("for_div"))
-      || (symbol.parentElement.classList.contains("for_div"))) {
+    } else if (
+      symbol.parentElement.parentElement.classList.contains("for_div") ||
+      symbol.parentElement.classList.contains("for_div")
+    ) {
       this.resizeForLoopBlocks(symbol);
-    } else if ((symbol.parentElement.parentElement.classList.contains("while_div"))
-      || (symbol.parentElement.classList.contains("while_div"))) {
+    } else if (
+      symbol.parentElement.parentElement.classList.contains("while_div") ||
+      symbol.parentElement.classList.contains("while_div")
+    ) {
       this.resizeWhileLoopBlocks(symbol);
-    } else if ((symbol.parentElement.parentElement.classList.contains("do_while_div"))
-      || (symbol.parentElement.classList.contains("do_while_div"))) {
+    } else if (
+      symbol.parentElement.parentElement.classList.contains("do_while_div") ||
+      symbol.parentElement.classList.contains("do_while_div")
+    ) {
       this.resizeDoWhileLoopBlocks(symbol);
     }
   }
@@ -501,31 +544,52 @@ export class HomePage {
   public resizeIfCaseBlocks(symbol) {
     // If Case Symbols
     if (symbol.parentElement.parentElement.classList.contains("if_div")) {
-      if (symbol.parentElement.id == "ifTrueBlock" || symbol.parentElement.id == "ifFalseBlock") {
+      if (
+        symbol.parentElement.id == "ifTrueBlock" ||
+        symbol.parentElement.id == "ifFalseBlock"
+      ) {
         let ifDiv = symbol.parentElement.parentElement as HTMLDivElement;
-        let ifSymbol = ifDiv.getElementsByClassName("if_sym")[0] as HTMLDivElement;
-        let falseBlock = ifDiv.getElementsByClassName("ifFalseBlock")[0] as HTMLDivElement;
-        let trueBlock = ifDiv.getElementsByClassName("ifTrueBlock")[0] as HTMLDivElement;
+        let ifSymbol = ifDiv.getElementsByClassName(
+          "if_sym"
+        )[0] as HTMLDivElement;
+        let falseBlock = ifDiv.getElementsByClassName(
+          "ifFalseBlock"
+        )[0] as HTMLDivElement;
+        let trueBlock = ifDiv.getElementsByClassName(
+          "ifTrueBlock"
+        )[0] as HTMLDivElement;
         // Resize to the Block with the larger width
         let gridStr: string = "";
         if (trueBlock.offsetWidth > falseBlock.offsetWidth) {
-          gridStr = trueBlock.offsetWidth + "px max-content "
-            + ifSymbol.offsetWidth + "px max-content "
-            + trueBlock.offsetWidth + "px";
+          gridStr =
+            trueBlock.offsetWidth +
+            "px max-content " +
+            ifSymbol.offsetWidth +
+            "px max-content " +
+            trueBlock.offsetWidth +
+            "px";
           ifDiv.style.gridTemplateColumns = gridStr;
           trueBlock.style.margin = "0px";
           falseBlock.style.margin = "auto";
         } else if (falseBlock.offsetWidth > trueBlock.offsetWidth) {
-          gridStr = falseBlock.offsetWidth + "px max-content "
-            + ifSymbol.offsetWidth + "px max-content "
-            + falseBlock.offsetWidth + "px";
+          gridStr =
+            falseBlock.offsetWidth +
+            "px max-content " +
+            ifSymbol.offsetWidth +
+            "px max-content " +
+            falseBlock.offsetWidth +
+            "px";
           ifDiv.style.gridTemplateColumns = gridStr;
           trueBlock.style.margin = "auto";
           falseBlock.style.margin = "0px";
         } else {
-          gridStr = falseBlock.offsetWidth + "px max-content "
-            + ifSymbol.offsetWidth + "px max-content "
-            + trueBlock.offsetWidth + "px";
+          gridStr =
+            falseBlock.offsetWidth +
+            "px max-content " +
+            ifSymbol.offsetWidth +
+            "px max-content " +
+            trueBlock.offsetWidth +
+            "px";
           ifDiv.style.gridTemplateColumns = gridStr;
           trueBlock.style.margin = "0px";
           falseBlock.style.margin = "0px";
@@ -535,21 +599,37 @@ export class HomePage {
     } else if (symbol.parentElement.classList.contains("if_div")) {
       // If Symbol
       let ifDiv = symbol.parentElement as HTMLDivElement;
-      let falseBlock = ifDiv.getElementsByClassName("ifFalseBlock")[0] as HTMLDivElement;
-      let trueBlock = ifDiv.getElementsByClassName("ifTrueBlock")[0] as HTMLDivElement;
+      let falseBlock = ifDiv.getElementsByClassName(
+        "ifFalseBlock"
+      )[0] as HTMLDivElement;
+      let trueBlock = ifDiv.getElementsByClassName(
+        "ifTrueBlock"
+      )[0] as HTMLDivElement;
       let gridStr = "";
       if (trueBlock.offsetWidth > falseBlock.offsetWidth) {
-        gridStr = trueBlock.offsetWidth + "px max-content "
-          + symbol.offsetWidth + "px max-content "
-          + trueBlock.offsetWidth + "px";
+        gridStr =
+          trueBlock.offsetWidth +
+          "px max-content " +
+          symbol.offsetWidth +
+          "px max-content " +
+          trueBlock.offsetWidth +
+          "px";
       } else if (trueBlock.offsetWidth < falseBlock.offsetWidth) {
-        gridStr = falseBlock.offsetWidth + "px max-content "
-          + symbol.offsetWidth + "px max-content "
-          + falseBlock.offsetWidth + "px";
+        gridStr =
+          falseBlock.offsetWidth +
+          "px max-content " +
+          symbol.offsetWidth +
+          "px max-content " +
+          falseBlock.offsetWidth +
+          "px";
       } else {
-        gridStr = falseBlock.offsetWidth + "px max-content "
-          + symbol.offsetWidth + "px max-content "
-          + trueBlock.offsetWidth + "px";
+        gridStr =
+          falseBlock.offsetWidth +
+          "px max-content " +
+          symbol.offsetWidth +
+          "px max-content " +
+          trueBlock.offsetWidth +
+          "px";
       }
       ifDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
@@ -560,16 +640,29 @@ export class HomePage {
   public resizeForLoopBlocks(symbol) {
     // For Loop Symbols
     if (symbol.parentElement.parentElement.classList.contains("for_div")) {
-      if (symbol.parentElement.id == "forTrueBlock" || symbol.parentElement.id == "forFalseBlock") {
+      if (
+        symbol.parentElement.id == "forTrueBlock" ||
+        symbol.parentElement.id == "forFalseBlock"
+      ) {
         let forDiv = symbol.parentElement.parentElement as HTMLDivElement;
-        let forSymbol = forDiv.getElementsByClassName("for_sym")[0] as HTMLDivElement;
-        let falseBlock = forDiv.getElementsByClassName("forFalseBlock")[0] as HTMLDivElement;
-        let trueBlock = forDiv.getElementsByClassName("forTrueBlock")[0] as HTMLDivElement;
+        let forSymbol = forDiv.getElementsByClassName(
+          "for_sym"
+        )[0] as HTMLDivElement;
+        let falseBlock = forDiv.getElementsByClassName(
+          "forFalseBlock"
+        )[0] as HTMLDivElement;
+        let trueBlock = forDiv.getElementsByClassName(
+          "forTrueBlock"
+        )[0] as HTMLDivElement;
         // Resize to the Block with the larger width
         let gridStr: string = "";
-        gridStr = trueBlock.offsetWidth + "px max-content "
-          + forSymbol.offsetWidth + "px max-content "
-          + trueBlock.offsetWidth + "px";
+        gridStr =
+          trueBlock.offsetWidth +
+          "px max-content " +
+          forSymbol.offsetWidth +
+          "px max-content " +
+          trueBlock.offsetWidth +
+          "px";
         forDiv.style.gridTemplateColumns = gridStr;
         trueBlock.style.margin = "0px";
         falseBlock.style.margin = "0px";
@@ -578,16 +671,30 @@ export class HomePage {
     } else if (symbol.parentElement.classList.contains("for_div")) {
       // For Symbol
       let forDiv = symbol.parentElement as HTMLDivElement;
-      let falseBlock = forDiv.getElementsByClassName("forFalseBlock")[0] as HTMLDivElement;
-      let trueBlock = forDiv.getElementsByClassName("forTrueBlock")[0] as HTMLDivElement;
+      let falseBlock = forDiv.getElementsByClassName(
+        "forFalseBlock"
+      )[0] as HTMLDivElement;
+      let trueBlock = forDiv.getElementsByClassName(
+        "forTrueBlock"
+      )[0] as HTMLDivElement;
       let gridStr = "";
-      gridStr = trueBlock.offsetWidth + "px max-content "
-        + symbol.offsetWidth + "px max-content "
-        + trueBlock.offsetWidth + "px";
+      gridStr =
+        trueBlock.offsetWidth +
+        "px max-content " +
+        symbol.offsetWidth +
+        "px max-content " +
+        trueBlock.offsetWidth +
+        "px";
       forDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
-      symbol.style.clipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      symbol.style.webkitClipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.clipPath =
+        "polygon(" +
+        (symbol.offsetWidth - 17.5) +
+        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.webkitClipPath =
+        "polygon(" +
+        (symbol.offsetWidth - 17.5) +
+        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
       this.resizeForLoopArrows(symbol.parentElement, false);
     }
   }
@@ -597,14 +704,24 @@ export class HomePage {
     if (symbol.parentElement.parentElement.classList.contains("while_div")) {
       if (symbol.parentElement.id == "whileTrueBlock") {
         let whileDiv = symbol.parentElement.parentElement as HTMLDivElement;
-        let whileSymbol = whileDiv.getElementsByClassName("while_sym")[0] as HTMLDivElement;
-        let falseBlock = whileDiv.getElementsByClassName("whileFalseBlock")[0] as HTMLDivElement;
-        let trueBlock = whileDiv.getElementsByClassName("whileTrueBlock")[0] as HTMLDivElement;
+        let whileSymbol = whileDiv.getElementsByClassName(
+          "while_sym"
+        )[0] as HTMLDivElement;
+        let falseBlock = whileDiv.getElementsByClassName(
+          "whileFalseBlock"
+        )[0] as HTMLDivElement;
+        let trueBlock = whileDiv.getElementsByClassName(
+          "whileTrueBlock"
+        )[0] as HTMLDivElement;
         // Resize to the Block with the larger width
         let gridStr: string = "";
-        gridStr = trueBlock.offsetWidth + "px max-content "
-          + whileSymbol.offsetWidth + "px max-content "
-          + trueBlock.offsetWidth + "px";
+        gridStr =
+          trueBlock.offsetWidth +
+          "px max-content " +
+          whileSymbol.offsetWidth +
+          "px max-content " +
+          trueBlock.offsetWidth +
+          "px";
         whileDiv.style.gridTemplateColumns = gridStr;
         trueBlock.style.margin = "0px";
         falseBlock.style.margin = "0px";
@@ -613,16 +730,30 @@ export class HomePage {
     } else if (symbol.parentElement.classList.contains("while_div")) {
       // While Symbol
       let whileDiv = symbol.parentElement as HTMLDivElement;
-      let falseBlock = whileDiv.getElementsByClassName("whileFalseBlock")[0] as HTMLDivElement;
-      let trueBlock = whileDiv.getElementsByClassName("whileTrueBlock")[0] as HTMLDivElement;
+      let falseBlock = whileDiv.getElementsByClassName(
+        "whileFalseBlock"
+      )[0] as HTMLDivElement;
+      let trueBlock = whileDiv.getElementsByClassName(
+        "whileTrueBlock"
+      )[0] as HTMLDivElement;
       let gridStr = "";
-      gridStr = trueBlock.offsetWidth + "px max-content "
-        + symbol.offsetWidth + "px max-content "
-        + trueBlock.offsetWidth + "px";
+      gridStr =
+        trueBlock.offsetWidth +
+        "px max-content " +
+        symbol.offsetWidth +
+        "px max-content " +
+        trueBlock.offsetWidth +
+        "px";
       whileDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
-      symbol.style.clipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      symbol.style.webkitClipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.clipPath =
+        "polygon(" +
+        (symbol.offsetWidth - 17.5) +
+        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.webkitClipPath =
+        "polygon(" +
+        (symbol.offsetWidth - 17.5) +
+        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
       this.resizeWhileLoopArrows(symbol.parentElement, false);
     }
   }
@@ -632,14 +763,24 @@ export class HomePage {
     if (symbol.parentElement.parentElement.classList.contains("do_while_div")) {
       if (symbol.parentElement.id == "doWhileTrueBlock") {
         let doWhileDiv = symbol.parentElement.parentElement as HTMLDivElement;
-        let doWhileSymbol = doWhileDiv.getElementsByClassName("do_while_sym")[0] as HTMLDivElement;
-        let falseBlock = doWhileDiv.getElementsByClassName("doWhileFalseBlock")[0] as HTMLDivElement;
-        let trueBlock = doWhileDiv.getElementsByClassName("doWhileTrueBlock")[0] as HTMLDivElement;
+        let doWhileSymbol = doWhileDiv.getElementsByClassName(
+          "do_while_sym"
+        )[0] as HTMLDivElement;
+        let falseBlock = doWhileDiv.getElementsByClassName(
+          "doWhileFalseBlock"
+        )[0] as HTMLDivElement;
+        let trueBlock = doWhileDiv.getElementsByClassName(
+          "doWhileTrueBlock"
+        )[0] as HTMLDivElement;
         // Resize to the Block with the larger width
         let gridStr: string = "";
-        gridStr = trueBlock.offsetWidth + "px max-content "
-          + doWhileSymbol.offsetWidth + "px max-content "
-          + trueBlock.offsetWidth + "px";
+        gridStr =
+          trueBlock.offsetWidth +
+          "px max-content " +
+          doWhileSymbol.offsetWidth +
+          "px max-content " +
+          trueBlock.offsetWidth +
+          "px";
         doWhileDiv.style.gridTemplateColumns = gridStr;
         trueBlock.style.margin = "0px";
         falseBlock.style.margin = "0px";
@@ -648,16 +789,30 @@ export class HomePage {
     } else if (symbol.parentElement.classList.contains("do_while_div")) {
       // Do While Symbol
       let doWhileDiv = symbol.parentElement as HTMLDivElement;
-      let falseBlock = doWhileDiv.getElementsByClassName("doWhileFalseBlock")[0] as HTMLDivElement;
-      let trueBlock = doWhileDiv.getElementsByClassName("doWhileTrueBlock")[0] as HTMLDivElement;
+      let falseBlock = doWhileDiv.getElementsByClassName(
+        "doWhileFalseBlock"
+      )[0] as HTMLDivElement;
+      let trueBlock = doWhileDiv.getElementsByClassName(
+        "doWhileTrueBlock"
+      )[0] as HTMLDivElement;
       let gridStr = "";
-      gridStr = trueBlock.offsetWidth + "px max-content "
-        + symbol.offsetWidth + "px max-content "
-        + trueBlock.offsetWidth + "px";
+      gridStr =
+        trueBlock.offsetWidth +
+        "px max-content " +
+        symbol.offsetWidth +
+        "px max-content " +
+        trueBlock.offsetWidth +
+        "px";
       doWhileDiv.style.gridTemplateColumns = gridStr;
       symbol.style.margin = "0px";
-      symbol.style.clipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      symbol.style.webkitClipPath = "polygon(" + (symbol.offsetWidth - 17.5) + "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.clipPath =
+        "polygon(" +
+        (symbol.offsetWidth - 17.5) +
+        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
+      symbol.style.webkitClipPath =
+        "polygon(" +
+        (symbol.offsetWidth - 17.5) +
+        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
       this.resizeDoWhileLoopArrows(symbol.parentElement, false);
     }
   }
@@ -671,7 +826,7 @@ export class HomePage {
       for (let i = 0; i < leftArrowPieces.length; i++) {
         let aPiece = leftArrowPieces[i] as HTMLDivElement;
         let gridStr = "";
-        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        let z = aPiece.offsetWidth / 2 - 35 / 2;
         gridStr = z + "px 35px " + z + "px";
         aPiece.style.gridTemplateColumns = gridStr;
         let arrowP = aPiece.getElementsByClassName("dropzone");
@@ -684,7 +839,7 @@ export class HomePage {
       for (let i = 0; i < rightArrowPieces.length; i++) {
         let aPiece = rightArrowPieces[i] as HTMLDivElement;
         let gridStr = "";
-        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        let z = aPiece.offsetWidth / 2 - 35 / 2;
         gridStr = z + "px 35px " + z + "px";
         aPiece.style.gridTemplateColumns = gridStr;
         let arrowP = aPiece.getElementsByClassName("dropzone");
@@ -693,17 +848,22 @@ export class HomePage {
           p.style.width = z + "px";
         }
       }
-
     } else {
       // Resize arrows below If Symbol
       let ifDiv = symbol.parentElement as HTMLDivElement;
-      let arrowPiece = ifDiv.getElementsByClassName("arrowPiece bottom_center")[0] as HTMLDivElement;
+      let arrowPiece = ifDiv.getElementsByClassName(
+        "arrowPiece bottom_center"
+      )[0] as HTMLDivElement;
       let gridStr = "";
-      let z = (arrowPiece.offsetWidth / 2) - (35 / 2);
+      let z = arrowPiece.offsetWidth / 2 - 35 / 2;
       gridStr = z + "px 35px " + z + "px";
       arrowPiece.style.gridTemplateColumns = gridStr;
-      let right1 = arrowPiece.getElementsByClassName("arrow_right")[0] as HTMLDivElement;
-      let left1 = arrowPiece.getElementsByClassName("arrow_left")[0] as HTMLDivElement;
+      let right1 = arrowPiece.getElementsByClassName(
+        "arrow_right"
+      )[0] as HTMLDivElement;
+      let left1 = arrowPiece.getElementsByClassName(
+        "arrow_left"
+      )[0] as HTMLDivElement;
       right1.style.width = z + "px";
       left1.style.width = z + "px";
     }
@@ -718,7 +878,7 @@ export class HomePage {
       for (let i = 0; i < rightArrowPieces.length; i++) {
         let aPiece = rightArrowPieces[i] as HTMLDivElement;
         let gridStr = "";
-        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        let z = aPiece.offsetWidth / 2 - 35 / 2;
         gridStr = z + "px 35px " + z + "px";
         aPiece.style.gridTemplateColumns = gridStr;
         let arrowP = aPiece.getElementsByClassName("dropzone");
@@ -730,13 +890,19 @@ export class HomePage {
     } else {
       // Resize arrows below For Symbol
       let forDiv = symbol.parentElement as HTMLDivElement;
-      let arrowPiece = forDiv.getElementsByClassName("arrowPiece bottom_center")[0] as HTMLDivElement;
+      let arrowPiece = forDiv.getElementsByClassName(
+        "arrowPiece bottom_center"
+      )[0] as HTMLDivElement;
       let gridStr = "";
-      let z = (arrowPiece.offsetWidth / 2) - (70 / 2);
+      let z = arrowPiece.offsetWidth / 2 - 70 / 2;
       gridStr = z + "px 70px " + z + "px";
       arrowPiece.style.gridTemplateColumns = gridStr;
-      let right1 = arrowPiece.getElementsByClassName("arrow_horizontal")[0] as HTMLDivElement;
-      let left1 = arrowPiece.getElementsByClassName("blank_arrow_left")[0] as HTMLDivElement;
+      let right1 = arrowPiece.getElementsByClassName(
+        "arrow_horizontal"
+      )[0] as HTMLDivElement;
+      let left1 = arrowPiece.getElementsByClassName(
+        "blank_arrow_left"
+      )[0] as HTMLDivElement;
       right1.style.width = z + "px";
       left1.style.width = z + "px";
     }
@@ -747,11 +913,13 @@ export class HomePage {
     if (resizeBlocks) {
       // Resize arrows to the Left and Right
       let whileDiv = symbol.parentElement as HTMLDivElement;
-      let rightArrowPieces = whileDiv.getElementsByClassName("arrowPiece right");
+      let rightArrowPieces = whileDiv.getElementsByClassName(
+        "arrowPiece right"
+      );
       for (let i = 0; i < rightArrowPieces.length; i++) {
         let aPiece = rightArrowPieces[i] as HTMLDivElement;
         let gridStr = "";
-        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        let z = aPiece.offsetWidth / 2 - 35 / 2;
         gridStr = z + "px 35px " + z + "px";
         aPiece.style.gridTemplateColumns = gridStr;
         let arrowP = aPiece.getElementsByClassName("dropzone");
@@ -763,13 +931,19 @@ export class HomePage {
     } else {
       // Resize arrows below While Symbol
       let whileDiv = symbol.parentElement as HTMLDivElement;
-      let arrowPiece = whileDiv.getElementsByClassName("arrowPiece bottom_center")[0] as HTMLDivElement;
+      let arrowPiece = whileDiv.getElementsByClassName(
+        "arrowPiece bottom_center"
+      )[0] as HTMLDivElement;
       let gridStr = "";
-      let z = (arrowPiece.offsetWidth / 2) - (70 / 2);
+      let z = arrowPiece.offsetWidth / 2 - 70 / 2;
       gridStr = z + "px 70px " + z + "px";
       arrowPiece.style.gridTemplateColumns = gridStr;
-      let right1 = arrowPiece.getElementsByClassName("arrow_horizontal")[0] as HTMLDivElement;
-      let left1 = arrowPiece.getElementsByClassName("blank_arrow_left")[0] as HTMLDivElement;
+      let right1 = arrowPiece.getElementsByClassName(
+        "arrow_horizontal"
+      )[0] as HTMLDivElement;
+      let left1 = arrowPiece.getElementsByClassName(
+        "blank_arrow_left"
+      )[0] as HTMLDivElement;
       right1.style.width = z + "px";
       left1.style.width = z + "px";
     }
@@ -780,11 +954,13 @@ export class HomePage {
     if (resizeBlocks) {
       // Resize arrows to the Left and Right
       let doWhileDiv = symbol.parentElement as HTMLDivElement;
-      let rightArrowPieces = doWhileDiv.getElementsByClassName("arrowPiece right");
+      let rightArrowPieces = doWhileDiv.getElementsByClassName(
+        "arrowPiece right"
+      );
       for (let i = 0; i < rightArrowPieces.length; i++) {
         let aPiece = rightArrowPieces[i] as HTMLDivElement;
         let gridStr = "";
-        let z = (aPiece.offsetWidth / 2) - (35 / 2);
+        let z = aPiece.offsetWidth / 2 - 35 / 2;
         gridStr = z + "px 35px " + z + "px";
         aPiece.style.gridTemplateColumns = gridStr;
         let arrowP = aPiece.getElementsByClassName("dropzone");
@@ -796,13 +972,19 @@ export class HomePage {
     } else {
       // Resize arrows below Do While Symbol
       let doWhileDiv = symbol.parentElement as HTMLDivElement;
-      let arrowPiece = doWhileDiv.getElementsByClassName("arrowPiece bottom_center")[0] as HTMLDivElement;
+      let arrowPiece = doWhileDiv.getElementsByClassName(
+        "arrowPiece bottom_center"
+      )[0] as HTMLDivElement;
       let gridStr = "";
-      let z = (arrowPiece.offsetWidth / 2) - (35 / 2);
+      let z = arrowPiece.offsetWidth / 2 - 35 / 2;
       gridStr = z + "px 35px " + z + "px";
       arrowPiece.style.gridTemplateColumns = gridStr;
-      let right1 = arrowPiece.getElementsByClassName("arrow_horizontal")[0] as HTMLDivElement;
-      let left1 = arrowPiece.getElementsByClassName("blank_arrow_left")[0] as HTMLDivElement;
+      let right1 = arrowPiece.getElementsByClassName(
+        "arrow_horizontal"
+      )[0] as HTMLDivElement;
+      let left1 = arrowPiece.getElementsByClassName(
+        "blank_arrow_left"
+      )[0] as HTMLDivElement;
       right1.style.width = z + "px";
       left1.style.width = z + "px";
     }
@@ -847,7 +1029,7 @@ export class HomePage {
         buttons: [
           {
             text: "Cut",
-            icon: 'cut',
+            icon: "cut",
             handler: () => {
               let asi,
                 selectedSymbol = document
@@ -866,7 +1048,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                    );
                     this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                   }
                 }
@@ -887,7 +1071,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi)
+                    );
                     this.flowchart.SYMBOLS[l].removeSymbolFromFalseBlock(asi);
                   }
                 }
@@ -908,7 +1094,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                    );
                     this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                   }
                 }
@@ -931,7 +1119,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                    );
                     this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                   }
                 }
@@ -954,7 +1144,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                    );
                     this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                   }
                 }
@@ -973,7 +1165,9 @@ export class HomePage {
                   }
                 }
                 // Add symbol to Paste buffer
-                this.paste_sym_buffer.push(this.flowchart.getSymbolFromFlowchart(asi));
+                this.paste_sym_buffer.push(
+                  this.flowchart.getSymbolFromFlowchart(asi)
+                );
                 this.flowchart.removeSymbolFromFlowchart(asi);
                 // Remove symbol and trailing arrow from Workspace
                 let nextArrow = selectedSymbol[0].nextSibling;
@@ -989,14 +1183,14 @@ export class HomePage {
                 }
               }
               console.log(this.flowchart.SYMBOLS);
-              console.log('Paste buffers: ');
+              console.log("Paste buffers: ");
               console.log(this.paste_sym_buffer);
               this.isCutCopyReady = true;
-            }
+            },
           },
           {
             text: "Copy",
-            icon: 'copy',
+            icon: "copy",
             handler: () => {
               let asi,
                 selectedSymbol = document
@@ -1015,7 +1209,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                    );
                   }
                 }
               } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
@@ -1031,7 +1227,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi)
+                    );
                   }
                 }
               } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
@@ -1047,7 +1245,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                    );
                   }
                 }
               } else if (
@@ -1065,7 +1265,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                    );
                   }
                 }
               } else if (
@@ -1083,7 +1285,9 @@ export class HomePage {
                 for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                   if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
                     // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi));
+                    this.paste_sym_buffer.push(
+                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                    );
                   }
                 }
               } else {
@@ -1097,7 +1301,9 @@ export class HomePage {
                   }
                 }
                 // Add symbol to Paste buffer
-                this.paste_sym_buffer.push(this.flowchart.getSymbolFromFlowchart(asi));
+                this.paste_sym_buffer.push(
+                  this.flowchart.getSymbolFromFlowchart(asi)
+                );
               }
               let syms = document
                 .getElementById("workspace")
@@ -1108,15 +1314,15 @@ export class HomePage {
                 }
               }
               console.log(this.flowchart.SYMBOLS);
-              console.log('Paste buffers: ');
+              console.log("Paste buffers: ");
               console.log(this.paste_sym_buffer);
               this.isCutCopyReady = true;
-            }
+            },
           },
           {
             text: "Delete",
-            role: 'destructive',
-            icon: 'trash',
+            role: "destructive",
+            icon: "trash",
             handler: () => {
               let asi,
                 selectedSymbol = document
@@ -1246,13 +1452,13 @@ export class HomePage {
                 }
               }
               console.log(this.flowchart.SYMBOLS);
-            }
-          }
-        ]
+            },
+          },
+        ],
       };
       // Create and Display Symbols Options actionsheet
       const actionSheet = await this.symbolOptionsAS.create(options);
-      actionSheet.onDidDismiss().then(data => {
+      actionSheet.onDidDismiss().then((data) => {
         let syms1 = document
           .getElementById("workspace")
           .getElementsByClassName("symbol");
@@ -1284,7 +1490,7 @@ export class HomePage {
         buttons: [
           {
             text: "Paste",
-            icon: 'clipboard',
+            icon: "clipboard",
             handler: () => {
               let sym: any;
               let active_index: number;
@@ -1296,63 +1502,63 @@ export class HomePage {
                 }
               }
               switch (tempSym.id) {
-                case 's_declare':
+                case "s_declare":
                   sym = new Declare();
                   sym.createDeclareSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
                   this.flowchart.removeSymbolFromFlowchart(active_index);
                   targetArrow.nextSibling.innerHTML = sym.getDeclareExpression();
                   break;
-                case 's_input':
+                case "s_input":
                   sym = new Input();
                   sym.createInputSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
                   this.flowchart.removeSymbolFromFlowchart(active_index);
                   targetArrow.nextSibling.innerHTML = sym.getInputExpression();
                   break;
-                case 's_output':
+                case "s_output":
                   sym = new Output();
                   sym.createOutputSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
                   this.flowchart.removeSymbolFromFlowchart(active_index);
                   targetArrow.nextSibling.innerHTML = sym.getOutputExpression();
                   break;
-                case 's_process':
+                case "s_process":
                   sym = new Process();
                   sym.createProcessSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
                   this.flowchart.removeSymbolFromFlowchart(active_index);
                   targetArrow.nextSibling.innerHTML = sym.getProcessExpression();
                   break;
-                case 's_comment':
+                case "s_comment":
                   sym = new Comment();
                   sym.createCommentSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
                   this.flowchart.removeSymbolFromFlowchart(active_index);
                   targetArrow.nextSibling.innerHTML = sym.getCommentExpression();
                   break;
-                case 's_if_case':
+                case "s_if_case":
                   sym = new IfCase();
                   sym.createIfCaseSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
                   this.flowchart.removeSymbolFromFlowchart(active_index);
                   targetArrow.nextSibling.innerHTML = sym.getIfStatement();
                   break;
-                case 's_for_loop':
+                case "s_for_loop":
                   sym = new ForLoop();
                   sym.createForLoopSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
                   this.flowchart.removeSymbolFromFlowchart(active_index);
                   targetArrow.nextSibling.innerHTML = sym.getForExpression();
                   break;
-                case 's_while_loop':
+                case "s_while_loop":
                   sym = new WhileLoop();
                   sym.createWhileLoopSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
                   this.flowchart.removeSymbolFromFlowchart(active_index);
                   targetArrow.nextSibling.innerHTML = sym.getWhileExpression();
                   break;
-                case 's_do_while_loop':
+                case "s_do_while_loop":
                   sym = new DoWhileLoop();
                   sym.createDoWhileLoopSymbol(tempSym);
                   this.addSymbol(sym.id, targetArrow);
@@ -1372,16 +1578,16 @@ export class HomePage {
               this.paste_sym_buffer.push(tempSym);
               this.toggleSymbolsFAB();
               console.log(this.flowchart.SYMBOLS);
-              console.log('Paste buffers: ');
+              console.log("Paste buffers: ");
               console.log(this.paste_sym_buffer);
               // this.isCutCopyReady = false;
-            }
-          }
-        ]
+            },
+          },
+        ],
       };
       // Create and Display Symbols Options actionsheet
       const actionSheet = await this.arrowsOptionsAS.create(options);
-      actionSheet.onDidDismiss().then(data => {
+      actionSheet.onDidDismiss().then((data) => {
         let bs = document.getElementsByClassName("arrow dropzone");
         for (let i = 0; i < bs.length; i++) {
           if (bs[i].classList.contains("active-arrow")) {
@@ -1391,38 +1597,38 @@ export class HomePage {
       });
       await actionSheet.present();
     }
-
   }
 
   public toggleSymbolsFAB() {
     let symbolsList = document.getElementById("symbolsList");
     let symbolsFAB = document.getElementById("symbolsFAB");
     let symbolsTitle = document.getElementById("symbolsTitle");
-    if (symbolsFAB.classList.contains('toggleSymFAB')) {
+    if (symbolsFAB.classList.contains("toggleSymFAB")) {
       let ss = document.getElementsByClassName("wrapper");
-      ss[0].classList.remove('showSymbolPanel');
+      ss[0].classList.remove("showSymbolPanel");
       // Close Symbols List
-      symbolsFAB.classList.remove('toggleSymFAB');
-      symbolsFAB.innerHTML = '<img src="./assets/icon/symbols_icon.png" alt="">';
-      symbolsList.style.display = 'none';
-      symbolsTitle.style.display = 'none';
+      symbolsFAB.classList.remove("toggleSymFAB");
+      symbolsFAB.innerHTML =
+        '<img src="./assets/icon/symbols_icon.png" alt="">';
+      symbolsList.style.display = "none";
+      symbolsTitle.style.display = "none";
       this.isSymbolsFABOpen = false;
       if (this.isConsoleOpen) {
-        document.getElementById("console").style.marginLeft = '100px';
+        document.getElementById("console").style.marginLeft = "100px";
       }
     } else {
       let ss = document.getElementsByClassName("wrapper");
-      ss[0].classList.add('showSymbolPanel');
+      ss[0].classList.add("showSymbolPanel");
       // Show Symbols List
-      symbolsFAB.classList.add('toggleSymFAB');
+      symbolsFAB.classList.add("toggleSymFAB");
       symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
-      symbolsList.style.display = 'block';
-      symbolsTitle.style.display = 'block';
+      symbolsList.style.display = "block";
+      symbolsTitle.style.display = "block";
       this.isSymbolsFABOpen = true;
       // symbolsList.style.position = 'absolute';
       // symbolsList.style.bottom = '80px';
       if (this.isConsoleOpen) {
-        document.getElementById("console").style.marginLeft = '0px';
+        document.getElementById("console").style.marginLeft = "0px";
       }
     }
   }
@@ -1440,18 +1646,17 @@ export class HomePage {
     if (arrows.length < 1) {
       t.classList.add("active-arrow");
 
-      if (!symbolsFAB.classList.contains('toggleSymFAB')) {
+      if (!symbolsFAB.classList.contains("toggleSymFAB")) {
         let ss = document.getElementsByClassName("wrapper");
-        ss[0].classList.add('showSymbolPanel');
+        ss[0].classList.add("showSymbolPanel");
         // Show Symbols List
-        symbolsFAB.classList.add('toggleSymFAB');
+        symbolsFAB.classList.add("toggleSymFAB");
         symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
-        symbolsList.style.display = 'block';
-        symbolsTitle.style.display = 'block';
+        symbolsList.style.display = "block";
+        symbolsTitle.style.display = "block";
         // symbolsList.style.position = 'absolute';
         // symbolsList.style.bottom = '80px';
       }
-
     } else {
       let branches = document.getElementsByClassName("dropzone active-arrow");
       for (let i = 0; i < branches.length; i++) {
@@ -1461,18 +1666,17 @@ export class HomePage {
       // Open symbols FAB
       this.toggleSymbolsFAB();
 
-      if (!symbolsFAB.classList.contains('toggleSymFAB')) {
+      if (!symbolsFAB.classList.contains("toggleSymFAB")) {
         let ss = document.getElementsByClassName("wrapper");
-        ss[0].classList.add('showSymbolPanel');
+        ss[0].classList.add("showSymbolPanel");
         // Show Symbols List
-        symbolsFAB.classList.add('toggleSymFAB');
+        symbolsFAB.classList.add("toggleSymFAB");
         symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
-        symbolsList.style.display = 'block';
-        symbolsTitle.style.display = 'block';
+        symbolsList.style.display = "block";
+        symbolsTitle.style.display = "block";
         // symbolsList.style.position = 'absolute';
         // symbolsList.style.bottom = '80px';
       }
-
     }
   }
 
@@ -1744,7 +1948,9 @@ export class HomePage {
       // add inner arrows to dragula containers
       let innerArrows = symbol.getElementsByClassName("arrow dropzone");
       for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService.find('symbol').drake.containers.push(innerArrows[a]);
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
       }
     } else if (id == "s_while_loop") {
       let whileloop = new WhileLoop();
@@ -1759,7 +1965,9 @@ export class HomePage {
       // add inner arrows to dragula containers
       let innerArrows = symbol.getElementsByClassName("arrow dropzone");
       for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService.find('symbol').drake.containers.push(innerArrows[a]);
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
       }
     } else if (id == "s_for_loop") {
       let forloop = new ForLoop();
@@ -1774,7 +1982,9 @@ export class HomePage {
       // add inner arrows to dragula containers
       let innerArrows = symbol.getElementsByClassName("arrow dropzone");
       for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService.find('symbol').drake.containers.push(innerArrows[a]);
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
       }
     } else if (id == "s_do_while_loop") {
       let doWhileLoop = new DoWhileLoop();
@@ -1789,7 +1999,9 @@ export class HomePage {
       // add inner arrows to dragula containers
       let innerArrows = symbol.getElementsByClassName("arrow dropzone");
       for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService.find('symbol').drake.containers.push(innerArrows[a]);
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
       }
     }
 
@@ -1814,7 +2026,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
-        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
+        this.dragulaService.find("symbol").drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -1834,7 +2046,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
-        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
+        this.dragulaService.find("symbol").drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -1854,7 +2066,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
-        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
+        this.dragulaService.find("symbol").drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -1874,7 +2086,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
-        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
+        this.dragulaService.find("symbol").drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -1894,7 +2106,7 @@ export class HomePage {
           }
         }
         tempBranch.classList.remove("active-arrow");
-        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
+        this.dragulaService.find("symbol").drake.containers.push(tempBranch);
         branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
         branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
@@ -1911,17 +2123,17 @@ export class HomePage {
 
         interact(symbol)
           .gesturable({
-            hold: 1500
+            hold: 1500,
           })
           .on(
             "tap",
-            e =>
+            (e) =>
               function () {
                 e.preventDefault();
               }
           )
-          .on("doubletap", e => this.openSymbolDialog(e, id))
-          .on("hold", e => this.openSymbolsAS(e));
+          .on("doubletap", (e) => this.openSymbolDialog(e, id))
+          .on("hold", (e) => this.openSymbolsAS(e));
 
         for (let l = 0; l < b1.length; l++) {
           //if (b1[l].parentElement.id == 'ifTrueBlock' || b1[l].parentElement.id == 'ifFalseBlock'){ totalAD++; }
@@ -1953,7 +2165,7 @@ export class HomePage {
         }
 
         tempBranch.classList.remove("active-arrow");
-        this.dragulaService.find('symbol').drake.containers.push(tempBranch);
+        this.dragulaService.find("symbol").drake.containers.push(tempBranch);
 
         // Add symbol and corresponding arrow/branch to Workspace
         this.workspace.insertBefore(symbol, branches[0].nextSibling);
@@ -1966,7 +2178,7 @@ export class HomePage {
     // Make all the arrows/branches on the Workspace inactive
     branches = document.getElementsByClassName("arrow dropzone active-arrow");
     for (let i = 0; i < branches.length; i++) {
-      if (branches[i].className == 'arrow dropzone active-arrow') {
+      if (branches[i].className == "arrow dropzone active-arrow") {
         branches[i].classList.remove("active-arrow");
       }
     }
@@ -1975,8 +2187,8 @@ export class HomePage {
       interact(dz[i]).unset();
       interact(dz[i])
         .gesturable({ hold: 1500 })
-        .on("tap", e => this.openSymbolsFAB(e))
-        .on("hold", e => this.openArrowsAS(e));
+        .on("tap", (e) => this.openSymbolsFAB(e))
+        .on("hold", (e) => this.openArrowsAS(e));
     }
 
     console.log(this.flowchart.SYMBOLS);
@@ -1991,7 +2203,7 @@ export class HomePage {
     const alert = await this.alertC.create({
       header: alertTitle,
       message: alertMsg,
-      buttons: ["OK"]
+      buttons: ["OK"],
     });
     await alert.present();
   }
@@ -1999,26 +2211,24 @@ export class HomePage {
   public toggleConsole() {
     let console1 = document.getElementById("console");
     let consoleBtns = document.getElementById("consoleBtns");
-    if (console1.classList.contains('toggleConsole')) {
-      console1.classList.remove('toggleConsole');
-      console1.style.display = 'block';
-      console1.style.position = 'absolute';
-      console1.style.bottom = '0';
-      if (!this.isSymbolsFABOpen)
-        console1.style.marginLeft = '100px';
-      else
-        console1.style.marginLeft = '0px';
-      consoleBtns.style.position = 'absolute';
-      consoleBtns.style.right = '5px';
-      consoleBtns.style.bottom = console1.offsetHeight + 'px';
+    if (console1.classList.contains("toggleConsole")) {
+      console1.classList.remove("toggleConsole");
+      console1.style.display = "block";
+      console1.style.position = "absolute";
+      console1.style.bottom = "0";
+      if (!this.isSymbolsFABOpen) console1.style.marginLeft = "100px";
+      else console1.style.marginLeft = "0px";
+      consoleBtns.style.position = "absolute";
+      consoleBtns.style.right = "5px";
+      consoleBtns.style.bottom = console1.offsetHeight + "px";
       this.consoleButtonText = "Close Console";
       this.isConsoleOpen = true;
     } else {
-      console1.classList.add('toggleConsole');
-      console1.style.display = 'none';
-      consoleBtns.style.position = 'absolute';
-      consoleBtns.style.right = '5px';
-      consoleBtns.style.bottom = '5px';
+      console1.classList.add("toggleConsole");
+      console1.style.display = "none";
+      consoleBtns.style.position = "absolute";
+      consoleBtns.style.right = "5px";
+      consoleBtns.style.bottom = "5px";
       this.consoleButtonText = "Open Console";
       this.isConsoleOpen = false;
     }
@@ -2046,7 +2256,7 @@ export class HomePage {
     }
     arrowInit = document.getElementById("arrow");
 
-    workspace.innerHTML = '';
+    workspace.innerHTML = "";
     workspace.appendChild(startSym);
     workspace.appendChild(arrowInit);
     workspace.appendChild(stopSym);
@@ -2064,28 +2274,32 @@ export class HomePage {
     this.menu.close();
     // Open Project From...
     const actionSheet = await this.arrowsOptionsAS.create({
-      header: 'Open Project From...',
-      buttons: [{
-        text: 'Internal Storage',
-        icon: 'folder-open',
-        handler: () => {
-          this.openProject();
-        }
-      }, {
-        text: 'Database',
-        icon: 'cloud-outline',
-        handler: () => {
-          this.checkInternetConnection();
-          this.openProjectFromDatabase();
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel');
-        }
-      }]
+      header: "Open Project From...",
+      buttons: [
+        {
+          text: "Internal Storage",
+          icon: "folder-open",
+          handler: () => {
+            this.openProject();
+          },
+        },
+        {
+          text: "Database",
+          icon: "cloud-outline",
+          handler: () => {
+            this.checkInternetConnection();
+            this.openProjectFromDatabase();
+          },
+        },
+        {
+          text: "Cancel",
+          icon: "close",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancel");
+          },
+        },
+      ],
     });
     await actionSheet.present();
   }
@@ -2093,11 +2307,11 @@ export class HomePage {
   async openProject() {
     const modal = await this.modalC.create({
       component: OpenProjectPage,
-      componentProps: { openFrom: 'internal' }
+      componentProps: { openFrom: "internal" },
     });
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       if (data.data != undefined) {
-        let chapFileName = data.data.name.replace('.chap', '');
+        let chapFileName = data.data.name.replace(".chap", "");
         this.loadProject(chapFileName, data.data.data);
       }
     });
@@ -2106,36 +2320,37 @@ export class HomePage {
 
   async openProjectFromDatabase() {
     // Check if it is in Offline Mode
-    if (this.auth.mode == 'offline') {
+    if (this.auth.mode == "offline") {
       let alert = await this.alertC.create({
         header: "Offline Mode",
         message: "Please turn on your internet connection to use CHAP online.",
         buttons: [
           {
-            text: 'Go Online',
+            text: "Go Online",
             handler: () => {
               //this.auth.mode = 'online';
-              this.navCtrl.navigateRoot('/login');
-            }
-          }, {
-            text: 'Close',
-            role: 'cancel',
-            handler: () => { }
-          }
-        ]
+              this.navCtrl.navigateRoot("/login");
+            },
+          },
+          {
+            text: "Close",
+            role: "cancel",
+            handler: () => {},
+          },
+        ],
       });
       alert.present();
     } else if (this.auth.isLoggedIn) {
       const modal = await this.modalC.create({
         component: OpenProjectPage,
         componentProps: {
-          openFrom: 'online',
-          userID: this.auth.sessionToken.session.user_id
-        }
+          openFrom: "online",
+          userID: this.auth.sessionToken.session.user_id,
+        },
       });
-      modal.onDidDismiss().then(data => {
+      modal.onDidDismiss().then((data) => {
         if (data.data != undefined) {
-          let chapFileName = data.data.name.replace('.chap', '');
+          let chapFileName = data.data.name.replace(".chap", "");
           this.loadProject(chapFileName, data.data.data);
         }
       });
@@ -2146,17 +2361,18 @@ export class HomePage {
         message: "Please log in to use CHAP online.",
         buttons: [
           {
-            text: 'Login',
+            text: "Login",
             handler: () => {
               //this.auth.mode = 'online';
-              this.navCtrl.navigateRoot('/login');
-            }
-          }, {
-            text: 'Use Offline Mode',
-            role: 'cancel',
-            handler: () => { }
-          }
-        ]
+              this.navCtrl.navigateRoot("/login");
+            },
+          },
+          {
+            text: "Use Offline Mode",
+            role: "cancel",
+            handler: () => {},
+          },
+        ],
       });
       alert.present();
     }
@@ -2167,70 +2383,70 @@ export class HomePage {
     let dataSyms, arrowT, els, p, tlb, flb;
     console.log(fileData);
     dataSyms = JSON.parse(fileData);
-    console.log('symbols data', dataSyms);
+    console.log("symbols data", dataSyms);
 
     for (let i = 0; i < dataSyms.length; i++) {
       let sym: any;
       switch (dataSyms[i].id) {
-        case 's_declare':
+        case "s_declare":
           sym = new Declare();
           sym.createDeclareSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getDeclareExpression();
           break;
-        case 's_input':
+        case "s_input":
           sym = new Input();
           sym.createInputSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getInputExpression();
           break;
-        case 's_output':
+        case "s_output":
           sym = new Output();
           sym.createOutputSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           let tempX = sym.getOutputExpression().replace(/`/g, '"');
           sym.setOutputExpression(tempX);
           els[p].innerHTML = sym.getOutputExpression();
           break;
-        case 's_process':
+        case "s_process":
           sym = new Process();
           sym.createProcessSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getProcessExpression();
           break;
-        case 's_comment':
+        case "s_comment":
           sym = new Comment();
           sym.createCommentSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getCommentExpression();
           break;
-        case 's_if_case':
+        case "s_if_case":
           sym = new IfCase();
           sym.createIfCaseSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getIfStatement();
           tlb = els[p].parentElement.querySelector("#ifTrueBlock");
@@ -2238,37 +2454,37 @@ export class HomePage {
           flb = els[p].parentElement.querySelector("#ifFalseBlock");
           this.loadLoopSymbols(sym.falseBlockSymbols, flb);
           break;
-        case 's_for_loop':
+        case "s_for_loop":
           sym = new ForLoop();
           sym.createForLoopSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getForExpression();
           tlb = els[p].parentElement.querySelector("#forTrueBlock");
           this.loadLoopSymbols(sym.trueLoopBlock, tlb);
           break;
-        case 's_while_loop':
+        case "s_while_loop":
           sym = new WhileLoop();
           sym.createWhileLoopSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getWhileExpression();
           tlb = els[p].parentElement.querySelector("#whileTrueBlock");
           this.loadLoopSymbols(sym.trueLoopBlock, tlb);
           break;
-        case 's_do_while_loop':
+        case "s_do_while_loop":
           sym = new DoWhileLoop();
           sym.createDoWhileLoopSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName('arrow dropzone');
+          arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName('symbol');
+          els = document.getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getDoWhileExpression();
           tlb = els[p].parentElement.querySelector("#doWhileTrueBlock");
@@ -2280,15 +2496,19 @@ export class HomePage {
       this.flowchart.SYMBOLS.splice(i, 1, sym);
     }
     this.fileName = chapFileName;
-    let fName = document.getElementById('fileName') as HTMLInputElement;
+    let fName = document.getElementById("fileName") as HTMLInputElement;
     fName.value = this.fileName;
     this.toggleSymbolsFAB();
 
-    this.toast.show('\"' + chapFileName + '.chap\" has successfully opened.', '3000', 'bottom').subscribe(
-      toast => {
+    this.toast
+      .show(
+        '"' + chapFileName + '.chap" has successfully opened.',
+        "3000",
+        "bottom"
+      )
+      .subscribe((toast) => {
         console.log(toast);
-      }
-    );
+      });
   }
 
   public loadLoopSymbols(dataSyms, loopBlock) {
@@ -2297,95 +2517,95 @@ export class HomePage {
     for (let i = 0; i < dataSyms.length; i++) {
       let sym: any;
       switch (dataSyms[i].id) {
-        case 's_declare':
+        case "s_declare":
           sym = new Declare();
           sym.createDeclareSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getDeclareExpression();
           break;
-        case 's_input':
+        case "s_input":
           sym = new Input();
           sym.createInputSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getInputExpression();
           break;
-        case 's_output':
+        case "s_output":
           sym = new Output();
           sym.createOutputSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           let tempX = sym.getOutputExpression().replace(/`/g, '"');
           sym.setOutputExpression(tempX);
           els[i].innerHTML = sym.getOutputExpression();
           break;
-        case 's_process':
+        case "s_process":
           sym = new Process();
           sym.createProcessSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getProcessExpression();
           break;
-        case 's_comment':
+        case "s_comment":
           sym = new Comment();
           sym.createCommentSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getCommentExpression();
           break;
-        case 's_if_case':
+        case "s_if_case":
           sym = new IfCase();
           sym.createIfCaseSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getIfStatement();
           tlb = els[i].parentElement.querySelector("#ifTrueBlock");
           this.loadLoopSymbols(sym.trueBlockSymbols, tlb);
           flb = els[i].parentElement.querySelector("#ifFalseBlock");
           this.loadLoopSymbols(sym.falseBlockSymbols, flb);
           break;
-        case 's_for_loop':
+        case "s_for_loop":
           sym = new ForLoop();
           sym.createForLoopSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getForExpression();
           tlb = els[i].parentElement.querySelector("#forTrueBlock");
           this.loadLoopSymbols(sym.trueLoopBlock, tlb);
           break;
-        case 's_while_loop':
+        case "s_while_loop":
           sym = new WhileLoop();
           sym.createWhileLoopSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getWhileExpression();
           tlb = els[i].parentElement.querySelector("#whileTrueBlock");
           this.loadLoopSymbols(sym.trueLoopBlock, tlb);
           break;
-        case 's_do_while_loop':
+        case "s_do_while_loop":
           sym = new DoWhileLoop();
           sym.createDoWhileLoopSymbol(dataSyms[i]);
-          arrowT = loopBlock.getElementsByClassName('arrow dropzone');
+          arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = loopBlock.getElementsByClassName('symbol');
+          els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getDoWhileExpression();
           tlb = els[i].parentElement.querySelector("##doWhileTrueBlock");
           this.loadLoopSymbols(sym.trueLoopBlock, tlb);
@@ -2401,28 +2621,32 @@ export class HomePage {
     this.menu.close();
     // Open Project From...
     const actionSheet = await this.arrowsOptionsAS.create({
-      header: 'Save Project to...',
-      buttons: [{
-        text: 'Internal Storage',
-        icon: 'folder',
-        handler: () => {
-          this.saveProject();
-        }
-      }, {
-        text: 'Database',
-        icon: 'cloud-upload',
-        handler: () => {
-          this.checkInternetConnection();
-          this.saveProjectToDatabase();
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel');
-        }
-      }]
+      header: "Save Project to...",
+      buttons: [
+        {
+          text: "Internal Storage",
+          icon: "folder",
+          handler: () => {
+            this.saveProject();
+          },
+        },
+        {
+          text: "Database",
+          icon: "cloud-upload",
+          handler: () => {
+            this.checkInternetConnection();
+            this.saveProjectToDatabase();
+          },
+        },
+        {
+          text: "Cancel",
+          icon: "close",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancel");
+          },
+        },
+      ],
     });
     await actionSheet.present();
   }
@@ -2430,16 +2654,16 @@ export class HomePage {
   public saveProject() {
     let fileName, flowchartJSON;
     // this.menu.close();
-    let fName = document.getElementById('fileName') as HTMLInputElement;
+    let fName = document.getElementById("fileName") as HTMLInputElement;
     this.fileName = fName.value;
 
     if (this.fileName == "") {
       this.showAlert(
-        'Failed to Save',
+        "Failed to Save",
         `Please enter a name for the project in the TextBox above, before saving it.`
       );
     } else {
-      fileName = this.fileName + '.chap';
+      fileName = this.fileName + ".chap";
       this.flowchart.prepareFlowchartForSaving();
       flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
 
@@ -2455,148 +2679,161 @@ export class HomePage {
 
   public saveTextAsFile(data, filename) {
     if (!data) {
-      console.error('Console.save: No data');
+      console.error("Console.save: No data");
       return;
     }
-    if (!filename) filename = 'console.json';
-    var blob = new Blob([data], { type: 'text/plain' }),
-      e = document.createEvent('MouseEvents'),
-      a = document.createElement('a');
+    if (!filename) filename = "console.json";
+    var blob = new Blob([data], { type: "text/plain" }),
+      e = document.createEvent("MouseEvents"),
+      a = document.createElement("a");
 
-    console.log('base64:', btoa(data));
+    console.log("base64:", btoa(data));
 
     // FOR IE:
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(blob, filename);
     } else {
-      var e = document.createEvent('MouseEvents'), a = document.createElement('a');
+      var e = document.createEvent("MouseEvents"),
+        a = document.createElement("a");
       a.download = filename;
       a.href = window.URL.createObjectURL(blob);
-      a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
-      e.initEvent('click', true, false);
+      a.dataset.downloadurl = ["text/plain", a.download, a.href].join(":");
+      e.initEvent("click", true, false);
       a.dispatchEvent(e);
 
-      console.log('A link', a.href);
+      console.log("A link", a.href);
     }
   }
 
   public saveToAndroid(fileData, filename) {
-    this.file.writeFile(
-      `${this.file.externalRootDirectory}/${this.saveFolder}`,
-      `${filename}`,
-      fileData,
-      { replace: true, append: false }
-    ).then(res => {
-      this.toast.show('The project \"' + filename + '\" has successfully saved.', '3000', 'bottom').subscribe(
-        toast => {
-          console.log(toast);
-        }
-      );
-    });
+    this.file
+      .writeFile(
+        `${this.file.externalRootDirectory}/${this.saveFolder}`,
+        `${filename}`,
+        fileData,
+        { replace: true, append: false }
+      )
+      .then((res) => {
+        this.toast
+          .show(
+            'The project "' + filename + '" has successfully saved.',
+            "3000",
+            "bottom"
+          )
+          .subscribe((toast) => {
+            console.log(toast);
+          });
+      });
   }
 
-  public saveToIOS(flowchartJSON, filename) {
-
-  }
+  public saveToIOS(flowchartJSON, filename) {}
 
   async saveProjectToDatabase() {
     // Check if it is in Offline Mode
-    if (this.auth.mode == 'offline') {
+    if (this.auth.mode == "offline") {
       let alert = await this.alertC.create({
         header: "Offline Mode",
         message: "Please turn on your internet connection to use CHAP online.",
         buttons: [
           {
-            text: 'Go Online',
+            text: "Go Online",
             handler: () => {
               //this.auth.mode = 'online';
-              this.navCtrl.navigateRoot('/login');
-            }
-          }, {
-            text: 'Close',
-            role: 'cancel',
-            handler: () => { }
-          }
-        ]
+              this.navCtrl.navigateRoot("/login");
+            },
+          },
+          {
+            text: "Close",
+            role: "cancel",
+            handler: () => {},
+          },
+        ],
       });
       alert.present();
     } else if (this.auth.isLoggedIn) {
       let fileName, flowchartJSON;
 
-      let fName = document.getElementById('fileName') as HTMLInputElement;
+      let fName = document.getElementById("fileName") as HTMLInputElement;
       this.fileName = fName.value;
 
       if (this.fileName == "") {
         this.showAlert(
-          'Failed to Save',
+          "Failed to Save",
           `Please enter a name for the project in the TextBox above, before saving it.`
         );
       } else {
-        fileName = this.fileName + '.chap';
+        fileName = this.fileName + ".chap";
         this.flowchart.prepareFlowchartForSaving();
         flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
 
         let uploadFile = {
           userid: this.auth.sessionToken.session.user_id,
           name: fileName,
-          type: 'text/plain',
-          blob: flowchartJSON
+          type: "text/plain",
+          blob: flowchartJSON,
         };
-        console.log('upload data', uploadFile);
+        console.log("upload data", uploadFile);
 
         var headers = new HttpHeaders();
-        headers.append("Accept", 'application/json');
-        headers.append('Content-Type', 'application/json');
+        headers.append("Accept", "application/json");
+        headers.append("Content-Type", "application/json");
 
-        this.http.post('http://www.chapchap.ga/saveProject.php', uploadFile, {})
+        this.http
+          .post("http://www.chapchap.ga/saveProject.php", uploadFile, {})
           //this.http.post('https://chapweb.000webhostapp.com/saveProject.php', uploadFile, {})
           //this.http.post('http://localhost:80/chap_2/saveProject.php', uploadFile, {})
           .map((res: any) => res)
-          .subscribe(async res => {
+          .subscribe(async (res) => {
             console.log(res);
 
             if (res.message == "Save successful") {
               if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast.show('Save successful!.', '3000', 'bottom').subscribe(
-                  toast => {
+                this.toast
+                  .show("Save successful!.", "3000", "bottom")
+                  .subscribe((toast) => {
                     console.log(toast);
-                  }
-                );
+                  });
               } else {
                 let alert = await this.alertC.create({
                   header: "File Uploaded to database",
                   message: "Save successful",
-                  buttons: ['OK']
+                  buttons: ["OK"],
                 });
                 alert.present();
               }
-            } else if (res.message == "Invaild File Upload! Please Re-Check your File.") {
+            } else if (
+              res.message == "Invaild File Upload! Please Re-Check your File."
+            ) {
               if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast.show('Invaild File Upload! Please Re-Check your File.', '3000', 'bottom').subscribe(
-                  toast => {
+                this.toast
+                  .show(
+                    "Invaild File Upload! Please Re-Check your File.",
+                    "3000",
+                    "bottom"
+                  )
+                  .subscribe((toast) => {
                     console.log(toast);
-                  }
-                );
+                  });
               } else {
                 let alert = await this.alertC.create({
                   header: "ERROR",
                   message: "Invaild File Upload! Please Re-Check your File.",
-                  buttons: ['OK']
+                  buttons: ["OK"],
                 });
                 alert.present();
               }
             } else {
               if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast.show(res.message, '3000', 'bottom').subscribe(
-                  toast => {
+                this.toast
+                  .show(res.message, "3000", "bottom")
+                  .subscribe((toast) => {
                     console.log(toast);
-                  }
-                );
+                  });
               } else {
                 let alert = await this.alertC.create({
                   header: "ERROR",
-                  message: (res.message),
-                  buttons: ['OK']
+                  message: res.message,
+                  buttons: ["OK"],
                 });
                 alert.present();
               }
@@ -2609,17 +2846,18 @@ export class HomePage {
         message: "Please log in to save your CHAP projects online.",
         buttons: [
           {
-            text: 'Login',
+            text: "Login",
             handler: () => {
               //this.auth.mode = 'online';
-              this.navCtrl.navigateRoot('/login');
-            }
-          }, {
-            text: 'Use Offline Mode',
-            role: 'cancel',
-            handler: () => { }
-          }
-        ]
+              this.navCtrl.navigateRoot("/login");
+            },
+          },
+          {
+            text: "Use Offline Mode",
+            role: "cancel",
+            handler: () => {},
+          },
+        ],
       });
       alert.present();
     }
@@ -2642,9 +2880,9 @@ export class HomePage {
   async openCodeViewer(flowchart) {
     const modal = await this.modalC.create({
       component: CodeViewerPage,
-      componentProps: { flowchart: flowchart }
+      componentProps: { flowchart: flowchart },
     });
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       let fc = data.data as Flowchart;
     });
     await modal.present();
@@ -2653,7 +2891,7 @@ export class HomePage {
   async openAboutPage() {
     this.menu.close();
     const modal = await this.modalC.create({
-      component: AboutPage
+      component: AboutPage,
     });
     await modal.present();
   }
@@ -2661,7 +2899,7 @@ export class HomePage {
   async openTutorialPage() {
     this.menu.close();
     const modal = await this.modalC.create({
-      component: TutorialPage
+      component: TutorialPage,
     });
     await modal.present();
   }
@@ -2669,14 +2907,14 @@ export class HomePage {
   public printFlowchart() {
     this.closeMenu();
 
-    html2canvas(document.body).then(canvas => {
+    html2canvas(document.body).then((canvas) => {
       // canvas.style.width = '500px';
       // canvas.style.height = '500px';
       // canvas.style.display = 'block';
       // document.body.appendChild(canvas);
       // canvas.appendChild(document.getElementById("workspace"));
 
-      var image = canvas.toDataURL('image/png');
+      var image = canvas.toDataURL("image/png");
       //.replace('image/png', 'image/octet-stream');
       console.log(image);
       // window.location.href = image;
@@ -2688,23 +2926,24 @@ export class HomePage {
 
   public saveAsImageFile(data, filename) {
     if (!data) {
-      console.error('Console.save: No data');
+      console.error("Console.save: No data");
       return;
     }
-    if (!filename) filename = 'temp.png';
-    var blob = new Blob([data], { type: 'image/png' }),
-      e = document.createEvent('MouseEvents'),
-      a = document.createElement('a');
+    if (!filename) filename = "temp.png";
+    var blob = new Blob([data], { type: "image/png" }),
+      e = document.createEvent("MouseEvents"),
+      a = document.createElement("a");
 
     // FOR IE:
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(blob, filename);
     } else {
-      var e = document.createEvent('MouseEvents'), a = document.createElement('a');
+      var e = document.createEvent("MouseEvents"),
+        a = document.createElement("a");
       a.download = filename;
       a.href = window.URL.createObjectURL(blob);
-      a.dataset.downloadurl = ['image/png', a.download, a.href].join(':');
-      e.initEvent('click', true, false);
+      a.dataset.downloadurl = ["image/png", a.download, a.href].join(":");
+      e.initEvent("click", true, false);
       a.dispatchEvent(e);
     }
   }
@@ -2712,23 +2951,24 @@ export class HomePage {
   async logOut() {
     this.checkInternetConnection();
     // Check if it is in Offline Mode
-    if (this.auth.mode == 'offline') {
+    if (this.auth.mode == "offline") {
       let alert = await this.alertC.create({
         header: "Offline Mode",
         message: "Please turn on your internet connection to use CHAP online.",
         buttons: [
           {
-            text: 'Go Online',
+            text: "Go Online",
             handler: () => {
               //this.auth.mode = 'online';
-              this.navCtrl.navigateRoot('/login');
-            }
-          }, {
-            text: 'Close',
-            role: 'cancel',
-            handler: () => { }
-          }
-        ]
+              this.navCtrl.navigateRoot("/login");
+            },
+          },
+          {
+            text: "Close",
+            role: "cancel",
+            handler: () => {},
+          },
+        ],
       });
       alert.present();
     } else {
@@ -2737,40 +2977,48 @@ export class HomePage {
         message: "Are you sure you want to log out?",
         buttons: [
           {
-            text: 'Yes',
+            text: "Yes",
             handler: () => {
-              console.log('Log Out');
+              console.log("Log Out");
               var headers = new HttpHeaders();
-              headers.append("Accept", 'application/json');
-              headers.append('Content-Type', 'application/json');
+              headers.append("Accept", "application/json");
+              headers.append("Content-Type", "application/json");
 
               console.log(this.auth.sessionToken.session);
-              this.http.post('http://www.chapchap.ga/logout.php', this.auth.sessionToken.session, {})
+              this.http
+                .post(
+                  "http://www.chapchap.ga/logout.php",
+                  this.auth.sessionToken.session,
+                  {}
+                )
                 //this.http.post('https://chapweb.000webhostapp.com/logout.php', data, {})
                 //this.http.post('http://localhost:80/chap_2/logout.php', data, {})
                 .map((res: any) => res)
-                .subscribe(async res => {
+                .subscribe(async (res) => {
                   console.log(res);
 
                   if (res.message == "Log Out") {
                     this.closeMenu();
-                    this.navCtrl.navigateRoot('/login');
+                    this.navCtrl.navigateRoot("/login");
                   } else {
                     let alert = await this.alertC.create({
                       header: "ERROR",
-                      message: (res.message),
-                      buttons: ['OK']
+                      message: res.message,
+                      buttons: ["OK"],
                     });
                     alert.present();
                   }
                 });
-            }
+            },
           },
           {
-            text: 'No',
-            role: 'cancel',
-            handler: () => { console.log('Cancel'); }
-          }]
+            text: "No",
+            role: "cancel",
+            handler: () => {
+              console.log("Cancel");
+            },
+          },
+        ],
       });
       alert.present();
     }
@@ -2778,9 +3026,9 @@ export class HomePage {
 
   async checkInternetConnection() {
     if (!navigator.onLine) {
-      this.auth.mode = 'offline';
+      this.auth.mode = "offline";
     } else {
-      this.auth.mode = 'online';
+      this.auth.mode = "online";
     }
   }
 
@@ -2790,13 +3038,11 @@ export class HomePage {
     const modal = await this.modalC.create({
       component: FeedbackPage,
       componentProps: {
-        userID: this.auth.sessionToken.session.user_id
-      }
+        userID: this.auth.sessionToken.session.user_id,
+      },
     });
 
-    modal.onDidDismiss().then(data => {
-
-    });
+    modal.onDidDismiss().then((data) => {});
     await modal.present();
   }
 

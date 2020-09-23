@@ -84,12 +84,21 @@ export class LoginPage implements OnInit {
     };
 
     // Adding Click Listeners to Buttons
-    let btnSignUp = document.getElementById("btn_signup");
-    btnSignUp.addEventListener("click", (e) => this.signUpToCHAP(e));
+    // let btnSignUp = document.getElementById("btn_signup");
+    // btnSignUp.addEventListener("click", (e) => this.signUpToCHAP(e));
     let btnLogin = document.getElementById("btn_login");
     btnLogin.addEventListener("click", (e) => this.logInToCHAP(e));
-    let btnOffline = document.getElementById("btn_offline");
-    btnOffline.addEventListener("click", (e) => this.useCHAPOffline(e));
+    // let btnOffline = document.getElementById("btn_offline");
+    // btnOffline.addEventListener("click", (e) => this.useCHAPOffline(e));
+    let btn_LoginClose = document.getElementById("btn_LoginClose");
+    btn_LoginClose.addEventListener("click", (e) => this.closeModal(e));
+    let a_createAccount = document.getElementById("a_createAccount");
+    a_createAccount.addEventListener("click", (e) => {
+      let data = {
+        openSignUp: true
+      };
+      this.modalC.dismiss(data);
+    });
   }
 
   async checkInternetConnection() {
@@ -112,7 +121,7 @@ export class LoginPage implements OnInit {
           {
             text: "Close",
             role: "cancel",
-            handler: () => {},
+            handler: () => { },
           },
         ],
       });
@@ -206,6 +215,7 @@ export class LoginPage implements OnInit {
                 //this.navP.data = params;
                 this.auth.sessionToken = { session: res.session };
                 this.auth.isLoggedIn = true;
+                this.closeModal(e);
                 this.navCtrl.navigateRoot("/home");
               } else if (res.message == "Open ADMINPANEL.php") {
                 if (this.platform.is("android") || this.platform.is("ios")) {
@@ -222,6 +232,7 @@ export class LoginPage implements OnInit {
                   });
                   alert.present();
                 }
+                this.closeModal(e);
                 this.openAdminPanel();
               } else {
                 if (this.platform.is("android") || this.platform.is("ios")) {
@@ -244,5 +255,9 @@ export class LoginPage implements OnInit {
       }
     } else {
     }
+  }
+
+  public closeModal(e) {
+    this.modalC.dismiss();
   }
 }

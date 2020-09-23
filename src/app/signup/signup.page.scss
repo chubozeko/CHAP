@@ -1,4 +1,10 @@
 @charset "utf-8";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+#gender ion-radio {
+	vertical-align: sub;
+  padding-right: 5px;
+}
 
 #signupMainCard {
   width: 480px; 

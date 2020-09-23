@@ -1,65 +1,80 @@
-<ion-card id="loginMainCard">
-  <ion-toolbar style="padding: 5px;" color="primary">
-    <img style="float:left; width: 50px; height: 50px; margin-left: 10px; padding: 5px;"
-      src="./assets/icon/chap_logo.png" />
-    <ion-label style="display: flex; font-size: 24pt; justify-content: center; padding-top: 8px;">Welcome to CHAP
-    </ion-label>
-  </ion-toolbar>
+<ion-toolbar style="--background: #343A40;">
+  <ion-button id="btn_LoginClose" type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </ion-button>
+</ion-toolbar>
 
-  <ion-content padding color="secondary">
-    <form [formGroup]="loginForm">
-      <div>
-        <!-- formControlName="facebook"  -->
-        <!-- <ion-button id="btn_fbLogin" shape="round" slot="start" expand="block">
-          <ion-icon name="logo-facebook"></ion-icon>
-          &nbsp; Login with Facebook
-        </ion-button> -->
-        <!-- formControlName="google"  -->
-        <!-- <ion-button shape="round" slot="start" expand="block" style="--background: #D44638;">
-          <ion-icon name="logo-google"></ion-icon>
-          &nbsp; Login with Gmail
-        </ion-button> -->
-        <!-- formControlName="linkedin"  -->
-        <!-- <ion-button shape="round" slot="start" expand="block" style="--background: #0077B5;">
-          <ion-icon name="logo-linkedin"></ion-icon>
-          &nbsp; Login with LinkedIn
-        </ion-button> -->
-      </div>
+<ion-content padding style="--background: #343A40;">
+  <form [formGroup]="loginForm" style="background-color: #343A40;">
+    <!-- method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off" -->
+    <div class="text-center">
+      <img src="assets/cover_page/logo/chaplogo.png" width="129" height="120" />
+    </div>
+    <div class="text-center">
+      <h2 class="text-light">Welcome to CHAP</h2>
+    </div>
+    <br />
+    <div class="form-group">
+      <ion-input type="email" class="form-control" name="email" id="email" placeholder="Enter Your Email"
+        required="required" #email></ion-input>
+    </div>
+    <div class="form-group">
+      <ion-input type="password" name="password" id="password" class="form-control" placeholder="Enter Your Password"
+        required="required" #password></ion-input>
+    </div>
+    <br />
+    <div class="form-group">
+      <input id="btn_login" name="btn1LOG" type="Submit" value="LOG IN" class="btn btn-primary btn-block" />
+    </div>
+    <p class="text-center">
+      <ion-button id="a_createAccount" shape="round"><a href="">Create an Account</a></ion-button>
+    </p>
+  </form>
 
-      <!-- <ion-label style="display: flex; font-size: 12pt; justify-content: center; padding: 20px;" color="primary">
-        - OR -
-      </ion-label> -->
-
-      <div>
-        <ion-item>
-          <!-- formControlName="email" -->
-          <ion-input id="email" name="email" placeholder="E-mail Address" type="email" #email>
-          </ion-input>
-        </ion-item>
-        <ion-item>
-          <!-- formControlName="password" -->
-          <ion-input id="password" name="password" placeholder="Password" type="password" #password></ion-input>
-        </ion-item>
-        <!-- formControlName="btn1LOG"  -->
-        <ion-button id="btn_login" style="padding: 10px 0;" expand="block">Log In</ion-button>
-      </div>
-
-      <div>
-        <ion-icon name="arrow-dropright" color="primary" style="size: 16px;"></ion-icon> &nbsp;
-        <ion-label color="primary" style="font-size: 14pt">Don't have an account? &nbsp;</ion-label>
-        <!-- formControlName="btn"  -->
-        <ion-button id="btn_signup" style="padding: 10px 0;" expand="block">Sign Up
-        </ion-button>
-      </div>
-
-      <ion-label style="display: flex; font-size: 12pt; justify-content: center; padding: 20px;" color="primary">
-        - OR -
-      </ion-label>
-
-      <ion-button id="btn_offline" slot="start" expand="block">
-        Go Offline
+  <!-- <form [formGroup]="loginForm">
+    <div>
+      <ion-button id="btn_fbLogin" shape="round" slot="start" expand="block">
+        <ion-icon name="logo-facebook"></ion-icon>
+        &nbsp; Login with Facebook
       </ion-button>
+      <ion-button shape="round" slot="start" expand="block" style="--background: #D44638;">
+        <ion-icon name="logo-google"></ion-icon>
+        &nbsp; Login with Gmail
+      </ion-button>
+      <ion-button shape="round" slot="start" expand="block" style="--background: #0077B5;">
+        <ion-icon name="logo-linkedin"></ion-icon>
+        &nbsp; Login with LinkedIn
+      </ion-button>
+    </div>
 
-    </form>
-  </ion-content>
-</ion-card>
+    <ion-label style="display: flex; font-size: 12pt; justify-content: center; padding: 20px;" color="primary">
+      - OR -
+    </ion-label>
+
+    <div>
+      <ion-item>
+        <ion-input id="email" name="email" placeholder="E-mail Address" type="email" #email>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input id="password" name="password" placeholder="Password" type="password" #password></ion-input>
+      </ion-item>
+      <ion-button id="btn_login" style="padding: 10px 0;" expand="block">Log In</ion-button>
+    </div>
+
+    <div>
+      <ion-icon name="arrow-dropright" color="primary" style="size: 16px;"></ion-icon> &nbsp;
+      <ion-label color="primary" style="font-size: 14pt">Don't have an account? &nbsp;</ion-label>
+      <ion-button id="btn_signup" style="padding: 10px 0;" expand="block">Sign Up
+      </ion-button>
+    </div>
+
+    <ion-label style="display: flex; font-size: 12pt; justify-content: center; padding: 20px;" color="primary">
+      - OR -
+    </ion-label>
+
+    <ion-button id="btn_offline" slot="start" expand="block">
+      Go Offline
+    </ion-button>
+  </form> -->
+</ion-content>

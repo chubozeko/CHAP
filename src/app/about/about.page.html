@@ -2,7 +2,9 @@
   <img style="float: left; width: 24px; height: 24px; margin-left: 0;" src="./assets/icon/info-white.png" />
   <ion-title>{{headingText}}</ion-title>
   <ion-buttons slot="end">
-    <ion-button (click)="closeModal()" color="secondary" style="float: right;"> Close </ion-button>
+    <ion-button (click)="closeModal()" color="secondary" style="float: right;">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
   </ion-buttons>
 </ion-toolbar>
 
