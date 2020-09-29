@@ -6,6 +6,7 @@ import {
   LoadingController,
   Platform,
   NavParams,
+  ToastController
 } from "@ionic/angular";
 import { HttpClient, HttpHeaders, HttpRequest } from "@angular/common/http";
 import { AuthService } from "../auth.service";
@@ -48,6 +49,7 @@ export class LoginPage implements OnInit {
     public loading: LoadingController,
     public platform: Platform,
     public toast: Toast,
+    public toastC: ToastController,
     public modalC: ModalController
   ) //public navP: NavParams
   {
@@ -204,12 +206,17 @@ export class LoginPage implements OnInit {
                       console.log(toast);
                     });
                 } else {
-                  let alert = await this.alertCtrl.create({
-                    header: "Login Successful",
-                    message: "Welcome to CHAP,  " + res.name,
-                    buttons: ["OK"],
+                  // let alert = await this.alertCtrl.create({
+                  //   header: "Login Successful",
+                  //   message: "Welcome to CHAP,  " + res.name,
+                  //   buttons: ["OK"],
+                  // });
+                  // alert.present();
+                  const toast = await this.toastC.create({
+                    message: 'Login Successful! Welcome to CHAP, ' + res.name + '.',
+                    duration: 3000
                   });
-                  alert.present();
+                  toast.present();
                 }
                 //let params = new NavParams({ session: res.session });
                 //this.navP.data = params;

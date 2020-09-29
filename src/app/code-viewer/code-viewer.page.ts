@@ -21,6 +21,7 @@ export class CodeViewerPage implements OnInit {
   flowchart: Flowchart;
   codeFileName: string = '';
   saveFolder = 'CHAP Project Files';
+  isTrialVersion: boolean;
 
   code: Array<Code> = [];
 
@@ -34,12 +35,12 @@ export class CodeViewerPage implements OnInit {
     public toast: Toast
   ) {
     this.flowchart = navP.get('flowchart');
+    this.isTrialVersion = navP.get('isTrialVersion');
     this.programmingLang = 'PseudoCode';
     //this.code = new Array<Code>();
   }
 
   ngOnInit() {
-
     let language = (document.getElementById("prog_lang") as HTMLIonSelectElement);
     language.value = 'PseudoCode';
     if (language.value == 'PseudoCode') {
@@ -55,7 +56,6 @@ export class CodeViewerPage implements OnInit {
       }
       this.pseudocode = this.flowchart.displayFlowchartPseudoCode();
       this.displayCode = this.pseudocode;
-      console.log(this.code);
     }
     else if (language.value == 'C++') {
       this.lineNumbers = '  ';
@@ -69,8 +69,13 @@ export class CodeViewerPage implements OnInit {
         this.code.push(codeLine);
       }
       this.cpluspluscode = this.flowchart.displayCPlusPlusCode();
-      this.displayCode = this.cpluspluscode;
-      console.log(this.code);
+      if (!this.isTrialVersion) {
+        this.displayCode = this.cpluspluscode;
+      } else {
+        let codeTextContent = document.getElementById("codeTextContent");
+        codeTextContent.style.userSelect = 'none';
+        this.displayCode = 'This is the Trial version. Sign up to view and download the C++ code.';
+      }
     } else if (language.value == 'Java') {
       this.lineNumbers = '  ';
       let code = this.flowchart.displayJavaCode();
@@ -83,10 +88,14 @@ export class CodeViewerPage implements OnInit {
         this.code.push(codeLine);
       }
       this.javaCode = this.flowchart.displayJavaCode();
-      this.displayCode = this.javaCode;
-      console.log(this.code);
+      if (!this.isTrialVersion) {
+        this.displayCode = this.javaCode;
+      } else {
+        let codeTextContent = document.getElementById("codeTextContent");
+        codeTextContent.style.userSelect = 'none';
+        this.displayCode = 'This is the Trial version. Sign up to view and download the Java code.';
+      }
     }
-
   }
 
   public changeCode() {
@@ -109,7 +118,6 @@ export class CodeViewerPage implements OnInit {
       }
       this.pseudocode = this.flowchart.displayFlowchartPseudoCode();
       this.displayCode = this.pseudocode;
-      console.log(this.code);
     }
     else if (language.value == 'C++') {
       this.lineNumbers = '  ';
@@ -127,8 +135,13 @@ export class CodeViewerPage implements OnInit {
         this.code.push(codeLine);
       }
       this.cpluspluscode = this.flowchart.displayCPlusPlusCode();
-      this.displayCode = this.cpluspluscode;
-      console.log(this.code);
+      if (!this.isTrialVersion) {
+        this.displayCode = this.cpluspluscode;
+      } else {
+        let codeTextContent = document.getElementById("codeTextContent");
+        codeTextContent.style.userSelect = 'none';
+        this.displayCode = 'This is the Trial version. Sign up to view and download the C++ code.';
+      }
     } else if (language.value == 'Java') {
       this.lineNumbers = '  ';
       let code = this.flowchart.displayJavaCode();
@@ -145,18 +158,36 @@ export class CodeViewerPage implements OnInit {
         this.code.push(codeLine);
       }
       this.javaCode = this.flowchart.displayJavaCode();
-      this.displayCode = this.javaCode;
-      console.log(this.code);
+      if (!this.isTrialVersion) {
+        this.displayCode = this.javaCode;
+      } else {
+        let codeTextContent = document.getElementById("codeTextContent");
+        codeTextContent.style.userSelect = 'none';
+        this.displayCode = 'This is the Trial version. Sign up to view and download the Java code.';
+      }
     }
   }
 
-  public downloadCode() {
+  async downloadCode() {
     if (this.programmingLang == 'PseudoCode') {
       this.saveProject('Pseudo', '.txt');
-    } else if (this.programmingLang == 'C++') {
+    } else if (this.programmingLang == 'C++' && !this.isTrialVersion) {
       this.saveProject('C++', '.cpp');
-    } else if (this.programmingLang == 'Java') {
+    } else if (this.programmingLang == 'Java' && !this.isTrialVersion) {
       this.saveProject('Java', '.java');
+    } else if (this.isTrialVersion && this.programmingLang != 'PseudoCode') {
+      const alert = await this.alertC.create({
+        header: 'Failed to Download ' + this.programmingLang + ' Code.',
+        message: `This is the Trial version. Sign up to download the code.`,
+        buttons: [
+          {
+            text: "OK",
+            role: "cancel",
+            cssClass: "secondary",
+          }
+        ]
+      });
+      await alert.present();
     }
   }
 

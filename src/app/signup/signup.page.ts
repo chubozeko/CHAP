@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import {
   NavController,
   AlertController,
-  LoadingController,, ModalController
+  LoadingController, ModalController, ToastController
 } from "@ionic/angular";
 import { HttpClient, HttpHeaders, HttpRequest } from "@angular/common/http";
 import { AuthService } from "../auth.service";
@@ -29,6 +29,7 @@ export class SignupPage implements OnInit {
     public modalC: ModalController,
     private http: HttpClient,
     public loading: LoadingController,
+    public toastC: ToastController,
     private auth: AuthService,
   ) { }
 
@@ -159,12 +160,21 @@ export class SignupPage implements OnInit {
             .subscribe(async (res) => {
               loader.dismiss();
               if (res == "Registration successful") {
-                let alert = await this.alertCtrl.create({
-                  header: "CONGRATS",
-                  message: res,
-                  buttons: ["OK"],
+                // let alert = await this.alertCtrl.create({
+                //   header: "CONGRATS",
+                //   message: res,
+                //   buttons: ["OK"],
+                // });
+                // alert.present();
+                const toast = await this.toastC.create({
+                  message: 'Registration successful!',
+                  duration: 3000
                 });
-                alert.present();
+                toast.present();
+                let data = {
+                  openLogIn: true
+                };
+                this.modalC.dismiss(data);
               } else {
                 let alert = await this.alertCtrl.create({
                   header: "ERROR",

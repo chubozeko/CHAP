@@ -1,6 +1,7 @@
 import { Component, Injectable, OnInit } from "@angular/core";
 import { ModalController, NavController, NavParams } from "@ionic/angular";
 import { AboutPage } from "../about/about.page";
+import { AuthService } from "../auth.service";
 import { LoginPage } from "../login/login.page";
 import { SignupPage } from "../signup/signup.page";
 import { TutorialPage } from "../tutorial/tutorial.page";
@@ -18,7 +19,10 @@ export class WelcomePage implements OnInit {
     effect: 'flip'
   };
 
-  constructor(public modal: ModalController, public navCtrl: NavController) { }
+  constructor(
+    private auth: AuthService,
+    public modal: ModalController,
+    public navCtrl: NavController) { }
 
   ngOnInit() {
     let w_login = document.getElementById("w_login");
@@ -59,7 +63,13 @@ export class WelcomePage implements OnInit {
       cssClass: 'welcomeModal'
       // componentProps: {  }
     });
-    modal.onDidDismiss().then((data) => { });
+    modal.onDidDismiss().then((data) => {
+      if (data.data != undefined) {
+        if (data.data.openLogIn) {
+          this.openLoginModal(e);
+        }
+      }
+    });
     await modal.present();
   }
 
@@ -89,6 +99,9 @@ export class WelcomePage implements OnInit {
 
   openCHAPTrial(e) {
     console.log("CHAP Trial Version");
+    this.auth.mode = "trial";
+    this.auth.isLoggedIn = false;
     this.navCtrl.navigateRoot("/home");
+    console.log('auth: ', this.auth);
   }
 }

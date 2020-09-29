@@ -15,7 +15,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-content [scrollEvents]="true">
+  <ion-content id="codeTextContent" [scrollEvents]="true">
     <div *ngFor="let c of code" style="padding: 0 10px;">
       <div id="sourceCode">
         <div id="codeLineNumbers">{{c.lineNr}}</div>

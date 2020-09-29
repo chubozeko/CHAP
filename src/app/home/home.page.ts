@@ -60,7 +60,7 @@ import { FeedbackPage } from "../feedback/feedback.page";
 @Component({
   selector: "app-home",
   templateUrl: "home.page.html",
-  styleUrls: ["home.page.scss"],
+  styleUrls: ["home.page.scss", "../splashscreen.scss"],
 })
 @Injectable()
 export class HomePage {
@@ -97,6 +97,8 @@ export class HomePage {
 
   items: Array<any> = [];
 
+  splash = true;
+
   constructor(
     public symbolOptionsAS: ActionSheetController,
     public arrowsOptionsAS: ActionSheetController,
@@ -111,13 +113,15 @@ export class HomePage {
     public platform: Platform,
     public toast: Toast,
     public navCtrl: NavController,
-    private auth: AuthService
+    private auth: AuthService,
+    private splashScreen: SplashScreen
   ) //public navParams: NavParams
-  {}
+  { }
 
-  ionViewWillEnter() {}
+  ionViewWillEnter() { }
 
   ngOnInit() {
+    setTimeout(() => this.splash = false, 4000);
     // Adding Hover Listeners to Toolbar Buttons
     let tbButtons = document.getElementsByClassName("tooltip");
     for (let i = 0; i < tbButtons.length; i++) {
@@ -183,6 +187,15 @@ export class HomePage {
       //this.auth.mode = 'online';
       this.navCtrl.navigateRoot("/login");
     });
+    let backToWelcome = document.getElementById("btn_backToWelcome");
+    backToWelcome.addEventListener("click", (e) => {
+      if (this.auth.isLoggedIn) {
+        this.logOut();
+      } else {
+        this.closeMenu();
+        this.navCtrl.navigateRoot("/welcome");
+      }
+    });
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
@@ -227,12 +240,15 @@ export class HomePage {
         });
     }
 
-    // Check if it is Offline Mode
+    // Check if it is Offline Mode or Trial Mode
     if (this.auth.mode == "offline") {
       logOut.style.display = "none";
       goOnline.style.display = "block";
-    } else {
+    } else if (this.auth.mode == "online") {
       logOut.style.display = "block";
+      goOnline.style.display = "none";
+    } else if (this.auth.mode == "trial") {
+      logOut.style.display = "none";
       goOnline.style.display = "none";
     }
   }
@@ -286,8 +302,11 @@ export class HomePage {
     if (this.auth.mode == "offline") {
       logOut.style.display = "none";
       goOnline.style.display = "block";
-    } else {
+    } else if (this.auth.mode == "online") {
       logOut.style.display = "block";
+      goOnline.style.display = "none";
+    } else if (this.auth.mode == "trial") {
+      logOut.style.display = "none";
       goOnline.style.display = "none";
     }
     this.menu.open();
@@ -2272,10 +2291,25 @@ export class HomePage {
 
   async openProjectOptions() {
     this.menu.close();
-    // Open Project From...
-    const actionSheet = await this.arrowsOptionsAS.create({
-      header: "Open Project From...",
-      buttons: [
+    let buttons = [];
+    if (this.auth.mode == 'trial' || this.auth.mode == 'offline') {
+      buttons = [
+        {
+          text: "Internal Storage",
+          icon: "folder-open",
+          handler: () => {
+            this.openProject();
+          },
+        },
+        {
+          text: "Cancel",
+          icon: "close",
+          role: "cancel",
+          handler: () => { }
+        }
+      ];
+    } else {
+      buttons = [
         {
           text: "Internal Storage",
           icon: "folder-open",
@@ -2295,11 +2329,14 @@ export class HomePage {
           text: "Cancel",
           icon: "close",
           role: "cancel",
-          handler: () => {
-            console.log("Cancel");
-          },
-        },
-      ],
+          handler: () => { }
+        }
+      ];
+    }
+    // Open Project From...
+    const actionSheet = await this.arrowsOptionsAS.create({
+      header: "Open Project From...",
+      buttons: buttons
     });
     await actionSheet.present();
   }
@@ -2335,7 +2372,7 @@ export class HomePage {
           {
             text: "Close",
             role: "cancel",
-            handler: () => {},
+            handler: () => { },
           },
         ],
       });
@@ -2370,7 +2407,7 @@ export class HomePage {
           {
             text: "Use Offline Mode",
             role: "cancel",
-            handler: () => {},
+            handler: () => { },
           },
         ],
       });
@@ -2619,10 +2656,25 @@ export class HomePage {
 
   async saveProjectOptions() {
     this.menu.close();
-    // Open Project From...
-    const actionSheet = await this.arrowsOptionsAS.create({
-      header: "Save Project to...",
-      buttons: [
+    let buttons = [];
+    if (this.auth.mode == 'trial' || this.auth.mode == 'offline') {
+      buttons = [
+        {
+          text: "Internal Storage",
+          icon: "folder",
+          handler: () => {
+            this.saveProject();
+          },
+        },
+        {
+          text: "Cancel",
+          icon: "close",
+          role: "cancel",
+          handler: () => { },
+        },
+      ];
+    } else {
+      buttons = [
         {
           text: "Internal Storage",
           icon: "folder",
@@ -2642,11 +2694,14 @@ export class HomePage {
           text: "Cancel",
           icon: "close",
           role: "cancel",
-          handler: () => {
-            console.log("Cancel");
-          },
+          handler: () => { },
         },
-      ],
+      ];
+    }
+    // Open Project From...
+    const actionSheet = await this.arrowsOptionsAS.create({
+      header: "Save Project to...",
+      buttons: buttons
     });
     await actionSheet.present();
   }
@@ -2726,7 +2781,7 @@ export class HomePage {
       });
   }
 
-  public saveToIOS(flowchartJSON, filename) {}
+  public saveToIOS(flowchartJSON, filename) { }
 
   async saveProjectToDatabase() {
     // Check if it is in Offline Mode
@@ -2745,7 +2800,7 @@ export class HomePage {
           {
             text: "Close",
             role: "cancel",
-            handler: () => {},
+            handler: () => { },
           },
         ],
       });
@@ -2855,7 +2910,7 @@ export class HomePage {
           {
             text: "Use Offline Mode",
             role: "cancel",
-            handler: () => {},
+            handler: () => { },
           },
         ],
       });
@@ -2878,9 +2933,15 @@ export class HomePage {
   }
 
   async openCodeViewer(flowchart) {
+    let isTrialVersion: boolean;
+    if (this.auth.mode == 'trial')
+      isTrialVersion = true;
+    else
+      isTrialVersion = false;
+
     const modal = await this.modalC.create({
       component: CodeViewerPage,
-      componentProps: { flowchart: flowchart },
+      componentProps: { flowchart: flowchart, isTrialVersion: isTrialVersion },
     });
     modal.onDidDismiss().then((data) => {
       let fc = data.data as Flowchart;
@@ -2960,13 +3021,13 @@ export class HomePage {
             text: "Go Online",
             handler: () => {
               //this.auth.mode = 'online';
-              this.navCtrl.navigateRoot("/login");
+              this.navCtrl.navigateRoot("/welcome");
             },
           },
           {
             text: "Close",
             role: "cancel",
-            handler: () => {},
+            handler: () => { },
           },
         ],
       });
@@ -2999,7 +3060,7 @@ export class HomePage {
 
                   if (res.message == "Log Out") {
                     this.closeMenu();
-                    this.navCtrl.navigateRoot("/login");
+                    this.navCtrl.navigateRoot("/welcome");
                   } else {
                     let alert = await this.alertC.create({
                       header: "ERROR",
@@ -3042,7 +3103,7 @@ export class HomePage {
       },
     });
 
-    modal.onDidDismiss().then((data) => {});
+    modal.onDidDismiss().then((data) => { });
     await modal.present();
   }
 
