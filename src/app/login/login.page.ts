@@ -143,7 +143,7 @@ export class LoginPage implements OnInit {
     this.checkInternetConnection();
     // Check if it is in Online
     if (this.auth.mode == "online") {
-      window.open("http://admin.chapchap.ga", "_self");
+      window.open("https://admin.chapchap.ga/index.html", "_self");
     }
   }
 
@@ -190,7 +190,7 @@ export class LoginPage implements OnInit {
 
         loader.present().then(() => {
           this.http
-            .post("http://www.chapchap.ga/login.php", data, {})
+            .post("https://www.chapchap.ga/login.php", data, {})
             //this.http.post('https://chapweb.000webhostapp.com/login.php', data, {})
             //this.http.post('http://localhost:80/chap_2/login.php', data, {})
             .map((res: any) => res)
