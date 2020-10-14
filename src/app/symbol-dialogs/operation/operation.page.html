@@ -1,9 +1,22 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>operation</ion-title>
+<ion-content>
+  <ion-toolbar style="height: 25px; --min-height: 25px">
+    &nbsp;
+    <ion-icon name="arrow-back" style="width: 21px; height: 21px;"></ion-icon> &nbsp;
+    <ion-label style="font-size: 10pt; vertical-align: super;">Symbols: </ion-label>
+
+
   </ion-toolbar>
-</ion-header>
-
-<ion-content padding>
-
+  <ion-grid id="operPop">
+    <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
+      <div id="{{s.id}}" class="symbol s_tooltip" (click)="addSymbol(s.id, $event)">
+        {{s.s_name}}
+      </div>
+      <!-- (click)="addSymbol(s.id, $event)" -->
+    </ion-card>
+  </ion-grid>
+  <ion-footer style="padding: 0 5px ;">
+    <ion-button color="light" style="--height: 21px; font-size: 10pt;" expand="block" (click)="closePopup()">
+      <ion-icon name="close"></ion-icon> Close
+    </ion-button>
+  </ion-footer>
 </ion-content>

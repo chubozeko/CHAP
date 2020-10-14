@@ -47,6 +47,7 @@ import { LoginPageModule } from "./login/login.module";
 import { SignupPageModule } from "./signup/signup.module";
 import { WelcomePageModule } from "./welcome/welcome.module";
 import { CoverPagePageModule } from "./cover-page/cover-page.module";
+import { OperationPageModule } from "./symbol-dialogs/operation/operation.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -79,6 +80,7 @@ import { CoverPagePageModule } from "./cover-page/cover-page.module";
     SignupPageModule,
     WelcomePageModule,
     CoverPagePageModule,
+    OperationPageModule,
     // TooltipsModule
   ],
   providers: [
@@ -97,4 +99,4 @@ import { CoverPagePageModule } from "./cover-page/cover-page.module";
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

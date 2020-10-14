@@ -14,6 +14,7 @@ import {
   ToastController,
   Platform,
   NavController,
+  PopoverController,
 } from "@ionic/angular";
 import { ActionSheetOptions } from "@ionic/core";
 import html2canvas from "html2canvas";
@@ -56,6 +57,8 @@ import { OpenProjectPage } from "../open-project/open-project.page";
 import { AuthService } from "../auth.service";
 import { toBase64String } from "@angular/compiler/src/output/source_map";
 import { FeedbackPage } from "../feedback/feedback.page";
+import { OperationPage } from "../symbol-dialogs/operation/operation.page";
+import { CoverPagePage } from "../cover-page/cover-page.page";
 
 @Component({
   selector: "app-home",
@@ -114,14 +117,15 @@ export class HomePage {
     public toast: Toast,
     public navCtrl: NavController,
     private auth: AuthService,
-    private splashScreen: SplashScreen
+    private splashScreen: SplashScreen,
+    public popCtrl: PopoverController
   ) //public navParams: NavParams
   { }
 
   ionViewWillEnter() { }
 
   ngOnInit() {
-    setTimeout(() => this.splash = false, 4000);
+    setTimeout(() => { this.splash = false; this.openIntroTutorial(); }, 4000);
     // Adding Hover Listeners to Toolbar Buttons
     let tbButtons = document.getElementsByClassName("tooltip");
     for (let i = 0; i < tbButtons.length; i++) {
@@ -177,6 +181,8 @@ export class HomePage {
     sFAB.addEventListener("click", (e) => this.toggleSymbolsFAB());
     // let printFC = document.getElementById("btn_printFlowchart");
     // printFC.addEventListener('click', (e) => this.printFlowchart());
+    let quickGuide = document.getElementById("btn_gettingStartedPage");
+    quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
     let feedbackBtn = document.getElementById("btn_feedbackPage");
     feedbackBtn.addEventListener("click", (e) => this.openFeedback());
     let logOut = document.getElementById("btn_logOut");
@@ -202,6 +208,8 @@ export class HomePage {
     this.workspace = document.getElementById("workspace");
     this.branch = document.getElementById("arrow");
     this.branch.addEventListener("click", (e) => this.openSymbolsFAB(e));
+    this.branch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+    this.branch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
     interact(this.branch)
       .gesturable({ hold: 1500 })
       .on("tap", (e) => this.openSymbolsFAB(e))
@@ -251,6 +259,8 @@ export class HomePage {
       logOut.style.display = "none";
       goOnline.style.display = "none";
     }
+
+    // this.openIntroTutorial();
   }
 
   public subscribeToDragula() {
@@ -314,6 +324,45 @@ export class HomePage {
 
   public closeMenu() {
     this.menu.close();
+  }
+
+  async openIntroTutorial() {
+    const modal = await this.modalC.create({
+      component: CoverPagePage,
+    });
+    modal.onDidDismiss().then((data) => { });
+    await modal.present();
+  }
+
+  async openSymbolPopUp(event) {
+    let t = event.target || event.srcElement || event.currentTarget;
+    t.classList.add("active-arrow");
+    const popover = await this.popCtrl.create({
+      component: OperationPage,
+      componentProps: { event: event },
+      cssClass: 'symPopUp',
+      event: event,
+      translucent: true,
+      showBackdrop: false,
+    });
+    popover.onDidDismiss().then((data) => {
+      try {
+        console.log(data.data);
+        if (data.data != undefined)
+          this.addSymbol(data.data.id, data.data.e);
+
+        let t = event.target || event.srcElement || event.currentTarget;
+        t.classList.remove("active-arrow");
+      } catch (error) { console.log(error); }
+    });
+    return await popover.present();
+  }
+
+  public closeSymbolPopUp(event) {
+    console.log("Leave Arrow");
+    // let t = event.target || event.srcElement || event.currentTarget;
+    // t.classList.remove("active-arrow");
+    this.popCtrl.dismiss();
   }
 
   async openDeclareModal(symbol, e) {
@@ -2208,6 +2257,9 @@ export class HomePage {
         .gesturable({ hold: 1500 })
         .on("tap", (e) => this.openSymbolsFAB(e))
         .on("hold", (e) => this.openArrowsAS(e));
+
+      dz[i].addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+      dz[i].addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
     }
 
     console.log(this.flowchart.SYMBOLS);

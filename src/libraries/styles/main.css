@@ -167,3 +167,17 @@ textarea{
     font-family: Consolas, monaco, monospace; 
     resize: none; white-space: pre-wrap;
   }
+
+/* Symbol Pop Up (.popover-content) */
+.symPopUp {
+  --width: 200px;
+  --height: 200px;
+}
+
+.symPopUp .popover-wrapper .popover-content {
+  /* top: 120px;
+  left: 600px; */
+  margin-left: 85px;
+  margin-top: 5px;
+  width: 175px;
+}

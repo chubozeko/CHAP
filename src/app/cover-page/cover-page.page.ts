@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cover-page',
@@ -7,9 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoverPagePage implements OnInit {
 
-  constructor() { }
+  slides: HTMLIonSlidesElement;
+
+  slideOpts = {
+    effect: 'flip'
+  };
+
+  constructor(public modal: ModalController) {
+    this.slides = document.getElementById("tutorSlides") as HTMLIonSlidesElement;
+  }
 
   ngOnInit() {
+    this.slides = document.getElementById("tutorSlides") as HTMLIonSlidesElement;
   }
+
+  prevSlide() { this.slides.slidePrev(500); }
+  nextSlide() { this.slides.slideNext(500); }
+
+  public closeModal() { this.modal.dismiss(); }
+
 
 }

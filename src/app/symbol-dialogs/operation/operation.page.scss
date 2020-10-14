@@ -1,0 +1,95 @@
+#operPop {
+  display: grid;
+  grid-template-columns: 50px 50px 50px;
+  width: 150px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+// SYMBOLS CSS
+#control_loop_list{ display: none; }
+
+.if_div, .while_div, .for_div, .do_while_div{
+  display: grid;
+  // grid-template-columns: repeat(5, 70px);
+  grid-template-columns: max-content 70px max-content 70px max-content;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-card{
+  width: 50px; height: 30px;
+  padding: 5px;
+  margin: 2.5px auto;
+  background-color: #F8F8F8;
+}
+
+.symbol { 
+  width: 40px;
+  height: 20px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center; 
+  // vertical-align: middle;
+  align-content: center;
+  justify-content: center;
+  // line-height: 1.5;
+  // line-height: normal;
+  font-size: 6pt;
+  color: #000000; cursor: pointer;
+  margin: auto;
+}
+
+#s_start, #s_stop{
+  background: #fe547b;
+  -webkit-clip-path: ellipse(50% 50% at 50% 50%);
+  clip-path: ellipse(50% 50% at 50% 50%);
+}
+#s_declare{
+  background-image: url("/assets/icon/declare.png");
+  // background-size: 70px 35px;
+  background-size: 100% 100%;
+  -webkit-clip-path: inset(0 0 0 0);
+  clip-path: inset(0 0 0 0);
+}
+#s_input{
+  background: #01c5c4;
+  -webkit-clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
+  clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
+  padding-top: 13.5px;
+}
+#s_output{
+  background: #b8de6f;
+  border-radius: 0 25px 25px 0;
+  -webkit-clip-path: polygon(25% 0, 0 50%, 25% 100%, 100% 100%, 100% 0);
+  clip-path: polygon(25% 0, 0 50%, 25% 100%, 100% 100%, 100% 0);
+  text-indent: 5px;
+  padding: 5px;
+}
+#s_process{
+  background: #f39233;
+  -webkit-clip-path: inset(0 0 0 0);
+  clip-path: inset(0 0 0 0);
+}
+#s_if_case{
+  background: #f1e189;
+  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  padding: 15%;
+}
+#s_for_loop, #s_while_loop, #s_do_while_loop{
+  background: #9C93E2;
+  -webkit-clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
+  clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
+}
+#s_terminator{
+  background: #ffffff;
+  -webkit-clip-path: circle(50% at 50% 50%); clip-path: circle(50% at 50% 50%);
+  width: 35px; height: 35px; margin: auto;
+}
+#s_comment{
+  background: #dddddd;
+  -webkit-clip-path: inset(0 0 0 0); clip-path: inset(0 0 0 0);
+  border: 2px dashed #888888; color: #888888;
+}

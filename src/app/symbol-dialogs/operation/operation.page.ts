@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavParams, PopoverController } from '@ionic/angular';
+import { SYMBOLS } from '../../symbol-list';
 
 @Component({
   selector: 'app-operation',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OperationPage implements OnInit {
 
-  constructor() { }
+  symbols = SYMBOLS;
+  event;
+
+  constructor(private popCtrl: PopoverController,
+    public navP: NavParams) {
+    this.event = navP.get("event");
+  }
 
   ngOnInit() {
+
+  }
+
+  addSymbol(id, e) {
+    this.popCtrl.dismiss({ id: id, e: this.event });
+  }
+
+  closePopup() {
+    this.popCtrl.dismiss();
   }
 
 }

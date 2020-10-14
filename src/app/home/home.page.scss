@@ -3,6 +3,18 @@
 .symbol.large { -webkit-transform: scale(1.25); transform: scale(1.25); }
 .rotate { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
 
+// // Symbol Pop Up = .popover-content
+// .symPopUp {
+//   --width: 200px;
+//   --height: 200px;
+// }
+
+// .symPopUp .popover-content {
+//   top: 120px;
+//   left: 600px;
+//   --width: 200px;
+// }
+
 // Tooltips
 #toolbar-tooltip {
   background-color: black;
