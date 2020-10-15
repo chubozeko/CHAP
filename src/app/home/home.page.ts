@@ -101,6 +101,8 @@ export class HomePage {
   items: Array<any> = [];
 
   splash = true;
+  isSymbolBeingDragged = false;
+  popOver;
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -125,7 +127,10 @@ export class HomePage {
   ionViewWillEnter() { }
 
   ngOnInit() {
-    setTimeout(() => { this.splash = false; this.openIntroTutorial(); }, 4000);
+    setTimeout(() => {
+      this.splash = false;
+      // this.openIntroTutorial(); 
+    }, 4000);
     // Adding Hover Listeners to Toolbar Buttons
     let tbButtons = document.getElementsByClassName("tooltip");
     for (let i = 0; i < tbButtons.length; i++) {
@@ -206,14 +211,25 @@ export class HomePage {
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.flowchart = new Flowchart(this.alertC);
     this.workspace = document.getElementById("workspace");
-    this.branch = document.getElementById("arrow");
-    this.branch.addEventListener("click", (e) => this.openSymbolsFAB(e));
-    this.branch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-    this.branch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
-    interact(this.branch)
-      .gesturable({ hold: 1500 })
-      .on("tap", (e) => this.openSymbolsFAB(e))
-      .on("hold", (e) => this.openArrowsAS(e));
+    let bs = document.getElementsByClassName("arrow dropzone");
+    for (let b = 0; b < bs.length; b++) {
+      bs[b].addEventListener("click", (e) => this.openSymbolsFAB(e));
+      bs[b].addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+      bs[b].addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
+      interact(bs[b])
+        .gesturable({ hold: 1500 })
+        .on("tap", (e) => this.openSymbolsFAB(e))
+        .on("hold", (e) => this.openArrowsAS(e));
+    }
+    this.branch = bs[0];
+    // this.branch = document.getElementById("arrow");
+    // this.branch.addEventListener("click", (e) => this.openSymbolsFAB(e));
+    // this.branch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+    // this.branch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
+    // interact(this.branch)
+    //   .gesturable({ hold: 1500 })
+    //   .on("tap", (e) => this.openSymbolsFAB(e))
+    //   .on("hold", (e) => this.openArrowsAS(e));
 
     /*** Dragula DRAG & DROP configs ***/
     this.subscribeToDragula();
@@ -266,6 +282,13 @@ export class HomePage {
   public subscribeToDragula() {
     this.dragulaService.drag("symbol").subscribe(({ name, el, source }) => {
       this.selectedSymbol = el.children[0].id;
+      this.isSymbolBeingDragged = true;
+      // Disable Symbols pop-up
+      // let ar = document.getElementsByClassName("arrow dropzone");
+      // for (let i = 0; i < ar.length; i++) {
+      //   ar[i].removeEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+      //   ar[i].removeEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
+      // }
     });
 
     this.dragulaService
@@ -274,12 +297,17 @@ export class HomePage {
         target.setAttribute("style", "background: #000000");
         target.removeChild(target.children[0]);
         this.addSymbol(this.selectedSymbol, el.children[0]);
+        this.isSymbolBeingDragged = false;
       });
 
     this.dragulaService
       .over("symbol")
       .subscribe(({ name, el, container, source }) => {
         if (container.className == "arrow dropzone") {
+          // Disable Symbols pop-up
+          // container.removeEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+          // container.removeEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
+          // Make Arrow active
           container.classList.add("active-arrow");
           container.setAttribute("style", "background: #9CDCFE");
         }
@@ -289,6 +317,10 @@ export class HomePage {
       .out("symbol")
       .subscribe(({ name, el, container, source }) => {
         if (container.className == "arrow dropzone active-arrow") {
+          // Enable Symbols pop-up
+          // container.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+          // container.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
+          // Make Arrow Inactive
           container.classList.remove("active-arrow");
           container.setAttribute("style", "background: #000000");
         }
@@ -335,34 +367,43 @@ export class HomePage {
   }
 
   async openSymbolPopUp(event) {
-    let t = event.target || event.srcElement || event.currentTarget;
-    t.classList.add("active-arrow");
-    const popover = await this.popCtrl.create({
-      component: OperationPage,
-      componentProps: { event: event },
-      cssClass: 'symPopUp',
-      event: event,
-      translucent: true,
-      showBackdrop: false,
-    });
-    popover.onDidDismiss().then((data) => {
-      try {
-        console.log(data.data);
-        if (data.data != undefined)
-          this.addSymbol(data.data.id, data.data.e);
+    if (!this.isSymbolBeingDragged) {
+      if (this.popOver) {
+        this.popCtrl.dismiss();
+      }
+      let t = event.target || event.srcElement || event.currentTarget;
+      t.classList.add("active-arrow");
+      this.popOver = await this.popCtrl.create({
+        component: OperationPage,
+        componentProps: { event: event },
+        cssClass: 'symPopUp',
+        event: event,
+        translucent: true,
+        showBackdrop: false,
+      });
+      this.popOver.onDidDismiss().then((data) => {
+        try {
+          console.log(data.data);
+          if (data.data != undefined)
+            this.addSymbol(data.data.id, data.data.e);
 
-        let t = event.target || event.srcElement || event.currentTarget;
-        t.classList.remove("active-arrow");
-      } catch (error) { console.log(error); }
-    });
-    return await popover.present();
+          let t = event.target || event.srcElement || event.currentTarget;
+          t.classList.remove("active-arrow");
+        } catch (error) { console.log(error); }
+      });
+      event.stopImmediatePropagation();
+      return await this.popOver.present();
+    }
+    event.stopImmediatePropagation();
   }
 
   public closeSymbolPopUp(event) {
-    console.log("Leave Arrow");
-    // let t = event.target || event.srcElement || event.currentTarget;
-    // t.classList.remove("active-arrow");
-    this.popCtrl.dismiss();
+    if (!this.isSymbolBeingDragged) {
+      console.log("Leave Arrow");
+      // let t = event.target || event.srcElement || event.currentTarget;
+      // t.classList.remove("active-arrow");
+      this.popCtrl.dismiss();
+    }
   }
 
   async openDeclareModal(symbol, e) {
@@ -2078,6 +2119,8 @@ export class HomePage {
       "arrow dropzone active-arrow"
     );
     let tempBranch = this.branch.cloneNode(true);
+    tempBranch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+    tempBranch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
     //tempBranch.classList.remove('active-arrow');
 
     /* Checking which BLOCK the symbol should be added to */
@@ -2257,11 +2300,10 @@ export class HomePage {
         .gesturable({ hold: 1500 })
         .on("tap", (e) => this.openSymbolsFAB(e))
         .on("hold", (e) => this.openArrowsAS(e));
-
-      dz[i].addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-      dz[i].addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
     }
 
+    if (this.popOver)
+      this.popCtrl.dismiss();
     console.log(this.flowchart.SYMBOLS);
   }
 
