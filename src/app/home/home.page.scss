@@ -3,17 +3,18 @@
 .symbol.large { -webkit-transform: scale(1.25); transform: scale(1.25); }
 .rotate { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
 
-// // Symbol Pop Up = .popover-content
-// .symPopUp {
-//   --width: 200px;
-//   --height: 200px;
-// }
-
-// .symPopUp .popover-content {
-//   top: 120px;
-//   left: 600px;
-//   --width: 200px;
-// }
+#infoPrompt {
+  // width: 75%;
+  display: none;
+  justify-content: center;
+  background-color: #cccccc;
+  position: absolute;
+  top: 65%;
+  z-index: 1;
+  left: 36.5%;
+  min-width: max-content;
+  padding: 15px;
+}
 
 // Tooltips
 #toolbar-tooltip {

@@ -283,12 +283,17 @@ export class HomePage {
     this.dragulaService.drag("symbol").subscribe(({ name, el, source }) => {
       this.selectedSymbol = el.children[0].id;
       this.isSymbolBeingDragged = true;
-      // Disable Symbols pop-up
-      // let ar = document.getElementsByClassName("arrow dropzone");
-      // for (let i = 0; i < ar.length; i++) {
-      //   ar[i].removeEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-      //   ar[i].removeEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
-      // }
+
+      let prompt = document.getElementById("infoPrompt");
+      prompt.style.display = "flex";
+    });
+
+    this.dragulaService.dragend("symbol").subscribe(({ name, el }) => {
+      // this.selectedSymbol = el.children[0].id;
+      this.isSymbolBeingDragged = false;
+
+      let prompt = document.getElementById("infoPrompt");
+      prompt.style.display = "none";
     });
 
     this.dragulaService
@@ -297,6 +302,8 @@ export class HomePage {
         target.setAttribute("style", "background: #000000");
         target.removeChild(target.children[0]);
         this.addSymbol(this.selectedSymbol, el.children[0]);
+        this.popOver = null;
+        this.popCtrl.dismiss();
         this.isSymbolBeingDragged = false;
       });
 
@@ -304,9 +311,6 @@ export class HomePage {
       .over("symbol")
       .subscribe(({ name, el, container, source }) => {
         if (container.className == "arrow dropzone") {
-          // Disable Symbols pop-up
-          // container.removeEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-          // container.removeEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
           // Make Arrow active
           container.classList.add("active-arrow");
           container.setAttribute("style", "background: #9CDCFE");
@@ -317,9 +321,6 @@ export class HomePage {
       .out("symbol")
       .subscribe(({ name, el, container, source }) => {
         if (container.className == "arrow dropzone active-arrow") {
-          // Enable Symbols pop-up
-          // container.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-          // container.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
           // Make Arrow Inactive
           container.classList.remove("active-arrow");
           container.setAttribute("style", "background: #000000");
