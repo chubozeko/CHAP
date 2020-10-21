@@ -17,12 +17,37 @@
     <ion-button>
       <ion-img style="width: 32px; height: 32px;" src="./assets/icon/chap_logo.png"></ion-img>
     </ion-button>
+    &nbsp; &nbsp;
   </ion-buttons>
 
   <ion-input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}" clearInput></ion-input>
 
   <!-- Menu Toolbar Buttons -->
   <ion-buttons slot="end">
+    &nbsp; &nbsp;
+    <div class="tooltip">
+      <ion-button (click)="debugProgram()">
+        <ion-icon name="play"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Run Program</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="generatePseudoCode()">
+        <ion-icon slot="icon-only" name="code"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Generate Code</span>
+    </div>
+
+    &nbsp; &nbsp; &nbsp; &nbsp;
+
+    <div class="tooltip">
+      <ion-button (click)="clearWorkspaceAlert()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Clear Workspace</span>
+    </div>
+
     <ion-input type="text" id="toolbar-tooltip" value="{{toolbarTooltip}}" readonly></ion-input>
 
     <div class="tooltip">
@@ -47,27 +72,6 @@
     </div>
 
     &nbsp; &nbsp; &nbsp; &nbsp;
-
-    <div class="tooltip">
-      <ion-button (click)="clearWorkspace()">
-        <ion-icon slot="icon-only" name="close"></ion-icon>
-      </ion-button>
-      <span class="tooltiptext" style="width: 140px;">Clear Workspace</span>
-    </div>
-
-    <div class="tooltip">
-      <ion-button (click)="debugProgram()">
-        <ion-icon slot="icon-only" name="bug"></ion-icon>
-      </ion-button>
-      <span class="tooltiptext" style="width: 140px;">Debug Program</span>
-    </div>
-
-    <div class="tooltip">
-      <ion-button (click)="generatePseudoCode()">
-        <ion-icon slot="icon-only" name="code"></ion-icon>
-      </ion-button>
-      <span class="tooltiptext" style="width: 140px;">Generate Code</span>
-    </div>
 
     <div class="tooltip">
       <ion-button (click)="openTutorialPage()">

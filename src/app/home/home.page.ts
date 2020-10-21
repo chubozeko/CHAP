@@ -100,7 +100,7 @@ export class HomePage {
 
   items: Array<any> = [];
 
-  splash = true;
+  // splash = true;
   isSymbolBeingDragged = false;
   popOver;
 
@@ -128,9 +128,10 @@ export class HomePage {
 
   ngOnInit() {
     setTimeout(() => {
-      this.splash = false;
-      // this.openIntroTutorial(); 
+      // this.splash = false;
+      // this.openIntroTutorial();
     }, 4000);
+
     // Adding Hover Listeners to Toolbar Buttons
     let tbButtons = document.getElementsByClassName("tooltip");
     for (let i = 0; i < tbButtons.length; i++) {
@@ -165,7 +166,7 @@ export class HomePage {
     let genCode = document.getElementById("btn_generateCode");
     genCode.addEventListener("click", () => this.generatePseudoCode());
     let clearWS = document.getElementById("btn_clearWorkspace");
-    clearWS.addEventListener("click", () => this.clearWorkspace());
+    clearWS.addEventListener("click", () => this.clearWorkspaceAlert());
     let aboutPg = document.getElementById("btn_aboutPage");
     aboutPg.addEventListener("click", () => this.openAboutPage());
     let tutorPg = document.getElementById("btn_tutorialPage");
@@ -213,11 +214,13 @@ export class HomePage {
     this.workspace = document.getElementById("workspace");
     let bs = document.getElementsByClassName("arrow dropzone");
     for (let b = 0; b < bs.length; b++) {
-      bs[b].addEventListener("click", (e) => this.openSymbolsFAB(e));
-      bs[b].addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-      bs[b].addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
+      bs[b].addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        this.openArrowsAS(e);
+      });
       interact(bs[b])
         .gesturable({ hold: 1500 })
+        .on("doubletap", (e) => this.openSymbolPopUp(e))
         .on("tap", (e) => this.openSymbolsFAB(e))
         .on("hold", (e) => this.openArrowsAS(e));
     }
@@ -1589,7 +1592,6 @@ export class HomePage {
         bs[i].classList.remove("active-arrow");
       }
     }
-
     event.preventDefault();
     // Get the target symbol & make it active
     let targetArrow = event.target || event.srcElement || event.currentTarget;
@@ -2120,8 +2122,17 @@ export class HomePage {
       "arrow dropzone active-arrow"
     );
     let tempBranch = this.branch.cloneNode(true);
-    tempBranch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-    tempBranch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
+    // tempBranch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
+    // tempBranch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
+    tempBranch.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      this.openArrowsAS(e);
+    });
+    interact(tempBranch)
+      .gesturable({ hold: 1500 })
+      .on("doubletap", (e) => this.openSymbolPopUp(e))
+      .on("tap", (e) => this.openSymbolsFAB(e))
+      .on("hold", (e) => this.openArrowsAS(e));
     //tempBranch.classList.remove('active-arrow');
 
     /* Checking which BLOCK the symbol should be added to */
@@ -2296,10 +2307,15 @@ export class HomePage {
     }
     let dz = document.getElementsByClassName("arrow dropzone");
     for (let i = 0; i < dz.length; i++) {
+      dz[i].addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        this.openArrowsAS(e);
+      });
       interact(dz[i]).unset();
       interact(dz[i])
         .gesturable({ hold: 1500 })
         .on("tap", (e) => this.openSymbolsFAB(e))
+        .on("doubletap", (e) => this.openSymbolPopUp(e))
         .on("hold", (e) => this.openArrowsAS(e));
     }
 
@@ -2351,6 +2367,29 @@ export class HomePage {
   public clearConsole() {
     let consoleCHAP = document.getElementById("console") as HTMLTextAreaElement;
     consoleCHAP.value = "";
+  }
+
+  async clearWorkspaceAlert() {
+    const alert = await this.alertC.create({
+      cssClass: '',
+      header: 'Clear Workspace...',
+      message: 'Are you sure?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.clearWorkspace();
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => { }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   public clearWorkspace() {
