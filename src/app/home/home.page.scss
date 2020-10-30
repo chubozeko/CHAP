@@ -11,13 +11,14 @@
   // width: 75%;
   display: none;
   justify-content: center;
-  background-color: #cccccc;
+  background-color: #aaaaaa;
   position: absolute;
-  top: 65%;
+  top: 75%;
   z-index: 1;
   left: 36.5%;
   min-width: max-content;
   padding: 15px;
+  opacity: 0.5;
 }
 
 #fileName {

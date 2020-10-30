@@ -17,17 +17,31 @@ export class WhileLoopPage implements OnInit {
   ngOnInit() {
     let exps = (document.getElementById("while_expression") as HTMLInputElement);
     exps.value = this.symbol.getWhileExpression();
+
+    // Colourful Textboxes
+    let tbs = document.getElementsByClassName("dialogTextbox") as HTMLCollectionOf<HTMLElement>;
+    for (let i = 0; i < tbs.length; i++) {
+      tbs[i].addEventListener("focusin", () => {
+        tbs[i].style.border = "2px solid #9CDCFE";
+        tbs[i].style.borderRadius = "5px";
+        tbs[i].style.backgroundColor = "#DEF3FE";
+      });
+      tbs[i].addEventListener("focusout", () => {
+        tbs[i].style.border = "none";
+        tbs[i].style.backgroundColor = "#ffffff";
+      });
+    }
   }
 
-  public applyAndCloseModal(){
+  public applyAndCloseModal() {
     let exps = (document.getElementById("while_expression") as HTMLInputElement);
-    this.symbol.setWhileExpression( exps.value );
+    this.symbol.setWhileExpression(exps.value);
 
-    this.modal.dismiss( this.symbol );
+    this.modal.dismiss(this.symbol);
   }
 
-  public closeModal(){
-    this.modal.dismiss( this.symbol );
+  public closeModal() {
+    this.modal.dismiss(this.symbol);
   }
 
 }

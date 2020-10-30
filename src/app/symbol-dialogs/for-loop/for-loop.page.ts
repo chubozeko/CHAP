@@ -35,6 +35,19 @@ export class ForLoopPage implements OnInit {
     step_value.value = this.symbol.getStepValue().toString();
 
     this.initializeHoverEvents();
+    // Colourful Textboxes
+    let tbs = document.getElementsByClassName("dialogTextbox") as HTMLCollectionOf<HTMLElement>;
+    for (let i = 0; i < tbs.length; i++) {
+      tbs[i].addEventListener("focusin", () => {
+        tbs[i].style.border = "2px solid #9CDCFE";
+        tbs[i].style.borderRadius = "5px";
+        tbs[i].style.backgroundColor = "#DEF3FE";
+      });
+      tbs[i].addEventListener("focusout", () => {
+        tbs[i].style.border = "none";
+        tbs[i].style.backgroundColor = "#ffffff";
+      });
+    }
   }
 
   public initializeHoverEvents() {

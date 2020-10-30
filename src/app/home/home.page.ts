@@ -101,10 +101,11 @@ export class HomePage {
 
   items: Array<any> = [];
 
-  // splash = true;
+  splash = true;
   isSymbolBeingDragged = false;
   isRightClickPromptShowing = false;
   popOver;
+  infoMessage = "";
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -130,8 +131,8 @@ export class HomePage {
 
   ngOnInit() {
     setTimeout(() => {
-      // this.splash = false;
-      // this.openIntroTutorial();
+      this.splash = false;
+      this.openIntroTutorial();
     }, 4000);
 
     // Adding Hover Listeners to Toolbar Buttons
@@ -220,6 +221,20 @@ export class HomePage {
         e.preventDefault();
         this.openArrowsAS(e);
       });
+      bs[b].addEventListener("mouseover", (e) => {
+        let prompt = document.getElementById("infoPrompt");
+        prompt.style.display = "flex";
+        this.infoMessage = "Double-Click on an Arrow to Open small Symbol List";
+        setTimeout(() => {
+          prompt.style.display = "none";
+          this.infoMessage = "";
+        }, 3000);
+      });
+      bs[b].addEventListener("mouseout", (e) => {
+        let prompt = document.getElementById("infoPrompt");
+        prompt.style.display = "none";
+        this.infoMessage = "";
+      });
       interact(bs[b])
         .gesturable({ hold: 1500 })
         .on("doubletap", (e) => this.openSymbolPopUp(e))
@@ -283,6 +298,7 @@ export class HomePage {
 
       let prompt = document.getElementById("infoPrompt");
       prompt.style.display = "flex";
+      this.infoMessage = "Drag and Drop Symbols onto an Arrow to add a Symbol";
     });
 
     this.dragulaService.dragend("symbol").subscribe(({ name, el }) => {
@@ -291,6 +307,7 @@ export class HomePage {
 
       let prompt = document.getElementById("infoPrompt");
       prompt.style.display = "none";
+      this.infoMessage = "";
     });
 
     this.dragulaService
@@ -2112,6 +2129,20 @@ export class HomePage {
     tempBranch.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       this.openArrowsAS(e);
+    });
+    tempBranch.addEventListener("mouseover", (e) => {
+      let prompt = document.getElementById("infoPrompt");
+      prompt.style.display = "flex";
+      this.infoMessage = "Double-Click on an Arrow to Open small Symbol List";
+      setTimeout(() => {
+        prompt.style.display = "none";
+        this.infoMessage = "";
+      }, 3000);
+    });
+    tempBranch.addEventListener("mouseout", (e) => {
+      let prompt = document.getElementById("infoPrompt");
+      prompt.style.display = "none";
+      this.infoMessage = "";
     });
     interact(tempBranch)
       .gesturable({ hold: 1500 })

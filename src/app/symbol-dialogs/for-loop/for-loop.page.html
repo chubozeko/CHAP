@@ -13,19 +13,20 @@
   </ion-item>
 
   <ion-item color="primary">
-    <ion-input type="text" id="forloop_tooltip_info" value="{{toolTipInfoText}}" readonly></ion-input>
+    <ion-input type="text" id="forloop_tooltip_info" class="dialogTextbox" value="{{toolTipInfoText}}" readonly>
+    </ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-input id="for_var_name" type="text" placeholder="Variable Name" [value]="" class="forloop_elements"
-      data-text="Enter an iteration variable"></ion-input>
+    <ion-input id="for_var_name" type="text" placeholder="Variable Name" [value]=""
+      class="forloop_elements dialogTextbox" data-text="Enter an iteration variable"></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-input id="for_start_val" type="text" placeholder="Start Value" [value]="" class="forloop_elements"
-      data-text="Enter the initial value of the iteration variable"></ion-input>
+    <ion-input id="for_start_val" type="text" placeholder="Start Value" [value]=""
+      class="forloop_elements dialogTextbox" data-text="Enter the initial value of the iteration variable"></ion-input>
     <br />
-    <ion-input id="for_end_val" type="text" placeholder="End Value" [value]="" class="forloop_elements"
+    <ion-input id="for_end_val" type="text" placeholder="End Value" [value]="" class="forloop_elements dialogTextbox"
       data-text="Enter the ending value of the iteration variable"></ion-input>
   </ion-item>
 
@@ -45,7 +46,7 @@
   </ion-item>
 
   <ion-item>
-    <ion-input id="for_step_val" type="text" placeholder="Step By" [value]="" class="forloop_elements"
+    <ion-input id="for_step_val" type="text" placeholder="Step By" [value]="" class="forloop_elements dialogTextbox"
       data-text="Enter the step value between each iteration"></ion-input>
   </ion-item>
 

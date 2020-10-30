@@ -27,14 +27,14 @@
     &nbsp; &nbsp;
     <div class="tooltip">
       <ion-button (click)="debugProgram()">
-        <ion-icon name="play"></ion-icon>
+        <ion-icon name="play" color="success"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 140px;">Run Program</span>
     </div>
 
     <div class="tooltip">
       <ion-button (click)="generatePseudoCode()">
-        <ion-icon slot="icon-only" name="code"></ion-icon>
+        <ion-icon slot="icon-only" name="code" style="color: #AFF3CA;"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 140px;">Generate Code</span>
     </div>
@@ -43,7 +43,7 @@
 
     <div class="tooltip">
       <ion-button (click)="clearWorkspaceAlert()">
-        <ion-icon slot="icon-only" name="close"></ion-icon>
+        <ion-icon slot="icon-only" name="close" color="danger"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 140px;">Clear Workspace</span>
     </div>
@@ -52,21 +52,21 @@
 
     <div class="tooltip">
       <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
-        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="add-circle-outline" style="color: #54CBC9;"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 120px;">New Project</span>
     </div>
 
     <div class="tooltip">
       <ion-button (click)="openProjectOptions()">
-        <ion-icon slot="icon-only" name="folder-open"></ion-icon>
+        <ion-icon slot="icon-only" name="folder-open" color="warning"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 120px;">Open Project</span>
     </div>
 
     <div class="tooltip">
       <ion-button (click)="saveProjectOptions()">
-        <ion-icon slot="icon-only" name="save"></ion-icon>
+        <ion-icon slot="icon-only" name="save" style="color: #4c8dff;"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 120px;">Save Project</span>
     </div>
@@ -75,7 +75,7 @@
 
     <div class="tooltip">
       <ion-button (click)="openTutorialPage()">
-        <ion-icon slot="icon-only" name="help-circle"></ion-icon>
+        <ion-icon slot="icon-only" name="help-circle" style="color: #C180A3;"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 80px;">Tutorial</span>
     </div>
@@ -105,7 +105,7 @@
 <ion-content>
 
   <div id="infoPrompt">
-    <p>Drag and Drop Symbols onto an Arrow to add a Symbol</p>
+    <p>{{infoMessage}}</p>
   </div>
 
   <div class="wrapper">
