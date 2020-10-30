@@ -48,6 +48,7 @@ import { SignupPageModule } from "./signup/signup.module";
 import { WelcomePageModule } from "./welcome/welcome.module";
 import { CoverPagePageModule } from "./cover-page/cover-page.module";
 import { OperationPageModule } from "./symbol-dialogs/operation/operation.module";
+import { PromptPageModule } from "./prompt/prompt.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -81,6 +82,7 @@ import { OperationPageModule } from "./symbol-dialogs/operation/operation.module
     WelcomePageModule,
     CoverPagePageModule,
     OperationPageModule,
+    PromptPageModule
     // TooltipsModule
   ],
   providers: [

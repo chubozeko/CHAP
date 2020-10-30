@@ -181,3 +181,18 @@ textarea{
   margin-top: 5px;
   width: 175px;
 }
+
+/* Symbol Pop Up (.popover-content) */
+.symbolPromptAS {
+  --width: 150px;
+  --height: max-content;
+}
+  
+.symbolPromptAS .popover-wrapper .popover-content {
+  /* top: 120px;
+  left: 600px; */
+  margin-left: 85px;
+  margin-top: 5px;
+  width: 125px;
+  padding: 5px;
+}

@@ -1,0 +1,25 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>prompt</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content id="promptAS">
+  <ion-list id="p_arrowAS">
+    <ion-item (click)="pasteSymbol()">
+      <ion-icon name="clipboard"></ion-icon> Paste
+    </ion-item>
+  </ion-list>
+
+  <ion-list id="p_symbolAS">
+    <ion-item (click)="cutSymbol()">
+      <ion-icon name="cut"></ion-icon> Cut
+    </ion-item>
+    <ion-item (click)="copySymbol()">
+      <ion-icon name="copy"></ion-icon> Copy
+    </ion-item>
+    <ion-item (click)="deleteSymbol()">
+      <ion-icon name="trash"></ion-icon> Delete
+    </ion-item>
+  </ion-list>
+</ion-content>

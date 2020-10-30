@@ -3,6 +3,10 @@
 .symbol.large { -webkit-transform: scale(1.25); transform: scale(1.25); }
 .rotate { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
 
+.symbolPromptAS {
+  width: 150px;
+  
+}
 #infoPrompt {
   // width: 75%;
   display: none;

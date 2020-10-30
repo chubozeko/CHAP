@@ -59,6 +59,7 @@ import { toBase64String } from "@angular/compiler/src/output/source_map";
 import { FeedbackPage } from "../feedback/feedback.page";
 import { OperationPage } from "../symbol-dialogs/operation/operation.page";
 import { CoverPagePage } from "../cover-page/cover-page.page";
+import { PromptPage } from "../prompt/prompt.page";
 
 @Component({
   selector: "app-home",
@@ -102,6 +103,7 @@ export class HomePage {
 
   // splash = true;
   isSymbolBeingDragged = false;
+  isRightClickPromptShowing = false;
   popOver;
 
   constructor(
@@ -225,14 +227,6 @@ export class HomePage {
         .on("hold", (e) => this.openArrowsAS(e));
     }
     this.branch = bs[0];
-    // this.branch = document.getElementById("arrow");
-    // this.branch.addEventListener("click", (e) => this.openSymbolsFAB(e));
-    // this.branch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-    // this.branch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
-    // interact(this.branch)
-    //   .gesturable({ hold: 1500 })
-    //   .on("tap", (e) => this.openSymbolsFAB(e))
-    //   .on("hold", (e) => this.openArrowsAS(e));
 
     /*** Dragula DRAG & DROP configs ***/
     this.subscribeToDragula();
@@ -387,7 +381,6 @@ export class HomePage {
       });
       this.popOver.onDidDismiss().then((data) => {
         try {
-          console.log(data.data);
           if (data.data != undefined)
             this.addSymbol(data.data.id, data.data.e);
 
@@ -403,9 +396,6 @@ export class HomePage {
 
   public closeSymbolPopUp(event) {
     if (!this.isSymbolBeingDragged) {
-      console.log("Leave Arrow");
-      // let t = event.target || event.srcElement || event.currentTarget;
-      // t.classList.remove("active-arrow");
       this.popCtrl.dismiss();
     }
   }
@@ -1104,611 +1094,606 @@ export class HomePage {
   }
 
   async openSymbolsAS(event) {
-    let syms1 = document
-      .getElementById("workspace")
-      .getElementsByClassName("symbol");
-    for (let i = 0; i < syms1.length; i++) {
-      if (syms1[i].classList.contains("active-symbol")) {
-        syms1[i].classList.remove("active-symbol");
+    if (!this.isRightClickPromptShowing) {
+      let syms1 = document
+        .getElementById("workspace")
+        .getElementsByClassName("symbol");
+      for (let i = 0; i < syms1.length; i++) {
+        if (syms1[i].classList.contains("active-symbol")) {
+          syms1[i].classList.remove("active-symbol");
+        }
+      }
+      event.preventDefault();
+      // Get the target symbol & make it active
+      let targetSymbol = event.target || event.srcElement || event.currentTarget;
+      if (
+        targetSymbol.id == "s_if_case" ||
+        targetSymbol.id == "s_for_loop" ||
+        targetSymbol.id == "s_while_loop" ||
+        targetSymbol.id == "s_do_while_loop"
+      ) {
+        targetSymbol.parentElement.classList.add("active-symbol");
+      } else {
+        targetSymbol.classList.add("active-symbol");
+      }
+
+      if (
+        targetSymbol.id == "s_declare" ||
+        targetSymbol.id == "s_input" ||
+        targetSymbol.id == "s_output" ||
+        targetSymbol.id == "s_comment" ||
+        targetSymbol.id == "s_process" ||
+        targetSymbol.id == "s_if_case" ||
+        targetSymbol.id == "s_for_loop" ||
+        targetSymbol.id == "s_while_loop" ||
+        targetSymbol.id == "s_do_while_loop"
+      ) {
+        if (this.popOver) {
+          this.popCtrl.dismiss();
+        }
+        this.popOver = await this.popCtrl.create({
+          component: PromptPage,
+          componentProps: { event: event, type: 'symbol' },
+          cssClass: "symbolPromptAS",
+          event: event,
+          translucent: true,
+          showBackdrop: false,
+        });
+        this.popOver.onDidDismiss().then((data) => {
+          try {
+            if (data.data != undefined) {
+              if (data.data == 'cut') {
+                let asi,
+                  selectedSymbol = document
+                    .getElementById("workspace")
+                    .getElementsByClassName("active-symbol");
+                if (selectedSymbol[0].parentElement.id == "ifTrueBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from If-Case-True-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                      );
+                      this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from If-True-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from If-Case-False-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi)
+                      );
+                      this.flowchart.SYMBOLS[l].removeSymbolFromFalseBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from If-False-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from For-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                      );
+                      this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from For-Loop-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else if (
+                  selectedSymbol[0].parentElement.id == "whileTrueBlock"
+                ) {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from While-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                      );
+                      this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from While-Loop-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else if (
+                  selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
+                ) {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from Do-While-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                      );
+                      this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from Do-While-Loop-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else {
+                  let syms = document
+                    .getElementById("workspace")
+                    .getElementsByClassName("symbol");
+                  // Remove symbol from Flowchart
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i - 1;
+                    }
+                  }
+                  // Add symbol to Paste buffer
+                  this.paste_sym_buffer.push(
+                    this.flowchart.getSymbolFromFlowchart(asi)
+                  );
+                  this.flowchart.removeSymbolFromFlowchart(asi);
+                  // Remove symbol and trailing arrow from Workspace
+                  let nextArrow = selectedSymbol[0].nextSibling;
+                  this.workspace.removeChild(nextArrow);
+                  selectedSymbol[0].remove();
+                }
+                let syms = document
+                  .getElementById("workspace")
+                  .getElementsByClassName("symbol");
+                for (let i = 0; i < syms.length; i++) {
+                  if (syms[i].classList.contains("active-symbol")) {
+                    syms[i].classList.remove("active-symbol");
+                  }
+                }
+                console.log(this.flowchart.SYMBOLS);
+                console.log("Paste buffers: ");
+                console.log(this.paste_sym_buffer);
+                this.isCutCopyReady = true;
+              } else if (data.data == 'copy') {
+                let asi,
+                  selectedSymbol = document
+                    .getElementById("workspace")
+                    .getElementsByClassName("active-symbol");
+                if (selectedSymbol[0].parentElement.id == "ifTrueBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Copy symbol from If-Case-True-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                      );
+                    }
+                  }
+                } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Copy symbol from If-Case-False-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi)
+                      );
+                    }
+                  }
+                } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Copy symbol from For-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                      );
+                    }
+                  }
+                } else if (
+                  selectedSymbol[0].parentElement.id == "whileTrueBlock"
+                ) {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Copy symbol from While-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                      );
+                    }
+                  }
+                } else if (
+                  selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
+                ) {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Copy symbol from Do-While-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
+                      // Add symbol to Paste buffer
+                      this.paste_sym_buffer.push(
+                        this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
+                      );
+                    }
+                  }
+                } else {
+                  let syms = document
+                    .getElementById("workspace")
+                    .getElementsByClassName("symbol");
+                  // Copy symbol from Flowchart
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i - 1;
+                    }
+                  }
+                  // Add symbol to Paste buffer
+                  this.paste_sym_buffer.push(
+                    this.flowchart.getSymbolFromFlowchart(asi)
+                  );
+                }
+                let syms = document
+                  .getElementById("workspace")
+                  .getElementsByClassName("symbol");
+                for (let i = 0; i < syms.length; i++) {
+                  if (syms[i].classList.contains("active-symbol")) {
+                    syms[i].classList.remove("active-symbol");
+                  }
+                }
+                console.log(this.flowchart.SYMBOLS);
+                console.log("Paste buffers: ");
+                console.log(this.paste_sym_buffer);
+                this.isCutCopyReady = true;
+              } else if (data.data == 'delete') {
+                let asi,
+                  selectedSymbol = document
+                    .getElementById("workspace")
+                    .getElementsByClassName("active-symbol");
+                if (selectedSymbol[0].parentElement.id == "ifTrueBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from If-Case-True-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
+                      this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from If-True-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from If-Case-False-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
+                      this.flowchart.SYMBOLS[l].removeSymbolFromFalseBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from If-False-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from For-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
+                      this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from For-Loop-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else if (
+                  selectedSymbol[0].parentElement.id == "whileTrueBlock"
+                ) {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from While-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
+                      this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from While-Loop-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else if (
+                  selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
+                ) {
+                  let syms = selectedSymbol[0].parentElement.getElementsByClassName(
+                    "symbol"
+                  );
+                  // Remove symbol from Do-While-Loop-Block
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i;
+                    }
+                  }
+                  for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+                    if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
+                      this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
+                    }
+                  }
+                  // Remove symbol and trailing arrow from Do-While-Loop-Block in Workspace
+                  let nextArrow = syms[asi].nextSibling;
+                  syms[asi].parentElement.removeChild(nextArrow);
+                  syms[asi].remove();
+                } else {
+                  let syms = document
+                    .getElementById("workspace")
+                    .getElementsByClassName("symbol");
+                  // Remove symbol from Flowchart
+                  for (let i = 0; i < syms.length; i++) {
+                    if (syms[i].classList.contains("active-symbol")) {
+                      asi = i - 1;
+                    }
+                  }
+                  this.flowchart.removeSymbolFromFlowchart(asi);
+                  // Remove symbol and trailing arrow from Workspace
+                  let nextArrow = selectedSymbol[0].nextSibling;
+                  this.workspace.removeChild(nextArrow);
+                  selectedSymbol[0].remove();
+                }
+                let syms = document
+                  .getElementById("workspace")
+                  .getElementsByClassName("symbol");
+                for (let i = 0; i < syms.length; i++) {
+                  if (syms[i].classList.contains("active-symbol")) {
+                    syms[i].classList.remove("active-symbol");
+                  }
+                }
+                console.log(this.flowchart.SYMBOLS);
+              }
+            }
+          } catch (error) { console.log(error); }
+          this.isRightClickPromptShowing = false;
+        });
+        event.stopImmediatePropagation();
+        this.isRightClickPromptShowing = true;
+        return await this.popOver.present();
       }
     }
-    event.preventDefault();
-    // Get the target symbol & make it active
-    let targetSymbol = event.target || event.srcElement || event.currentTarget;
-    if (
-      targetSymbol.id == "s_if_case" ||
-      targetSymbol.id == "s_for_loop" ||
-      targetSymbol.id == "s_while_loop" ||
-      targetSymbol.id == "s_do_while_loop"
-    ) {
-      targetSymbol.parentElement.classList.add("active-symbol");
-    } else {
-      targetSymbol.classList.add("active-symbol");
-    }
-
-    if (
-      targetSymbol.id == "s_declare" ||
-      targetSymbol.id == "s_input" ||
-      targetSymbol.id == "s_output" ||
-      targetSymbol.id == "s_comment" ||
-      targetSymbol.id == "s_process" ||
-      targetSymbol.id == "s_if_case" ||
-      targetSymbol.id == "s_for_loop" ||
-      targetSymbol.id == "s_while_loop" ||
-      targetSymbol.id == "s_do_while_loop"
-    ) {
-      // Create Symbol Options actionsheet
-      let options: ActionSheetOptions = {
-        buttons: [
-          {
-            text: "Cut",
-            icon: "cut",
-            handler: () => {
-              let asi,
-                selectedSymbol = document
-                  .getElementById("workspace")
-                  .getElementsByClassName("active-symbol");
-              if (selectedSymbol[0].parentElement.id == "ifTrueBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from If-Case-True-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
-                    );
-                    this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from If-True-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from If-Case-False-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi)
-                    );
-                    this.flowchart.SYMBOLS[l].removeSymbolFromFalseBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from If-False-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from For-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
-                    );
-                    this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from For-Loop-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else if (
-                selectedSymbol[0].parentElement.id == "whileTrueBlock"
-              ) {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from While-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
-                    );
-                    this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from While-Loop-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else if (
-                selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
-              ) {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from Do-While-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
-                    );
-                    this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from Do-While-Loop-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else {
-                let syms = document
-                  .getElementById("workspace")
-                  .getElementsByClassName("symbol");
-                // Remove symbol from Flowchart
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i - 1;
-                  }
-                }
-                // Add symbol to Paste buffer
-                this.paste_sym_buffer.push(
-                  this.flowchart.getSymbolFromFlowchart(asi)
-                );
-                this.flowchart.removeSymbolFromFlowchart(asi);
-                // Remove symbol and trailing arrow from Workspace
-                let nextArrow = selectedSymbol[0].nextSibling;
-                this.workspace.removeChild(nextArrow);
-                selectedSymbol[0].remove();
-              }
-              let syms = document
-                .getElementById("workspace")
-                .getElementsByClassName("symbol");
-              for (let i = 0; i < syms.length; i++) {
-                if (syms[i].classList.contains("active-symbol")) {
-                  syms[i].classList.remove("active-symbol");
-                }
-              }
-              console.log(this.flowchart.SYMBOLS);
-              console.log("Paste buffers: ");
-              console.log(this.paste_sym_buffer);
-              this.isCutCopyReady = true;
-            },
-          },
-          {
-            text: "Copy",
-            icon: "copy",
-            handler: () => {
-              let asi,
-                selectedSymbol = document
-                  .getElementById("workspace")
-                  .getElementsByClassName("active-symbol");
-              if (selectedSymbol[0].parentElement.id == "ifTrueBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Copy symbol from If-Case-True-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
-                    );
-                  }
-                }
-              } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Copy symbol from If-Case-False-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi)
-                    );
-                  }
-                }
-              } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Copy symbol from For-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
-                    );
-                  }
-                }
-              } else if (
-                selectedSymbol[0].parentElement.id == "whileTrueBlock"
-              ) {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Copy symbol from While-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
-                    );
-                  }
-                }
-              } else if (
-                selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
-              ) {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Copy symbol from Do-While-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
-                    // Add symbol to Paste buffer
-                    this.paste_sym_buffer.push(
-                      this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
-                    );
-                  }
-                }
-              } else {
-                let syms = document
-                  .getElementById("workspace")
-                  .getElementsByClassName("symbol");
-                // Copy symbol from Flowchart
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i - 1;
-                  }
-                }
-                // Add symbol to Paste buffer
-                this.paste_sym_buffer.push(
-                  this.flowchart.getSymbolFromFlowchart(asi)
-                );
-              }
-              let syms = document
-                .getElementById("workspace")
-                .getElementsByClassName("symbol");
-              for (let i = 0; i < syms.length; i++) {
-                if (syms[i].classList.contains("active-symbol")) {
-                  syms[i].classList.remove("active-symbol");
-                }
-              }
-              console.log(this.flowchart.SYMBOLS);
-              console.log("Paste buffers: ");
-              console.log(this.paste_sym_buffer);
-              this.isCutCopyReady = true;
-            },
-          },
-          {
-            text: "Delete",
-            role: "destructive",
-            icon: "trash",
-            handler: () => {
-              let asi,
-                selectedSymbol = document
-                  .getElementById("workspace")
-                  .getElementsByClassName("active-symbol");
-              if (selectedSymbol[0].parentElement.id == "ifTrueBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from If-Case-True-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
-                    this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from If-True-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from If-Case-False-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
-                    this.flowchart.SYMBOLS[l].removeSymbolFromFalseBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from If-False-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from For-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
-                    this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from For-Loop-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else if (
-                selectedSymbol[0].parentElement.id == "whileTrueBlock"
-              ) {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from While-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
-                    this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from While-Loop-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else if (
-                selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
-              ) {
-                let syms = selectedSymbol[0].parentElement.getElementsByClassName(
-                  "symbol"
-                );
-                // Remove symbol from Do-While-Loop-Block
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i;
-                  }
-                }
-                for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-                  if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
-                    this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
-                  }
-                }
-                // Remove symbol and trailing arrow from Do-While-Loop-Block in Workspace
-                let nextArrow = syms[asi].nextSibling;
-                syms[asi].parentElement.removeChild(nextArrow);
-                syms[asi].remove();
-              } else {
-                let syms = document
-                  .getElementById("workspace")
-                  .getElementsByClassName("symbol");
-                // Remove symbol from Flowchart
-                for (let i = 0; i < syms.length; i++) {
-                  if (syms[i].classList.contains("active-symbol")) {
-                    asi = i - 1;
-                  }
-                }
-                this.flowchart.removeSymbolFromFlowchart(asi);
-                // Remove symbol and trailing arrow from Workspace
-                let nextArrow = selectedSymbol[0].nextSibling;
-                this.workspace.removeChild(nextArrow);
-                selectedSymbol[0].remove();
-              }
-              let syms = document
-                .getElementById("workspace")
-                .getElementsByClassName("symbol");
-              for (let i = 0; i < syms.length; i++) {
-                if (syms[i].classList.contains("active-symbol")) {
-                  syms[i].classList.remove("active-symbol");
-                }
-              }
-              console.log(this.flowchart.SYMBOLS);
-            },
-          },
-        ],
-      };
-      // Create and Display Symbols Options actionsheet
-      const actionSheet = await this.symbolOptionsAS.create(options);
-      actionSheet.onDidDismiss().then((data) => {
-        let syms1 = document
-          .getElementById("workspace")
-          .getElementsByClassName("symbol");
-        for (let i = 0; i < syms1.length; i++) {
-          if (syms1[i].classList.contains("active-symbol")) {
-            syms1[i].classList.remove("active-symbol");
-          }
-        }
-      });
-      await actionSheet.present();
-    }
+    event.stopImmediatePropagation();
   }
 
   async openArrowsAS(event) {
-    let bs = document.getElementsByClassName("arrow dropzone");
-    for (let i = 0; i < bs.length; i++) {
-      if (bs[i].classList.contains("active-arrow")) {
-        bs[i].classList.remove("active-arrow");
+    if (!this.isRightClickPromptShowing) {
+      let bs = document.getElementsByClassName("arrow dropzone");
+      for (let i = 0; i < bs.length; i++) {
+        if (bs[i].classList.contains("active-arrow")) {
+          bs[i].classList.remove("active-arrow");
+        }
+      }
+      event.preventDefault();
+      // Get the target symbol & make it active
+      let targetArrow = event.target || event.srcElement || event.currentTarget;
+      targetArrow.classList.add("active-arrow");
+      if (this.isCutCopyReady) {
+        if (this.popOver) {
+          this.popCtrl.dismiss();
+        }
+        this.popOver = await this.popCtrl.create({
+          component: PromptPage,
+          componentProps: { event: event, type: 'arrow' },
+          cssClass: "symbolPromptAS",
+          event: event,
+          translucent: true,
+          showBackdrop: false,
+        });
+        this.popOver.onDidDismiss().then((data) => {
+          try {
+            if (data.data != undefined) {
+              if (data.data == 'paste') {
+                let sym: any;
+                let active_index: number;
+                let tempSym = this.paste_sym_buffer.pop();
+                let b = document.getElementsByClassName("arrow dropzone");
+                for (let i = 0; i < b.length; i++) {
+                  if (b[i].className.endsWith("active-arrow")) {
+                    active_index = i;
+                  }
+                }
+                switch (tempSym.id) {
+                  case "s_declare":
+                    sym = new Declare();
+                    sym.createDeclareSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getDeclareExpression();
+                    break;
+                  case "s_input":
+                    sym = new Input();
+                    sym.createInputSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getInputExpression();
+                    break;
+                  case "s_output":
+                    sym = new Output();
+                    sym.createOutputSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getOutputExpression();
+                    break;
+                  case "s_process":
+                    sym = new Process();
+                    sym.createProcessSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getProcessExpression();
+                    break;
+                  case "s_comment":
+                    sym = new Comment();
+                    sym.createCommentSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getCommentExpression();
+                    break;
+                  case "s_if_case":
+                    sym = new IfCase();
+                    sym.createIfCaseSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getIfStatement();
+                    break;
+                  case "s_for_loop":
+                    sym = new ForLoop();
+                    sym.createForLoopSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getForExpression();
+                    break;
+                  case "s_while_loop":
+                    sym = new WhileLoop();
+                    sym.createWhileLoopSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getWhileExpression();
+                    break;
+                  case "s_do_while_loop":
+                    sym = new DoWhileLoop();
+                    sym.createDoWhileLoopSymbol(tempSym);
+                    this.addSymbol(sym.id, targetArrow);
+                    this.flowchart.removeSymbolFromFlowchart(active_index);
+                    targetArrow.nextSibling.innerHTML = sym.getDoWhileExpression();
+                    break;
+                  default:
+                    break;
+                }
+                this.flowchart.addSymbolToFlowchart(sym, active_index);
+                let bs = document.getElementsByClassName("arrow dropzone");
+                for (let i = 0; i < b.length; i++) {
+                  if (bs[i].classList.contains("active-arrow")) {
+                    bs[i].classList.remove("active-arrow");
+                  }
+                }
+                this.paste_sym_buffer.push(tempSym);
+                this.toggleSymbolsFAB();
+                console.log(this.flowchart.SYMBOLS);
+                console.log("Paste buffers: ");
+                console.log(this.paste_sym_buffer);
+                // this.isCutCopyReady = false;
+              }
+            }
+          } catch (error) { console.log(error); }
+          this.isRightClickPromptShowing = false;
+        });
+        event.stopImmediatePropagation();
+        this.isRightClickPromptShowing = true;
+        return await this.popOver.present();
       }
     }
-    event.preventDefault();
-    // Get the target symbol & make it active
-    let targetArrow = event.target || event.srcElement || event.currentTarget;
-    targetArrow.classList.add("active-arrow");
-    if (this.isCutCopyReady) {
-      // Create Arrow Options actionsheet
-      let options: ActionSheetOptions = {
-        buttons: [
-          {
-            text: "Paste",
-            icon: "clipboard",
-            handler: () => {
-              let sym: any;
-              let active_index: number;
-              let tempSym = this.paste_sym_buffer.pop();
-              let b = document.getElementsByClassName("arrow dropzone");
-              for (let i = 0; i < b.length; i++) {
-                if (b[i].className.endsWith("active-arrow")) {
-                  active_index = i;
-                }
-              }
-              switch (tempSym.id) {
-                case "s_declare":
-                  sym = new Declare();
-                  sym.createDeclareSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getDeclareExpression();
-                  break;
-                case "s_input":
-                  sym = new Input();
-                  sym.createInputSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getInputExpression();
-                  break;
-                case "s_output":
-                  sym = new Output();
-                  sym.createOutputSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getOutputExpression();
-                  break;
-                case "s_process":
-                  sym = new Process();
-                  sym.createProcessSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getProcessExpression();
-                  break;
-                case "s_comment":
-                  sym = new Comment();
-                  sym.createCommentSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getCommentExpression();
-                  break;
-                case "s_if_case":
-                  sym = new IfCase();
-                  sym.createIfCaseSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getIfStatement();
-                  break;
-                case "s_for_loop":
-                  sym = new ForLoop();
-                  sym.createForLoopSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getForExpression();
-                  break;
-                case "s_while_loop":
-                  sym = new WhileLoop();
-                  sym.createWhileLoopSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getWhileExpression();
-                  break;
-                case "s_do_while_loop":
-                  sym = new DoWhileLoop();
-                  sym.createDoWhileLoopSymbol(tempSym);
-                  this.addSymbol(sym.id, targetArrow);
-                  this.flowchart.removeSymbolFromFlowchart(active_index);
-                  targetArrow.nextSibling.innerHTML = sym.getDoWhileExpression();
-                  break;
-                default:
-                  break;
-              }
-              this.flowchart.addSymbolToFlowchart(sym, active_index);
-              let bs = document.getElementsByClassName("arrow dropzone");
-              for (let i = 0; i < b.length; i++) {
-                if (bs[i].classList.contains("active-arrow")) {
-                  bs[i].classList.remove("active-arrow");
-                }
-              }
-              this.paste_sym_buffer.push(tempSym);
-              this.toggleSymbolsFAB();
-              console.log(this.flowchart.SYMBOLS);
-              console.log("Paste buffers: ");
-              console.log(this.paste_sym_buffer);
-              // this.isCutCopyReady = false;
-            },
-          },
-        ],
-      };
-      // Create and Display Symbols Options actionsheet
-      const actionSheet = await this.arrowsOptionsAS.create(options);
-      actionSheet.onDidDismiss().then((data) => {
-        let bs = document.getElementsByClassName("arrow dropzone");
-        for (let i = 0; i < bs.length; i++) {
-          if (bs[i].classList.contains("active-arrow")) {
-            bs[i].classList.remove("active-arrow");
-          }
-        }
-      });
-      await actionSheet.present();
-    }
+    event.stopImmediatePropagation();
   }
 
   public toggleSymbolsFAB() {
@@ -2244,6 +2229,10 @@ export class HomePage {
           totalAD = 0;
         let b1 = this.workspace.getElementsByClassName("arrow dropzone");
 
+        symbol.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+          this.openSymbolsAS(e);
+        });
         interact(symbol)
           .gesturable({
             hold: 1500,
@@ -2305,19 +2294,23 @@ export class HomePage {
         branches[i].classList.remove("active-arrow");
       }
     }
-    let dz = document.getElementsByClassName("arrow dropzone");
-    for (let i = 0; i < dz.length; i++) {
-      dz[i].addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        this.openArrowsAS(e);
-      });
-      interact(dz[i]).unset();
-      interact(dz[i])
-        .gesturable({ hold: 1500 })
-        .on("tap", (e) => this.openSymbolsFAB(e))
-        .on("doubletap", (e) => this.openSymbolPopUp(e))
-        .on("hold", (e) => this.openArrowsAS(e));
-    }
+    // let dz = document.getElementsByClassName("arrow dropzone");
+    // for (let i = 0; i < dz.length; i++) {
+    //   dz[i].removeEventListener("contextmenu", (e) => {
+    //     e.preventDefault();
+    //     this.openArrowsAS(e);
+    //   });
+    //   dz[i].addEventListener("contextmenu", (e) => {
+    //     e.preventDefault();
+    //     this.openArrowsAS(e);
+    //   });
+    //   interact(dz[i]).unset();
+    //   interact(dz[i])
+    //     .gesturable({ hold: 1500 })
+    //     .on("tap", (e) => this.openSymbolsFAB(e))
+    //     .on("doubletap", (e) => this.openSymbolPopUp(e))
+    //     .on("hold", (e) => this.openArrowsAS(e));
+    // }
 
     if (this.popOver)
       this.popCtrl.dismiss();
