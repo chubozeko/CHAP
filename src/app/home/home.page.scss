@@ -24,17 +24,20 @@
 #fileName {
   background-color: black;
   color: #ddd;
-  text-align: center;
+  text-align: start;
+  text-indent: 5px;
   border-radius: 6px;
   padding: 5px 0;
   height: 60%;
-  width: auto;
+  min-width: auto;
+  max-width: 350px;
 }
 
 // Tooltips
 #toolbar-tooltip {
-  background-color: black;
+  background-color: #333333;
   color: #ddd;
+  // border: 2px solid black;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;

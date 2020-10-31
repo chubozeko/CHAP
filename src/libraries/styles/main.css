@@ -196,3 +196,8 @@ textarea{
   width: 125px;
   padding: 5px;
 }
+
+/* Symbol Modal Textbox Focus */
+.dialogTextbox {
+    border: 2px solid #ffff;
+  }

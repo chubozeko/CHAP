@@ -18,16 +18,15 @@ export class CommentPage implements OnInit {
     let com_text = (document.getElementById("comment_text") as HTMLInputElement);
     com_text.value = this.symbol.getCommentText();
 
-    // Colourful Textboxes
+    // Colourful Textboxes 
     let tbs = document.getElementsByClassName("dialogTextbox") as HTMLCollectionOf<HTMLElement>;
     for (let i = 0; i < tbs.length; i++) {
       tbs[i].addEventListener("focusin", () => {
-        tbs[i].style.border = "2px solid #9CDCFE";
-        tbs[i].style.borderRadius = "5px";
+        tbs[i].style.borderColor = "#9CDCFE";
         tbs[i].style.backgroundColor = "#DEF3FE";
       });
       tbs[i].addEventListener("focusout", () => {
-        tbs[i].style.border = "none";
+        tbs[i].style.borderColor = "#ffffff";
         tbs[i].style.backgroundColor = "#ffffff";
       });
     }

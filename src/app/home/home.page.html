@@ -18,12 +18,12 @@
       <ion-img style="width: 32px; height: 32px;" src="./assets/icon/chap_logo.png"></ion-img>
     </ion-button>
     &nbsp; &nbsp;
-  </ion-buttons>
+    <!-- </ion-buttons> -->
 
-  <ion-input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}" clearInput></ion-input>
+    <ion-input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}" clearInput></ion-input>
 
-  <!-- Menu Toolbar Buttons -->
-  <ion-buttons slot="end">
+    <!-- Menu Toolbar Buttons -->
+    <!-- <ion-buttons slot="end"> -->
     &nbsp; &nbsp;
     <div class="tooltip">
       <ion-button (click)="debugProgram()">
@@ -73,6 +73,8 @@
 
     &nbsp; &nbsp; &nbsp; &nbsp;
 
+  </ion-buttons>
+  <ion-buttons slot="end">
     <div class="tooltip">
       <ion-button (click)="openTutorialPage()">
         <ion-icon slot="icon-only" name="help-circle" style="color: #C180A3;"></ion-icon>

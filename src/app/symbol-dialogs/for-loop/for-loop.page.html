@@ -13,22 +13,25 @@
   </ion-item>
 
   <ion-item color="primary">
-    <ion-input type="text" id="forloop_tooltip_info" class="dialogTextbox" value="{{toolTipInfoText}}" readonly>
+    <ion-input type="text" id="forloop_tooltip_info" value="{{toolTipInfoText}}" readonly>
     </ion-input>
   </ion-item>
 
-  <ion-item>
+  <div>
     <ion-input id="for_var_name" type="text" placeholder="Variable Name" [value]=""
       class="forloop_elements dialogTextbox" data-text="Enter an iteration variable"></ion-input>
-  </ion-item>
+  </div>
 
-  <ion-item>
+  <div style="width: 50%; float: left; background-color: #fff;">
+    <ion-label style="background-color: #fff; padding: 15px; width: 100%;">Start Value: </ion-label>
     <ion-input id="for_start_val" type="text" placeholder="Start Value" [value]=""
       class="forloop_elements dialogTextbox" data-text="Enter the initial value of the iteration variable"></ion-input>
-    <br />
+  </div>
+  <div style="width: 50%; float: right; background-color: #fff;">
+    <ion-label style="background-color: #fff; padding: 15px; width: 100%;">End Value: </ion-label>
     <ion-input id="for_end_val" type="text" placeholder="End Value" [value]="" class="forloop_elements dialogTextbox"
       data-text="Enter the ending value of the iteration variable"></ion-input>
-  </ion-item>
+  </div>
 
   <ion-item class="forloop_elements" data-text="Choose whether the iteration variable increases or decreases">
     <ion-label>Step Direction: </ion-label>
@@ -45,10 +48,11 @@
     </ion-radio-group>
   </ion-item>
 
-  <ion-item>
+  <div style="background-color: #fff; padding: 10px 0 0 0">
+    <ion-label style="background-color: #fff; padding: 15px; width: 100%;">Step Value: </ion-label>
     <ion-input id="for_step_val" type="text" placeholder="Step By" [value]="" class="forloop_elements dialogTextbox"
       data-text="Enter the step value between each iteration"></ion-input>
-  </ion-item>
+  </div>
 
 </ion-content>
 

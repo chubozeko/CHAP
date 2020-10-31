@@ -101,7 +101,7 @@ export class HomePage {
 
   items: Array<any> = [];
 
-  splash = true;
+  //splash = true;
   isSymbolBeingDragged = false;
   isRightClickPromptShowing = false;
   popOver;
@@ -131,8 +131,8 @@ export class HomePage {
 
   ngOnInit() {
     setTimeout(() => {
-      this.splash = false;
-      this.openIntroTutorial();
+      //this.splash = false;
+      //this.openIntroTutorial();
     }, 4000);
 
     // Adding Hover Listeners to Toolbar Buttons
