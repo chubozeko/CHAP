@@ -18,7 +18,8 @@
 
   <div style="background-color: #ffffff;">
     <ion-input id="process_var_name" type="text" placeholder="Variable" [value]=""
-      class="process_elements dialogTextbox" data-text="Enter a variable to assign a value to"></ion-input>
+      class="process_elements dialogTextbox" data-text="Enter a variable to assign a value to" maxlength="50">
+    </ion-input>
   </div>
 
   <ion-item>
@@ -27,7 +28,8 @@
 
   <div style="background-color: #ffffff;">
     <ion-input id="process_expression" type="text" placeholder="Expression" [value]="" style="float: left; "
-      class="process_elements dialogTextbox" data-text="Enter an expression or value to assign to the variable">
+      class="process_elements dialogTextbox" data-text="Enter an expression or value to assign to the variable"
+      maxlength="100">
     </ion-input>
   </div>
 
