@@ -26,6 +26,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DragulaService } from "ng2-dragula";
 import { from } from "rxjs";
 import { type } from "os";
+// import "./theme/themes.json";
 
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
@@ -60,6 +61,8 @@ import { FeedbackPage } from "../feedback/feedback.page";
 import { OperationPage } from "../symbol-dialogs/operation/operation.page";
 import { CoverPagePage } from "../cover-page/cover-page.page";
 import { PromptPage } from "../prompt/prompt.page";
+import { THEMES } from "../themes";
+import { ThemesPage } from "../themes/themes.page";
 
 @Component({
   selector: "app-home",
@@ -86,6 +89,8 @@ export class HomePage {
   newSymbol: any;
   dupSymbol: any;
   saveFolder = "CHAP Project Files";
+  themes = THEMES;
+  themeIndex: number = 0;
 
   paste_sym_buffer: Array<
     | Declare
@@ -127,9 +132,38 @@ export class HomePage {
   ) //public navParams: NavParams
   { }
 
-  ionViewWillEnter() { }
+  setColor(id: string) {
+    switch (id) {
+      case "s_declare": return this.themes[this.themeIndex].colours.declare;
+      case "s_input": return this.themes[this.themeIndex].colours.input;
+      case "s_output": return this.themes[this.themeIndex].colours.output;
+      case "s_process": return this.themes[this.themeIndex].colours.process;
+      case "s_if_case": return this.themes[this.themeIndex].colours.ifcase;
+      case "s_for_loop": return this.themes[this.themeIndex].colours.forloop;
+      case "s_while_loop": return this.themes[this.themeIndex].colours.whileloop;
+      case "s_do_while_loop": return this.themes[this.themeIndex].colours.dowhileloop;
+      case "s_comment": return this.themes[this.themeIndex].colours.comment;
+      case "s_start": return this.themes[this.themeIndex].colours.start;
+      case "s_stop": return this.themes[this.themeIndex].colours.stop;
+    }
+
+  }
+
+  loadTheme() {
+    // Start Symbols
+    let t10 = document.getElementsByClassName("s_start") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t10.length; t++) {
+      t10[t].style.backgroundColor = this.themes[this.themeIndex].colours.start;
+    }
+    // Stop Symbols
+    let t11 = document.getElementsByClassName("s_stop") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t11.length; t++) {
+      t11[t].style.backgroundColor = this.themes[this.themeIndex].colours.stop;
+    }
+  }
 
   ngOnInit() {
+    this.loadTheme();
     setTimeout(() => {
       //this.splash = false;
       //this.openIntroTutorial();
@@ -182,13 +216,15 @@ export class HomePage {
     saveProj.addEventListener("click", () => this.saveProjectOptions());
     let closeM = document.getElementById("btn_closeMenu");
     closeM.addEventListener("click", () => this.closeMenu());
+    let themePage = document.getElementById("btn_themePage");
+    themePage.addEventListener("click", (e) => this.openChooseTheme());
     // let downloadAPK = document.getElementById("btn_downloadAPK");
     // downloadAPK.addEventListener("click", (e) => {
     //   window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
     // });
     let sFAB = document.getElementById("symbolsFAB");
     sFAB.addEventListener("click", (e) => this.toggleSymbolsFAB());
-    // let printFC = document.getElementById("btn_printFlowchart");
+    // let printFC = document.getElementById("btn_printFlowchart"); 
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let quickGuide = document.getElementById("btn_gettingStartedPage");
     quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
@@ -287,7 +323,6 @@ export class HomePage {
       logOut.style.display = "none";
       goOnline.style.display = "none";
     }
-
     // this.openIntroTutorial();
   }
 
@@ -381,6 +416,23 @@ export class HomePage {
     await modal.present();
   }
 
+  async openChooseTheme() {
+    this.closeMenu();
+    const modal = await this.modalC.create({
+      component: ThemesPage,
+      componentProps: { themeIndex: this.themeIndex }
+    });
+    modal.onDidDismiss().then((data) => {
+      try {
+        if (data.data != undefined) {
+          this.themeIndex = data.data.themeIndex;
+          this.loadTheme();
+        }
+      } catch (error) { console.log(error); }
+    });
+    await modal.present();
+  }
+
   async openSymbolPopUp(event) {
     if (!this.isSymbolBeingDragged) {
       if (this.popOver) {
@@ -390,7 +442,7 @@ export class HomePage {
       t.classList.add("active-arrow");
       this.popOver = await this.popCtrl.create({
         component: OperationPage,
-        componentProps: { event: event },
+        componentProps: { event: event, themeIndex: this.themeIndex },
         cssClass: 'symPopUp',
         event: event,
         translucent: true,
@@ -398,8 +450,9 @@ export class HomePage {
       });
       this.popOver.onDidDismiss().then((data) => {
         try {
-          if (data.data != undefined)
+          if (data.data != undefined) {
             this.addSymbol(data.data.id, data.data.e);
+          }
 
           let t = event.target || event.srcElement || event.currentTarget;
           t.classList.remove("active-arrow");

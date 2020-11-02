@@ -24,6 +24,7 @@ const routes: Routes = [
     path: "welcome",
     loadChildren: "./welcome/welcome.module#WelcomePageModule",
   },  { path: 'prompt', loadChildren: './prompt/prompt.module#PromptPageModule' },
+  { path: 'themes', loadChildren: './themes/themes.module#ThemesPageModule' },
 
 
   // { path: 'open-project', loadChildren: './open-project/open-project.module#OpenProjectPageModule' }

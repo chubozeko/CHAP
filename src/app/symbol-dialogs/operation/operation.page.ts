@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
 import { SYMBOLS } from '../../symbol-list';
+import { THEMES } from '../../themes';
 
 @Component({
   selector: 'app-operation',
@@ -10,6 +11,8 @@ import { SYMBOLS } from '../../symbol-list';
 export class OperationPage implements OnInit {
 
   symbols = SYMBOLS;
+  themes = THEMES;
+  themeIndex: number;
   event;
 
   constructor(private popCtrl: PopoverController,
@@ -19,6 +22,22 @@ export class OperationPage implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  setColor(id: string) {
+    switch (id) {
+      case "s_declare": return this.themes[this.themeIndex].colours.declare;
+      case "s_input": return this.themes[this.themeIndex].colours.input;
+      case "s_output": return this.themes[this.themeIndex].colours.output;
+      case "s_process": return this.themes[this.themeIndex].colours.process;
+      case "s_if_case": return this.themes[this.themeIndex].colours.ifcase;
+      case "s_for_loop": return this.themes[this.themeIndex].colours.forloop;
+      case "s_while_loop": return this.themes[this.themeIndex].colours.whileloop;
+      case "s_do_while_loop": return this.themes[this.themeIndex].colours.dowhileloop;
+      case "s_comment": return this.themes[this.themeIndex].colours.comment;
+      case "s_start": return this.themes[this.themeIndex].colours.start;
+      case "s_stop": return this.themes[this.themeIndex].colours.stop;
+    }
   }
 
   addSymbol(id, e) {

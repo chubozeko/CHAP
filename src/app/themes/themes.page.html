@@ -1,0 +1,31 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <ion-icon name="color-palette"></ion-icon>
+  <ion-title>Choose Theme...</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary" class="scrollbar">
+
+  <ion-item>
+    <ion-label>Theme: </ion-label>
+    <ion-select id="themeSelect" [value]="" [(ngModel)]="currTheme" ok-text="Select" cancel-text="Cancel"
+      (ionChange)="changeTheme()">
+      <ion-select-option *ngFor="let t of themes" value="{{t.theme}}"> {{t.theme}}</ion-select-option>
+      <!-- <ion-select-option value="Theme 2"> Theme 2</ion-select-option> -->
+    </ion-select>
+  </ion-item>
+
+  <div id="themeContent">
+    <ion-grid id="operPop">
+      <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
+        <div id="{{s.id}}" class="symbol s_tooltip {{s.id}}" [style.backgroundColor]="setColor(s.id)">
+          {{s.s_name}}
+        </div>
+      </ion-card>
+    </ion-grid>
+  </div>
+
+</ion-content>
+
+<ion-footer id="modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" expand="block">OK</ion-button>
+</ion-footer>

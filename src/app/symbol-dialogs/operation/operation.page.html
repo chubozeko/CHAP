@@ -8,10 +8,10 @@
   </ion-toolbar>
   <ion-grid id="operPop">
     <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
-      <div id="{{s.id}}" class="symbol s_tooltip" (click)="addSymbol(s.id, $event)">
+      <div id="{{s.id}}" class="symbol s_tooltip {{s.id}}" (click)="addSymbol(s.id, $event)"
+        [style.backgroundColor]="setColor(s.id)">
         {{s.s_name}}
       </div>
-      <!-- (click)="addSymbol(s.id, $event)" -->
     </ion-card>
   </ion-grid>
   <ion-footer style="padding: 0 5px ;">

@@ -120,7 +120,8 @@
       <div id="symbolsList" dragula="symbol">
         <!-- class="scrollbar" -->
         <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
-          <div id="{{s.id}}" class="symbol s_tooltip" (click)="addSymbol(s.id, $event)">
+          <div id="{{s.id}}" class="symbol s_tooltip {{s.id}}" (click)="addSymbol(s.id, $event)"
+            [style.backgroundColor]="setColor(s.id)">
             {{s.s_name}}
           </div>
         </ion-card>
@@ -139,10 +140,10 @@
           <span class="s_tooltiptext">START Symbol Details</span>
         </div> -->
 
-        <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
+        <div id="s_start" class="symbol s_start" style="font-size: 10pt;">START</div>
         <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols">
         </div>
-        <div id="s_stop" class="symbol" style="font-size: 10pt;">STOP</div>
+        <div id="s_stop" class="symbol s_stop" style="font-size: 10pt;">STOP</div>
       </div>
 
       <div class="sidebar">
