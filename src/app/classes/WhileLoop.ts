@@ -76,6 +76,9 @@ export class WhileLoop {
       exps.splice(exps.length, 0, this.whileExpression.trim());
     }
 
+    console.log("Expressions: ", exps);
+    console.log("Opers: ", opers);
+
     // Check if it is a variable name & parse to desired data type
     for (let i = 0; i < exps.length; i++) {
       for (let j = 0; j < variables.length; j++) {
@@ -118,8 +121,10 @@ export class WhileLoop {
             let v = exps[i];
             let temp: any;
             if (!isNaN(parseInt(v)) || !isNaN(parseFloat(v))) {
-              let a = v.split('.');
-              if (a.length > 1) temp = parseFloat(v); else temp = parseInt(v);
+              console.log("v = " + exps[i]);
+              if (Number.isInteger(v)) temp = parseInt(v); else temp = parseFloat(v);
+              // let a = v.split('.');
+              // if (a.length > 1) temp = parseFloat(v); else temp = parseInt(v);
             } else if (v == 'true') { temp = true; }
             else if (v == 'false') { temp = false; }
             else { temp = v.toString(); }

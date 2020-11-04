@@ -160,6 +160,51 @@ export class HomePage {
     for (let t = 0; t < t11.length; t++) {
       t11[t].style.backgroundColor = this.themes[this.themeIndex].colours.stop;
     }
+    // If Case Symbols
+    let t1 = document.getElementsByClassName("s_if_case") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t1.length; t++) {
+      t1[t].style.backgroundColor = this.themes[this.themeIndex].colours.ifcase;
+    }
+    // For Loop Symbols
+    let t2 = document.getElementsByClassName("s_for_loop") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t2.length; t++) {
+      t2[t].style.backgroundColor = this.themes[this.themeIndex].colours.forloop;
+    }
+    // While Loop Symbols
+    let t3 = document.getElementsByClassName("s_while_loop") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t3.length; t++) {
+      t3[t].style.backgroundColor = this.themes[this.themeIndex].colours.whileloop;
+    }
+    // Do While Loop Symbols
+    let t4 = document.getElementsByClassName("s_do_while_loop") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t4.length; t++) {
+      t4[t].style.backgroundColor = this.themes[this.themeIndex].colours.dowhileloop;
+    }
+    // Declare Symbols
+    let t5 = document.getElementsByClassName("s_declare") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t5.length; t++) {
+      t5[t].style.backgroundColor = this.themes[this.themeIndex].colours.declare;
+    }
+    // Input Symbols
+    let t6 = document.getElementsByClassName("s_input") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t6.length; t++) {
+      t6[t].style.backgroundColor = this.themes[this.themeIndex].colours.input;
+    }
+    // Output Symbols
+    let t7 = document.getElementsByClassName("s_output") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t7.length; t++) {
+      t7[t].style.backgroundColor = this.themes[this.themeIndex].colours.output;
+    }
+    // Process Symbols
+    let t8 = document.getElementsByClassName("s_process") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t8.length; t++) {
+      t8[t].style.backgroundColor = this.themes[this.themeIndex].colours.process;
+    }
+    // Comment Symbols
+    let t9 = document.getElementsByClassName("s_comment") as HTMLCollectionOf<HTMLDivElement>;
+    for (let t = 0; t < t9.length; t++) {
+      t9[t].style.backgroundColor = this.themes[this.themeIndex].colours.comment;
+    }
   }
 
   ngOnInit() {
@@ -2118,6 +2163,8 @@ export class HomePage {
         this.dragulaService
           .find("symbol")
           .drake.containers.push(innerArrows[a]);
+        // add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
       }
     } else if (id == "s_while_loop") {
       let whileloop = new WhileLoop();
@@ -2135,6 +2182,8 @@ export class HomePage {
         this.dragulaService
           .find("symbol")
           .drake.containers.push(innerArrows[a]);
+        // add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
       }
     } else if (id == "s_for_loop") {
       let forloop = new ForLoop();
@@ -2152,6 +2201,8 @@ export class HomePage {
         this.dragulaService
           .find("symbol")
           .drake.containers.push(innerArrows[a]);
+        // add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
       }
     } else if (id == "s_do_while_loop") {
       let doWhileLoop = new DoWhileLoop();
@@ -2169,6 +2220,8 @@ export class HomePage {
         this.dragulaService
           .find("symbol")
           .drake.containers.push(innerArrows[a]);
+        // add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
       }
     }
 
@@ -2177,31 +2230,32 @@ export class HomePage {
       "arrow dropzone active-arrow"
     );
     let tempBranch = this.branch.cloneNode(true);
+    this.addEventListenersToArrow(tempBranch);
     // tempBranch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
     // tempBranch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
-    tempBranch.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-      this.openArrowsAS(e);
-    });
-    tempBranch.addEventListener("mouseover", (e) => {
-      let prompt = document.getElementById("infoPrompt");
-      prompt.style.display = "flex";
-      this.infoMessage = "Double-Click on an Arrow to Open small Symbol List";
-      setTimeout(() => {
-        prompt.style.display = "none";
-        this.infoMessage = "";
-      }, 3000);
-    });
-    tempBranch.addEventListener("mouseout", (e) => {
-      let prompt = document.getElementById("infoPrompt");
-      prompt.style.display = "none";
-      this.infoMessage = "";
-    });
-    interact(tempBranch)
-      .gesturable({ hold: 1500 })
-      .on("doubletap", (e) => this.openSymbolPopUp(e))
-      .on("tap", (e) => this.openSymbolsFAB(e))
-      .on("hold", (e) => this.openArrowsAS(e));
+    // tempBranch.addEventListener("contextmenu", (e) => {
+    //   e.preventDefault();
+    //   this.openArrowsAS(e);
+    // });
+    // tempBranch.addEventListener("mouseover", (e) => {
+    //   let prompt = document.getElementById("infoPrompt");
+    //   prompt.style.display = "flex";
+    //   this.infoMessage = "Double-Click on an Arrow to Open small Symbol List";
+    //   setTimeout(() => {
+    //     prompt.style.display = "none";
+    //     this.infoMessage = "";
+    //   }, 3000);
+    // });
+    // tempBranch.addEventListener("mouseout", (e) => {
+    //   let prompt = document.getElementById("infoPrompt");
+    //   prompt.style.display = "none";
+    //   this.infoMessage = "";
+    // });
+    // interact(tempBranch)
+    //   .gesturable({ hold: 1500 })
+    //   .on("doubletap", (e) => this.openSymbolPopUp(e))
+    //   .on("tap", (e) => this.openSymbolsFAB(e))
+    //   .on("hold", (e) => this.openArrowsAS(e));
     //tempBranch.classList.remove('active-arrow');
 
     /* Checking which BLOCK the symbol should be added to */
@@ -2401,6 +2455,32 @@ export class HomePage {
     console.log(this.flowchart.SYMBOLS);
   }
 
+  public addEventListenersToArrow(arrow) {
+    arrow.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      this.openArrowsAS(e);
+    });
+    arrow.addEventListener("mouseover", (e) => {
+      let prompt = document.getElementById("infoPrompt");
+      prompt.style.display = "flex";
+      this.infoMessage = "Double-Click on an Arrow to Open small Symbol List";
+      setTimeout(() => {
+        prompt.style.display = "none";
+        this.infoMessage = "";
+      }, 3000);
+    });
+    arrow.addEventListener("mouseout", (e) => {
+      let prompt = document.getElementById("infoPrompt");
+      prompt.style.display = "none";
+      this.infoMessage = "";
+    });
+    interact(arrow)
+      .gesturable({ hold: 1500 })
+      .on("doubletap", (e) => this.openSymbolPopUp(e))
+      .on("tap", (e) => this.openSymbolsFAB(e))
+      .on("hold", (e) => this.openArrowsAS(e));
+  }
+
   public consoleLog(lineOutput) {
     let consoleCHAP = document.getElementById("console") as HTMLTextAreaElement;
     consoleCHAP.value = consoleCHAP.value + lineOutput + "\n";
@@ -2454,6 +2534,7 @@ export class HomePage {
       buttons: [
         {
           text: 'Yes',
+          cssClass: 'danger',
           handler: () => {
             this.clearWorkspace();
           }

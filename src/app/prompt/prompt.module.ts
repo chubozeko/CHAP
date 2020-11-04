@@ -21,6 +21,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [PromptPage]
+  declarations: [PromptPage],
+  exports: [PromptPage]
 })
-export class PromptPageModule {}
+export class PromptPageModule { }

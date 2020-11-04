@@ -2,10 +2,9 @@
 .symbol.switch-bg { border: #f40; }
 .symbol.large { -webkit-transform: scale(1.25); transform: scale(1.25); }
 .rotate { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
-
+.clearWS-yes { --background: #f04141; }
 .symbolPromptAS {
-  width: 150px;
-  
+  width: 150px; 
 }
 #infoPrompt {
   // width: 75%;

@@ -152,14 +152,24 @@ li a:hover{ color: #039be5; }
 
 /*  SIDE MENU  */
 #sidemenu_list{
-    background-color: #A9B1B4;
+    background-color: #333333;
     color: #000000;
 }
 #sidemenu_list ion-item:hover{
-    background-color: #333;
-    color: #ddd;
+    background: #333;
+    /* color: #ddd; */
     cursor: pointer;
 }
+#btn_newProject:hover { color: #54CBC9; }
+#btn_openProject:hover { color: #ffce00; }
+#btn_saveProject:hover { color: #4c8dff; }
+#btn_debugProgram:hover { color: #10dc60; }
+#btn_generateCode:hover { color: #AFF3CA; }
+#btn_clearWorkspace:hover { color: #f04141; }
+#btn_gettingStartedPage:hover, #btn_tutorialPage:hover,
+#btn_themePage:hover, #btn_aboutPage:hover,
+#btn_feedbackPage:hover, #btn_logOut:hover,
+#btn_goOnline:hover, #btn_backToWelcome:hover { color: #ddd; }
 
 textarea{ 
     width: 100%; padding: 5px; float: right; 
@@ -201,3 +211,6 @@ textarea{
 .dialogTextbox {
     border: 2px solid #ffff;
   }
+
+/* Clear Workspace Alert */
+.clearWS-yes { --background: #f04141; }
