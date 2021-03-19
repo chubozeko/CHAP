@@ -1,7 +1,6 @@
 import {
   Component,
   ViewChild,
-  SystemJsNgModuleLoader,
   Injectable,
 } from "@angular/core";
 import {
@@ -16,7 +15,7 @@ import {
   NavController,
   PopoverController,
 } from "@ionic/angular";
-import { ActionSheetOptions } from "@ionic/core";
+// import { ActionSheetOptions } from "ionic";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
 import { File, FileWriter } from "@ionic-native/file/ngx";
@@ -106,7 +105,7 @@ export class HomePage {
 
   items: Array<any> = [];
 
-  //splash = true;
+  splash = true;
   isSymbolBeingDragged = false;
   isRightClickPromptShowing = false;
   popOver;
@@ -210,8 +209,8 @@ export class HomePage {
   ngOnInit() {
     this.loadTheme();
     setTimeout(() => {
-      //this.splash = false;
-      //this.openIntroTutorial();
+      this.splash = false;
+      this.openIntroTutorial();
     }, 4000);
 
     // Adding Hover Listeners to Toolbar Buttons
@@ -1266,6 +1265,7 @@ export class HomePage {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from If-Case-True-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1285,10 +1285,13 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize ** [CHUBO! = resize before removing symbol]
+                  this.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from If-Case-False-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1308,10 +1311,13 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from For-Loop-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1331,12 +1337,15 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "whileTrueBlock"
                 ) {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from While-Loop-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1356,12 +1365,15 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
                 ) {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from Do-While-Loop-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1381,6 +1393,8 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else {
                   let syms = document
                     .getElementById("workspace")
@@ -1548,6 +1562,7 @@ export class HomePage {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from If-Case-True-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1563,10 +1578,13 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from If-Case-False-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1582,10 +1600,13 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from For-Loop-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1601,12 +1622,15 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "whileTrueBlock"
                 ) {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from While-Loop-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1622,12 +1646,15 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
                 ) {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
                   );
+                  let curBlock = selectedSymbol[0].parentElement;
                   // Remove symbol from Do-While-Loop-Block
                   for (let i = 0; i < syms.length; i++) {
                     if (syms[i].classList.contains("active-symbol")) {
@@ -1643,6 +1670,8 @@ export class HomePage {
                   let nextArrow = syms[asi].nextSibling;
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
+                  // Resize
+                  this.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else {
                   let syms = document
                     .getElementById("workspace")
@@ -1786,6 +1815,7 @@ export class HomePage {
                     break;
                 }
                 this.flowchart.addSymbolToFlowchart(sym, active_index);
+                this.resizeSymbols(targetArrow);
                 let bs = document.getElementsByClassName("arrow dropzone");
                 for (let i = 0; i < b.length; i++) {
                   if (bs[i].classList.contains("active-arrow")) {
@@ -1793,7 +1823,7 @@ export class HomePage {
                   }
                 }
                 this.paste_sym_buffer.push(tempSym);
-                this.toggleSymbolsFAB();
+                // this.toggleSymbolsFAB();
                 console.log(this.flowchart.SYMBOLS);
                 console.log("Paste buffers: ");
                 console.log(this.paste_sym_buffer);
@@ -2573,6 +2603,7 @@ export class HomePage {
     workspace.appendChild(stopSym);
     // workspace.appendChild(symbolsList);
     this.flowchart = new Flowchart(this.alertC);
+    this.paste_sym_buffer = [];
   }
 
   public newProject() {
@@ -3125,10 +3156,10 @@ export class HomePage {
         headers.append("Accept", "application/json");
         headers.append("Content-Type", "application/json");
 
-        this.http
-          .post("http://www.chapchap.ga/saveProject.php", uploadFile, {})
-          //this.http.post('https://chapweb.000webhostapp.com/saveProject.php', uploadFile, {})
-          //this.http.post('http://localhost:80/chap_2/saveProject.php', uploadFile, {})
+        this.http.post("http://www.chapprogramming.com/saveProject.php", uploadFile, {})
+        // this.http.post("http://www.chapchap.ga/saveProject.php", uploadFile, {})
+        // this.http.post('https://chapweb.000webhostapp.com/saveProject.php', uploadFile, {})
+        // this.http.post('http://localhost:80/chap_2/saveProject.php', uploadFile, {})
           .map((res: any) => res)
           .subscribe(async (res) => {
             console.log(res);
@@ -3338,12 +3369,8 @@ export class HomePage {
               headers.append("Content-Type", "application/json");
 
               console.log(this.auth.sessionToken.session);
-              this.http
-                .post(
-                  "http://www.chapchap.ga/logout.php",
-                  this.auth.sessionToken.session,
-                  {}
-                )
+              this.http.post("http://www.chapprogramming.com/logout.php", this.auth.sessionToken.session, {})
+              // this.http.post("http://www.chapchap.ga/logout.php", this.auth.sessionToken.session, {})
                 //this.http.post('https://chapweb.000webhostapp.com/logout.php', data, {})
                 //this.http.post('http://localhost:80/chap_2/logout.php', data, {})
                 .map((res: any) => res)

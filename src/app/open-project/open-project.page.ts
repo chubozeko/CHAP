@@ -151,9 +151,10 @@ export class OpenProjectPage implements OnInit {
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json');
 
-    this.http.post('http://www.chapchap.ga/deleteFile.php', userDetails, {})
-      //this.http.post('https://chapweb.000webhostapp.com/deleteFile.php', userDetails, {})
-      //this.http.post('http://localhost:80/chap_2/deleteFile.php', userDetails, {})
+    this.http.post('http://www.chapprogramming.com/deleteFile.php', userDetails, {})
+    // this.http.post('http://www.chapchap.ga/deleteFile.php', userDetails, {})
+    // this.http.post('https://chapweb.000webhostapp.com/deleteFile.php', userDetails, {})
+    // this.http.post('http://localhost:80/chap_2/deleteFile.php', userDetails, {})
       .map((res: any) => res)
       .subscribe(async res => {
         console.log(res);
@@ -188,7 +189,7 @@ export class OpenProjectPage implements OnInit {
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json');
 
-    this.http.post('http://www.chapchap.ga/getFiles.php', userDetails, {})
+    this.http.post('http://www.chapprogramming.com/getFiles.php', userDetails, {})
       //this.http.post('https://chapweb.000webhostapp.com/getFiles.php', userDetails, {})
       //this.http.post('http://localhost:80/chap_2/getFiles.php', userDetails, {})
       .map((res: any) => res)

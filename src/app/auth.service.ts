@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 const cors = require('cors');
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  user: Observable<any>;
+  private authState = new BehaviorSubject(null);
 
   corsOptions;
   rootURL: string = 'http://localhost:80/chap_ums/';
@@ -14,6 +18,7 @@ export class AuthService {
   isLoggedIn: boolean;
 
   constructor(private http: HttpClient) { }
+  // private storage: Storage
 
   loadPHP(phpFile: string, data?: any) {
     // post these details to API server return user info if correct

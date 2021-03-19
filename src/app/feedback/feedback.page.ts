@@ -45,9 +45,10 @@ export class FeedbackPage implements OnInit {
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json');
 
-    this.http.post('http://www.chapchap.ga/submitFeedback.php', this.feedback, {})
-      //this.http.post('https://chapweb.000webhostapp.com/submitFeedback.php', this.feedback, {})
-      //this.http.post('http://localhost:80/chap_2/submitFeedback.php', this.feedback, {})
+    this.http.post('http://www.chapprogramming.com/submitFeedback.php', this.feedback, {})
+    // this.http.post('http://www.chapchap.ga/submitFeedback.php', this.feedback, {})
+    // this.http.post('https://chapweb.000webhostapp.com/submitFeedback.php', this.feedback, {})
+    // this.http.post('http://localhost:80/chap_2/submitFeedback.php', this.feedback, {})
       .map((res: any) => res)
       .subscribe(async res => {
         console.log(res);
