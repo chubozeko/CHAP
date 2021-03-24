@@ -47,7 +47,7 @@ export class IfCase {
   parseIfCaseExpression(variables: any[]) {
     let opers = [], parsedValues = [], exps = [], exps1 = [];
     let op = '', oper1, oper2, result, j = 0, tempArrIndex;
-    let isVarDeclared = false;
+    let isVarDeclared = false, isParsingStrings = false;
 
     // LOGICAL Operators: &&, ||, !
     if ((this.ifStatement.indexOf('&&') != -1) || (this.ifStatement.indexOf('||') != -1) || (this.ifStatement.indexOf('!') != -1)
@@ -64,6 +64,8 @@ export class IfCase {
       exps.splice(exps.length, 0, this.ifStatement.trim());
     }
 
+    console.log("If Case exps: ", exps);
+    console.log("If Case opers: ", opers);
     // Check if it is a variable name & parse to desired data type
     for (let i = 0; i < exps.length; i++) {
       for (let j = 0; j < variables.length; j++) {
@@ -119,8 +121,49 @@ export class IfCase {
     }
 
     if (!isVarDeclared) return null;
+    
+    if (typeof exps[0] === 'string' || exps[0] instanceof String) {
+      isParsingStrings = true;
+      for (let i = 0; i < exps.length; i++) { 
+        // if (exps[i] == "") exps.splice(i, 1);
+        if (typeof exps[i] === 'string' || exps[i] instanceof String) {
+          if (exps[i].indexOf('\"') != -1) {
+            exps[i] = exps[i].replaceAll('\"', '');
+          }
+        }
+      }
+      // Calculate expression (for Strings)
+      while (opers.length != 0) {
+        // Checking operators in their order of Operations
+        if (opers.indexOf('%') != -1) { j = opers.indexOf('%'); }
+        else if (opers.indexOf('/') != -1) { j = opers.indexOf('/'); }
+        else if (opers.indexOf('*') != -1) { j = opers.indexOf('*'); }
+        else if (opers.indexOf('+') != -1) { j = opers.indexOf('+'); }
+        else if (opers.indexOf('-') != -1) { j = opers.indexOf('-'); }
+        else if (opers.indexOf('<') != -1) { j = opers.indexOf('<'); }
+        else if (opers.indexOf('<=') != -1) { j = opers.indexOf('<='); }
+        else if (opers.indexOf('>') != -1) { j = opers.indexOf('>'); }
+        else if (opers.indexOf('>=') != -1) { j = opers.indexOf('>='); }
+        else if (opers.indexOf('==') != -1) { j = opers.indexOf('=='); }
+        else if (opers.indexOf('!=') != -1) { j = opers.indexOf('!='); }
+        else if (opers.indexOf('&&') != -1) { j = opers.indexOf('&&'); }
+        else if (opers.indexOf('||') != -1) { j = opers.indexOf('||'); }
+        op = opers[j];
+        oper1 = exps[j];
+        oper2 = exps[j + 1];
+        result = this.calculateStringExpression(oper1, oper2, op);
+        opers.splice(j, 1);
+        exps.splice(j, 2, result);
+      }
+    } else { isParsingStrings = false; }
+
+    if (isParsingStrings) {
+      if (exps[0] == true) return this.trueBlockSymbols;
+      else if (exps[0] == false) return this.falseBlockSymbols;
+    }
+
     // Remove empty elements [""] from parsedValues
-    for (let i = 0; i < exps.length; i++) { if (isNaN(exps[i])) exps.splice(i, 1, ""); }
+    for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
     // Create newExpression with parsed values instead of variable names
     let newExpression = "";
     for (let j = 0; j < opers.length; j++) {
