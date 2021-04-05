@@ -48,7 +48,7 @@ export class WhileLoop {
   parseWhileLoopExpression(variables) {
     let opers = [], exps = [], exps1 = [];
     let op = "", oper1, oper2, result, j = 0, tempArrIndex;
-    let isVarDeclared = false;
+    let isVarDeclared = false, isParsingStrings = false;
 
     // LOGICAL Operators: &&, ||, !
     if (
@@ -76,17 +76,14 @@ export class WhileLoop {
       exps.splice(exps.length, 0, this.whileExpression.trim());
     }
 
-    console.log("Expressions: ", exps);
-    console.log("Opers: ", opers);
-
+    console.log("While Loop exps: ", exps);
+    console.log("While Loop opers: ", opers);
     // Check if it is a variable name & parse to desired data type
     for (let i = 0; i < exps.length; i++) {
       for (let j = 0; j < variables.length; j++) {
         if (variables[j].getIsArray()) {
           let tempVarName = exps[i].split('[');
-          if (
-            tempVarName[0] == variables[j].getName()
-          ) {
+          if (tempVarName[0] == variables[j].getName()) {
             isVarDeclared = true;
             // Getting the index of the array
             let tempIn = tempVarName[1].replace(']', '');
@@ -99,6 +96,8 @@ export class WhileLoop {
                 }
               }
             }
+            exps.splice(i, 1, variables[j].variable[tempArrIndex]);
+            /*
             if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].variable[tempArrIndex]));
             else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].variable[tempArrIndex]));
             else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].variable[tempArrIndex].toString());
@@ -106,10 +105,12 @@ export class WhileLoop {
               if (variables[j].variable[tempArrIndex] == "true") exps.splice(i, 1, true);
               if (variables[j].variable[tempArrIndex] == "false") exps.splice(i, 1, false);
             }
+            */
           }
         } else {
           if (variables[j].getName() == exps[i]) {
             isVarDeclared = true;
+            /*
             if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].value));
             else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].value));
             else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].value.toString());
@@ -117,7 +118,10 @@ export class WhileLoop {
               if (variables[j] == "true") exps.splice(i, 1, true);
               if (variables[j] == "false") exps.splice(i, 1, false);
             }
+            */
+            exps.splice(i, 1, variables[j].value);
           } else {
+            /*
             let v = exps[i];
             let temp: any;
             if (!isNaN(parseInt(v)) || !isNaN(parseFloat(v))) {
@@ -129,14 +133,56 @@ export class WhileLoop {
             else if (v == 'false') { temp = false; }
             else { temp = v.toString(); }
             exps.splice(i, 1, temp);
+            */
           }
         }
       }
     }
 
     if (!isVarDeclared) return null;
+
+    if (typeof exps[0] === 'string' || exps[0] instanceof String) {
+      isParsingStrings = true;
+      for (let i = 0; i < exps.length; i++) { 
+        // if (exps[i] == "") exps.splice(i, 1);
+        if (typeof exps[i] === 'string' || exps[i] instanceof String) {
+          if (exps[i].indexOf('\"') != -1) {
+            exps[i] = exps[i].replaceAll('\"', '');
+          }
+        }
+      }
+      // Calculate expression (for Strings)
+      while (opers.length != 0) {
+        // Checking operators in their order of Operations
+        if (opers.indexOf('%') != -1) { j = opers.indexOf('%'); }
+        else if (opers.indexOf('/') != -1) { j = opers.indexOf('/'); }
+        else if (opers.indexOf('*') != -1) { j = opers.indexOf('*'); }
+        else if (opers.indexOf('+') != -1) { j = opers.indexOf('+'); }
+        else if (opers.indexOf('-') != -1) { j = opers.indexOf('-'); }
+        else if (opers.indexOf('<') != -1) { j = opers.indexOf('<'); }
+        else if (opers.indexOf('<=') != -1) { j = opers.indexOf('<='); }
+        else if (opers.indexOf('>') != -1) { j = opers.indexOf('>'); }
+        else if (opers.indexOf('>=') != -1) { j = opers.indexOf('>='); }
+        else if (opers.indexOf('==') != -1) { j = opers.indexOf('=='); }
+        else if (opers.indexOf('!=') != -1) { j = opers.indexOf('!='); }
+        else if (opers.indexOf('&&') != -1) { j = opers.indexOf('&&'); }
+        else if (opers.indexOf('||') != -1) { j = opers.indexOf('||'); }
+        op = opers[j];
+        oper1 = exps[j];
+        oper2 = exps[j + 1];
+        result = this.calculateStringExpression(oper1, oper2, op);
+        opers.splice(j, 1);
+        exps.splice(j, 2, result);
+      }
+    } else { isParsingStrings = false; }
+
+    if (isParsingStrings) {
+      if (exps[0] == true) return this.trueLoopBlock;
+      else if (exps[0] == false) return this.falseLoopBlock;
+    }
+
     // Remove empty elements [""] from parsedValues
-    for (let i = 0; i < exps.length; i++) { if (isNaN(exps[i])) exps.splice(i, 1, ""); }
+    for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
     // Create newExpression with parsed values instead of variable names
     let newExpression = "";
     for (let j = 0; j < opers.length; j++) {
@@ -271,33 +317,15 @@ export class WhileLoop {
   calculateStringExpression(str1: string, str2: string, operator: string) {
     let result: any;
     switch (operator) {
-      case "<":
-        result = str1 < str2;
-        break;
-      case ">":
-        result = str1 > str2;
-        break;
-      case "<=":
-        result = str1 <= str2;
-        break;
-      case ">=":
-        result = str1 >= str2;
-        break;
-      case "!=":
-        result = str1 != str2;
-        break;
-      case "==":
-        result = str1 == str2;
-        break;
-      case "&&":
-        result = str1 && str2;
-        break;
-      case "||":
-        result = str1 || str2;
-        break;
-      default:
-        console.log("Invalid expression for Strings!");
-        break;
+      case "<": result = str1 < str2; break;
+      case ">": result = str1 > str2; break;
+      case "<=": result = str1 <= str2; break;
+      case ">=": result = str1 >= str2; break;
+      case "!=": result = str1 != str2; break;
+      case "==": result = str1 == str2; break;
+      case "&&": result = str1 && str2; break;
+      case "||": result = str1 || str2; break;
+      default: console.log("Invalid expression for Strings!"); break;
     }
     return result;
   }
