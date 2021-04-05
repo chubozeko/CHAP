@@ -210,7 +210,7 @@ export class HomePage {
     this.loadTheme();
     setTimeout(() => {
       this.splash = false;
-      this.openIntroTutorial();
+      // this.openIntroTutorial();
     }, 4000);
 
     // Adding Hover Listeners to Toolbar Buttons
@@ -367,7 +367,6 @@ export class HomePage {
       logOut.style.display = "none";
       goOnline.style.display = "none";
     }
-    // this.openIntroTutorial();
   }
 
   public subscribeToDragula() {
