@@ -18,10 +18,10 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item active">
-        <button type="button" style="background-color: #ffce00;" class="btn btn-warning openModal" id="w_chapTrial"
+        <!-- <button type="button" style="background-color: #ffce00;" class="btn btn-warning openModal" id="w_chapTrial"
           style="vertical-align: middle;">
           <ion-icon style="vertical-align: middle;" name="send"></ion-icon> &nbsp; Try CHAP
-        </button>&emsp;
+        </button>&emsp; -->
       </li>
       &nbsp; &nbsp;
       <li class="nav-item active">
@@ -45,7 +45,7 @@
   </nav>
   <div class="jumbotron">
     <div class="container text-center">
-      <img src="assets/cover_page/logo/chaplogo.png" class="text-center" alt="Image" />
+      <img src="assets/cover_page/logo/chapbannerW.png" class="text-center" id="w_chapTrial" alt="Image" />
       <h1><b>Welcome To CHAP</b></h1>
       <br />
       <h3>A SMART FLOWCHART PROGRAM FOR LEARNING PROGRAMMING CONSTRUCTS</h3>
@@ -73,7 +73,7 @@
               &emsp; &emsp; A declaration of a variable is where a program creates a variable.
               For smaller programs, the declaration statements are placed between the two braces of the "main" method.
               The declaration statement initializes a name and a data type for the variable.
-              It may also ask that a particular value be placed in the variable.
+              It may also ask that a particular value be placed in the variable.&emsp; <b><a class="text-dark" href="https://youtu.be/RNWXNApNLmw">See More Example</a></b>
             </p>
           </div>
         </div>
@@ -88,7 +88,7 @@
               enters a section of code or not, based on whether a given condition
               is TRUE or FALSE. One of the important functions of the If
               statement is that it allows the program to select an action based
-              on the user's input.
+              on the user's input.&emsp; <b><a class="text-dark" href="https://www.youtube.com/watch?v=LGNPoiWJ5t0">See More Example</a></b>
             </p>
           </div>
         </div>
@@ -102,7 +102,7 @@
               &emsp; &emsp; In most computer programming languages, a While Loop
               is a control flow statement that allows code to be executed
               repeatedly, based on a given Boolean condition.
-              The While Loop can be thought of as a repetitive If statement.
+              The While Loop can be thought of as a repetitive If statement.&emsp;<b><a class="text-dark" href="https://www.youtube.com/watch?v=1lKDkBqeKww">See More Example</a></b>
             </p>
           </div>
         </div>
@@ -115,7 +115,7 @@
             <p class="card-text">
               &emsp; &emsp; In computer science, a For-Loop is a control statement for specifying iterations,
               which allow code to be executed repeatedly. Various keywords used to specify this statement:
-              descendants of ALGOL use "for", while descendants of Fortran use "do".
+              descendants of ALGOL use "for", while descendants of Fortran use "do".&emsp; <b><a class="text-dark" href="https://www.youtube.com/watch?v=kD4Mu2a-jWs">See More Example</a></b>
             </p>
           </div>
         </div>
@@ -130,35 +130,35 @@
               loop is a control flow statement that executes a block of code at
               least once, and then either repeatedly executes the block, or
               stops executing it, depending on a given boolean condition at the
-              end of the block.
+              end of the block.&emsp; <b><a class="text-dark" href="https://www.youtube.com/watch?v=yzoOkj0GvkY">See More Example</a></b>
             </p>
           </div>
         </div>
       </div>
 
       <div class="col-sm-6">
-        <h3>See CHAP</h3> <br />
-        <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> Previous </ion-button>
-        <ion-button (click)="nextSlide()" color="dark" full style="float: right;"> Next </ion-button>
+        <h3><b>See CHAP</b></h3> <br/>
+        <!-- <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> Previous </ion-button>
+        <ion-button (click)="nextSlide()" color="dark" full style="float: right;"> Next </ion-button> -->
         <br />
         <ion-slides id="coverSlides" [options]="slideOpts" scrollbar="true">
           <ion-slide>
-            <img class="d-block w-75" src="assets/cover_page/img/chapmulti1.png" alt="First slide" />
+            <img class="d-block w-50" src="assets/cover_page/img/chapmulti1.png" alt="First slide" />
           </ion-slide>
           <ion-slide>
-            <img class="d-block w-75" src="assets/cover_page/img/chapmobil.png" alt="Second slide" />
+            <img class="d-block w-50" src="assets/cover_page/img/chapmobil.png" alt="Second slide" />
           </ion-slide>
           <ion-slide>
-            <img class="d-block w-75" src="assets/cover_page/img/chapmain.png" alt="Third slide" />
+            <img class="d-block w-50" src="assets/cover_page/img/chapmain.png" alt="Third slide" />
           </ion-slide>
           <ion-slide>
-            <img class="d-block w-75" src="assets/cover_page/img/ADMIN.png" alt="Fourth slide" />
+            <img class="d-block w-50" src="assets/cover_page/img/ADMIN.png" alt="Fourth slide" />
           </ion-slide>
           <ion-slide>
-            <img class="d-block w-75" src="assets/cover_page/img/c1.PNG" alt="Fifth slide" />
+            <img class="d-block w-50" src="assets/cover_page/img/c1.PNG" alt="Fifth slide" />
           </ion-slide>
           <ion-slide>
-            <img class="d-block w-75" src="assets/cover_page/img/c2.PNG" alt="Sixth slide" />
+            <img class="d-block w-50" src="assets/cover_page/img/c2.PNG" alt="Sixth slide" />
           </ion-slide>
         </ion-slides>
 
