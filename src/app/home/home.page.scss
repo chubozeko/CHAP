@@ -224,6 +224,7 @@ ion-card{
   padding: 5px; font-size: 8pt;
   width: 80px; height: 45px;
   background-color: rgba(255, 255, 255, 0);
+  cursor: -webkit-grab; cursor: grab;
 }
 
 ion-row{ float: left; overflow-y: hidden; padding: 0; }
@@ -439,3 +440,6 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   width: max-content;
   // min-width: 17.5px;
 }
+.grabbing {cursor: -webkit-grabbing; cursor: grabbing;}
+.grab {cursor: -webkit-grab; cursor: grab;}
+.pointer {cursor: pointer;}
