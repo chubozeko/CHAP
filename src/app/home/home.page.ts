@@ -210,7 +210,7 @@ export class HomePage {
     this.loadTheme();
     setTimeout(() => {
       this.splash = false;
-      // this.openIntroTutorial();
+      this.openIntroTutorial();
     }, 4000);
 
     // Adding Hover Listeners to Toolbar Buttons
