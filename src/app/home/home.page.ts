@@ -232,8 +232,10 @@ export class HomePage {
     let symList = document.getElementsByClassName("s_tooltip");
     for (let i = 0; i < symList.length; i++) {
       // Mouse Over (Hover)
+      
       symList[i].addEventListener("mouseover", (e) => {
         this.toolbarTooltip = symList[i].innerHTML;
+      
       });
       // Mouse Exit
       symList[i].addEventListener("mouseleave", (e) => {
@@ -268,7 +270,8 @@ export class HomePage {
     // });
     let sFAB = document.getElementById("symbolsFAB");
     sFAB.addEventListener("click", (e) => this.toggleSymbolsFAB());
-    // let printFC = document.getElementById("btn_printFlowchart"); 
+    //
+     let printFC = document.getElementById("btn_printFlowchart"); 
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let quickGuide = document.getElementById("btn_gettingStartedPage");
     quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
@@ -370,12 +373,19 @@ export class HomePage {
   }
 
   public subscribeToDragula() {
+    
     this.dragulaService.drag("symbol").subscribe(({ name, el, source }) => {
+     
       this.selectedSymbol = el.children[0].id;
       this.isSymbolBeingDragged = true;
+  
+   
 
+
+     
+    
       let prompt = document.getElementById("infoPrompt");
-      prompt.style.display = "flex";
+     prompt.style.display = "flex";
       this.infoMessage = "Drag and Drop Symbols onto an Arrow to add a Symbol";
     });
 
@@ -384,7 +394,9 @@ export class HomePage {
       this.isSymbolBeingDragged = false;
 
       let prompt = document.getElementById("infoPrompt");
-      prompt.style.display = "none";
+      prompt.style.display = "none ";
+     
+
       this.infoMessage = "";
     });
 
@@ -397,6 +409,7 @@ export class HomePage {
         this.popOver = null;
         this.popCtrl.dismiss();
         this.isSymbolBeingDragged = false;
+        
       });
 
     this.dragulaService

@@ -160,7 +160,11 @@
 } 
 .scrollbar::-webkit-scrollbar-thumb {
   border-radius: 6px;
+<<<<<<< Updated upstream
 //  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+=======
+  //-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+>>>>>>> Stashed changes
   background-color: #333;
 }
 
