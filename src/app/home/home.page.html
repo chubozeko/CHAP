@@ -115,12 +115,12 @@
 
     <div id="left_symbols">
       <ion-card id="symbolsTitle">
-        <ion-text style="padding: 5px; font-size: 12pt; font-weight: bold;">SYMBOLS:</ion-text>
+        <ion-text style="padding: 5px; font-size: 12pt; font-weight: bold;" >SYMBOLS:</ion-text>
       </ion-card>
-      <div id="symbolsList" dragula="symbol">
+      <div id="symbolsList"  dragula="symbol" >
         <!-- class="scrollbar" -->
         <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
-          <div id="{{s.id}}" class="symbol s_tooltip {{s.id}}" (click)="addSymbol(s.id, $event)"
+          <div id="{{s.id}}" class="symbol s_tooltip {{s.id}} " (click)="addSymbol(s.id, $event)"
             [style.backgroundColor]="setColor(s.id)">
             {{s.s_name}}
           </div>

@@ -1,5 +1,5 @@
 <?php
-
+ob_start ();
 $IP=$_SERVER['REMOTE_ADDR'];
 
 if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -11,14 +11,15 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 // Access-Control headers are received during OPTIONS requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
   if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+  header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+  
   if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
     header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-  exit(0);
+  
 }
 
-require "dbconnect.php";
-require "variable.php";
+require_once("dbconnect.php") ;
+require_once("variable.php");
 
 $data = file_get_contents("php://input");
 if (isset($data)) {
@@ -93,5 +94,5 @@ else {
 }
 # ------------------------------------------------------------
 echo json_encode($response);
-
+ob_end_flush();
 ?>
