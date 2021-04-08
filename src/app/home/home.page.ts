@@ -363,29 +363,26 @@ export class HomePage {
     if (this.auth.mode == "offline") {
       logOut.style.display = "none";
       goOnline.style.display = "block";
+      feedbackBtn.style.display = "none";
     } else if (this.auth.mode == "online") {
       logOut.style.display = "block";
       goOnline.style.display = "none";
+      feedbackBtn.style.display = "block";
     } else if (this.auth.mode == "trial") {
       logOut.style.display = "none";
       goOnline.style.display = "none";
+      feedbackBtn.style.display = "none";
     }
   }
 
   public subscribeToDragula() {
     
     this.dragulaService.drag("symbol").subscribe(({ name, el, source }) => {
-     
       this.selectedSymbol = el.children[0].id;
       this.isSymbolBeingDragged = true;
-  
-   
 
-
-     
-    
       let prompt = document.getElementById("infoPrompt");
-     prompt.style.display = "flex";
+      prompt.style.display = "flex";
       this.infoMessage = "Drag and Drop Symbols onto an Arrow to add a Symbol";
     });
 
@@ -395,8 +392,6 @@ export class HomePage {
 
       let prompt = document.getElementById("infoPrompt");
       prompt.style.display = "none ";
-     
-
       this.infoMessage = "";
     });
 
@@ -409,7 +404,6 @@ export class HomePage {
         this.popOver = null;
         this.popCtrl.dismiss();
         this.isSymbolBeingDragged = false;
-        
       });
 
     this.dragulaService
