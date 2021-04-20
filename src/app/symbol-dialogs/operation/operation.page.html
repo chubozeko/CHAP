@@ -1,22 +1,24 @@
-<ion-content>
-  <ion-toolbar style="height: 25px; --min-height: 25px">
-    &nbsp;
-    <ion-icon name="arrow-back" style="width: 21px; height: 21px;"></ion-icon> &nbsp;
-    <ion-label style="font-size: 10pt; vertical-align: super;">Symbols: </ion-label>
-
-
-  </ion-toolbar>
-  <ion-grid id="operPop">
-    <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
-      <div id="{{s.id}}" class="symbol s_tooltip {{s.id}}" (click)="addSymbol(s.id, $event)"
+<ion-content >
+  <div class="scroller">
+  <ion-header class="header">
+    
+      <ion-label class="title">Symbol List </ion-label>
+    
+  </ion-header>
+ 
+  <ion-grid id="operPop"   >
+    <ion-card *ngFor="let s of symbols" id="fabSymbols"  no-shadow >
+      <div  id="{{s.id}}" class="symbol s_tooltip {{s.id}}" (click)="addSymbol(s.id, $event)"
         [style.backgroundColor]="setColor(s.id)">
         {{s.s_name}}
       </div>
     </ion-card>
   </ion-grid>
-  <ion-footer style="padding: 0 5px ;">
-    <ion-button color="light" style="--height: 21px; font-size: 10pt;" expand="block" (click)="closePopup()">
-      <ion-icon name="close"></ion-icon> Close
+
+  <ion-footer class="footer">
+    <ion-button color="danger"  expand="block" (click)="closePopup()">
+      <ion-icon name="close" ></ion-icon> Close
     </ion-button>
   </ion-footer>
+</div>
 </ion-content>
