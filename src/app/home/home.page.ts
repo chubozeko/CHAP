@@ -2760,7 +2760,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getDeclareExpression();
           break;
@@ -2770,7 +2770,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getInputExpression();
           break;
@@ -2780,7 +2780,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           let tempX = sym.getOutputExpression().replace(/`/g, '"');
           sym.setOutputExpression(tempX);
@@ -2792,7 +2792,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getProcessExpression();
           break;
@@ -2802,7 +2802,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getCommentExpression();
           break;
@@ -2812,7 +2812,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getIfStatement();
           tlb = els[p].parentElement.querySelector("#ifTrueBlock");
@@ -2826,7 +2826,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getForExpression();
           tlb = els[p].parentElement.querySelector("#forTrueBlock");
@@ -2838,7 +2838,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getWhileExpression();
           tlb = els[p].parentElement.querySelector("#whileTrueBlock");
@@ -2850,7 +2850,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getDoWhileExpression();
           tlb = els[p].parentElement.querySelector("#doWhileTrueBlock");
