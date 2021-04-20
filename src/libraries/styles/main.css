@@ -178,24 +178,26 @@ textarea{
     resize: none; white-space: pre-wrap;
   }
 
-/* Symbol Pop Up (.popover-content) */
+/* Symbol Pop Up (.popover-content)  Değişti 200 dü*/
 .symPopUp {
-  --width: 200px;
-  --height: 200px;
+  --width: 30px;
+ /* --height: 500px; */
 }
 
 .symPopUp .popover-wrapper .popover-content {
   /* top: 120px;
   left: 600px; */
-  margin-left: 85px;
-  margin-top: 5px;
-  width: 175px;
+ margin: auto;
+  width: fit-content;
+
+  /* height: 450px; */
 }
 
 /* Symbol Pop Up (.popover-content) */
 .symbolPromptAS {
-  --width: 150px;
-  --height: max-content;
+    width: fit-content;
+  /* height: 450px; */
+  
 }
   
 .symbolPromptAS .popover-wrapper .popover-content {
@@ -203,8 +205,10 @@ textarea{
   left: 600px; */
   margin-left: 85px;
   margin-top: 5px;
-  width: 125px;
-  padding: 5px;
+  width: fit-content;
+  
+ /* overflow-x: scroll; */
+  /* height: 450px; */
 }
 
 /* Symbol Modal Textbox Focus */
@@ -214,3 +218,5 @@ textarea{
 
 /* Clear Workspace Alert */
 .clearWS-yes { --background: #f04141; }
+
+    

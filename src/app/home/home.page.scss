@@ -105,7 +105,8 @@
 // Console & Console Buttons
 #consoleInput{
   background-color: #333; color: #ddd; 
-  font-family: Consolas, monaco, monospace; 
+  font-family: sans-serif; 
+  font-weight: bold;
   resize: none; width: 100%; padding: 2px; float: left;
 }
 .toggleConsole {
@@ -120,17 +121,40 @@
 
 // Symbols FAB & List
 #symbolsTitle {
+  margin-top: 5px;
+  margin-left: 10px;
   display: none;
   background-color: #333333;
   color: #ddd;
   padding: 5px; 
-  width: 100px; 
+  width: 120px; 
   height: 30px; 
   justify-content: center;
 }
-
+.symbolFABbutton{
+   background-color: white;
+   border: none;
+   color: white;
+   padding: 15px;
+  // background-image: url("/assets/icon/menuN.png");
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 16px;
+   margin: 4px 2px;
+   border-radius: 55%;
+ 
+ // margin-inline-start: -50px !important;
+}
+.fab[mini] {
+  margin: 8px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
 #symbolsFAB {
   position: absolute;
+  
   bottom: 0px; left: 0px;
   
 }
@@ -142,6 +166,7 @@
   background-color: #ddd;
   font-family: Consolas, monaco, monospace; 
   padding: 10px;
+  width: 120px;
   // top: 10px;
   // bottom: 10px;
  // cursor: -webkit-grab; 
@@ -225,11 +250,19 @@ ion-card{
 }
 
 #fabSymbols{
-  padding: 5px; font-size: 8pt;
-  width: 80px; height: 45px;
+  padding: 5px; 
+  font-size: 15pt;
+  font-weight: bold;
+  font-family: Sans-serif;
+  width: 100px; height: 50px;
   background-color: rgba(255, 255, 255, 0);
+<<<<<<< Updated upstream
   cursor: -webkit-grab; 
   cursor: grab;
+=======
+  cursor: -webkit-grab; cursor: grab;
+
+>>>>>>> Stashed changes
 }
 
 ion-row{ float: left; overflow-y: hidden; padding: 0; }
@@ -270,7 +303,9 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   justify-content: center;
   // line-height: 1.5;
   // line-height: normal;
-  font-size: 8pt;
+  font-size: 10pt;
+  font-weight: bold;
+  font-family: Sans-serif;
   color: #000000; cursor: pointer;
   margin: auto;
 }
@@ -279,6 +314,7 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   //background: #fe547b;
   -webkit-clip-path: ellipse(50% 50% at 50% 50%);
   clip-path: ellipse(50% 50% at 50% 50%);
+
 }
 .s_declare{
   background-image: url("/assets/icon/declare.png");
