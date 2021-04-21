@@ -382,8 +382,10 @@ export class HomePage {
       this.isSymbolBeingDragged = true;
 
       let prompt = document.getElementById("infoPrompt");
-      prompt.style.display = "flex";
-      this.infoMessage = "Drag and Drop Symbols onto an Arrow to add a Symbol";
+      prompt.style.display="flex";
+      prompt.style.width="fit-contect";
+      this.infoMessage = "Drag and Drop Symbols onto an Arrow to Add a Symbol";
+      
     });
 
     this.dragulaService.dragend("symbol").subscribe(({ name, el }) => {

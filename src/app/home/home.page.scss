@@ -6,8 +6,9 @@
 .symbolPromptAS {
   width: 150px; 
 }
-#infoPrompt {
-  // width: 75%;
+.infoPrompt {
+   //width: 75%;
+  width: fit-content;
   display: none;
   justify-content: center;
   background-color: #aaaaaa;
@@ -15,7 +16,7 @@
   top: 75%;
   z-index: 1;
   left: 36.5%;
-  min-width: max-content;
+   min-width: max-content;
   padding: 15px;
   opacity: 0.5;
 }
@@ -64,20 +65,7 @@
   // margin-left: -60px;
 }
 
-// .tooltip:hover .tooltiptext {
-//   visibility: visible;
-// }
 
-/* SYMBOLS Tooltip */
-// #toolbar-tooltip {
-//   background-color: black;
-//   color: #ddd;
-//   text-align: center;
-//   border-radius: 6px;
-//   padding: 5px 0;
-//   height: 60%;
-//   width: 150px;
-// }
 .s_tooltip {
   position: relative;
   display: inline-block;
@@ -483,3 +471,28 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 .grabbing {cursor: -webkit-grabbing; cursor: grabbing;}
 .grab {cursor: -webkit-grab; cursor: grab;}
 .pointer {cursor: pointer;}
+@media screen and (max-width: 768px) {
+  .infoPrompt {
+    // width: 75%;
+    width: fit-content;
+    display: none;
+    justify-content: center;
+    background-color: #aaaaaa;
+    position: absolute;
+    top: 75%;
+    z-index: 1;
+    //left: 26%;
+    min-width: max-content;
+    padding: 10px;
+    opacity: 0.5;
+  }
+  .prompttext{
+    font-size: 10px;
+    font-family: sans-serif;
+    font-weight: bold;
+    word-wrap:break-word;
+    width: 200px;
+    text-align: center;
+    //justify-content: center;
+  }
+}
