@@ -1,6 +1,18 @@
 #tutor_modal_footer{ background-color: #333; }
 #tutor_modal_footer ion-button{ color: #333; }
 
-#tutorSlides{ color: #333; font-weight: bold; justify-content: center; }
+#tutorSlides{ color: #333; font-weight: bold; justify-content: center; 
+                 }
+                 ion-content.content{
+                                top: 10%;
+                                left: 10%;
+                                width: 80%;
+                                height: 375px; // <-- fixed
+                                //height: 75%; // <-- will stretch to screen size
+                                border-radius: 10px;
+                                .scroll-content {
+                                    border-radius: 20px;
+                                }
+                }
 
 .card-text { font-size: 12pt; margin: 10px; }

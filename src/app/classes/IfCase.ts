@@ -158,23 +158,31 @@ export class IfCase {
     } else { isParsingStrings = false; }
 
     if (isParsingStrings) {
-      if (exps[0] == true) return this.trueBlockSymbols;
-      else if (exps[0] == false) return this.falseBlockSymbols;
+      if (exps[0] == true){
+        return this.trueBlockSymbols;
+      } 
+      //Değiştirildi Test
+      else if (exps[0] == false){
+        return this.falseBlockSymbols;
+      } 
+      
+    }else{
+// Remove empty elements [""] from parsedValues
+for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
+// Create newExpression with parsed values instead of variable names
+let newExpression = "";
+for (let j = 0; j < opers.length; j++) {
+  newExpression += exps[j] + opers[j];
+}
+newExpression += exps[exps.length - 1];
+// Evaluate the expression and return the result
+result = math.evaluate(newExpression);
+if (result == true) return this.trueBlockSymbols;
+else if (result == false) return this.falseBlockSymbols;
+}
     }
 
-    // Remove empty elements [""] from parsedValues
-    for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
-    // Create newExpression with parsed values instead of variable names
-    let newExpression = "";
-    for (let j = 0; j < opers.length; j++) {
-      newExpression += exps[j] + opers[j];
-    }
-    newExpression += exps[exps.length - 1];
-    // Evaluate the expression and return the result
-    result = math.evaluate(newExpression);
-    if (result == true) return this.trueBlockSymbols;
-    else if (result == false) return this.falseBlockSymbols;
-  }
+    
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {
     let result: any;

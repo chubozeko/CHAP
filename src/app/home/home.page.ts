@@ -461,8 +461,12 @@ export class HomePage {
   }
 
   async openIntroTutorial() {
+ 
     const modal = await this.modalC.create({
+      
       component: CoverPagePage,
+      //cssClass: 'my-modal-class',
+
     });
     modal.onDidDismiss().then((data) => { });
     await modal.present();
@@ -619,6 +623,7 @@ export class HomePage {
   }
 
   async openCommentModal(symbol, e) {
+    
     const modal = await this.modalC.create({
       component: CommentPage,
       componentProps: { symbol: symbol },

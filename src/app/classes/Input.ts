@@ -1,5 +1,7 @@
-import { Declare } from "./Declare";
+//import { Declare } from "./Declare";
+import { from } from "rxjs";
 import { Variable } from "./Variable";
+
 
 export class Input {
 
@@ -8,7 +10,8 @@ export class Input {
 
   variableName: string = '';
   inputExpression: string = '';
-  inputPrompt: string = '';
+
+ inputPrompt: string = '';
 
   inputSymbol: any;
 
@@ -29,11 +32,16 @@ export class Input {
 
   getInputExpression() {
     this.inputExpression = this.getVariableName();
+    
     return this.inputExpression;
   }
 
   parseInputExp(variable: Variable) {
-    this.inputPrompt = 'Enter a value of type ' + variable.getDataType() + ' for variable ' + variable.getName();
+    //this.inputPrompt.fontsize('15px');
+   // this.inputPrompt.fontcolor('red');
+
+    this.inputPrompt = "  Enter a Value Of Type " + variable.getDataType() + " For Variable " + variable.getName();
+  
     return this.inputPrompt;
   }
 

@@ -14,11 +14,13 @@ export class Output {
     this.outputSymbol = outputSym.outputSymbol;
   }
 
-  setOutputExpression(exp: string) { this.outputExp = exp; }
-  getOutputExpression() { return this.outputExp; }
+  setOutputExpression(exp: string){
+   this.outputExp = exp;
+   }
+  getOutputExpression() { return  this.outputExp; }
 
   setOutputSymbol(symbol: any) { this.outputSymbol = symbol; }
-  getOutputSymbol() { return this.outputSymbol; }
+  getOutputSymbol() { return  this.outputSymbol; }
 
   parseExpression() {
     // parse the output expression

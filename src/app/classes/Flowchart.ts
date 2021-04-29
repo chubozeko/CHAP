@@ -13,6 +13,8 @@ import { DoWhileLoop } from "./DoWhileLoop";
 import { ForLoop } from "./ForLoop";
 import { LoopBlock } from "./LoopBlock";
 import { create, all } from 'mathjs';
+import { BORDER_STYLE } from "html2canvas/dist/types/css/property-descriptors/border-style";
+import { borderLeftWidth } from "html2canvas/dist/types/css/property-descriptors/border-width";
 const config = {};
 const math = create(all, config);
 
@@ -131,39 +133,56 @@ export class Flowchart {
 
   async validateInput(varIndex: number, symIndex: number, arrayIndex?: number) {
     // Display Input prompt
+  
     this.inputPromptStatement =
       Input.prototype.parseInputExp(this.variables.vars[varIndex]) + "\n";
     this.isInputEntered = true;
     this.showInputPrompt(this.inputPromptStatement, varIndex, symIndex, arrayIndex);
   }
-
+ // 
   async showInputPrompt(alertTitle: string, varIndex: number, symIndex: number, arrayIndex?: number) {
+    //alert.getElementsByClassName();
     const alert = await this.alertC.create({
-      header: alertTitle,
+      cssClass: 'aalert_input',
+     // header: '<h1>'+alertTitle+'</h1>',
+      
+     //
+    
+      message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
       inputs: [
         {
-          name: "inputText",
-          type: "text"
+          
+          name: 'inputText',
+                         
+         placeholder: 'Enter Input Value To Here',
+                  
+                                     
+                   type: 'text',
+                 
+          
         }
       ],
       buttons: [
         {
           text: "Cancel",
           role: "cancel",
-          cssClass: "secondary",
+          cssClass: 'bgalertbtncancel',
           handler: data => {
             console.log("Cancel " + data.inputText);
           }
         },
         {
+         
+          cssClass: "primary",
           text: "OK",
+          
           handler: data => {
             this.isInputEntered = false;
             this.inputParsing(this.variables.vars[varIndex], data.inputText, arrayIndex);
             this.consoleLog = document.getElementById(
               "console"
             ) as HTMLTextAreaElement;
-            this.consoleLog.value += "> " + data.inputText + "\n";
+            this.consoleLog.value += ">Input :" + data.inputText + "\n";
             this.isAnInputBlockRunning = false;
             this.validateFlowchart(++symIndex, this.tempSymbols.length);
           }
@@ -386,7 +405,7 @@ export class Flowchart {
         let isVarDeclared = false;
         let isVarAnArray = false;
         let tempArrIndex: number;
-        let hasQuotes = 0, outputS = "";
+        let hasQuotes = 0, outputS = "Output :";
         // Get output expression
         let outputStr: string = this.tempSymbols[i].getOutputExpression();
         let str = outputStr.split("&");
@@ -686,7 +705,9 @@ export class Flowchart {
                 console.log("loop pass: ", x);
               } break;
             }
-          } else { break; }
+          } else {
+             break; 
+            }
         }
 
       }
@@ -727,8 +748,11 @@ export class Flowchart {
             let x = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, 0, doWhileLoopBlock.SYMBOLS.length);
             // Check whileBoolean after validating While Loop Block symbols
             doWhileBlock = doWhileSymbol.parseDoWhileExpression(x);
-            if (doWhileBlock.length != 0) { doWhileBoolean = true; }
-            else { doWhileBoolean = false; }
+            if (doWhileBlock.length != 0) { 
+              doWhileBoolean = true; }
+            else { 
+              doWhileBoolean = false; 
+            }
             console.log("loop pass: " + doWhileBoolean, x);
           } while (doWhileBoolean);
           break;

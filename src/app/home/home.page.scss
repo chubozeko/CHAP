@@ -134,12 +134,7 @@
  
  // margin-inline-start: -50px !important;
 }
-.fab[mini] {
-  margin: 8px;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-}
+
 #symbolsFAB {
   position: absolute;
   
@@ -345,9 +340,13 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   // clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
 }
 #s_terminator{
-  background: #ffffff;
-  -webkit-clip-path: circle(50% at 50% 50%); clip-path: circle(50% at 50% 50%);
-  width: 35px; height: 35px; margin: auto;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  color: #000000;
+  //background: #ffffff;
+  //-webkit-clip-path: circle(50% at 50% 50%); clip-path: circle(50% at 50% 50%);
+  //width: 35px; height: 35px; margin: auto;
 }
 .s_comment{
   background: #dddddd;
@@ -471,6 +470,8 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 .grabbing {cursor: -webkit-grabbing; cursor: grabbing;}
 .grab {cursor: -webkit-grab; cursor: grab;}
 .pointer {cursor: pointer;}
+
+
 @media screen and (max-width: 768px) {
   .infoPrompt {
     // width: 75%;
@@ -495,4 +496,42 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
     text-align: center;
     //justify-content: center;
   }
+  #fileName {
+    width: 125px;
+    font-size: 10px;
+  
+    background-color: black;
+    color: #ddd;
+    //text-align: start;
+   // text-indent: 5px;
+    border-radius: 6px;
+    //padding: 5px 0;
+    //height: 60%;
+   // min-width: auto;
+   // max-width: 350px;
+   height: fit-content;
+  }
+  #fabSymbols{
+    padding: 5px; 
+    font-size: 10pt;
+    font-weight: bold;
+    font-family: Sans-serif;
+    width: 90px; height: 50px;
+    background-color: rgba(255, 255, 255, 0);
+    cursor: -webkit-grab; cursor: grab;
+  
+  }
+  .symbols-div{ 
+    width: 100%; height: auto;
+    background-color: rgba(187, 195, 199, 0.904);
+    overflow-x: hidden; margin: 0;
+    
+  }
+  /////////////////////////////////////////////////////////////////////////////////////////@at-root
+
+}
+
+ion-modal{
+  --width: 150%;
+ --height: 100%;
 }
