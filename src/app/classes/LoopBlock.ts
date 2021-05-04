@@ -372,7 +372,7 @@ export class LoopBlock {
         let isVarDeclared = false;
         let isVarAnArray = false;
         let tempArrIndex: number;
-        let hasQuotes = 0, outputS = "";
+        let hasQuotes = 0, outputS = "Output :";
         // Get output expression
         let outputStr: string = this.tempSymbols[i].getOutputExpression();
         let str = outputStr.split("&");
@@ -447,7 +447,7 @@ export class LoopBlock {
                     this.variables[l].variable[tempArrIndex] == undefined &&
                     isNaN(this.variables[l].variable[tempArrIndex])
                   ) {
-                    outputS = "";
+                    outputS = "Output :";
                   } else outputS += this.variables[l].variable[tempArrIndex];
                 }
               } else {
@@ -456,7 +456,7 @@ export class LoopBlock {
                     this.variables[l].value == undefined &&
                     isNaN(this.variables[l].value)
                   ) {
-                    outputS = "";
+                    outputS = "Output :";
                   } else outputS += this.variables[l].value;
                 }
               }
@@ -479,7 +479,7 @@ export class LoopBlock {
                       this.variables[l].value == undefined &&
                       isNaN(this.variables[l].value)
                     ) {
-                      outputS = "";
+                      outputS = "Output :";
                     } else outputS += this.variables[l].value;
                   }
                 } else {
@@ -502,7 +502,7 @@ export class LoopBlock {
                       this.variables[l].variable[tempArrIndex] == undefined &&
                       isNaN(this.variables[l].variable[tempArrIndex])
                     ) {
-                      outputS = "";
+                      outputS = "Output :";
                     } else outputS += this.variables[l].variable[tempArrIndex];
                   }
                 }

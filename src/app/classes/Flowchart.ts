@@ -480,7 +480,7 @@ export class Flowchart {
                     this.variables.vars[l].variable[tempArrIndex] == undefined &&
                     isNaN(this.variables.vars[l].variable[tempArrIndex])
                   ) {
-                    outputS = "";
+                    outputS = "Output :";
                   } else outputS += this.variables.vars[l].variable[tempArrIndex];
                 }
               } else {
@@ -489,7 +489,7 @@ export class Flowchart {
                     this.variables.vars[l].value == undefined &&
                     isNaN(this.variables.vars[l].value)
                   ) {
-                    outputS = "";
+                    outputS = "Output :";
                   } else outputS += this.variables.vars[l].value;
                 }
               }
@@ -512,7 +512,7 @@ export class Flowchart {
                       this.variables.vars[l].value == undefined &&
                       isNaN(this.variables.vars[l].value)
                     ) {
-                      outputS = "";
+                      outputS = "Output :";
                     } else outputS += this.variables.vars[l].value;
                   }
                 } else {
@@ -535,7 +535,7 @@ export class Flowchart {
                       this.variables.vars[l].variable[tempArrIndex] == undefined &&
                       isNaN(this.variables.vars[l].variable[tempArrIndex])
                     ) {
-                      outputS = "";
+                      outputS = "Output :";
                     } else outputS += this.variables.vars[l].variable[tempArrIndex];
                   }
                 }
@@ -784,7 +784,7 @@ export class Flowchart {
         let y = tempX.replace(/\"/g, "`");
         console.log('old output', this.tempSymbols[i].getOutputExpression());
         this.tempSymbols[i].setOutputExpression(y);
-        console.log('new output', this.tempSymbols[i].getOutputExpression());
+        console.log("Output :"+ this.tempSymbols[i].getOutputExpression());
       }
       // IF CASE
       else if (this.tempSymbols[i] instanceof IfCase) {
@@ -794,8 +794,10 @@ export class Flowchart {
           let tempS = ifSymbol.getSymbolFromTrueBlock(j);
           if (tempS instanceof Output) {
             let tempX = tempS.getOutputExpression() as string;
-            let y = tempX.replace(/\"/g, "`");
+            let y = tempX.replace( /\"/g, "`");
             tempS.setOutputExpression(y);
+            console.log("Output :"+  tempS[i].getOutputExpression());
+           
           }
         }
         for (let j = 0; j < ifSymbol.falseBlockSymbols.length; j++) {

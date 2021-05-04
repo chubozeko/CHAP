@@ -307,7 +307,7 @@ export class HomePage {
       bs[b].addEventListener("mouseover", (e) => {
         let prompt = document.getElementById("infoPrompt");
         prompt.style.display = "flex";
-        this.infoMessage = "Double-Click on an Arrow to Open small Symbol List";
+        this.infoMessage = "!! Double-Click on an Arrow to Open small Symbol List !!";
         setTimeout(() => {
           prompt.style.display = "none";
           this.infoMessage = "";
@@ -383,8 +383,8 @@ export class HomePage {
 
       let prompt = document.getElementById("infoPrompt");
       prompt.style.display="flex";
-      prompt.style.width="fit-contect";
-      this.infoMessage = "Drag and Drop Symbols onto an Arrow to Add a Symbol";
+     // prompt.style.width="fit-contect";
+      this.infoMessage = "!! Drag and Drop Symbols onto an Arrow to Add a Symbol !!";
       
     });
 
@@ -2506,7 +2506,7 @@ export class HomePage {
     arrow.addEventListener("mouseover", (e) => {
       let prompt = document.getElementById("infoPrompt");
       prompt.style.display = "flex";
-      this.infoMessage = "Double-Click on an Arrow to Open small Symbol List";
+      this.infoMessage = "!! Double-Click on an Arrow to Open small Symbol List !!";
       setTimeout(() => {
         prompt.style.display = "none";
         this.infoMessage = "";
