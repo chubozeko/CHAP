@@ -20,6 +20,8 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="0" />
     <preference name="ShowSplashScreen" value="false" />
+    <!-- <preference name="ShowSplashScreenSpinner" value="true" />
+    <preference name="ShowSplashScreenSpinnerColor" value="red" /> -->
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="*" src="src/assets/icon.png" />
