@@ -207,4 +207,51 @@ export class Process {
     return '\t\t' + this.getProcessExpression() + ';\n';
   }
 
+  async validateProcessSymbol(variables: any[], isAnInputBlockRunning: boolean) {
+    let isVarDeclared = false, isVarAnArray = false;
+    let tempArrIndex: number, varIndex;
+    for (let j = 0; j < variables.length; j++) {
+      if (variables[j].getIsArray()) {
+        let tempVarName = this.getVariableName().split('[');
+        if (
+          tempVarName[0] == variables[j].getName()
+        ) {
+          isVarDeclared = true;
+          isVarAnArray = true;
+          varIndex = j;
+          // Getting the index of the array
+          let tempIn = tempVarName[1].replace(']', '');
+          if (!isNaN(parseInt(tempIn))) {
+            tempArrIndex = parseInt(tempIn);
+          } else {
+            for (let k = 0; k < variables.length; k++) {
+              if (tempIn == variables[k].getName()) {
+                tempArrIndex = variables[k].getValue();
+              }
+            }
+          }
+        }
+      } else {
+        if (
+          this.getVariableName() == variables[j].getName()
+        ) {
+          isVarDeclared = true;
+          varIndex = j;
+        }
+      }
+    }
+    if (!isVarDeclared) {
+      return false;
+    } else {
+      if (!isAnInputBlockRunning) {
+        if (isVarAnArray) {
+          variables[varIndex].variable[tempArrIndex] = this.parseExpression(variables, variables[varIndex].getDataType());
+        } else {
+          variables[varIndex].value = this.parseExpression(variables, variables[varIndex].getDataType());
+        }
+      }
+    }
+    return true;
+  }
+
 }

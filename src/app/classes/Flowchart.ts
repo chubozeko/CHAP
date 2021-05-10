@@ -23,10 +23,9 @@ export class Flowchart {
   comments: string[];
 
   isProgramRunning: boolean = false;
-  inputPromptStatement: string = "";
-  isInputEntered: boolean = false;
+  // inputPromptStatement: string = "";
+  // isInputEntered: boolean = false;
   isAnInputBlockRunning: boolean = false;
-  outputStatement: string = "";
   continueDebugIndex: number = 0;
 
   consoleLog: HTMLTextAreaElement;
@@ -129,121 +128,42 @@ export class Flowchart {
     this.variables.vars.splice(pos, 0, declareSymbol.parseDeclareExp());
   }
 
-  async validateInput(varIndex: number, symIndex: number, arrayIndex?: number) {
-    // Display Input prompt
-    this.inputPromptStatement =
-      Input.prototype.parseInputExp(this.variables.vars[varIndex]) + "\n";
-    this.isInputEntered = true;
-    this.showInputPrompt(this.inputPromptStatement, varIndex, symIndex, arrayIndex);
-  }
-
-  async showInputPrompt(alertTitle: string, varIndex: number, symIndex: number, arrayIndex?: number) {
-    const alert = await this.alertC.create({
-      header: alertTitle,
-      inputs: [
-        {
-          name: "inputText",
-          type: "text"
-        }
-      ],
-      buttons: [
-        {
-          text: "Cancel",
-          role: "cancel",
-          cssClass: "secondary",
-          handler: data => {
-            console.log("Cancel " + data.inputText);
+  async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const alert = this.alertC.create({
+        header: alertTitle,
+        inputs: [
+          {
+            name: "inputText",
+            type: "text"
           }
-        },
-        {
-          text: "OK",
-          handler: data => {
-            this.isInputEntered = false;
-            this.inputParsing(this.variables.vars[varIndex], data.inputText, arrayIndex);
-            this.consoleLog = document.getElementById(
-              "console"
-            ) as HTMLTextAreaElement;
-            this.consoleLog.value += "> " + data.inputText + "\n";
-            this.isAnInputBlockRunning = false;
-            this.validateFlowchart(++symIndex, this.tempSymbols.length);
+        ],
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
+            handler: data => { resolve(false); }
+          },
+          {
+            text: "OK",
+            handler: data => {
+              inputSym.inputData = data.inputText;
+              resolve(true);
+              /*
+              inputSym.isInputEntered = false;
+              inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+              this.consoleLog.value += "> " + data.inputText + "\n";
+              this.isAnInputBlockRunning = false;
+              console.log("Input Prompt Showed.");
+              // Return to Flowchart
+              this.validateFlowchart(++symIndex, this.tempSymbols.length);
+              */
+            }
           }
-        }
-      ]
+        ]
+      }).then(alert => alert.present());
     });
-
-    alert.onDidDismiss().then(data => { });
-
-    await alert.present();
-  }
-
-  inputParsing(var1: Variable, var_val: any, arrayIndex?: number) {
-    // Checking the data type of an entered variable into the Console
-    let var_value1: any;
-    if (!isNaN(parseInt(var_val))) {
-      var_value1 = parseInt(var_val);
-    } else if (!isNaN(parseFloat(var_val))) {
-      var_value1 = parseFloat(var_val);
-    } else if (var_val == "true") {
-      var_value1 = true;
-    } else if (var_val == "false") {
-      var_value1 = false;
-    } else {
-      var_value1 = var_val.toString();
-    }
-
-    if (var1.getIsArray()) {
-      if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
-        var1.variable[arrayIndex] = var_value1;
-      } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
-        var1.variable[arrayIndex] = var_value1;
-      } else if (
-        var1.getDataType() == "String" &&
-        typeof var_value1 == "string"
-      ) {
-        var1.variable[arrayIndex] = var_value1;
-      } else if (
-        var1.getDataType() == "Boolean" &&
-        typeof var_value1 == "boolean"
-      ) {
-        var1.variable[arrayIndex] = var_value1;
-      } else {
-        this.showAlert("Invalid datatype entered!", "");
-      }
-    } else {
-      if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
-        var1.value = var_value1;
-      } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
-        var1.value = var_value1;
-      } else if (
-        var1.getDataType() == "String" &&
-        typeof var_value1 == "string"
-      ) {
-        var1.value = var_value1;
-      } else if (
-        var1.getDataType() == "Boolean" &&
-        typeof var_value1 == "boolean"
-      ) {
-        var1.value = var_value1;
-      } else {
-        this.showAlert("Invalid datatype entered!", "");
-      }
-    }
-
-    console.log(this.variables);
-  }
-
-  validateProcess(symbol: Process, varIndex: number, arrayIndex?: number) {
-    if (this.variables.vars[varIndex].getIsArray()) {
-      this.variables.vars[varIndex].variable[arrayIndex] = symbol.parseExpression(
-        this.variables.vars,
-        this.variables.vars[varIndex].getDataType()
-      );
-    } else {
-      this.variables.vars[varIndex].value = symbol.parseExpression(
-        this.variables.vars,
-        this.variables.vars[varIndex].getDataType()
-      );
-    }
   }
 
   async validateFlowchart(startIndex: number, endIndex: number) {
@@ -264,7 +184,8 @@ export class Flowchart {
 
       // DECLARE
       else if (this.tempSymbols[i] instanceof Declare) {
-        let vars = this.tempSymbols[i].parseDeclareExp();
+        let declareSym = this.tempSymbols[i] as Declare;
+        let vars = await declareSym.parseDeclareExp();
         for (let a = 0; a < vars.length; a++) {
           this.variables.vars.splice(this.variables.vars.length, 0, vars[a]);
         }
@@ -272,260 +193,68 @@ export class Flowchart {
 
       // INPUT
       else if (this.tempSymbols[i] instanceof Input) {
-        let isVarDeclared = false;
-        let isVarAnArray = false;
-        let tempArrIndex: number;
-        for (let j = 0; j < this.variables.vars.length; j++) {
-          // Check if the input variable is an array
-          if (this.variables.vars[j].getIsArray()) {
-            let tempVarName = this.tempSymbols[i].getVariableName().split('[');
-            if (
-              tempVarName[0] == this.variables.vars[j].getName()
-            ) {
-              isVarDeclared = true;
-              isVarAnArray = true;
-              varIndex = j;
-              this.continueDebugIndex = varIndex;
-              // Getting the index of the array
-              let tempIn = tempVarName[1].replace(']', '');
-              if (!isNaN(parseInt(tempIn))) {
-                tempArrIndex = parseInt(tempIn);
-              } else {
-                for (let k = 0; k < this.variables.vars.length; k++) {
-                  if (tempIn == this.variables.vars[k].getName()) {
-                    tempArrIndex = this.variables.vars[k].getValue();
-                  }
-                }
-              }
-            }
-          } else {
-            if (
-              this.tempSymbols[i].getVariableName() == this.variables.vars[j].getName()
-            ) {
-              isVarDeclared = true;
-              varIndex = j;
-            }
-          }
-
-        }
-        if (!isVarDeclared) {
+        let inputSym = this.tempSymbols[i] as Input;
+        let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, this.isAnInputBlockRunning, i, this.consoleLog);
+        if (!didInputRun) {
           this.showAlert(
             "Invalid Statement at 'Input'",
             'Variable "' +
-            this.tempSymbols[i].getVariableName() +
+            inputSym.getVariableName() +
             '" is not declared!'
           );
         } else {
-          if (!this.isInputEntered) {
-            this.isAnInputBlockRunning = true;
-            if (isVarAnArray) {
-              this.validateInput(varIndex, i, tempArrIndex);
-            } else {
-              this.validateInput(varIndex, i);
-            }
-          }
+          this.showInputPrompt(inputSym,
+            inputSym.inputPromptProps[0],
+            inputSym.inputPromptProps[1],
+            inputSym.inputPromptProps[2],
+            inputSym.inputPromptProps[3],
+            inputSym.inputPromptProps[4])
+            .then((res) => {
+              if (res) {
+                inputSym.isInputEntered = false;
+                inputSym.inputParsing(this.variables.vars[inputSym.inputPromptProps[1]], inputSym.inputData, inputSym.inputPromptProps[4]);
+                this.consoleLog.value += "> " + inputSym.inputData + "\n";
+                this.isAnInputBlockRunning = false;
+                console.log("Input Prompt Completed.");
+                // Return to Flowchart
+                this.validateFlowchart(++inputSym.inputPromptProps[2], this.tempSymbols.length);
+              } else {
+                inputSym.isInputEntered = false;
+                // inputSym.inputParsing(this.variables.vars[inputSym.inputPromptProps[1]], inputSym.inputData, inputSym.inputPromptProps[4]);
+                this.consoleLog.value += "> -" + "\n";
+                this.isAnInputBlockRunning = false;
+                console.log("Input Prompt Completed.");
+                // Return to Flowchart
+                this.validateFlowchart(++inputSym.inputPromptProps[2], this.tempSymbols.length);
+              }
+            });
         }
-        continue;
       }
 
       // PROCESS
       else if (this.tempSymbols[i] instanceof Process) {
-        let isVarDeclared = false;
-        let isVarAnArray = false;
-        let tempArrIndex: number;
-        for (let j = 0; j < this.variables.vars.length; j++) {
-          if (this.variables.vars[j].getIsArray()) {
-            let tempVarName = this.tempSymbols[i].getVariableName().split('[');
-            if (
-              tempVarName[0] == this.variables.vars[j].getName()
-            ) {
-              isVarDeclared = true;
-              isVarAnArray = true;
-              varIndex = j;
-              // Getting the index of the array
-              let tempIn = tempVarName[1].replace(']', '');
-              if (!isNaN(parseInt(tempIn))) {
-                tempArrIndex = parseInt(tempIn);
-              } else {
-                for (let k = 0; k < this.variables.vars.length; k++) {
-                  if (tempIn == this.variables.vars[k].getName()) {
-                    tempArrIndex = this.variables.vars[k].getValue();
-                  }
-                }
-              }
-            }
-          } else {
-            if (
-              this.tempSymbols[i].getVariableName() == this.variables.vars[j].getName()
-            ) {
-              isVarDeclared = true;
-              varIndex = j;
-            }
-          }
-        }
-        if (!isVarDeclared) {
+        let processSym = this.tempSymbols[i] as Process;
+        let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars, this.isAnInputBlockRunning);
+        if (!didProcessRun) {
           this.showAlert(
             "Invalid Statement at 'Process'",
             'Variable "' +
             this.tempSymbols[i].getVariableName() +
             '" is not declared!'
           );
-        } else {
-          if (!this.isAnInputBlockRunning) {
-            if (isVarAnArray) {
-              this.validateProcess(this.tempSymbols[i], varIndex, tempArrIndex);
-            } else {
-              this.validateProcess(this.tempSymbols[i], varIndex);
-            }
-          }
         }
       }
 
       // OUTPUT
       else if (this.tempSymbols[i] instanceof Output) {
-        let isVarDeclared = false;
-        let isVarAnArray = false;
-        let tempArrIndex: number;
-        let hasQuotes = 0, outputS = "";
-        // Get output expression
-        let outputStr: string = this.tempSymbols[i].getOutputExpression();
-        let str = outputStr.split("&");
-        for (let k = 0; k < str.length; k++) {
-          let s1 = str[k].trim();
-          if (s1.indexOf('"') == -1) {
-            // Check if it is a variable
-            for (let j = 0; j < this.variables.vars.length; j++) {
-              if (this.variables.vars[j].getIsArray()) {
-                let tempVarName = s1.split('[');
-                if (
-                  tempVarName[0] == this.variables.vars[j].getName()
-                ) {
-                  isVarDeclared = true;
-                  isVarAnArray = true;
-                  varIndex = j;
-                  // Getting the index of the array
-                  let tempIn = tempVarName[1].replace(']', '');
-                  if (!isNaN(parseInt(tempIn))) {
-                    tempArrIndex = parseInt(tempIn);
-                  } else {
-                    for (let k = 0; k < this.variables.vars.length; k++) {
-                      if (tempIn == this.variables.vars[k].getName()) {
-                        tempArrIndex = this.variables.vars[k].getValue();
-                      }
-                    }
-                  }
-                }
-              } else {
-                if (s1 == this.variables.vars[j].getName()) {
-                  isVarDeclared = true;
-                  varIndex = j;
-                }
-              }
-            }
-          } else {
-            hasQuotes++;
-            this.outputStatement = outputStr;
-          }
-        }
-
-        if (!isVarDeclared && hasQuotes == 0) {
+        let outputSym = this.tempSymbols[i] as Output;
+        let didOutputRun = await outputSym.validateOutputSymbol(this.variables.vars, this.isAnInputBlockRunning, this.consoleLog);
+        if (!didOutputRun) {
           this.showAlert(
             "Invalid Statement at 'Output'",
             "Variable is not declared!"
           );
-        } else if (isVarDeclared && hasQuotes == 0) {
-          // Output variable
-          let s1 = this.tempSymbols[i].getOutputExpression();
-          let s2 = s1.split("&");
-          for (let i = 0; i < s2.length; i++) {
-            let str = s2[i].trim();
-            for (let l = 0; l < this.variables.vars.length; l++) {
-              /* check if it is an array  */
-              if (this.variables.vars[l].getIsArray()) {
-                let tempVarName = str.split('[');
-                if (
-                  tempVarName[0] == this.variables.vars[l].getName()
-                ) {
-                  // Getting the index of the array
-                  let tempIn = tempVarName[1].replace(']', '');
-                  if (!isNaN(parseInt(tempIn))) {
-                    tempArrIndex = parseInt(tempIn);
-                  } else {
-                    for (let r = 0; r < this.variables.vars.length; r++) {
-                      if (tempIn == this.variables.vars[r].getName()) {
-                        tempArrIndex = this.variables.vars[r].getValue();
-                      }
-                    }
-                  }
-                  if (
-                    this.variables.vars[l].variable[tempArrIndex] == undefined &&
-                    isNaN(this.variables.vars[l].variable[tempArrIndex])
-                  ) {
-                    outputS = "";
-                  } else outputS += this.variables.vars[l].variable[tempArrIndex];
-                }
-              } else {
-                if (str == this.variables.vars[l].getName()) {
-                  if (
-                    this.variables.vars[l].value == undefined &&
-                    isNaN(this.variables.vars[l].value)
-                  ) {
-                    outputS = "";
-                  } else outputS += this.variables.vars[l].value;
-                }
-              }
-            }
-          }
-        } else if (hasQuotes > 0) {
-          // Output String expression
-          let s1 = this.tempSymbols[i].getOutputExpression();
-          let s2 = s1.split("&");
-          for (let i = 0; i < s2.length; i++) {
-            let str = s2[i].trim();
-            if (str.indexOf('"') != -1) {
-              let str2 = str.replace(/\"/g, "");
-              outputS += str2;
-            } else {
-              for (let l = 0; l < this.variables.vars.length; l++) {
-                if (!this.variables.vars[l].getIsArray()) {
-                  if (str == this.variables.vars[l].getName()) {
-                    if (
-                      this.variables.vars[l].value == undefined &&
-                      isNaN(this.variables.vars[l].value)
-                    ) {
-                      outputS = "";
-                    } else outputS += this.variables.vars[l].value;
-                  }
-                } else {
-                  let tempVarName = str.split('[');
-                  if (
-                    tempVarName[0] == this.variables.vars[l].getName()
-                  ) {
-                    // Getting the index of the array
-                    let tempIn = tempVarName[1].replace(']', '');
-                    if (!isNaN(parseInt(tempIn))) {
-                      tempArrIndex = parseInt(tempIn);
-                    } else {
-                      for (let r = 0; r < this.variables.vars.length; r++) {
-                        if (tempIn == this.variables.vars[r].getName()) {
-                          tempArrIndex = this.variables.vars[r].getValue();
-                        }
-                      }
-                    }
-                    if (
-                      this.variables.vars[l].variable[tempArrIndex] == undefined &&
-                      isNaN(this.variables.vars[l].variable[tempArrIndex])
-                    ) {
-                      outputS = "";
-                    } else outputS += this.variables.vars[l].variable[tempArrIndex];
-                  }
-                }
-              }
-            }
-          }
         }
-        if (this.isAnInputBlockRunning == false)
-          this.consoleLog.value += outputS + "\n";
       }
 
       // COMMENT
