@@ -162,7 +162,7 @@ export class Output {
       }
     }
     if (isAnInputBlockRunning == false)
-      consoleLog.value += outputS + "\n";
+      consoleLog.value +="Output :"+ outputS + "\n";
 
     return true;
   }
