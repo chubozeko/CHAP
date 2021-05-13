@@ -155,7 +155,7 @@ export class Output {
         }
       }
     }
-    consoleLog.value += outputS + "\n";
+    consoleLog.value += "Output: " + outputS + "\n";
 
     return true;
   }
