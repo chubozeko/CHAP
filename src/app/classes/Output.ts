@@ -20,7 +20,7 @@ export class Output {
   setOutputSymbol(symbol: any) { this.outputSymbol = symbol; }
   getOutputSymbol() { return this.outputSymbol; }
 
-  async validateOutputSymbol(variables: any[], isAnInputBlockRunning: boolean, consoleLog: HTMLTextAreaElement) {
+  async validateOutputSymbol(variables: any[], consoleLog: HTMLTextAreaElement) {
     let isVarDeclared = null, isVarAnArray = false;
     let tempArrIndex: number;
     let hasQuotes = 0, outputS = "", vIndex;
@@ -66,9 +66,8 @@ export class Output {
       }
     }
 
-    if (isVarDeclared == null && hasQuotes == 0) {
-      return false;
-    } else if (!isVarDeclared) {
+    // if ((isVarDeclared == null || !isVarDeclared) && hasQuotes == 0) {
+    if (!isVarDeclared && hasQuotes == 0) {
       return false;
     } else if (isVarDeclared && hasQuotes == 0) {
       // Output variable
@@ -80,9 +79,7 @@ export class Output {
           /* check if it is an array  */
           if (variables[l].getIsArray()) {
             let tempVarName = str.split('[');
-            if (
-              tempVarName[0] == variables[l].getName()
-            ) {
+            if (tempVarName[0] == variables[l].getName()) {
               // Getting the index of the array
               let tempIn = tempVarName[1].replace(']', '');
               if (!isNaN(parseInt(tempIn))) {
@@ -103,10 +100,7 @@ export class Output {
             }
           } else {
             if (str == variables[l].getName()) {
-              if (
-                variables[l].value == undefined &&
-                isNaN(variables[l].value)
-              ) {
+              if (variables[l].value == undefined && isNaN(variables[l].value)) {
                 outputS = "";
               } else outputS += variables[l].value;
             }
@@ -161,8 +155,7 @@ export class Output {
         }
       }
     }
-    if (isAnInputBlockRunning == false)
-      consoleLog.value += outputS + "\n";
+    consoleLog.value += outputS + "\n";
 
     return true;
   }

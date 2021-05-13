@@ -76,6 +76,7 @@ export class Input {
       ) {
         var1.variable[arrayIndex] = var_value1;
       } else {
+        // TODO: Show Error in Console
         this.showAlert("Invalid datatype entered!", "");
       }
     } else {
@@ -94,6 +95,7 @@ export class Input {
       ) {
         var1.value = var_value1;
       } else {
+        // TODO: Show Error in Console
         this.showAlert("Invalid datatype entered!", "");
       }
     }
@@ -109,11 +111,10 @@ export class Input {
     return '\t\t' + this.getVariableName() + ' = System.console().readLine();\n';
   }
 
-  async validateInputSymbol(variables: any[], isAnInputBlockRunning: boolean, symIndex: number, consoleLog: HTMLTextAreaElement) {
+  async validateInputSymbol(variables: any[], symIndex: number, consoleLog: HTMLTextAreaElement) {
     let isVarDeclared = false, isVarAnArray = false;
     let tempArrIndex: number, varIndex, continueDebugIndex;
     this.consoleLog = consoleLog;
-    this.isAnInputBlockRunning = isAnInputBlockRunning;
     for (let j = 0; j < variables.length; j++) {
       // Check if the input variable is an array
       if (variables[j].getIsArray()) {
@@ -147,18 +148,12 @@ export class Input {
       }
     }
     if (!isVarDeclared) {
-      // this.showAlert(
-      //   "Invalid Statement at 'Input'",
-      //   'Variable "' +
-      //   this.tempSymbols[i].getVariableName() +
-      //   '" is not declared!'
-      // );
+      // Show Undeclared variable error
       return false;
     } else {
+      // Show Input prompt
       if (!this.isInputEntered) {
-        isAnInputBlockRunning = true;
         if (isVarAnArray) {
-          // Display Input prompt
           this.isInputEntered = true;
           this.inputPromptProps = [
             this.parseInputExp(variables[varIndex]),
@@ -168,9 +163,7 @@ export class Input {
             tempArrIndex
           ];
           return true;
-          // this.showInputPrompt(this.parseInputExp(variables[varIndex]), varIndex, symIndex, variables, tempArrIndex);
         } else {
-          // Display Input prompt
           this.isInputEntered = true;
           this.inputPromptProps = [
             this.parseInputExp(variables[varIndex]),
@@ -180,48 +173,9 @@ export class Input {
             tempArrIndex
           ];
           return true;
-          // this.showInputPrompt(this.parseInputExp(variables[varIndex]), varIndex, symIndex, variables, tempArrIndex);
         }
       }
     }
-    // continue;
-  }
-
-  async showInputPrompt(alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
-    const alert = await this.alertC.create({
-      header: alertTitle,
-      inputs: [
-        {
-          name: "inputText",
-          type: "text"
-        }
-      ],
-      buttons: [
-        {
-          text: "Cancel",
-          role: "cancel",
-          cssClass: "secondary",
-          handler: data => {
-            return true;
-          }
-        },
-        {
-          text: "OK",
-          handler: data => {
-            this.isInputEntered = false;
-            this.inputParsing(vars[varIndex], data.inputText, arrayIndex);
-            this.consoleLog.value += "> " + data.inputText + "\n";
-            this.isAnInputBlockRunning = false;
-            return true;
-            // Return to Flowchart
-            // this.validateFlowchart(++symIndex, this.tempSymbols.length);
-          }
-        }
-      ]
-    });
-
-    alert.onDidDismiss().then(data => { return true; });
-    await alert.present();
   }
 
   async showAlert(alertTitle: string, alertMsg: string) {

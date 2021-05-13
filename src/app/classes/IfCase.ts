@@ -1,4 +1,5 @@
 import { create, all } from 'mathjs'
+import { LoopBlock } from './LoopBlock';
 const config = {};
 const math = create(all, config);
 
@@ -11,23 +12,31 @@ export class IfCase {
   ifcaseSymbol: any;
 
   trueExpression: string;
-  trueBlockSymbols: any[];
+  // trueBlockSymbols: any[];
+  trueBlock: LoopBlock;
 
   falseExpression: string;
-  falseBlockSymbols: any[];
+  // falseBlockSymbols: any[];
+  falseBlock: LoopBlock;
 
   constructor() {
-    this.trueBlockSymbols = [];
-    this.falseBlockSymbols = [];
+    // this.trueBlockSymbols = [];
+    this.trueBlock = new LoopBlock();
+    this.trueBlock.SYMBOLS = [];
+    // this.falseBlockSymbols = [];
+    this.falseBlock = new LoopBlock();
+    this.falseBlock.SYMBOLS = [];
   }
 
   createIfCaseSymbol(ifCaseSym: any) {
     this.ifStatement = ifCaseSym.ifStatement;
     this.ifcaseSymbol = ifCaseSym.ifcaseSymbol;
     this.trueExpression = ifCaseSym.trueExpression;
-    this.trueBlockSymbols = ifCaseSym.trueBlockSymbols;
+    // this.trueBlockSymbols = ifCaseSym.trueBlockSymbols;
+    this.trueBlock.SYMBOLS = ifCaseSym.trueBlockSymbols;
     this.falseExpression = ifCaseSym.falseExpression;
-    this.falseBlockSymbols = ifCaseSym.falseBlockSymbols;
+    // this.falseBlockSymbols = ifCaseSym.falseBlockSymbols;
+    this.falseBlock.SYMBOLS = ifCaseSym.falseBlockSymbols;
   }
 
   setIfStatement(if_exp: string) { this.ifStatement = if_exp; }
@@ -36,16 +45,16 @@ export class IfCase {
   setIfCaseSymbol(ifSym: any) { this.ifcaseSymbol = ifSym; }
   getIfCaseSymbol() { return this.ifcaseSymbol; }
 
-  addSymbolToTrueBlock(symbol: any, position: number) { this.trueBlockSymbols.splice(position, 0, symbol); }
-  getSymbolFromTrueBlock(index: number) { return this.trueBlockSymbols[index]; }
-  removeSymbolFromTrueBlock(position: number) { this.trueBlockSymbols.splice(position, 1); }
+  addSymbolToTrueBlock(symbol: any, position: number) { this.trueBlock.addSymbolToLoopBlock(symbol, position); }
+  getSymbolFromTrueBlock(index: number) { return this.trueBlock.getSymbolFromLoopBlock(index); }
+  removeSymbolFromTrueBlock(position: number) { this.trueBlock.removeSymbolFromLoopBlock(position); }
 
-  addSymbolToFalseBlock(symbol: any, position: number) { this.falseBlockSymbols.splice(position, 0, symbol); }
-  getSymbolFromFalseBlock(index: number) { return this.falseBlockSymbols[index]; }
-  removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
+  addSymbolToFalseBlock(symbol: any, position: number) { this.falseBlock.addSymbolToLoopBlock(symbol, position); }
+  getSymbolFromFalseBlock(index: number) { return this.falseBlock.getSymbolFromLoopBlock(index); }
+  removeSymbolFromFalseBlock(position: number) { this.falseBlock.removeSymbolFromLoopBlock(position); }
 
   parseIfCaseExpression(variables: any[]) {
-    let opers = [], parsedValues = [], exps = [], exps1 = [];
+    let opers = [], exps = [], exps1 = [];
     let op = '', oper1, oper2, result, j = 0, tempArrIndex;
     let isVarDeclared = false, isParsingStrings = false;
 
@@ -85,36 +94,11 @@ export class IfCase {
               }
             }
             exps.splice(i, 1, variables[j].variable[tempArrIndex]);
-            // if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].variable[tempArrIndex]));
-            // else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].variable[tempArrIndex]));
-            // else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].variable[tempArrIndex].toString());
-            // else if (variables[j].getDataType() == 'Boolean') {
-            //   if (variables[j].variable[tempArrIndex] == "true") exps.splice(i, 1, true);
-            //   if (variables[j].variable[tempArrIndex] == "false") exps.splice(i, 1, false);
-            // }
           }
         } else {
           if (variables[j].getName() == exps[i]) {
             isVarDeclared = true;
-            // if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].value));
-            // else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].value));
-            // else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].value.toString());
-            // else if (variables[j].getDataType() == 'Boolean') {
-            //   if (variables[j] == "true") exps.splice(i, 1, true);
-            //   if (variables[j] == "false") exps.splice(i, 1, false);
-            // }
             exps.splice(i, 1, variables[j].value);
-          }
-          else {
-            // let v = exps[i];
-            // let temp: any;
-            // if (!isNaN(parseInt(v)) || !isNaN(parseFloat(v))) {
-            //   let a = v.split('.');
-            //   if (a.length > 1) temp = parseFloat(v); else temp = parseInt(v);
-            // } else if (v == 'true') { temp = true; }
-            // else if (v == 'false') { temp = false; }
-            // else { temp = v.toString(); }
-            // exps.splice(i, 1, temp);
           }
         }
       }
@@ -158,8 +142,8 @@ export class IfCase {
     } else { isParsingStrings = false; }
 
     if (isParsingStrings) {
-      if (exps[0] == true) return this.trueBlockSymbols;
-      else if (exps[0] == false) return this.falseBlockSymbols;
+      if (exps[0] == true) return this.trueBlock;
+      else if (exps[0] == false) return this.falseBlock;
     }
 
     // Remove empty elements [""] from parsedValues
@@ -172,8 +156,8 @@ export class IfCase {
     newExpression += exps[exps.length - 1];
     // Evaluate the expression and return the result
     result = math.evaluate(newExpression);
-    if (result == true) return this.trueBlockSymbols;
-    else if (result == false) return this.falseBlockSymbols;
+    if (result == true) return this.trueBlock;
+    else if (result == false) return this.falseBlock;
   }
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {
@@ -249,12 +233,12 @@ export class IfCase {
 
   pseudoCode() {
     let iftrue = '', iffalse = '';
-    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
-      const el = this.trueBlockSymbols[i];
+    for (let i = 0; i < this.trueBlock.SYMBOLS.length; i++) {
+      const el = this.trueBlock.SYMBOLS[i];
       iftrue += '\t' + el.pseudoCode();
     }
-    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
-      const el = this.falseBlockSymbols[i];
+    for (let i = 0; i < this.falseBlock.SYMBOLS.length; i++) {
+      const el = this.falseBlock.SYMBOLS[i];
       iffalse += '\t' + el.pseudoCode();
     }
     return '\tIf ' + this.getIfStatement() + ' Then\n' + iftrue + '\tElse\n' + iffalse + '\tEnd If\n';
@@ -262,12 +246,12 @@ export class IfCase {
 
   cplusplusCode() {
     let iftrue = '', iffalse = '';
-    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
-      const el = this.trueBlockSymbols[i];
+    for (let i = 0; i < this.trueBlock.SYMBOLS.length; i++) {
+      const el = this.trueBlock.SYMBOLS[i];
       iftrue += '\t' + el.cplusplusCode();
     }
-    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
-      const el = this.falseBlockSymbols[i];
+    for (let i = 0; i < this.falseBlock.SYMBOLS.length; i++) {
+      const el = this.falseBlock.SYMBOLS[i];
       iffalse += '\t' + el.cplusplusCode();
     }
     return '\tif (' + this.getIfStatement() + '){\n' + iftrue + '\telse {\n' + iffalse + '\t} \n';
@@ -275,12 +259,12 @@ export class IfCase {
 
   getJavaCode() {
     let iftrue = '', iffalse = '';
-    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
-      const el = this.trueBlockSymbols[i];
+    for (let i = 0; i < this.trueBlock.SYMBOLS.length; i++) {
+      const el = this.trueBlock.SYMBOLS[i];
       iftrue += '\t' + el.getJavaCode();
     }
-    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
-      const el = this.falseBlockSymbols[i];
+    for (let i = 0; i < this.falseBlock.SYMBOLS.length; i++) {
+      const el = this.falseBlock.SYMBOLS[i];
       iffalse += '\t' + el.getJavaCode();
     }
     return '\t\tif (' + this.getIfStatement() + '){\n' + iftrue + '\t\telse {\n' + iffalse + '\t\t} \n';

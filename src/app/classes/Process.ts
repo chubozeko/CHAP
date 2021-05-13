@@ -207,15 +207,13 @@ export class Process {
     return '\t\t' + this.getProcessExpression() + ';\n';
   }
 
-  async validateProcessSymbol(variables: any[], isAnInputBlockRunning: boolean) {
+  async validateProcessSymbol(variables: any[]) {
     let isVarDeclared = false, isVarAnArray = false;
     let tempArrIndex: number, varIndex;
     for (let j = 0; j < variables.length; j++) {
       if (variables[j].getIsArray()) {
         let tempVarName = this.getVariableName().split('[');
-        if (
-          tempVarName[0] == variables[j].getName()
-        ) {
+        if (tempVarName[0] == variables[j].getName()) {
           isVarDeclared = true;
           isVarAnArray = true;
           varIndex = j;
@@ -232,9 +230,7 @@ export class Process {
           }
         }
       } else {
-        if (
-          this.getVariableName() == variables[j].getName()
-        ) {
+        if (this.getVariableName() == variables[j].getName()) {
           isVarDeclared = true;
           varIndex = j;
         }
@@ -243,12 +239,10 @@ export class Process {
     if (!isVarDeclared) {
       return false;
     } else {
-      if (!isAnInputBlockRunning) {
-        if (isVarAnArray) {
-          variables[varIndex].variable[tempArrIndex] = this.parseExpression(variables, variables[varIndex].getDataType());
-        } else {
-          variables[varIndex].value = this.parseExpression(variables, variables[varIndex].getDataType());
-        }
+      if (isVarAnArray) {
+        variables[varIndex].variable[tempArrIndex] = this.parseExpression(variables, variables[varIndex].getDataType());
+      } else {
+        variables[varIndex].value = this.parseExpression(variables, variables[varIndex].getDataType());
       }
     }
     return true;
