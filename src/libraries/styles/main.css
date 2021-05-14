@@ -247,4 +247,9 @@ textarea{
     font-weight: bold;
    color:crimson;
 }
+.noerrorAlert{
+    font-family: sans-serif;
+    
+   color:#ddd;
+}
 
