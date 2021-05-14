@@ -155,7 +155,7 @@ export class Flowchart {
             inputSym.inputData = data.inputText;
             inputSym.isInputEntered = false;
             inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
-            this.consoleLog.value += "> " + data.inputText + "\n";
+            this.consoleLog.value += "> Input : " + data.inputText + "\n";
             this.isAnInputBlockRunning = false;
             this.validateFlowchart(++symIndex, this.tempSymbols.length);
             console.log("> Input (entered) Complete");
