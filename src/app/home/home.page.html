@@ -1,12 +1,16 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
   <div class="flb">
     <div class="Aligner-item Aligner-item--top"></div>
     <img src="./assets/icon/chap_logo.png" class="animation-target">
+    <!-- <ion-progress-bar value="0.5"></ion-progress-bar> -->
     <div class="Aligner-item Aligner-item--bottom"></div>
   </div>
 </div>
 
-<ion-header></ion-header>
+<ion-header>
+ 
+</ion-header>
 
 <ion-toolbar color="primary">
 
@@ -20,7 +24,7 @@
     &nbsp; &nbsp;
     <!-- </ion-buttons> -->
 
-    <ion-input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}" clearInput></ion-input>
+    <ion-input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}" ></ion-input>
 
     <!-- Menu Toolbar Buttons -->
     <!-- <ion-buttons slot="end"> -->
@@ -106,8 +110,8 @@
 
 <ion-content>
 
-  <div id="infoPrompt">
-    <p>{{infoMessage}}</p>
+  <div id="infoPrompt" class="infoPrompt">
+    <p class="prompttext">{{infoMessage}}</p>
   </div>
 
   <div class="wrapper">
@@ -115,7 +119,7 @@
 
     <div id="left_symbols">
       <ion-card id="symbolsTitle">
-        <ion-text style="padding: 5px; font-size: 12pt; font-weight: bold;" >SYMBOLS:</ion-text>
+        <ion-text style="padding: 5px; font-size: 15pt; font-weight: bold;" >SYMBOLS:</ion-text>
       </ion-card>
       <div id="symbolsList"  dragula="symbol" >
         <!-- class="scrollbar" -->
@@ -126,11 +130,11 @@
           </div>
         </ion-card>
       </div>
-
-      <ion-fab-button id="symbolsFAB" color="light" style="padding: 15px;">
-        <img src="./assets/icon/symbols_icon.png" alt="">
-      </ion-fab-button>
-
+ <!-- <ion-button color="medium" id="symbolsFAB" class="symbolFABbutton" ></ion-button> -->
+       <ion-fab-button id="symbolsFAB" size="large" style="padding: 10px; width: 50px;"  color="light">
+        <img src="./assets/icon/symbols_icon.png"alt="" />
+       </ion-fab-button> 
+     <!-- <ion-button  id="symbolsFAB" class="symbolFABbutton">Symbol Menu</ion-button>class="symbolFABbutton"-->
     </div>
 
     <div id="right_ws">

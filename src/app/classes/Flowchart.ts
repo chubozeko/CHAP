@@ -130,9 +130,11 @@ export class Flowchart {
 
   async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
     const alert = await this.alertC.create({
-      header: alertTitle,
+     // header: alertTitle,
+      message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
       inputs: [
         {
+         
           name: "inputText",
           type: "text"
         }

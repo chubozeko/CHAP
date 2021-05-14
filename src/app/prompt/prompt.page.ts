@@ -42,5 +42,8 @@ export class PromptPage implements OnInit {
   pasteSymbol() {
     this.popCtrl.dismiss('paste');
   }
+  closePopup() {
+    this.popCtrl.dismiss();
+  }
 
 }

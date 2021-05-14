@@ -18,41 +18,41 @@
   </ion-item>
 
   <div>
-    <ion-input id="for_var_name" type="text" placeholder="Variable Name" [value]=""
-      class="forloop_elements dialogTextbox" data-text="Enter an iteration variable" maxlength="25"></ion-input>
+    <ion-input id="for_var_name" type="text" placeholder=">Enter Variable Name Here" [value]=""
+      class="forloop_elements dialogTextbox" style="background-color: cornflowerblue;" data-text="Enter an iteration variable" maxlength="25"></ion-input>
   </div>
 
   <div style="width: 50%; float: left; background-color: #fff;">
-    <ion-label style="background-color: #fff; padding: 15px; width: 100%;">Start Value: </ion-label>
+    <ion-label style="background-color: #fff; padding: 15px; width: 100%; font-family: sans-serif; font-weight: bold; color: #00ff00;">Start Value: </ion-label>
     <ion-input id="for_start_val" type="text" placeholder="Start Value" [value]=""
-      class="forloop_elements dialogTextbox" data-text="Enter the initial value of the iteration variable"
+      class="forloop_elements dialogTextbox" style="font-family: sans-serif; font-weight: bold; color: #00ff00;" data-text="Enter the initial value of the iteration variable"
       maxlength="10" inputmode="numeric"></ion-input>
   </div>
   <div style="width: 50%; float: right; background-color: #fff;">
-    <ion-label style="background-color: #fff; padding: 15px; width: 100%;">End Value: </ion-label>
-    <ion-input id="for_end_val" type="text" placeholder="End Value" [value]="" class="forloop_elements dialogTextbox"
+    <ion-label style="background-color: #fff; padding: 15px; width: 100%; font-family: sans-serif; font-weight: bold; color: #ff1100; ">End Value: </ion-label>
+    <ion-input id="for_end_val" type="text" placeholder="End Value" style="font-family: sans-serif; font-weight: bold; color: #ff1100; " [value]="" class="forloop_elements dialogTextbox"
       data-text="Enter the ending value of the iteration variable" maxlength="10" inputmode="numeric"></ion-input>
   </div>
 
   <ion-item class="forloop_elements" data-text="Choose whether the iteration variable increases or decreases">
-    <ion-label>Step Direction: </ion-label>
+    <ion-label style="font-family: sans-serif; font-weight: bold; color:cornflowerblue; ">Step Direction: </ion-label>
     <ion-radio-group id="for_step_dir" [value]="" [(ngModel)]="stepDirection" ok-text="Confirm" cancel-text="Cancel"
       color="primary">
       <ion-item>
         <ion-radio value="Increasing">Increasing</ion-radio>
-        <ion-label>Increasing</ion-label>
+        <ion-label style="font-family: sans-serif; font-weight: bold; color: #00ff00; ">Increasing</ion-label>
       </ion-item>
       <ion-item>
         <ion-radio value="Decreasing">Decreasing</ion-radio>
-        <ion-label>Decreasing</ion-label>
+        <ion-label style="font-family: sans-serif; font-weight: bold; color: #ff1100; ">Decreasing</ion-label>
       </ion-item>
     </ion-radio-group>
   </ion-item>
 
   <div style="background-color: #fff; padding: 10px 0 0 0">
-    <ion-label style="background-color: #fff; padding: 15px; width: 100%;">Step Value: </ion-label>
+    <ion-label style="background-color: #fff; padding: 15px; width: 100%; font-family: sans-serif; font-weight: bold; color:cornflowerblue;">Step Value: </ion-label>
     <ion-input id="for_step_val" type="text" placeholder="Step By" [value]="" class="forloop_elements dialogTextbox"
-      data-text="Enter the step value between each iteration" maxlength="10" inputmode="numeric"></ion-input>
+      data-text="Enter the step value between each iteration" maxlength="10" inputmode="numeric" style="font-family: sans-serif; font-weight: bold; background-color:   cornflowerblue;"></ion-input>
   </div>
 
 </ion-content>

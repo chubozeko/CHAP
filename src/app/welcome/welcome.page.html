@@ -25,43 +25,64 @@
       </li>
       &nbsp; &nbsp;
       <li class="nav-item active">
-        <button type="button" class="btn btn-dark openModal" id="w_signup" style="vertical-align: middle;">
+        <button type="button" class="btn  openModal signup" id="w_signup" style="vertical-align: middle;">
           <!-- data-toggle="modal"
           data-target="#signup" -->
-          <ion-icon style="vertical-align: middle;" name="person-add"></ion-icon> &nbsp; Sign Up
+          <ion-icon style="vertical-align: middle;"  name="person-add"></ion-icon> &nbsp; <b>Sign Up Free</b>
         </button>&emsp;
       </li>
       &nbsp; &nbsp;
       <li class="nav-item">
-        <button type="button" class="btn btn-dark openModal" id="w_login" style="vertical-align: middle;">
+        <button type="button" class="btn  openModal login" id="w_login" style="vertical-align: middle;">
           <!-- data-toggle="modal"
           data-target="#login" -->
-          <ion-icon style="vertical-align: middle;" name="log-in"></ion-icon>
-          Login
+          <ion-icon style="vertical-align: middle; width: 20px; height: 20px;"  name="log-in"></ion-icon>
+         <b>Login</b> 
         </button>
         &emsp;
       </li>
     </ul>
   </nav>
-  <div class="jumbotron">
-    <div class="container text-center">
-      <img src="assets/cover_page/logo/chapbannerW.png" class="text-center pointer" id="w_chapTrial" alt="Image" />
-      <h1><b>Welcome To CHAP</b></h1>
-      <br />
-      <h3>A SMART FLOWCHART PROGRAM FOR LEARNING PROGRAMMING CONSTRUCTS</h3>
-      <p><b>Supported by:</b> Windows, iOS, Android, macOS, Linux </p>
+  <div class="jumbotron bg-transparent">
+    <div class="container">
+      <div class="row">
+      <div class="col-sm-12 text-center">
+        <img src="assets/cover_page/logo/chaplogo.png" class="text-center pointer"  alt="Image" /> <span class="text-right"> <button type="button" class="button" id="w_chapTrial" ><b>Click Here To Try CHAP Free</b></button></span>
+      </div>
+        <div class="col-sm-6 ">
+         
+        </div>
+  
+       
+      
+       <div class="col-sm-12 text-center">
+        <h1><b style="font-family: sans-serif;">Welcome To CHAP</b></h1>
+      </div>
+  </div> 
+      <div class="col-sm-12 text-center">
+        <h3><b style="font-family: sans-serif;" class="text-primary" >A SMART FLOWCHART PROGRAM FOR LEARNING PROGRAMMING CONSTRUCTS</b></h3>
+      </div>
+    <div class="col-sm-12 text-center">
+      <label class="text-dark" > <p ><b>Supported by:</b> Windows, iOS, Android, MacOS, Linux </p> </label>
+    </div>  
+     
     </div>
   </div>
 
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-6">
-        <h3>
-          <b>
-            <ion-icon name="arrow-forward"></ion-icon>
-            See More Examples
-          </b>
-        </h3>
+        
+          
+       
+      <h2><b><label class="arrowICO">See More Examples</label> </b> <label class="seemore"><ion-icon name="logo-youtube" class="logoclor"></ion-icon> &emsp;<a class="text-dark" href="https://www.youtube.com/channel/UCW-vpW8Nlwo9m8nYP5NP1mQ">@CHAP Tutorials</a></label></h2> 
+      
+            
+          
+        
+            <!-- <ion-icon name="logo-youtube" class="logoclor"></ion-icon>@CHAP Tutorials -->
+         
+        
 
         <div class="card">
           <div class="card-body">
@@ -70,7 +91,7 @@
               <b> DECLARE VARIABLE </b>
             </h5>
             <p class="card-text">
-              &emsp; &emsp; A declaration of a variable is where a program creates a variable.
+              &emsp;  A declaration of a variable is where a program creates a variable.
               For smaller programs, the declaration statements are placed between the two braces of the "main" method.
               The declaration statement initializes a name and a data type for the variable.
               It may also ask that a particular value be placed in the variable.&emsp; <b><a class="text-dark" href="https://youtu.be/RNWXNApNLmw">See More Example</a></b>
@@ -137,7 +158,7 @@
       </div>
 
       <div class="col-sm-6">
-        <h3><b>See CHAP</b></h3> <br/>
+        <h2><b>See CHAP</b></h2> <br/>
         <!-- <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> Previous </ion-button>
         <ion-button (click)="nextSlide()" color="dark" full style="float: right;"> Next </ion-button> -->
         <br />

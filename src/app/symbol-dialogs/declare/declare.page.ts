@@ -28,8 +28,12 @@ export class DeclarePage implements OnInit {
     let arrayCB = document.getElementById("declare_array_cb") as HTMLIonCheckboxElement;
     let arrayName = document.getElementById("declare_array_size") as HTMLIonInputElement;
 
+    if (!arrayCB.checked) {
+      arrayName.disabled = true;
+    } else {
+      arrayName.disabled = false;
+    }
     arrayCB.checked = this.symbol.getIsArray();
-    arrayName.disabled = !arrayCB.checked;
     arrayName.value = this.symbol.getArraySize().toString();
 
     this.initializeHoverEvents();
@@ -61,13 +65,18 @@ export class DeclarePage implements OnInit {
 
   public toggleArraySize() {
     let arrayCB = (document.getElementById("declare_array_cb") as HTMLIonCheckboxElement);
-    let arrayName = (document.getElementById("declare_array_size") as HTMLIonInputElement);
-    arrayName.disabled = !arrayCB.checked;
+    let arrayName = (document.getElementById("declare_array_size") as HTMLInputElement);
+
+    if (!arrayCB.checked) {
+      arrayName.disabled = true;
+    } else {
+      arrayName.disabled = false;
+    }
   }
 
   public applyAndCloseModal() {
 
-    let var_name = (document.getElementById("declare_var_name") as HTMLIonInputElement);
+    let var_name = (document.getElementById("declare_var_name") as HTMLInputElement);
     this.symbol.setVariableName(var_name.value);
 
     let datatype = (document.getElementById("declare_data_type") as HTMLIonSelectElement);
@@ -75,7 +84,7 @@ export class DeclarePage implements OnInit {
 
     let arrayCB = (document.getElementById("declare_array_cb") as HTMLIonCheckboxElement);
     if (arrayCB.checked == true) {
-      let arrayName = (document.getElementById("declare_array_size") as HTMLIonInputElement);
+      let arrayName = (document.getElementById("declare_array_size") as HTMLInputElement);
       this.symbol.createArray(true, Number(arrayName.value));
     } else {
       this.symbol.isArray = false;
