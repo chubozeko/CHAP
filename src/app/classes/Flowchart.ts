@@ -250,7 +250,13 @@ export class Flowchart {
           let didOutputRun = await outputSym.validateOutputSymbol(this.variables.vars, this.consoleLog);
           if (!didOutputRun) {
             // TODO: Show Error in Console
-            this.consoleLog.value += "ERROR: Invalid Statement at 'Output' => Variable is not declared!" + "\n";
+           
+            //  var error="ERROR: Invalid Statement at 'Output' => Variable is not declared!"+ "\n";
+            //  this.consoleLog.value+=error.fontcolor("red");
+
+            // this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+             this.consoleLog.value += "ERROR: Invalid Statement at 'Output' => Variable is not declared!" + "\n";
+
             // this.showAlert(
             //   "Invalid Statement at 'Output'",
             //   "Variable is not declared!"
