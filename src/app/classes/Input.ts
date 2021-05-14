@@ -77,7 +77,9 @@ export class Input {
         var1.variable[arrayIndex] = var_value1;
       } else {
         // TODO: Show Error in Console
-        this.showAlert("Invalid datatype entered!", "");
+       // this.showAlert("Invalid datatype entered!", "");
+       this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+       this.consoleLog.value += "ERROR: Invalid Datatype Entered !" + "\n";
       }
     } else {
       if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
@@ -96,7 +98,9 @@ export class Input {
         var1.value = var_value1;
       } else {
         // TODO: Show Error in Console
-        this.showAlert("Invalid datatype entered!", "");
+        //this.showAlert("Invalid datatype entered!", "");
+        this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+        this.consoleLog.value += "ERROR: Invalid Datatype Entered !" + "\n";
       }
     }
   }
