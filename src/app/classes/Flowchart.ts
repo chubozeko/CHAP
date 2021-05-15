@@ -130,9 +130,11 @@ export class Flowchart {
 
   async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
     const alert = await this.alertC.create({
-      header: alertTitle,
+     // header: alertTitle,
+      message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
       inputs: [
         {
+         
           name: "inputText",
           type: "text"
         }
@@ -155,7 +157,7 @@ export class Flowchart {
             inputSym.inputData = data.inputText;
             // inputSym.isInputEntered = false;
             inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
-            this.consoleLog.value += "> " + data.inputText + "\n";
+            this.consoleLog.value += "> Input: " + data.inputText + "\n";
             // this.isAnInputBlockRunning = false;
             // this.validateFlowchart(++symIndex, this.tempSymbols.length);
             console.log("> Input (entered) Complete");
@@ -205,13 +207,17 @@ export class Flowchart {
           let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, i, this.consoleLog);
           if (!didInputRun) {
             // TODO: Show Error in Console
-            this.showAlert(
+            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+             this.consoleLog.value += "ERROR: Invalid Statement at 'INPUT' => Variable"  +
+             inputSym.getVariableName() +" is not declared!"+"\n";
+           /* this.showAlert(
               "Invalid Statement at 'Input'",
               'Variable "' +
               inputSym.getVariableName() +
               '" is not declared!'
-            );
+            );*/
           } else {
+            this.consoleLog.className="noerrorAlert";
             this.isAnInputBlockRunning = true;
             this.showInputPrompt(inputSym,
               inputSym.inputPromptProps[0],
@@ -231,12 +237,18 @@ export class Flowchart {
           let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars);
           if (!didProcessRun) {
             // TODO: Show Error in Console
-            this.showAlert(
+            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+             this.consoleLog.value += "ERROR: Invalid Statement at 'PROCESS' => Variable" +
+             this.tempSymbols[i].getVariableName() +
+             " is not declared!" + "\n";
+           /* this.showAlert(
               "Invalid Statement at 'Process'",
               'Variable "' +
               this.tempSymbols[i].getVariableName() +
               '" is not declared!'
-            );
+            );*/
+          }else{
+            this.consoleLog.className="noerrorAlert";
           }
         }
       }
@@ -248,11 +260,16 @@ export class Flowchart {
           let didOutputRun = outputSym.validateOutputSymbol(this.variables.vars, this.consoleLog);
           if (!didOutputRun) {
             // TODO: Show Error in Console
-            this.consoleLog.value += "ERROR: Invalid Statement at 'Output'" + "\n";
+            //  var error="ERROR: Invalid Statement at 'Output' => Variable is not declared!"+ "\n";
+            //  this.consoleLog.value+=error.fontcolor("red");
+            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
+            this.consoleLog.value += "ERROR: Invalid Statement at 'OUTPUT'" + "\n";
             // this.showAlert(
             //   "Invalid Statement at 'Output'",
             //   "Variable is not declared!"
             // );
+          } else {
+            this.consoleLog.className="noerrorAlert";
           }
         }
       }
@@ -268,13 +285,16 @@ export class Flowchart {
           let ifSymbol = this.tempSymbols[i] as IfCase;
           let ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
           if (ifBlock == null) {
+            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+            this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
             // TODO: Show Error in Console
-            this.showAlert(
+           /* this.showAlert(
               "Invalid Statement at 'If Case'",
               'Variable is not declared!'
-            );
+            );*/
             break;
           } else {
+            this.consoleLog.className="noerrorAlert";
             await ifBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifBlock.SYMBOLS.length);
           }
           console.log("If Case Complete");
@@ -290,12 +310,15 @@ export class Flowchart {
           let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
           if (whileBlock == null) {
             // TODO: Show Error in Console
-            this.showAlert(
+           
+            /*this.showAlert(
               "Invalid Statement at 'While Loop'",
               'Variable is not declared!'
-            );
+            );*/
             break;
           } else {
+            this.consoleLog.className="noerrorAlert";
+
             if (whileBlock.length != 0) { whileBoolean = true; }
             else { whileBoolean = false; }
             // Add whileBlock symbols to a LoopBlock
@@ -364,13 +387,18 @@ export class Flowchart {
           }
           if (!isVarDeclared) {
             // TODO: Show Error in Console
-            this.showAlert(
+            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+            this.consoleLog.value += "ERROR: Invalid Statement at 'FOR-LOOP' => Variable "+
+            forSymbol.getVariableName() +" is not declared!"+ "\n";
+            /*this.showAlert(
               "Invalid Statement at 'For Loop'",
               'Variable "' +
               forSymbol.getVariableName() +
               '" is not declared!'
-            );
+            );*/
           } else {
+            this.consoleLog.className="noerrorAlert";
+
             forSymbol.setCurrentValue(forSymbol.getStartValue());
             // Add forBlock symbols to a LoopBlock
             let forLoopBlock = new LoopBlock();
@@ -424,12 +452,15 @@ export class Flowchart {
           let doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
           if (doWhileBlock == null) {
             // TODO: Show Error in Console
-            this.showAlert(
+            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+            this.consoleLog.value += "ERROR: Invalid Statement at 'DO WHILE LOOP' => Variable is not declared! "+"\n";
+           /* this.showAlert(
               "Invalid Statement at 'Do While Loop'",
               'Variable is not declared!'
-            );
+            );*/
             break;
           } else {
+            this.consoleLog.className="noerrorAlert";
             doWhileSymCount = doWhileBlock.length;
             if (doWhileBlock.length != 0) { doWhileBoolean = true; }
             else { doWhileBoolean = false; }
