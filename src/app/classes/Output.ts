@@ -4,6 +4,7 @@ export class Output {
   id: string = 's_output';
 
   outputExp: string = '';
+  outputS: string = '';
 
   outputSymbol: any;
 
@@ -20,144 +21,104 @@ export class Output {
   setOutputSymbol(symbol: any) { this.outputSymbol = symbol; }
   getOutputSymbol() { return this.outputSymbol; }
 
-  async validateOutputSymbol(variables: any[], consoleLog: HTMLTextAreaElement) {
-    let isVarDeclared = null, isVarAnArray = false;
-    let tempArrIndex: number;
-    let hasQuotes = 0, outputS = "", vIndex;
+  validateOutputSymbol(variables: any[], consoleLog: HTMLTextAreaElement) {
+    let isValid: boolean;
+    this.outputS = "";
     // Get output expression
     let outputStr: string = this.getOutputExpression();
-    let str = outputStr.split("&");
-    for (let k = 0; k < str.length; k++) {
-      let s1 = str[k].trim();
-      if (s1.indexOf('"') == -1) {
-        // Check if it is a variable
-        for (let j = 0; j < variables.length; j++) {
-          if (variables[j].getIsArray()) {
-            let tempVarName = s1.split('[');
-            if (
-              tempVarName[0] == variables[j].getName()
-            ) {
-              isVarDeclared = true;
-              isVarAnArray = true;
-              vIndex = j;
-              // Getting the index of the array
-              let tempIn = tempVarName[1].replace(']', '');
-              if (!isNaN(parseInt(tempIn))) {
-                tempArrIndex = parseInt(tempIn);
-              } else {
-                for (let k = 0; k < variables.length; k++) {
-                  if (tempIn == variables[k].getName()) {
-                    tempArrIndex = variables[k].getValue();
-                  }
-                }
-              }
-              break;
-            } else { isVarDeclared = false; }
-          } else {
-            if (s1 == variables[j].getName()) {
-              isVarDeclared = true;
-              vIndex = j;
-              break;
-            } else { isVarDeclared = false; }
-          }
-        }
+    let oBlocks = outputStr.split("&");
+    for (let i=0; i<oBlocks.length; i++) {
+      let ob = oBlocks[i].trim();
+      // Check if it contains double quotes ""
+      if (ob.indexOf('"') != -1) {
+        isValid = this.quotationChecker(ob);
+      } else if (ob.indexOf("'") != -1) {
+        isValid = false;
+        // TODO: Add "SINGLE_QUOTES" error
+        console.error("ERROR: Single Quotes NOT ALLOWED at Output symbol!");
       } else {
-        hasQuotes++;
+        isValid = this.checkIfVariable(ob, variables);
       }
-    }
 
-    // if ((isVarDeclared == null || !isVarDeclared) && hasQuotes == 0) {
-    if (!isVarDeclared && hasQuotes == 0) {
-      return false;
-    } else if (isVarDeclared && hasQuotes == 0) {
-      // Output variable
-      let s1 = this.getOutputExpression();
-      let s2 = s1.split("&");
-      for (let i = 0; i < s2.length; i++) {
-        let str = s2[i].trim();
-        for (let l = 0; l < variables.length; l++) {
-          /* check if it is an array  */
-          if (variables[l].getIsArray()) {
-            let tempVarName = str.split('[');
-            if (tempVarName[0] == variables[l].getName()) {
-              // Getting the index of the array
-              let tempIn = tempVarName[1].replace(']', '');
-              if (!isNaN(parseInt(tempIn))) {
-                tempArrIndex = parseInt(tempIn);
-              } else {
-                for (let r = 0; r < variables.length; r++) {
-                  if (tempIn == variables[r].getName()) {
-                    tempArrIndex = variables[r].getValue();
-                  }
-                }
-              }
-              if (
-                variables[l].variable[tempArrIndex] == undefined &&
-                isNaN(variables[l].variable[tempArrIndex])
-              ) {
-                outputS = "";
-              } else outputS += variables[l].variable[tempArrIndex];
-            }
-          } else {
-            if (str == variables[l].getName()) {
-              if (variables[l].value == undefined && isNaN(variables[l].value)) {
-                outputS = "";
-              } else outputS += variables[l].value;
-            }
-          }
-        }
+      if (isValid == false || isValid == null || isValid == undefined) {
+        return false;
       }
-    } else if (hasQuotes > 0) {
-      // Output String expression
-      let s1 = this.getOutputExpression();
-      let s2 = s1.split("&");
-      for (let i = 0; i < s2.length; i++) {
-        let str = s2[i].trim();
-        if (str.indexOf('"') != -1) {
-          let str2 = str.replace(/\"/g, "");
-          outputS += str2;
-        } else {
-          for (let l = 0; l < variables.length; l++) {
-            if (!variables[l].getIsArray()) {
-              if (str == variables[l].getName()) {
-                if (
-                  variables[l].value == undefined &&
-                  isNaN(variables[l].value)
-                ) {
-                  outputS = "";
-                } else outputS += variables[l].value;
-              }
-            } else {
-              let tempVarName = str.split('[');
-              if (
-                tempVarName[0] == variables[l].getName()
-              ) {
-                // Getting the index of the array
-                let tempIn = tempVarName[1].replace(']', '');
-                if (!isNaN(parseInt(tempIn))) {
-                  tempArrIndex = parseInt(tempIn);
-                } else {
-                  for (let r = 0; r < variables.length; r++) {
-                    if (tempIn == variables[r].getName()) {
-                      tempArrIndex = variables[r].getValue();
-                    }
-                  }
-                }
-                if (
-                  variables[l].variable[tempArrIndex] == undefined &&
-                  isNaN(variables[l].variable[tempArrIndex])
-                ) {
-                  outputS = "";
-                } else outputS += variables[l].variable[tempArrIndex];
-              }
-            }
-          }
-        }
-      }
-    }
-    consoleLog.value += "Output: " + outputS + "\n";
-
+    };
+    consoleLog.value += "Output: " + this.outputS + "\n";
     return true;
+  }
+
+  private checkIfVariable(oBlock: string, variables: any[]): boolean {
+    let isVarDeclared: boolean = false, isVarAnArray: boolean, arrIndex: number;
+    for (let j = 0; j < variables.length; j++) {
+      if (variables[j].getIsArray()) {
+        let tempOb = oBlock.split('[');
+        if (tempOb[0] == variables[j].getName()) {
+          isVarDeclared = true;
+          isVarAnArray = true;
+          // Getting the index of the array
+          let tempIn = tempOb[1].replace(']', '');
+          if (!isNaN(parseInt(tempIn))) {
+            arrIndex = parseInt(tempIn);
+          } else {
+            for (let k = 0; k < variables.length; k++) {
+              if (tempIn == variables[k].getName()) {
+                arrIndex = variables[k].getValue();
+              }
+            }
+          }
+          if (
+            variables[j].variable[arrIndex] == undefined &&
+            isNaN(variables[j].variable[arrIndex])
+          ) {
+            // TODO: Show "UNDEFINED / NULL VARIABLE" Error
+            console.error("ERROR: Undefined / Null Array Variable at Output symbol!");
+            return false;
+          } else { this.outputS += variables[j].variable[arrIndex]; }
+          break;
+        } else { isVarDeclared = false; }
+      } else {
+        if (oBlock == variables[j].getName()) {
+          isVarDeclared = true;
+          isVarAnArray = false;
+          if (variables[j].value == undefined && isNaN(variables[j].value)) {
+            // TODO: Show "UNDEFINED / NULL VARIABLE" Error
+            console.error("ERROR: Undefined / Null Variable at Output symbol!");
+            return false;
+          } else { this.outputS += variables[j].value; }
+          break;
+        } else { isVarDeclared = false; }
+      }
+    }
+    return isVarDeclared;
+  }
+
+  private quotationChecker(oBlock: string): boolean {
+    let quoteCount = 0;
+    for(let i=0; i<oBlock.length; i++){
+      if (oBlock.charAt(i) == '"'){
+        quoteCount++;
+      }
+    }
+    // Even quotes => OK; Uneven quotes => Missing Quotation
+    if (quoteCount % 2 != 0) {
+      // TODO: Show "MISSING QUOTATION" Error
+      console.error("ERROR: Missing Quotation Mark at Output symbol!");
+      return false;
+    } else {
+      if (oBlock.charAt(0) == '"' && oBlock.charAt(oBlock.length-1) == '"') {
+        // Output String expression
+        // let str = oBlock.replace(/\"/g, "");
+        let str = oBlock.substring(1, oBlock.length-1);
+        this.outputS += str;
+        return true;
+      } else {
+        // TODO: Show Syntax Error for misplaced quotation marks
+        console.error("ERROR: Syntax error at Output symbol!");
+        return false;
+      }
+      
+    }
   }
 
   pseudoCode() { return '\tOutput ' + this.getOutputExpression().replace(/\&/g, ', ') + '\n'; }

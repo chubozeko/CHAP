@@ -143,9 +143,9 @@ export class Flowchart {
           role: "cancel",
           cssClass: "secondary",
           handler: data => { 
-            inputSym.isInputEntered = false;
-            this.isAnInputBlockRunning = false;
-            this.validateFlowchart(++inputSym.inputPromptProps[2], this.tempSymbols.length);
+            // inputSym.isInputEntered = false;
+            // this.isAnInputBlockRunning = false;
+            // this.validateFlowchart(++inputSym.inputPromptProps[2], this.tempSymbols.length);
             console.log("> Input (canceled) Complete");
           }
         },
@@ -153,11 +153,11 @@ export class Flowchart {
           text: "OK",
           handler: data => {
             inputSym.inputData = data.inputText;
-            inputSym.isInputEntered = false;
+            // inputSym.isInputEntered = false;
             inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
             this.consoleLog.value += "> " + data.inputText + "\n";
-            this.isAnInputBlockRunning = false;
-            this.validateFlowchart(++symIndex, this.tempSymbols.length);
+            // this.isAnInputBlockRunning = false;
+            // this.validateFlowchart(++symIndex, this.tempSymbols.length);
             console.log("> Input (entered) Complete");
           }
         }
@@ -245,10 +245,10 @@ export class Flowchart {
       else if (this.tempSymbols[i] instanceof Output) {
         if (!this.isAnInputBlockRunning) {
           let outputSym = this.tempSymbols[i] as Output;
-          let didOutputRun = await outputSym.validateOutputSymbol(this.variables.vars, this.consoleLog);
+          let didOutputRun = outputSym.validateOutputSymbol(this.variables.vars, this.consoleLog);
           if (!didOutputRun) {
             // TODO: Show Error in Console
-            this.consoleLog.value += "ERROR: Invalid Statement at 'Output' => Variable is not declared!" + "\n";
+            this.consoleLog.value += "ERROR: Invalid Statement at 'Output'" + "\n";
             // this.showAlert(
             //   "Invalid Statement at 'Output'",
             //   "Variable is not declared!"
