@@ -263,7 +263,7 @@ export class Flowchart {
             //  var error="ERROR: Invalid Statement at 'Output' => Variable is not declared!"+ "\n";
             //  this.consoleLog.value+=error.fontcolor("red");
             this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR: Invalid Statement at 'OUTPUT'" + "\n";
+           // this.consoleLog.value +=  + "\n";
             // this.showAlert(
             //   "Invalid Statement at 'Output'",
             //   "Variable is not declared!"
