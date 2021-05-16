@@ -33,7 +33,9 @@ export class Output {
       if (ob.indexOf('"') != -1) {
         isValid = this.quotationChecker(ob);
         if(isValid==false){
-          consoleLog.value+="ERROR: Missing Quotation Mark at Output symbol!"+"\n";
+          var sl_tip="SOLUTION TIP : Make Sure You Open / Close Quotation Mark at Output Symbol !";
+        
+          consoleLog.value+="ERROR: Missing Quotation Mark at Output symbol!"+"\n"+sl_tip.toString();
         }else{
           consoleLog.value+="ERROR: syntax"+"\n";
         }
@@ -48,6 +50,7 @@ export class Output {
 
         isValid = this.checkIfVariable(ob, variables);
         if(isValid==false){
+          var sl_tip="SOLUTION TIP : Make Sure You Open / Close Quotation Mark at Output Symbol !";
           consoleLog.value+="ERROR: Undefined / Null Variable or Array at Output symbol!"+"\n";
         }else{
           //consoleLog.value+="ERROR: Undefined / Null Array Variable at Output symbol!"+"\n";

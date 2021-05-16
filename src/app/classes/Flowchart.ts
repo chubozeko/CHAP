@@ -241,7 +241,7 @@ export class Flowchart {
              this.consoleLog.value += "ERROR: Invalid Statement at 'PROCESS' => Variable" +
              this.tempSymbols[i].getVariableName() +
              " is not declared!" + "\n";
-           /* this.showAlert(
+          /*  this.showAlert(
               "Invalid Statement at 'Process'",
               'Variable "' +
               this.tempSymbols[i].getVariableName() +
