@@ -47,10 +47,15 @@ export class Process {
     strSplit = this.expression.split(/[\+\-\*\/\%\(\)]/g);
     for (let i = 0; i < strSplit.length; i++) { values[i] = strSplit[i].trim(); }
 
-    operators = this.expression.match(/[\+\-\*\/\%\(\)]/g);
+    if ((this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
+      (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) || (this.expression.indexOf('%') != -1) ||
+      (this.expression.indexOf('(') != -1) || (this.expression.indexOf(')') != -1)) {
+      // Stored operators in an Array called "operators"
+      operators = this.expression.match(/[\+\-\*\/\%\(\)]/g);
+    } else {}
 
     for (let i = 0; i < values.length; i++) {
-      if (this.checkIfVariable(values[i], variables)) {
+      if (this.checkIfVariable(values[i], variables, true, null)) {
         values[i] = this.parseVariable(values[i], variables);
       }
 
@@ -72,7 +77,7 @@ export class Process {
         default: break;
       }
 
-      if (values[i] == null || values[i] == undefined || isNaN(values[i])) {
+      if ((values[i] == null || values[i] == undefined) && isNaN(values[i])) {
         return false;
       }
     }
@@ -88,7 +93,7 @@ export class Process {
       result = math.evaluate(newExpression);
     } else {
       let op = '', oper1, oper2, j = 0;
-      if (operators.length != 0) {
+      if (operators != null) {
         while (operators.length != 0) {
           if (operators.indexOf('%') != -1) { j = operators.indexOf('%'); }
           else if (operators.indexOf('/') != -1) { j = operators.indexOf('/'); }
@@ -108,8 +113,7 @@ export class Process {
         result = this.calculateStringExpression(values[0], "", "+");
       }
     }
-
-    return this.checkIfVariable(this.getVariableName(), variables, result);
+    return this.checkIfVariable(this.getVariableName(), variables, false, result);
 
     /*
     // Check for operators
@@ -244,27 +248,33 @@ export class Process {
   }
 
   parseString(pBlock: string) {
-    let quoteCount = 0;
-    for(let i=0; i<pBlock.length; i++){
-      if (pBlock.charAt(i) == '"'){
-        quoteCount++;
+    if (pBlock.indexOf('"') != -1) {
+      let quoteCount = 0;
+      for(let i=0; i<pBlock.length; i++){
+        if (pBlock.charAt(i) == '"'){
+          quoteCount++;
+        }
       }
-    }
-    // Even quotes => OK; Uneven quotes => Missing Quotation
-    if (quoteCount % 2 != 0) {
-      // TODO: Show "MISSING QUOTATION" Error
-      console.error("ERROR: Missing Quotation Mark at Process symbol!");
-      return null;
-    } else {
-      if (pBlock.charAt(0) == '"' && pBlock.charAt(pBlock.length-1) == '"') {
-        // Output String expression
-        return pBlock.substring(1, pBlock.length-1);
-      } else {
-        // TODO: Show Syntax Error for misplaced quotation marks
-        console.error("ERROR: Syntax error at Process symbol!");
+      // Even quotes => OK; Uneven quotes => Missing Quotation
+      if (quoteCount % 2 != 0) {
+        // TODO: Show "MISSING QUOTATION" Error
+        console.error("ERROR: Missing Quotation Mark at Process symbol!");
         return null;
+      } else {
+        if (pBlock.charAt(0) == '"' && pBlock.charAt(pBlock.length-1) == '"') {
+          // Output String expression
+          console.log("new process string: " + pBlock.substring(1, pBlock.length-1));
+          return pBlock.substring(1, pBlock.length-1);
+        } else {
+          // TODO: Show Syntax Error for misplaced quotation marks
+          console.error("ERROR: Syntax error at Process symbol!");
+          return null;
+        }
       }
-      
+    } else if (pBlock.indexOf("'") != -1) {
+      // TODO: Add "SINGLE_QUOTES" error
+      console.error("ERROR: Single Quotes NOT ALLOWED at Process symbol!");
+      return null;
     }
   }
 
@@ -330,10 +340,10 @@ export class Process {
     return '\t\t' + this.getProcessExpression() + ';\n';
   }
 
-  validateProcessSymbol(variables: any[]) {
+  async validateProcessSymbol(variables: any[]) {
     let isVarDeclared = false, isVarAnArray = false, isValid: boolean;
     let tempArrIndex: number, varIndex;
-    isValid = this.checkIfVariable(this.getVariableName(), variables);
+    isValid = this.checkIfVariable(this.getVariableName(), variables, false, null);
     if (!isValid) {
       return false;
     } else {
@@ -380,7 +390,7 @@ export class Process {
     */
   }
 
-  private checkIfVariable(pBlock: string, variables: any[], calculatedExp?: any): boolean {
+  private checkIfVariable(pBlock: string, variables: any[], checkNull: boolean, calculatedExp?: any): boolean {
     let isVarDeclared: boolean = false, isVarAnArray: boolean, arrIndex: number;
     for (let j = 0; j < variables.length; j++) {
       if (variables[j].getIsArray()) {
@@ -406,38 +416,54 @@ export class Process {
               console.error("ERROR: Undeclared / Undefined Array Index Variable at Output symbol!");
             }
           }
-          if (
-            variables[j].variable[arrIndex] == undefined &&
-            isNaN(variables[j].variable[arrIndex])
-          ) {
-            // TODO: Show "UNDEFINED / NULL VARIABLE" Error
-            console.error("ERROR: Undefined / Null Array Variable at Output symbol!");
-            return false;
-          } else {
+          if (!checkNull) {
             if (calculatedExp != null) {
               variables[j].variable[arrIndex] = calculatedExp;
               isVarDeclared = true;
             }
+            return true;
+          } else {
+            if (
+              variables[j].variable[arrIndex] == undefined ||
+              isNaN(variables[j].variable[arrIndex])
+            ) {
+              // TODO: Show "UNDEFINED / NULL VARIABLE" Error
+              console.error("ERROR: Undefined / Null Array Variable at Output symbol!");
+              return false;
+            } else {
+              if (calculatedExp != null) {
+                variables[j].variable[arrIndex] = calculatedExp;
+                isVarDeclared = true;
+              }
+            }
           }
-          break;
-        } else { isVarDeclared = false; }
+          return isVarDeclared;
+        }
       } else {
         if (pBlock == variables[j].getName()) {
           isVarDeclared = true;
           isVarAnArray = false;
           this.processDataType = variables[j].getDataType();
-          if (variables[j].value == undefined && isNaN(variables[j].value)) {
-            // TODO: Show "UNDEFINED / NULL VARIABLE" Error
-            console.error("ERROR: Undefined / Null Variable at Output symbol!");
-            return false;
-          } else {
+          if (!checkNull) {
             if (calculatedExp != null) {
               variables[j].value = calculatedExp;
               isVarDeclared = true;
             }
+            return true;
+          } else {
+            if (variables[j].value == undefined || isNaN(variables[j].value)) {
+              // TODO: Show "UNDEFINED / NULL VARIABLE" Error
+              console.error("ERROR: Undefined / Null Variable at Output symbol!");
+              return false;
+            } else {
+              if (calculatedExp != null) {
+                variables[j].value = calculatedExp;
+                isVarDeclared = true;
+              }
+            }
           }
-          break;
-        } else { isVarDeclared = false; }
+          return isVarDeclared;
+        }
       }
     }
     return isVarDeclared;
