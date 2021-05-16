@@ -234,7 +234,7 @@ export class Flowchart {
       else if (this.tempSymbols[i] instanceof Process) {
         if (!this.isAnInputBlockRunning) {
           let processSym = this.tempSymbols[i] as Process;
-          let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars);
+          let didProcessRun = processSym.validateProcessSymbol(this.variables.vars);
           if (!didProcessRun) {
             // TODO: Show Error in Console
             this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here

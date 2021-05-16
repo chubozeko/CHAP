@@ -61,10 +61,16 @@ export class Output {
           if (!isNaN(parseInt(tempIn))) {
             arrIndex = parseInt(tempIn);
           } else {
+            let isArrIndexDeclared = false;
             for (let k = 0; k < variables.length; k++) {
               if (tempIn == variables[k].getName()) {
+                isArrIndexDeclared = true;
                 arrIndex = variables[k].getValue();
               }
+            }
+            if (!isArrIndexDeclared || arrIndex == undefined) {
+              // TODO: Show "UNDECLARED ARRAY INDEX VARIABLE" Error
+              console.error("ERROR: Undeclared / Undefined Array Index Variable at Output symbol!");
             }
           }
           if (
