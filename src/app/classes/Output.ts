@@ -32,15 +32,35 @@ export class Output {
       // Check if it contains double quotes ""
       if (ob.indexOf('"') != -1) {
         isValid = this.quotationChecker(ob);
+        if(isValid==false){
+          var sl_tip="SOLUTION TIP : Make Sure You Open / Close Quotation Mark at Output Symbol !";
+        
+          consoleLog.value+="ERROR: Missing Quotation Mark at Output symbol!"+"\n"+sl_tip.toString();
+        }else{
+          consoleLog.value+="ERROR: syntax"+"\n";
+        }
+
       } else if (ob.indexOf("'") != -1) {
+
         isValid = false;
         // TODO: Add "SINGLE_QUOTES" error
         console.error("ERROR: Single Quotes NOT ALLOWED at Output symbol!");
+        consoleLog.value+="ERROR: Single Quotes NOT ALLOWED at Output symbol!";
       } else {
+
         isValid = this.checkIfVariable(ob, variables);
+        if(isValid==false){
+          var sl_tip="SOLUTION TIP : Please Check Declared Variable Name !";
+          consoleLog.value+="ERROR: Undefined / Null Variable or Array at Output symbol!"+"\n"+sl_tip.toString();
+        }else{
+          //consoleLog.value+="ERROR: Undefined / Null Array Variable at Output symbol!"+"\n";
+
+        }
+      
       }
 
       if (isValid == false || isValid == null || isValid == undefined) {
+        
         return false;
       }
     };
@@ -79,6 +99,7 @@ export class Output {
           ) {
             // TODO: Show "UNDEFINED / NULL VARIABLE" Error
             console.error("ERROR: Undefined / Null Array Variable at Output symbol!");
+          
             return false;
           } else { this.outputS += variables[j].variable[arrIndex]; }
           break;
