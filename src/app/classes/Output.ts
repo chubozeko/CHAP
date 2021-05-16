@@ -50,8 +50,8 @@ export class Output {
 
         isValid = this.checkIfVariable(ob, variables);
         if(isValid==false){
-          var sl_tip="SOLUTION TIP : Make Sure You Open / Close Quotation Mark at Output Symbol !";
-          consoleLog.value+="ERROR: Undefined / Null Variable or Array at Output symbol!"+"\n";
+          var sl_tip="SOLUTION TIP : Please Check Declared Variable Name !";
+          consoleLog.value+="ERROR: Undefined / Null Variable or Array at Output symbol!"+"\n"+sl_tip.toString();
         }else{
           //consoleLog.value+="ERROR: Undefined / Null Array Variable at Output symbol!"+"\n";
 
