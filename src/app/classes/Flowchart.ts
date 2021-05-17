@@ -238,7 +238,7 @@ export class Flowchart {
           if (!didProcessRun) {
             // TODO: Show Error in Console
             this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
-             this.consoleLog.value += "ERROR: Invalid Statement at 'PROCESS' => Variable" +
+             this.consoleLog.value += "ERROR: Invalid Statement at 'PROCESS' => Variable" +"\t"+
              this.tempSymbols[i].getVariableName() +
              " is not declared!" + "\n";
           /*  this.showAlert(
