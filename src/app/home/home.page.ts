@@ -2816,9 +2816,9 @@ export class HomePage {
           p = i + 1;
           els[p].innerHTML = sym.getIfStatement();
           tlb = els[p].parentElement.querySelector("#ifTrueBlock");
-          this.loadLoopSymbols(sym.trueBlockSymbols, tlb);
+          this.loadLoopSymbols(sym.trueBlock.SYMBOLS, tlb);
           flb = els[p].parentElement.querySelector("#ifFalseBlock");
-          this.loadLoopSymbols(sym.falseBlockSymbols, flb);
+          this.loadLoopSymbols(sym.falseBlock.SYMBOLS, flb);
           break;
         case "s_for_loop":
           sym = new ForLoop();
