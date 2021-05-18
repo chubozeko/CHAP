@@ -32,11 +32,12 @@ export class Output {
       // Check if it contains double quotes ""
       if (ob.indexOf('"') != -1) {
         isValid = this.quotationChecker(ob);
-        if(isValid == false) {
-          var sl_tip = "SOLUTION TIP : Make Sure You Open / Close Quotation Mark at Output Symbol !";
-          consoleLog.value += "ERROR: Missing Quotation Mark at Output symbol!" + "\n" + sl_tip.toString();
-        } else {
-          // consoleLog.value+="ERROR: syntax"+"\n";
+        if(isValid==false){
+          var sl_tip="SOLUTION TIP : Make Sure You Open / Close Quotation Mark at Output Symbol !";
+        
+          consoleLog.value+="ERROR: Missing Quotation Mark at Output symbol!"+"\n"+sl_tip.toString();
+        }else{
+          consoleLog.value+="ERROR: syntax"+"\n";
         }
 
       } else if (ob.indexOf("'") != -1) {

@@ -234,7 +234,7 @@ export class Flowchart {
       else if (this.tempSymbols[i] instanceof Process) {
         if (!this.isAnInputBlockRunning) {
           let processSym = this.tempSymbols[i] as Process;
-          let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars);
+          let didProcessRun = processSym.validateProcessSymbol(this.variables.vars);
           if (!didProcessRun) {
             // TODO: Show Error in Console
             this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
@@ -286,21 +286,17 @@ export class Flowchart {
           let ifSymbol = this.tempSymbols[i] as IfCase;
           let ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
           if (ifBlock == null) {
-            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
+            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
             this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
             // TODO: Show Error in Console
-            /* this.showAlert(
+           /* this.showAlert(
               "Invalid Statement at 'If Case'",
               'Variable is not declared!'
             );*/
             break;
           } else {
-            this.consoleLog.className = "noerrorAlert";
-            // Add ifBlock symbols to a LoopBlock
-            let ifLoopBlock = new LoopBlock();
-            ifLoopBlock.SYMBOLS = ifBlock;
-            ifLoopBlock.variables = this.variables.vars;
-            await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+            this.consoleLog.className="noerrorAlert";
+            await ifBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifBlock.SYMBOLS.length);
           }
           console.log("If Case Complete");
         }
@@ -529,16 +525,16 @@ export class Flowchart {
       else if (this.tempSymbols[i] instanceof IfCase) {
         let ifSymbol = new IfCase();
         ifSymbol = this.tempSymbols[i];
-        for (let j = 0; j < ifSymbol.trueBlockSymbols.length; j++) {
-          let tempS = ifSymbol.trueBlockSymbols[j];
+        for (let j = 0; j < ifSymbol.trueBlock.SYMBOLS.length; j++) {
+          let tempS = ifSymbol.getSymbolFromTrueBlock(j);
           if (tempS instanceof Output) {
             let tempX = tempS.getOutputExpression() as string;
             let y = tempX.replace(/\"/g, "`");
             tempS.setOutputExpression(y);
           }
         }
-        for (let j = 0; j < ifSymbol.falseBlockSymbols.length; j++) {
-          let tempS = ifSymbol.falseBlockSymbols[j];
+        for (let j = 0; j < ifSymbol.falseBlock.SYMBOLS.length; j++) {
+          let tempS = ifSymbol.getSymbolFromFalseBlock(j);
           if (tempS instanceof Output) {
             let tempX = tempS.getOutputExpression() as string;
             let y = tempX.replace(/\"/g, "`");
