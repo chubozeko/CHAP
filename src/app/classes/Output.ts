@@ -108,13 +108,13 @@ export class Output {
         if (oBlock == variables[j].getName()) {
           isVarDeclared = true;
           isVarAnArray = false;
-          if (variables[j].values == undefined && isNaN(variables[j].value)) {//Process Error for output
+          if (variables[j].value == undefined && isNaN(variables[j].values)) {//Process Error for output
             // TODO: Show "UNDEFINED / NULL VARIABLE" Error
             console.error("ERROR: Undefined / Null Variable at Output symbol!");
             return false;
           } 
           else { 
-            this.outputS += variables[j].values;
+            this.outputS += variables[j].value;
            }
           break;
         } else { isVarDeclared = false; }
