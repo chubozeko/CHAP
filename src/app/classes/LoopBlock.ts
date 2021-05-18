@@ -245,15 +245,21 @@ export class LoopBlock {
           let ifSymbol = this.tempSymbols[i] as IfCase;
           let ifBlock = ifSymbol.parseIfCaseExpression(this.variables);
           if (ifBlock == null) {
+            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
+            this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
             // TODO: Show Error in Console
-            this.showAlert(
+            /* this.showAlert(
               "Invalid Statement at 'If Case'",
               'Variable is not declared!'
-            );
+            );*/
             break;
           } else {
-            await ifBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
-            console.log("If Case Complete");
+            this.consoleLog.className = "noerrorAlert";
+            // Add ifBlock symbols to a LoopBlock
+            let ifLoopBlock = new LoopBlock();
+            ifLoopBlock.SYMBOLS = ifBlock;
+            ifLoopBlock.variables = this.variables;
+            await ifLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
           }
         }
         

@@ -154,27 +154,33 @@ export class Process {
   }
 
   parseString(pBlock: string) {
-    let quoteCount = 0;
-    for(let i=0; i<pBlock.length; i++){
-      if (pBlock.charAt(i) == '"'){
-        quoteCount++;
+    if (pBlock.indexOf('"') != -1) {
+      let quoteCount = 0;
+      for(let i=0; i<pBlock.length; i++){
+        if (pBlock.charAt(i) == '"'){
+          quoteCount++;
+        }
       }
-    }
-    // Even quotes => OK; Uneven quotes => Missing Quotation
-    if (quoteCount % 2 != 0) {
-      // TODO: Show "MISSING QUOTATION" Error
-      console.error("ERROR: Missing Quotation Mark at Process symbol!");
-      return null;
-    } else {
-      if (pBlock.charAt(0) == '"' && pBlock.charAt(pBlock.length-1) == '"') {
-        // Output String expression
-        return pBlock.substring(1, pBlock.length-1);
-      } else {
-        // TODO: Show Syntax Error for misplaced quotation marks
-        console.error("ERROR: Syntax error at Process symbol!");
+      // Even quotes => OK; Uneven quotes => Missing Quotation
+      if (quoteCount % 2 != 0) {
+        // TODO: Show "MISSING QUOTATION" Error
+        console.error("ERROR: Missing Quotation Mark at Process symbol!");
         return null;
+      } else {
+        if (pBlock.charAt(0) == '"' && pBlock.charAt(pBlock.length-1) == '"') {
+          // Output String expression
+          console.log("new process string: " + pBlock.substring(1, pBlock.length-1));
+          return pBlock.substring(1, pBlock.length-1);
+        } else {
+          // TODO: Show Syntax Error for misplaced quotation marks
+          console.error("ERROR: Syntax error at Process symbol!");
+          return null;
+        }
       }
-      
+    } else if (pBlock.indexOf("'") != -1) {
+      // TODO: Add "SINGLE_QUOTES" error
+      console.error("ERROR: Single Quotes NOT ALLOWED at Process symbol!");
+      return null;
     }
   }
 
@@ -250,7 +256,7 @@ export class Process {
     }
   }
 
-  private checkIfVariable(pBlock: string, variables: any[], calculatedExp?: any): boolean {
+  private checkIfVariable(pBlock: string, variables: any[], checkNull: boolean, calculatedExp?: any): boolean {
     let isVarDeclared: boolean = false, isVarAnArray: boolean, arrIndex: number;
     for (let j = 0; j < variables.length; j++) {
       if (variables[j].getIsArray()) {
@@ -278,14 +284,7 @@ export class Process {
               // console.error("ERROR: Undeclared / Undefined Array Index Variable at Output symbol!");
             }
           }
-          if (
-            variables[j].variable[arrIndex] == undefined &&
-            isNaN(variables[j].variable[arrIndex])
-          ) {
-            // TODO: Show "UNDEFINED / NULL VARIABLE" Error
-            console.error("ERROR: Undefined / Null Array Variable at Output symbol!");
-            return false;
-          } else {
+          if (!checkNull) {
             if (calculatedExp != null) {
               variables[j].variable[arrIndex] = calculatedExp;
               isVarDeclared = true;
@@ -308,18 +307,14 @@ export class Process {
               }
             }
           }
-          break;
-        } else { isVarDeclared = false; }
+          return isVarDeclared;
+        }
       } else {
         if (pBlock == variables[j].getName()) {
           isVarDeclared = true;
           isVarAnArray = false;
           this.processDataType = variables[j].getDataType();
-          if (variables[j].value == undefined && isNaN(variables[j].value)) {
-            // TODO: Show "UNDEFINED / NULL VARIABLE" Error
-            console.error("ERROR: Undefined / Null Variable at Output symbol!");
-            return false;
-          } else {
+          if (!checkNull) {
             if (calculatedExp != null) {
               variables[j].value = calculatedExp;
               isVarDeclared = true;
@@ -339,8 +334,8 @@ export class Process {
               }
             }
           }
-          break;
-        } else { isVarDeclared = false; }
+          return isVarDeclared;
+        }
       }
     }
 

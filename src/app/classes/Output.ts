@@ -23,7 +23,7 @@ export class Output {
 
   validateOutputSymbol(variables: any[], consoleLog: HTMLTextAreaElement) {
     let isValid: boolean;
-    this.outputS="";
+    this.outputS = "";
     // Get output expression
     let outputStr: string = this.getOutputExpression();
     let oBlocks = outputStr.split("&");
@@ -107,14 +107,11 @@ export class Output {
         if (oBlock == variables[j].getName()) {
           isVarDeclared = true;
           isVarAnArray = false;
-          if (variables[j].value == undefined && isNaN(variables[j].values)) {//Process Error for output
+          if (variables[j].value == undefined && isNaN(variables[j].value)) {
             // TODO: Show "UNDEFINED / NULL VARIABLE" Error
             console.error("ERROR: Undefined / Null Variable at Output symbol!");
             return false;
-          } 
-          else { 
-            this.outputS += variables[j].value;
-           }
+          } else { this.outputS += variables[j].value; }
           break;
         } else { isVarDeclared = false; }
       }

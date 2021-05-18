@@ -12,31 +12,31 @@ export class IfCase {
   ifcaseSymbol: any;
 
   trueExpression: string;
-  // trueBlockSymbols: any[];
-  trueBlock: LoopBlock;
+  trueBlockSymbols: any[];
+  // trueBlock: LoopBlock;
 
   falseExpression: string;
-  // falseBlockSymbols: any[];
-  falseBlock: LoopBlock;
+  falseBlockSymbols: any[];
+  // falseBlock: LoopBlock;
 
   constructor() {
-    // this.trueBlockSymbols = [];
-    this.trueBlock = new LoopBlock();
-    this.trueBlock.SYMBOLS = [];
-    // this.falseBlockSymbols = [];
-    this.falseBlock = new LoopBlock();
-    this.falseBlock.SYMBOLS = [];
+    this.trueBlockSymbols = [];
+    // this.trueBlock = new LoopBlock();
+    // this.trueBlock.SYMBOLS = [];
+    this.falseBlockSymbols = [];
+    // this.falseBlock = new LoopBlock();
+    // this.falseBlock.SYMBOLS = [];
   }
 
   createIfCaseSymbol(ifCaseSym: any) {
     this.ifStatement = ifCaseSym.ifStatement;
     this.ifcaseSymbol = ifCaseSym.ifcaseSymbol;
     this.trueExpression = ifCaseSym.trueExpression;
-    // this.trueBlockSymbols = ifCaseSym.trueBlockSymbols;
-    this.trueBlock.SYMBOLS = ifCaseSym.trueBlockSymbols;
+    this.trueBlockSymbols = ifCaseSym.trueBlockSymbols;
+    // this.trueBlock.SYMBOLS = ifCaseSym.trueBlockSymbols;
     this.falseExpression = ifCaseSym.falseExpression;
-    // this.falseBlockSymbols = ifCaseSym.falseBlockSymbols;
-    this.falseBlock.SYMBOLS = ifCaseSym.falseBlockSymbols;
+    this.falseBlockSymbols = ifCaseSym.falseBlockSymbols;
+    // this.falseBlock.SYMBOLS = ifCaseSym.falseBlockSymbols;
   }
 
   setIfStatement(if_exp: string) { this.ifStatement = if_exp; }
@@ -45,13 +45,15 @@ export class IfCase {
   setIfCaseSymbol(ifSym: any) { this.ifcaseSymbol = ifSym; }
   getIfCaseSymbol() { return this.ifcaseSymbol; }
 
-  addSymbolToTrueBlock(symbol: any, position: number) { this.trueBlock.addSymbolToLoopBlock(symbol, position); }
-  getSymbolFromTrueBlock(index: number) { return this.trueBlock.getSymbolFromLoopBlock(index); }
-  removeSymbolFromTrueBlock(position: number) { this.trueBlock.removeSymbolFromLoopBlock(position); }
+  
+  addSymbolToTrueBlock(symbol: any, position: number) { this.trueBlockSymbols.splice(position, 0, symbol); }
+  getSymbolFromTrueBlock(index: number) { return this.trueBlockSymbols[index]; }
+  removeSymbolFromTrueBlock(position: number) { this.trueBlockSymbols.splice(position, 1); }
 
-  addSymbolToFalseBlock(symbol: any, position: number) { this.falseBlock.addSymbolToLoopBlock(symbol, position); }
-  getSymbolFromFalseBlock(index: number) { return this.falseBlock.getSymbolFromLoopBlock(index); }
-  removeSymbolFromFalseBlock(position: number) { this.falseBlock.removeSymbolFromLoopBlock(position); }
+  addSymbolToFalseBlock(symbol: any, position: number) { this.falseBlockSymbols.splice(position, 0, symbol); }
+  getSymbolFromFalseBlock(index: number) { return this.falseBlockSymbols[index]; }
+  removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
+  
 
   parseIfCaseExpression(variables: any[]) {
     let opers = [], exps = [], exps1 = [];
@@ -142,8 +144,8 @@ export class IfCase {
     } else { isParsingStrings = false; }
 
     if (isParsingStrings) {
-      if (exps[0] == true) return this.trueBlock;
-      else if (exps[0] == false) return this.falseBlock;
+      if (exps[0] == true) return this.trueBlockSymbols;
+      else if (exps[0] == false) return this.falseBlockSymbols;
     }
 
     // Remove empty elements [""] from parsedValues
@@ -156,8 +158,8 @@ export class IfCase {
     newExpression += exps[exps.length - 1];
     // Evaluate the expression and return the result
     result = math.evaluate(newExpression);
-    if (result == true) return this.trueBlock;
-    else if (result == false) return this.falseBlock;
+    if (result == true) return this.trueBlockSymbols;
+    else if (result == false) return this.falseBlockSymbols;
   }
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {
@@ -233,12 +235,12 @@ export class IfCase {
 
   pseudoCode() {
     let iftrue = '', iffalse = '';
-    for (let i = 0; i < this.trueBlock.SYMBOLS.length; i++) {
-      const el = this.trueBlock.SYMBOLS[i];
+    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
+      const el = this.trueBlockSymbols[i];
       iftrue += '\t' + el.pseudoCode();
     }
-    for (let i = 0; i < this.falseBlock.SYMBOLS.length; i++) {
-      const el = this.falseBlock.SYMBOLS[i];
+    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
+      const el = this.falseBlockSymbols[i];
       iffalse += '\t' + el.pseudoCode();
     }
     return '\tIf ' + this.getIfStatement() + ' Then\n' + iftrue + '\tElse\n' + iffalse + '\tEnd If\n';
@@ -246,12 +248,12 @@ export class IfCase {
 
   cplusplusCode() {
     let iftrue = '', iffalse = '';
-    for (let i = 0; i < this.trueBlock.SYMBOLS.length; i++) {
-      const el = this.trueBlock.SYMBOLS[i];
+    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
+      const el = this.trueBlockSymbols[i];
       iftrue += '\t' + el.cplusplusCode();
     }
-    for (let i = 0; i < this.falseBlock.SYMBOLS.length; i++) {
-      const el = this.falseBlock.SYMBOLS[i];
+    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
+      const el = this.falseBlockSymbols[i];
       iffalse += '\t' + el.cplusplusCode();
     }
     return '\tif (' + this.getIfStatement() + '){\n' + iftrue + '\telse {\n' + iffalse + '\t} \n';
@@ -259,12 +261,12 @@ export class IfCase {
 
   getJavaCode() {
     let iftrue = '', iffalse = '';
-    for (let i = 0; i < this.trueBlock.SYMBOLS.length; i++) {
-      const el = this.trueBlock.SYMBOLS[i];
+    for (let i = 0; i < this.trueBlockSymbols.length; i++) {
+      const el = this.trueBlockSymbols[i];
       iftrue += '\t' + el.getJavaCode();
     }
-    for (let i = 0; i < this.falseBlock.SYMBOLS.length; i++) {
-      const el = this.falseBlock.SYMBOLS[i];
+    for (let i = 0; i < this.falseBlockSymbols.length; i++) {
+      const el = this.falseBlockSymbols[i];
       iffalse += '\t' + el.getJavaCode();
     }
     return '\t\tif (' + this.getIfStatement() + '){\n' + iftrue + '\t\telse {\n' + iffalse + '\t\t} \n';

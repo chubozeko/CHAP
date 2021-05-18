@@ -519,16 +519,16 @@ export class Flowchart {
       else if (this.tempSymbols[i] instanceof IfCase) {
         let ifSymbol = new IfCase();
         ifSymbol = this.tempSymbols[i];
-        for (let j = 0; j < ifSymbol.trueBlock.SYMBOLS.length; j++) {
-          let tempS = ifSymbol.getSymbolFromTrueBlock(j);
+        for (let j = 0; j < ifSymbol.trueBlockSymbols.length; j++) {
+          let tempS = ifSymbol.trueBlockSymbols[j];
           if (tempS instanceof Output) {
             let tempX = tempS.getOutputExpression() as string;
             let y = tempX.replace(/\"/g, "`");
             tempS.setOutputExpression(y);
           }
         }
-        for (let j = 0; j < ifSymbol.falseBlock.SYMBOLS.length; j++) {
-          let tempS = ifSymbol.getSymbolFromFalseBlock(j);
+        for (let j = 0; j < ifSymbol.falseBlockSymbols.length; j++) {
+          let tempS = ifSymbol.falseBlockSymbols[j];
           if (tempS instanceof Output) {
             let tempX = tempS.getOutputExpression() as string;
             let y = tempX.replace(/\"/g, "`");
