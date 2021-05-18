@@ -152,7 +152,9 @@ export class Input {
       }
     }
     if (!isVarDeclared) {
-      // Show Undeclared variable error
+      this.consoleLog.className = "errorAlert";
+      this.consoleLog.value += "ERROR: Invalid Statement at 'INPUT' => Variable" + 
+        this.getVariableName() + " is not declared!" + "\n";
       return false;
     } else {
       // Show Input prompt

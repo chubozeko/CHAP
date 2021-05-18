@@ -194,14 +194,9 @@ export class LoopBlock {
           let inputSym = this.tempSymbols[i] as Input;
           let didInputRun = await inputSym.validateInputSymbol(this.variables, i, this.consoleLog);
           if (!didInputRun) {
-            // TODO: Show Error in Console
-            this.showAlert(
-              "Invalid Statement at 'Input'",
-              'Variable "' +
-              inputSym.getVariableName() +
-              '" is not declared!'
-            );
+            // TODO: this.isProgramRunning = false;
           } else {
+            this.consoleLog.className = "noerrorAlert";
             this.isAnInputBlockRunning = true;
             this.showInputPrompt(inputSym,
               inputSym.inputPromptProps[0],
@@ -217,15 +212,11 @@ export class LoopBlock {
       else if (this.tempSymbols[i] instanceof Process) {
         if (!this.isAnInputBlockRunning) {
           let processSym = this.tempSymbols[i] as Process;
-          let didProcessRun = await processSym.validateProcessSymbol(this.variables);
+          let didProcessRun = await processSym.validateProcessSymbol(this.variables, this.consoleLog);
           if (!didProcessRun) {
-            // TODO: Show Error in Console
-            this.showAlert(
-              "Invalid Statement at 'Process'",
-              'Variable "' +
-              this.tempSymbols[i].getVariableName() +
-              '" is not declared!'
-            );
+            // TODO: this.isProgramRunning = false;
+          } else {
+            this.consoleLog.className = "noerrorAlert";
           }
         }
       }
@@ -236,12 +227,9 @@ export class LoopBlock {
           let outputSym = this.tempSymbols[i] as Output;
           let didOutputRun = await outputSym.validateOutputSymbol(this.variables, this.consoleLog);
           if (!didOutputRun) {
-            // TODO: Show Error in Console
-            this.consoleLog.value += "ERROR: Invalid Statement at 'Output' => Variable is not declared!" + "\n";
-            // this.showAlert(
-            //   "Invalid Statement at 'Output'",
-            //   "Variable is not declared!"
-            // );
+            // TODO: this.isProgramRunning = false;
+          } else {
+            this.consoleLog.className = "noerrorAlert";
           }
         } 
       }

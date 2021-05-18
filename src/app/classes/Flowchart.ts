@@ -191,307 +191,298 @@ export class Flowchart {
 
       // DECLARE
       else if (this.tempSymbols[i] instanceof Declare) {
-        if (!this.isAnInputBlockRunning) {
-          let declareSym = this.tempSymbols[i] as Declare;
-          let vars = await declareSym.parseDeclareExp();
-          for (let a = 0; a < vars.length; a++) {
-            this.variables.vars.splice(this.variables.vars.length, 0, vars[a]);
+        if (this.isProgramRunning) {
+          if (!this.isAnInputBlockRunning) {
+            let declareSym = this.tempSymbols[i] as Declare;
+            let vars = await declareSym.parseDeclareExp();
+            for (let a = 0; a < vars.length; a++) {
+              this.variables.vars.splice(this.variables.vars.length, 0, vars[a]);
+            }
           }
         }
       }
 
       // INPUT
       else if (this.tempSymbols[i] instanceof Input) {
-        if (!this.isAnInputBlockRunning) {
-          let inputSym = this.tempSymbols[i] as Input;
-          let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, i, this.consoleLog);
-          if (!didInputRun) {
-            // TODO: Show Error in Console
-            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
-             this.consoleLog.value += "ERROR: Invalid Statement at 'INPUT' => Variable"  +
-             inputSym.getVariableName() +" is not declared!"+"\n";
-           /* this.showAlert(
-              "Invalid Statement at 'Input'",
-              'Variable "' +
-              inputSym.getVariableName() +
-              '" is not declared!'
-            );*/
-          } else {
-            this.consoleLog.className="noerrorAlert";
-            this.isAnInputBlockRunning = true;
-            this.showInputPrompt(inputSym,
-              inputSym.inputPromptProps[0],
-              inputSym.inputPromptProps[1],
-              inputSym.inputPromptProps[2],
-              inputSym.inputPromptProps[3],
-              inputSym.inputPromptProps[4]);
-            console.log("< Input Symbol Complete in FC");
+        if (this.isProgramRunning) {
+          if (!this.isAnInputBlockRunning) {
+            let inputSym = this.tempSymbols[i] as Input;
+            let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, i, this.consoleLog);
+            if (!didInputRun) {
+              this.isProgramRunning = false;
+            } else {
+              this.consoleLog.className = "noerrorAlert";
+              this.isAnInputBlockRunning = true;
+              this.showInputPrompt(inputSym,
+                inputSym.inputPromptProps[0],
+                inputSym.inputPromptProps[1],
+                inputSym.inputPromptProps[2],
+                inputSym.inputPromptProps[3],
+                inputSym.inputPromptProps[4]);
+              console.log("< Input Symbol Complete in FC");
+            }
           }
         }
       }
 
       // PROCESS
       else if (this.tempSymbols[i] instanceof Process) {
-        if (!this.isAnInputBlockRunning) {
-          let processSym = this.tempSymbols[i] as Process;
-          let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars);
-          if (!didProcessRun) {
-            // TODO: Show Error in Console
-            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
-             this.consoleLog.value += "ERROR: Invalid Statement at 'PROCESS' => Variable" +
-             this.tempSymbols[i].getVariableName() +
-             " is not declared!" + "\n";
-          /*  this.showAlert(
-              "Invalid Statement at 'Process'",
-              'Variable "' +
-              this.tempSymbols[i].getVariableName() +
-              '" is not declared!'
-            );*/
-          }else{
-            this.consoleLog.className="noerrorAlert";
+        if (this.isProgramRunning) {
+          if (!this.isAnInputBlockRunning) {
+            let processSym = this.tempSymbols[i] as Process;
+            let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars, this.consoleLog);
+            if (!didProcessRun) {
+              this.isProgramRunning = false;
+            } else {
+              this.consoleLog.className = "noerrorAlert";
+            }
           }
         }
+        
       }
 
       // OUTPUT
       else if (this.tempSymbols[i] instanceof Output) {
-        if (!this.isAnInputBlockRunning) {
-          let outputSym = this.tempSymbols[i] as Output;
-          let didOutputRun = outputSym.validateOutputSymbol(this.variables.vars, this.consoleLog);
-          if (!didOutputRun) {
-            // TODO: Show Error in Console
-            //  var error="ERROR: Invalid Statement at 'Output' => Variable is not declared!"+ "\n";
-            //  this.consoleLog.value+=error.fontcolor("red");
-            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-           // this.consoleLog.value +=  + "\n";
-            // this.showAlert(
-            //   "Invalid Statement at 'Output'",
-            //   "Variable is not declared!"
-            // );
-          } else {
-            this.consoleLog.className="noerrorAlert";
+        if (this.isProgramRunning) {
+          if (!this.isAnInputBlockRunning) {
+            let outputSym = this.tempSymbols[i] as Output;
+            let didOutputRun = outputSym.validateOutputSymbol(this.variables.vars, this.consoleLog);
+            if (!didOutputRun) {
+              this.isProgramRunning = false;
+            } else {
+              this.consoleLog.className = "noerrorAlert";
+            }
           }
         }
       }
 
       // COMMENT
       else if (this.tempSymbols[i] instanceof Comment) {
-        break;
+        if (this.isProgramRunning) { break; }
       }
 
       // IF CASE
       else if (this.tempSymbols[i] instanceof IfCase) {
-        if (!this.isAnInputBlockRunning) {
-          let ifSymbol = this.tempSymbols[i] as IfCase;
-          let ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
-          if (ifBlock == null) {
-            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
-            // TODO: Show Error in Console
-            /* this.showAlert(
-              "Invalid Statement at 'If Case'",
-              'Variable is not declared!'
-            );*/
-            break;
-          } else {
-            this.consoleLog.className = "noerrorAlert";
-            // Add ifBlock symbols to a LoopBlock
-            let ifLoopBlock = new LoopBlock();
-            ifLoopBlock.SYMBOLS = ifBlock;
-            ifLoopBlock.variables = this.variables.vars;
-            await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+        if (this.isProgramRunning) {
+          if (!this.isAnInputBlockRunning) {
+            let ifSymbol = this.tempSymbols[i] as IfCase;
+            let ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
+            if (ifBlock == null) {
+              this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
+              this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
+              // TODO: Show Error in Console
+              /* this.showAlert(
+                "Invalid Statement at 'If Case'",
+                'Variable is not declared!'
+              );*/
+              break;
+            } else {
+              this.consoleLog.className = "noerrorAlert";
+              // Add ifBlock symbols to a LoopBlock
+              let ifLoopBlock = new LoopBlock();
+              ifLoopBlock.SYMBOLS = ifBlock;
+              ifLoopBlock.variables = this.variables.vars;
+              await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+            }
+            console.log("If Case Complete");
           }
-          console.log("If Case Complete");
         }
       }
 
       // WHILE LOOP
       else if (this.tempSymbols[i] instanceof WhileLoop) {
-        if (!this.isAnInputBlockRunning) {
-          // TODO: Refactor While Loop Validation
-          let whileBoolean: boolean;
-          let whileSymbol = this.tempSymbols[i] as WhileLoop;
-          let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
-          if (whileBlock == null) {
-            // TODO: Show Error in Console
-           
-            /*this.showAlert(
-              "Invalid Statement at 'While Loop'",
-              'Variable is not declared!'
-            );*/
-            break;
-          } else {
-            this.consoleLog.className="noerrorAlert";
-
-            if (whileBlock.length != 0) { whileBoolean = true; }
-            else { whileBoolean = false; }
-            // Add whileBlock symbols to a LoopBlock
-            let whileLoopBlock = new LoopBlock();
-            for (let v = 0; v < whileSymbol.trueLoopBlock.length; v++) {
-              whileLoopBlock.SYMBOLS.splice(v, 0, whileSymbol.trueLoopBlock[v]);
-            }
-            // Pass Variables to WhileLoopBlock
-            for (let q = 0; q < this.variables.vars.length; q++) {
-              whileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
-            }
-            console.log("While Loop Block: ", whileLoopBlock);
-
-            while (whileBoolean) {
-              // Validate whileBlock symbols only
-              let x = await whileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, whileLoopBlock.SYMBOLS.length);
-              // Check whileBoolean after validating While Loop Block symbols
-              whileBlock = whileSymbol.parseWhileLoopExpression(x);
+        if (this.isProgramRunning) {
+          if (!this.isAnInputBlockRunning) {
+            // TODO: Refactor While Loop Validation
+            let whileBoolean: boolean;
+            let whileSymbol = this.tempSymbols[i] as WhileLoop;
+            let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
+            if (whileBlock == null) {
+              // TODO: Show Error in Console
+             
+              /*this.showAlert(
+                "Invalid Statement at 'While Loop'",
+                'Variable is not declared!'
+              );*/
+              break;
+            } else {
+              this.consoleLog.className="noerrorAlert";
+  
               if (whileBlock.length != 0) { whileBoolean = true; }
               else { whileBoolean = false; }
-              console.log("While Loop pass: ", x);
+              // Add whileBlock symbols to a LoopBlock
+              let whileLoopBlock = new LoopBlock();
+              for (let v = 0; v < whileSymbol.trueLoopBlock.length; v++) {
+                whileLoopBlock.SYMBOLS.splice(v, 0, whileSymbol.trueLoopBlock[v]);
+              }
+              // Pass Variables to WhileLoopBlock
+              for (let q = 0; q < this.variables.vars.length; q++) {
+                whileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
+              }
+              console.log("While Loop Block: ", whileLoopBlock);
+  
+              while (whileBoolean) {
+                // Validate whileBlock symbols only
+                let x = await whileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, whileLoopBlock.SYMBOLS.length);
+                // Check whileBoolean after validating While Loop Block symbols
+                whileBlock = whileSymbol.parseWhileLoopExpression(x);
+                if (whileBlock.length != 0) { whileBoolean = true; }
+                else { whileBoolean = false; }
+                console.log("While Loop pass: ", x);
+              }
+              break;
             }
-            break;
           }
         }
-
       }
 
       // FOR LOOP
       else if (this.tempSymbols[i] instanceof ForLoop) {
-        if (!this.isAnInputBlockRunning) {
-          // TODO: Refactor For Loop Validation
-          let isVarDeclared = false, isVarAnArray = false;
-          let tempArrIndex: number;
-          let forSymbol = this.tempSymbols[i] as ForLoop;
-
-          for (let j = 0; j < this.variables.vars.length; j++) {
-            if (this.variables.vars[j].getIsArray()) {
-              let tempVarName = forSymbol.getVariableName().split('[');
-              if (
-                tempVarName[0] == this.variables.vars[j].getName()
-              ) {
-                isVarDeclared = true;
-                isVarAnArray = true;
-                // Getting the index of the array
-                let tempIn = tempVarName[1].replace(']', '');
-                if (!isNaN(parseInt(tempIn))) {
-                  tempArrIndex = parseInt(tempIn);
-                } else {
-                  for (let k = 0; k < this.variables.vars.length; k++) {
-                    if (tempIn == this.variables.vars[k].getName()) {
-                      tempArrIndex = this.variables.vars[k].getValue();
+        if (this.isProgramRunning) {
+          if (!this.isAnInputBlockRunning) {
+            // TODO: Refactor For Loop Validation
+            let isVarDeclared = false, isVarAnArray = false;
+            let tempArrIndex: number;
+            let forSymbol = this.tempSymbols[i] as ForLoop;
+  
+            for (let j = 0; j < this.variables.vars.length; j++) {
+              if (this.variables.vars[j].getIsArray()) {
+                let tempVarName = forSymbol.getVariableName().split('[');
+                if (
+                  tempVarName[0] == this.variables.vars[j].getName()
+                ) {
+                  isVarDeclared = true;
+                  isVarAnArray = true;
+                  // Getting the index of the array
+                  let tempIn = tempVarName[1].replace(']', '');
+                  if (!isNaN(parseInt(tempIn))) {
+                    tempArrIndex = parseInt(tempIn);
+                  } else {
+                    for (let k = 0; k < this.variables.vars.length; k++) {
+                      if (tempIn == this.variables.vars[k].getName()) {
+                        tempArrIndex = this.variables.vars[k].getValue();
+                      }
                     }
                   }
+                  this.variables.vars[j].variable[tempArrIndex] = forSymbol.getStartValue();
+                  forSymbol.setForVariable(this.variables.vars[j], tempArrIndex);
                 }
-                this.variables.vars[j].variable[tempArrIndex] = forSymbol.getStartValue();
-                forSymbol.setForVariable(this.variables.vars[j], tempArrIndex);
+              } else if (
+                forSymbol.getVariableName() == this.variables.vars[j].getName()
+              ) {
+                this.variables.vars[j].setValue(forSymbol.getStartValue());
+                forSymbol.setForVariable(this.variables.vars[j]);
+                isVarDeclared = true;
               }
-            } else if (
-              forSymbol.getVariableName() == this.variables.vars[j].getName()
-            ) {
-              this.variables.vars[j].setValue(forSymbol.getStartValue());
-              forSymbol.setForVariable(this.variables.vars[j]);
-              isVarDeclared = true;
             }
-          }
-          if (!isVarDeclared) {
-            // TODO: Show Error in Console
-            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
-            this.consoleLog.value += "ERROR: Invalid Statement at 'FOR-LOOP' => Variable "+
-            forSymbol.getVariableName() +" is not declared!"+ "\n";
-            /*this.showAlert(
-              "Invalid Statement at 'For Loop'",
-              'Variable "' +
-              forSymbol.getVariableName() +
-              '" is not declared!'
-            );*/
-          } else {
-            this.consoleLog.className="noerrorAlert";
-
-            forSymbol.setCurrentValue(forSymbol.getStartValue());
-            // Add forBlock symbols to a LoopBlock
-            let forLoopBlock = new LoopBlock();
-            for (let v = 0; v < forSymbol.trueLoopBlock.length; v++) {
-              forLoopBlock.SYMBOLS.splice(v, 0, forSymbol.trueLoopBlock[v]);
-            }
-            // Pass Variables to forLoopBlock
-            for (let q = 0; q < this.variables.vars.length; q++) {
-              forLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
-            }
-            console.log("For Loop Block: ", forLoopBlock);
-
-            if (forSymbol.getStepDirection() === 'Increasing') {
-              // Validation to prevent INFINITE LOOPS:
-              if (forSymbol.getStartValue() < forSymbol.getEndValue()) {
-                for (let tempVar = forSymbol.getStartValue();
-                  tempVar <= forSymbol.getEndValue();
-                  tempVar = forSymbol.iterateForStepDirection(tempVar)) {
-                  // Validate forBlock symbols only
-                  this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
-                  let x = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
-                  console.log("loop pass: ", x);
-                } break;
+            if (!isVarDeclared) {
+              // TODO: Show Error in Console
+              this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+              this.consoleLog.value += "ERROR: Invalid Statement at 'FOR-LOOP' => Variable "+
+              forSymbol.getVariableName() +" is not declared!"+ "\n";
+              /*this.showAlert(
+                "Invalid Statement at 'For Loop'",
+                'Variable "' +
+                forSymbol.getVariableName() +
+                '" is not declared!'
+              );*/
+            } else {
+              this.consoleLog.className="noerrorAlert";
+  
+              forSymbol.setCurrentValue(forSymbol.getStartValue());
+              // Add forBlock symbols to a LoopBlock
+              let forLoopBlock = new LoopBlock();
+              for (let v = 0; v < forSymbol.trueLoopBlock.length; v++) {
+                forLoopBlock.SYMBOLS.splice(v, 0, forSymbol.trueLoopBlock[v]);
               }
-            } else if (forSymbol.getStepDirection() === 'Decreasing') {
-              // Validation to prevent INFINITE LOOPS:
-              if (forSymbol.getStartValue() > forSymbol.getEndValue()) {
-                for (let tempVar = forSymbol.getStartValue();
-                  tempVar >= forSymbol.getEndValue();
-                  tempVar = forSymbol.iterateForStepDirection(tempVar)) {
-                  // Validate forBlock symbols only
-                  this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
-                  let x = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
-                  console.log("loop pass: ", x);
-                } break;
+              // Pass Variables to forLoopBlock
+              for (let q = 0; q < this.variables.vars.length; q++) {
+                forLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
               }
-            } else { break; }
+              console.log("For Loop Block: ", forLoopBlock);
+  
+              if (forSymbol.getStepDirection() === 'Increasing') {
+                // Validation to prevent INFINITE LOOPS:
+                if (forSymbol.getStartValue() < forSymbol.getEndValue()) {
+                  for (let tempVar = forSymbol.getStartValue();
+                    tempVar <= forSymbol.getEndValue();
+                    tempVar = forSymbol.iterateForStepDirection(tempVar)) {
+                    // Validate forBlock symbols only
+                    this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
+                    let x = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
+                    console.log("loop pass: ", x);
+                  } break;
+                }
+              } else if (forSymbol.getStepDirection() === 'Decreasing') {
+                // Validation to prevent INFINITE LOOPS:
+                if (forSymbol.getStartValue() > forSymbol.getEndValue()) {
+                  for (let tempVar = forSymbol.getStartValue();
+                    tempVar >= forSymbol.getEndValue();
+                    tempVar = forSymbol.iterateForStepDirection(tempVar)) {
+                    // Validate forBlock symbols only
+                    this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
+                    let x = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
+                    console.log("loop pass: ", x);
+                  } break;
+                }
+              } else { break; }
+            }
           }
         }
+        
         
       }
 
       // DO WHILE LOOP
       else if (this.tempSymbols[i] instanceof DoWhileLoop) {
-        if (!this.isAnInputBlockRunning) {
-          // TODO: Refactor Do While Loop Validation
-          let doWhileBoolean, doWhileIndex, doWhileSymCount;
-          let doWhileSymbol = this.tempSymbols[i] as DoWhileLoop;
-          doWhileIndex = i;
-
-          let doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
-          if (doWhileBlock == null) {
-            // TODO: Show Error in Console
-            this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
-            this.consoleLog.value += "ERROR: Invalid Statement at 'DO WHILE LOOP' => Variable is not declared! "+"\n";
-           /* this.showAlert(
-              "Invalid Statement at 'Do While Loop'",
-              'Variable is not declared!'
-            );*/
-            break;
-          } else {
-            this.consoleLog.className="noerrorAlert";
-            doWhileSymCount = doWhileBlock.length;
-            if (doWhileBlock.length != 0) { doWhileBoolean = true; }
-            else { doWhileBoolean = false; }
-
-            // Add doWhileBlock symbols to a LoopBlock
-            let doWhileLoopBlock = new LoopBlock();
-            for (let v = 0; v < doWhileSymbol.trueLoopBlock.length; v++) {
-              doWhileLoopBlock.SYMBOLS.splice(v, 0, doWhileSymbol.trueLoopBlock[v]);
-            }
-            // Pass Variables to DoWhileLoopBlock
-            for (let q = 0; q < this.variables.vars.length; q++) {
-              doWhileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
-            }
-            console.log("Do While Loop Block: ", doWhileLoopBlock);
-
-            do {
-              // Validate whileBlock symbols only [version 2]
-              let x = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
-              // Check whileBoolean after validating While Loop Block symbols
-              doWhileBlock = doWhileSymbol.parseDoWhileExpression(x);
+        if (this.isProgramRunning) {
+          if (!this.isAnInputBlockRunning) {
+            // TODO: Refactor Do While Loop Validation
+            let doWhileBoolean, doWhileIndex, doWhileSymCount;
+            let doWhileSymbol = this.tempSymbols[i] as DoWhileLoop;
+            doWhileIndex = i;
+  
+            let doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
+            if (doWhileBlock == null) {
+              // TODO: Show Error in Console
+              this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
+              this.consoleLog.value += "ERROR: Invalid Statement at 'DO WHILE LOOP' => Variable is not declared! "+"\n";
+             /* this.showAlert(
+                "Invalid Statement at 'Do While Loop'",
+                'Variable is not declared!'
+              );*/
+              break;
+            } else {
+              this.consoleLog.className="noerrorAlert";
+              doWhileSymCount = doWhileBlock.length;
               if (doWhileBlock.length != 0) { doWhileBoolean = true; }
               else { doWhileBoolean = false; }
-              console.log("Do While Loop pass: " + doWhileBoolean, x);
-            } while (doWhileBoolean);
-            break;
+  
+              // Add doWhileBlock symbols to a LoopBlock
+              let doWhileLoopBlock = new LoopBlock();
+              for (let v = 0; v < doWhileSymbol.trueLoopBlock.length; v++) {
+                doWhileLoopBlock.SYMBOLS.splice(v, 0, doWhileSymbol.trueLoopBlock[v]);
+              }
+              // Pass Variables to DoWhileLoopBlock
+              for (let q = 0; q < this.variables.vars.length; q++) {
+                doWhileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
+              }
+              console.log("Do While Loop Block: ", doWhileLoopBlock);
+  
+              do {
+                // Validate whileBlock symbols only [version 2]
+                let x = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
+                // Check whileBoolean after validating While Loop Block symbols
+                doWhileBlock = doWhileSymbol.parseDoWhileExpression(x);
+                if (doWhileBlock.length != 0) { doWhileBoolean = true; }
+                else { doWhileBoolean = false; }
+                console.log("Do While Loop pass: " + doWhileBoolean, x);
+              } while (doWhileBoolean);
+              break;
+            }
           }
         }
+        
         
       }
 

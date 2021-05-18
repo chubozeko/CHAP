@@ -16,6 +16,8 @@ export class Process {
 
   processSymbol: any;
 
+  consoleLog: HTMLTextAreaElement;
+
   constructor() { this.processValue = new Array(); }
 
   createProcessSymbol(processSym: any) {
@@ -41,24 +43,27 @@ export class Process {
   }
 
   parseExpression(variables: any[], dataType: string) {
-    let strSplit = [], values = [], operators = [], parsedValues = [];
-    let tempArrIndex: number, result;
+    let strSplit = [], values = [], operators = [], result;
 
     strSplit = this.expression.split(/[\+\-\*\/\%\(\)]/g);
     for (let i = 0; i < strSplit.length; i++) { values[i] = strSplit[i].trim(); }
 
+    // Store operators in "operators"
     if ((this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
       (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) || (this.expression.indexOf('%') != -1) ||
       (this.expression.indexOf('(') != -1) || (this.expression.indexOf(')') != -1)) {
-      // Stored operators in an Array called "operators"
       operators = this.expression.match(/[\+\-\*\/\%\(\)]/g);
-    } else {}
+    } else {
+      operators = [];
+    }
 
     for (let i = 0; i < values.length; i++) {
+      // Check if it is a variable name
       if (this.checkIfVariable(values[i], variables, true, null)) {
         values[i] = this.parseVariable(values[i], variables);
       }
-
+      // Parse values[i] to desired data type
+      let tempVal = values[i];
       switch (dataType) {
         case 'Integer':
           values[i] = parseInt(values[i], 10);
@@ -78,22 +83,25 @@ export class Process {
       }
 
       if ((values[i] == null || values[i] == undefined) && isNaN(values[i])) {
+        this.consoleLog.className = "errorAlert";
+        this.consoleLog.value += "Data Type ERROR: Invalid value at OUTPUT symbol: " +
+          tempVal + "\n" + dataType + " Expected.\n";
         return false;
       }
     }
 
     if (dataType != 'String') {
-      // Create newExpression with parsed values instead of variable names
+      // Create newExpression with values[]
       let newExpression = "";
       for (let j = 0; j < operators.length; j++) {
         newExpression += values[j] + operators[j];
       }
       newExpression += values[values.length - 1];
-      // Evaluate the expression and return the result
+      // Evaluate the expression with math.js and return the result
       result = math.evaluate(newExpression);
     } else {
       let op = '', oper1, oper2, j = 0;
-      if (operators != null) {
+      if (operators.length > 0) {
         while (operators.length != 0) {
           if (operators.indexOf('%') != -1) { j = operators.indexOf('%'); }
           else if (operators.indexOf('/') != -1) { j = operators.indexOf('/'); }
@@ -114,108 +122,6 @@ export class Process {
       }
     }
     return this.checkIfVariable(this.getVariableName(), variables, false, result);
-
-    /*
-    // Check for operators
-    if ((this.expression.indexOf('+') != -1) || (this.expression.indexOf('-') != -1) ||
-      (this.expression.indexOf('*') != -1) || (this.expression.indexOf('/') != -1) || (this.expression.indexOf('%') != -1) ||
-      (this.expression.indexOf('(') != -1) || (this.expression.indexOf(')') != -1)) {
-      // Split expression by operators
-      strSplit = this.expression.split(/[\+\-\*\/\%\(\)]/g);
-      // Stored operators in an Array called "operators"
-      operators = this.expression.match(/[\+\-\*\/\%\(\)]/g);
-      // Store operands in an Array called "values"
-      for (let i = 0; i < strSplit.length; i++) { values[i] = strSplit[i].trim(); }
-    } else {
-      values.splice(values.length, 0, this.expression.trim());
-      // T: add variable.value to values[]
-      // F: alert('Variable not declared in expression')
-      // Make this.expression = this.variables[index].value
-    }
-
-    // Check if it is a variable name
-    for (let i = 0; i < values.length; i++) {
-      for (let j = 0; j < variables.length; j++) {
-        if (variables[j].getIsArray()) {
-          let tempVarName = values[i].split('[');
-          if (tempVarName[0] == variables[j].getName()) {
-            // Getting the index of the array
-            let tempIn = tempVarName[1].replace(']', '');
-            if (!isNaN(parseInt(tempIn))) {
-              tempArrIndex = parseInt(tempIn);
-            } else {
-              for (let k = 0; k < variables.length; k++) {
-                if (tempIn == variables[k].getName()) {
-                  tempArrIndex = variables[k].getValue();
-                }
-              }
-            }
-            values.splice(i, 1, variables[j].variable[tempArrIndex]);
-          }
-        } else {
-          if (variables[j].getName() == values[i]) {
-            values.splice(i, 1, variables[j].value);
-          }
-        }
-      }
-    }
-
-    // Convert "values[]" to desired data type
-    switch (dataType) {
-      case 'Integer':
-        for (let i = 0; i < values.length; i++) { parsedValues.splice(parsedValues.length, 0, parseInt(values[i], 10)); }
-        break;
-      case 'Real':
-        for (let i = 0; i < values.length; i++) { parsedValues.splice(parsedValues.length, 0, parseFloat(values[i])); }
-        break;
-      case 'String':
-        for (let i = 0; i < values.length; i++) { parsedValues.splice(parsedValues.length, 0, values[i].replace(/\"/g, '').toString()); }
-        break;
-      case 'Boolean':
-        for (let i = 0; i < values.length; i++) {
-          if (values[i] == "true") parsedValues.splice(parsedValues.length, 0, true);
-          if (values[i] == "false") parsedValues.splice(parsedValues.length, 0, false);
-        }
-        break;
-      default: break;
-    }
-
-    if (dataType != 'String') {
-      // Remove empty elements [""] from parsedValues
-      for (let i = 0; i < parsedValues.length; i++) { if (isNaN(parsedValues[i])) parsedValues.splice(i, 1, ""); }
-      // Create newExpression with parsed values instead of variable names
-      let newExpression = "";
-      for (let j = 0; j < operators.length; j++) {
-        newExpression += parsedValues[j] + operators[j];
-      }
-      newExpression += parsedValues[parsedValues.length - 1];
-      // Evaluate the expression and return the result
-      result = math.evaluate(newExpression);
-    } else {
-      let op = '', oper1, oper2, j = 0;
-      if (operators.length != 0) {
-        while (operators.length != 0) {
-          if (operators.indexOf('%') != -1) { j = operators.indexOf('%'); }
-          else if (operators.indexOf('/') != -1) { j = operators.indexOf('/'); }
-          else if (operators.indexOf('*') != -1) { j = operators.indexOf('*'); }
-          else if (operators.indexOf('+') != -1) { j = operators.indexOf('+'); }
-          else if (operators.indexOf('-') != -1) { j = operators.indexOf('-'); }
-
-          op = operators[j];
-          oper1 = parsedValues[j];
-          oper2 = parsedValues[j + 1];
-          result = this.calculateStringExpression(oper1, oper2, op);
-
-          operators.splice(j, 1);
-          parsedValues.splice(j, 2, result);
-        }
-      } else {
-        result = this.calculateStringExpression(parsedValues[0], "", "+");
-      }
-    }
-
-    return result;
-    */
   }
 
   parseVariable(pBlock: string, variables: any[]) {
@@ -340,54 +246,14 @@ export class Process {
     return '\t\t' + this.getProcessExpression() + ';\n';
   }
 
-  async validateProcessSymbol(variables: any[]) {
-    let isVarDeclared = false, isVarAnArray = false, isValid: boolean;
-    let tempArrIndex: number, varIndex;
-    isValid = this.checkIfVariable(this.getVariableName(), variables, false, null);
+  async validateProcessSymbol(variables: any[], consoleLog: HTMLTextAreaElement) {
+    this.consoleLog = consoleLog;
+    let isValid = this.checkIfVariable(this.getVariableName(), variables, false, null);
     if (!isValid) {
       return false;
     } else {
       return this.parseExpression(variables, this.processDataType);
     }
-
-    /*
-    for (let j = 0; j < variables.length; j++) {
-      if (variables[j].getIsArray()) {
-        let tempVarName = this.getVariableName().split('[');
-        if (tempVarName[0] == variables[j].getName()) {
-          isVarDeclared = true;
-          isVarAnArray = true;
-          varIndex = j;
-          // Getting the index of the array
-          let tempIn = tempVarName[1].replace(']', '');
-          if (!isNaN(parseInt(tempIn))) {
-            tempArrIndex = parseInt(tempIn);
-          } else {
-            for (let k = 0; k < variables.length; k++) {
-              if (tempIn == variables[k].getName()) {
-                tempArrIndex = variables[k].getValue();
-              }
-            }
-          }
-        }
-      } else {
-        if (this.getVariableName() == variables[j].getName()) {
-          isVarDeclared = true;
-          varIndex = j;
-        }
-      }
-    }
-    if (!isVarDeclared) {
-      return false;
-    } else {
-      if (isVarAnArray) {
-        variables[varIndex].variable[tempArrIndex] = this.parseExpression(variables, variables[varIndex].getDataType());
-      } else {
-        variables[varIndex].value = this.parseExpression(variables, variables[varIndex].getDataType());
-      }
-    }
-    return true;
-    */
   }
 
   private checkIfVariable(pBlock: string, variables: any[], checkNull: boolean, calculatedExp?: any): boolean {
@@ -412,8 +278,10 @@ export class Process {
               }
             }
             if (!isArrIndexDeclared || arrIndex == undefined) {
-              // TODO: Show "UNDECLARED ARRAY INDEX VARIABLE" Error
-              console.error("ERROR: Undeclared / Undefined Array Index Variable at Output symbol!");
+              this.consoleLog.className = "errorAlert";
+              this.consoleLog.value += "ERROR: Undeclared Array Index Variable " +
+                arrIndex + " at OUTPUT symbol." + "\n";
+              // console.error("ERROR: Undeclared / Undefined Array Index Variable at Output symbol!");
             }
           }
           if (!checkNull) {
@@ -427,8 +295,10 @@ export class Process {
               variables[j].variable[arrIndex] == undefined ||
               isNaN(variables[j].variable[arrIndex])
             ) {
-              // TODO: Show "UNDEFINED / NULL VARIABLE" Error
-              console.error("ERROR: Undefined / Null Array Variable at Output symbol!");
+              this.consoleLog.className = "errorAlert";
+              this.consoleLog.value += "ERROR: Undefined / Null Array Variable " +
+                pBlock + " at OUTPUT symbol." + "\n";
+              // console.error("ERROR: Undefined / Null Array Variable at Process symbol!");
               return false;
             } else {
               if (calculatedExp != null) {
@@ -452,8 +322,10 @@ export class Process {
             return true;
           } else {
             if (variables[j].value == undefined || isNaN(variables[j].value)) {
-              // TODO: Show "UNDEFINED / NULL VARIABLE" Error
-              console.error("ERROR: Undefined / Null Variable at Output symbol!");
+              this.consoleLog.className = "errorAlert";
+              this.consoleLog.value += "ERROR: Undefined / Null Variable " +
+                pBlock + " at OUTPUT symbol." + "\n";
+              // console.error("ERROR: Undefined / Null Variable at Output symbol!");
               return false;
             } else {
               if (calculatedExp != null) {
@@ -465,6 +337,12 @@ export class Process {
           return isVarDeclared;
         }
       }
+    }
+
+    if (!isVarDeclared) {
+      this.consoleLog.className = "errorAlert";
+      this.consoleLog.value += "ERROR: Invalid Statement at 'PROCESS' => Variable" +
+        pBlock + " is not declared!" + "\n";
     }
     return isVarDeclared;
   }
