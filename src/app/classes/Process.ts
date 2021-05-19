@@ -332,7 +332,7 @@ export class Process {
             if (variables[j].value == undefined || isNaN(variables[j].value)) {
               this.consoleLog.className = "errorAlert";
               this.consoleLog.value += "ERROR: Undefined / Null Variable " +
-                pBlock + " at OUTPUT symbol." + "\n";
+                pBlock + " at PROCESS symbol." + "\n";
               // console.error("ERROR: Undefined / Null Variable at Output symbol!");
               return false;
             } else {
