@@ -443,4 +443,48 @@ export class ForLoop {
     return '\t\tfor (' + forExp + '){\n' + forTrue + '\t\t} \n';
   }
 
+  async validateForLoop(variables: any[], consoleLog: HTMLTextAreaElement) {
+    let isVarDeclared = false, isVarAnArray = false;
+    let tempArrIndex: number;
+
+    // Check if For Loop variable is declared
+    for (let j = 0; j < variables.length; j++) {
+      if (variables[j].getIsArray()) {
+        let tempVarName = this.getVariableName().split('[');
+        if (tempVarName[0] == variables[j].getName()) {
+          isVarDeclared = true;
+          isVarAnArray = true;
+          // Getting the index of the array
+          let tempIn = tempVarName[1].replace(']', '');
+          if (!isNaN(parseInt(tempIn))) {
+            tempArrIndex = parseInt(tempIn);
+          } else {
+            for (let k = 0; k < variables.length; k++) {
+              if (tempIn == variables[k].getName()) {
+                tempArrIndex = variables[k].getValue();
+              }
+            }
+          }
+          variables[j].variable[tempArrIndex] = this.getStartValue();
+          this.setForVariable(variables[j], tempArrIndex);
+        }
+      } else if (
+        this.getVariableName() == variables[j].getName()
+      ) {
+        variables[j].setValue(this.getStartValue());
+        this.setForVariable(variables[j]);
+        isVarDeclared = true;
+      }
+    }
+
+    if (!isVarDeclared) {
+      // TODO: Show Error in Console
+      consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
+      consoleLog.value += "ERROR: Variable " + this.getVariableName() + " is not declared at 'FOR-LOOP'." + "\n";
+    } else {
+      consoleLog.className = "noerrorAlert";
+      return true;
+    }
+  }
+
 }

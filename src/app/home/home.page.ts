@@ -249,7 +249,7 @@ export class HomePage {
     let genCode = document.getElementById("btn_generateCode");
     genCode.addEventListener("click", () => this.generatePseudoCode());
     let clearWS = document.getElementById("btn_clearWorkspace");
-    clearWS.addEventListener("click", () => this.clearWorkspaceAlert());
+    clearWS.addEventListener("click", () => this.clearWorkspaceAlert(false));
     let aboutPg = document.getElementById("btn_aboutPage");
     aboutPg.addEventListener("click", () => this.openAboutPage());
     let tutorPg = document.getElementById("btn_tutorialPage");
@@ -2562,7 +2562,7 @@ export class HomePage {
     consoleCHAP.value = "";
   }
 
-  async clearWorkspaceAlert() {
+  async clearWorkspaceAlert(newProject: boolean) {
     const alert = await this.alertC.create({
       cssClass: '',
       header: 'Clear Workspace...',
@@ -2572,7 +2572,7 @@ export class HomePage {
           text: 'Yes',
           cssClass: 'danger',
           handler: () => {
-            this.clearWorkspace();
+            this.clearWorkspace(newProject);
           }
         },
         {
@@ -2586,7 +2586,7 @@ export class HomePage {
     await alert.present();
   }
 
-  public clearWorkspace() {
+  public clearWorkspace(clearProjectName: boolean) {
     this.menu.close();
     this.clearConsole();
     let startSym, stopSym, arrowInit;
@@ -2610,12 +2610,16 @@ export class HomePage {
     // workspace.appendChild(symbolsList);
     this.flowchart = new Flowchart(this.alertC);
     this.paste_sym_buffer = [];
+
+    if (clearProjectName) {
+      let fileN = document.getElementById("fileName") as HTMLInputElement;
+      fileN.value = "";
+    }
+
   }
 
   public newProject() {
-    let fileN = document.getElementById("fileName") as HTMLInputElement;
-    fileN.value = "";
-    this.clearWorkspace();
+    this.clearWorkspaceAlert(true);
   }
 
   async openProjectOptions() {
@@ -2745,7 +2749,7 @@ export class HomePage {
   }
 
   public loadProject(chapFileName, fileData: string) {
-    this.newProject();
+    this.clearWorkspace(true);
     let dataSyms, arrowT, els, p, tlb, flb;
     console.log(fileData);
     dataSyms = JSON.parse(fileData);
