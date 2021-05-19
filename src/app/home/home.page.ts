@@ -3253,6 +3253,7 @@ export class HomePage {
     if (this.isConsoleOpen == false) {
       this.toggleConsole();
     }
+    this.flowchart.isProgramRunning = true;
     this.flowchart.validateFlowchart(0, this.flowchart.SYMBOLS.length);
   }
 

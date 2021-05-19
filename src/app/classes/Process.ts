@@ -59,7 +59,9 @@ export class Process {
 
     for (let i = 0; i < values.length; i++) {
       // Check if it is a variable name
-      if (this.checkIfVariable(values[i], variables, true, null)) {
+      let isDeclared: boolean;
+      isDeclared = this.checkIfVariable(values[i], variables, true, null);
+      if (isDeclared) {
         values[i] = this.parseVariable(values[i], variables);
       }
       // Parse values[i] to desired data type
@@ -83,10 +85,16 @@ export class Process {
       }
 
       if ((values[i] == null || values[i] == undefined) && isNaN(values[i])) {
-        this.consoleLog.className = "errorAlert";
-        this.consoleLog.value += "Data Type ERROR: Invalid value at OUTPUT symbol: " +
-          tempVal + "\n" + dataType + " Expected.\n";
-        return false;
+        if (isDeclared) {
+          this.consoleLog.className = "errorAlert";
+          this.consoleLog.value += "Data Type ERROR: Invalid value at OUTPUT symbol: " +
+            tempVal + "\n" + dataType + " Expected.\n";
+          return false;
+        } else {
+          this.consoleLog.className = "errorAlert";
+          this.consoleLog.value += "ERROR: Variable " + tempVal + " is not declared at 'PROCESS'" + "\n";
+          return false;
+        }
       }
     }
 
@@ -337,12 +345,6 @@ export class Process {
           return isVarDeclared;
         }
       }
-    }
-
-    if (!isVarDeclared) {
-      this.consoleLog.className = "errorAlert";
-      this.consoleLog.value += "ERROR: Invalid Statement at 'PROCESS' => Variable" +
-        pBlock + " is not declared!" + "\n";
     }
     return isVarDeclared;
   }

@@ -270,11 +270,6 @@ export class Flowchart {
             if (ifBlock == null) {
               this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
               this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
-              // TODO: Show Error in Console
-              /* this.showAlert(
-                "Invalid Statement at 'If Case'",
-                'Variable is not declared!'
-              );*/
               break;
             } else {
               this.consoleLog.className = "noerrorAlert";
@@ -497,6 +492,7 @@ export class Flowchart {
     console.log("Variables", this.variables);
     console.log("Symbols", this.SYMBOLS);
     console.log("Temporary symbols", this.tempSymbols);
+    // this.isProgramRunning = false;
   }
 
   prepareFlowchartForSaving() {

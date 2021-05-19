@@ -53,30 +53,28 @@ export class IfCase {
   addSymbolToFalseBlock(symbol: any, position: number) { this.falseBlockSymbols.splice(position, 0, symbol); }
   getSymbolFromFalseBlock(index: number) { return this.falseBlockSymbols[index]; }
   removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
-  
 
   parseIfCaseExpression(variables: any[]) {
     let opers = [], exps = [], exps1 = [];
     let op = '', oper1, oper2, result, j = 0, tempArrIndex;
-    let isVarDeclared = false, isParsingStrings = false;
+    let isVarDeclared = false, isParsingStrings = false, strSplit;
 
-    // LOGICAL Operators: &&, ||, !
+    strSplit = this.ifStatement.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
+    for (let i = 0; i < strSplit.length; i++) { exps[i] = strSplit[i].trim(); }
+
+    // Store LOGICAL Operators: &&, ||, ! in "opers"
     if ((this.ifStatement.indexOf('&&') != -1) || (this.ifStatement.indexOf('||') != -1) || (this.ifStatement.indexOf('!') != -1)
       || (this.ifStatement.indexOf('<') != -1) || (this.ifStatement.indexOf('>') != -1) || (this.ifStatement.indexOf('==') != -1)
       || (this.ifStatement.indexOf('<=') != -1) || (this.ifStatement.indexOf('>=') != -1) || (this.ifStatement.indexOf('!=') != -1)
       || (this.ifStatement.indexOf('+') != -1) || (this.ifStatement.indexOf('-') != -1) || (this.ifStatement.indexOf('*') != -1)
       || (this.ifStatement.indexOf('/') != -1) || (this.ifStatement.indexOf('%') != -1)) {
-      // Split by logical operators
-      exps1 = this.ifStatement.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
-      for (let i = 0; i < exps1.length; i++) { exps[i] = exps1[i].trim(); }
-      // Store logical operators in "opers"
       opers = this.ifStatement.match(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
     } else {
-      exps.splice(exps.length, 0, this.ifStatement.trim());
+      opers = [];
     }
-
     console.log("If Case exps: ", exps);
     console.log("If Case opers: ", opers);
+    
     // Check if it is a variable name & parse to desired data type
     for (let i = 0; i < exps.length; i++) {
       for (let j = 0; j < variables.length; j++) {
