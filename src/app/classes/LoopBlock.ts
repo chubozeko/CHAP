@@ -173,7 +173,7 @@ export class LoopBlock {
         this.variables.splice(q, 0, variables[q]);
       }
     }
-    this,isAnInputBlockRunning = isAnInputBlockRunning;
+    this.isAnInputBlockRunning = isAnInputBlockRunning;
 
     for (let i = startIndex; i < this.tempSymbols.length; i++) {
       // DECLARE
@@ -204,6 +204,7 @@ export class LoopBlock {
               inputSym.inputPromptProps[2],
               inputSym.inputPromptProps[3],
               inputSym.inputPromptProps[4]);
+            console.log("< Input Symbol Complete in LB");
           }
         }
       }
@@ -228,6 +229,7 @@ export class LoopBlock {
           let didOutputRun = await outputSym.validateOutputSymbol(this.variables, this.consoleLog);
           if (!didOutputRun) {
             // TODO: this.isProgramRunning = false;
+            this.consoleLog.className = "errorAlert";
           } else {
             this.consoleLog.className = "noerrorAlert";
           }
@@ -247,11 +249,6 @@ export class LoopBlock {
           if (ifBlock == null) {
             this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
             this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
-            // TODO: Show Error in Console
-            /* this.showAlert(
-              "Invalid Statement at 'If Case'",
-              'Variable is not declared!'
-            );*/
             break;
           } else {
             this.consoleLog.className = "noerrorAlert";
@@ -273,26 +270,17 @@ export class LoopBlock {
           let whileSymbol = this.tempSymbols[i] as WhileLoop;
           let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables);
           if (whileBlock == null) {
-            // TODO: Show Error in Console
-            this.showAlert(
-              "Invalid Statement at 'While Loop'",
-              'Variable is not declared!'
-            );
+            // // TODO: Show Error in Console
+            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
+            this.consoleLog.value += "ERROR: Invalid Statement at 'WHILE-LOOP' => Variable is not declared!" + "\n";
             break;
           } else {
+            this.consoleLog.className="noerrorAlert";
             if (whileBlock.length != 0) { whileBoolean = true; }
             else { whileBoolean = false; }
-
-            // Add whileBlock symbols to a LoopBlock
             let whileLoopBlock = new LoopBlock();
-            for (let v = 0; v < whileSymbol.trueLoopBlock.length; v++) {
-              whileLoopBlock.SYMBOLS.splice(v, 0, whileSymbol.trueLoopBlock[v]);
-            }
-            // Pass Variables to WhileLoopBlock
-            for (let q = 0; q < this.variables.length; q++) {
-              whileLoopBlock.variables.splice(q, 0, this.variables[q]);
-            }
-            console.log("While Loop Block: ", whileLoopBlock);
+            whileLoopBlock.SYMBOLS = whileBlock;
+            whileLoopBlock.variables = this.variables;
 
             while (whileBoolean) {
               // Validate whileBlock symbols only

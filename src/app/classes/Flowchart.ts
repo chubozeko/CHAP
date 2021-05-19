@@ -191,7 +191,7 @@ export class Flowchart {
 
       // DECLARE
       else if (this.tempSymbols[i] instanceof Declare) {
-       // if (this.isProgramRunning) {
+        if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let declareSym = this.tempSymbols[i] as Declare;
             let vars = await declareSym.parseDeclareExp();
@@ -199,7 +199,7 @@ export class Flowchart {
               this.variables.vars.splice(this.variables.vars.length, 0, vars[a]);
             }
           }
-        //}
+        }
       }
 
       // INPUT
@@ -227,7 +227,7 @@ export class Flowchart {
 
       // PROCESS
       else if (this.tempSymbols[i] instanceof Process) {
-       // if (this.isProgramRunning) {
+        if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let processSym = this.tempSymbols[i] as Process;
             let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars, this.consoleLog);
@@ -237,26 +237,24 @@ export class Flowchart {
               this.consoleLog.className = "noerrorAlert";
             }
           }
-       // }
+        }
         
       }
 
       // OUTPUT
       else if (this.tempSymbols[i] instanceof Output) {
-      //  if (this.isProgramRunning) {
+        if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let outputSym = this.tempSymbols[i] as Output;
             let didOutputRun = outputSym.validateOutputSymbol(this.variables.vars, this.consoleLog);
-                    if (!didOutputRun) {
-                      this.isProgramRunning = false;
-                      this.consoleLog.className = "errorAlert";
-                    
-                    } else {
-                      this.consoleLog.className = "noerrorAlert";
-                    
-                    }
+            if (!didOutputRun) {
+              this.isProgramRunning = false;
+              this.consoleLog.className = "errorAlert";
+            } else {
+              this.consoleLog.className = "noerrorAlert";
+            }
           }
-        //}
+        }
       }
 
       // COMMENT
@@ -297,27 +295,16 @@ export class Flowchart {
             let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
             if (whileBlock == null) {
               // TODO: Show Error in Console
-             
-              /*this.showAlert(
-                "Invalid Statement at 'While Loop'",
-                'Variable is not declared!'
-              );*/
+              this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
+              this.consoleLog.value += "ERROR: Invalid Statement at 'WHILE-LOOP' => Variable is not declared!" + "\n";
               break;
             } else {
               this.consoleLog.className="noerrorAlert";
-  
               if (whileBlock.length != 0) { whileBoolean = true; }
               else { whileBoolean = false; }
-              // Add whileBlock symbols to a LoopBlock
               let whileLoopBlock = new LoopBlock();
-              for (let v = 0; v < whileSymbol.trueLoopBlock.length; v++) {
-                whileLoopBlock.SYMBOLS.splice(v, 0, whileSymbol.trueLoopBlock[v]);
-              }
-              // Pass Variables to WhileLoopBlock
-              for (let q = 0; q < this.variables.vars.length; q++) {
-                whileLoopBlock.variables.splice(q, 0, this.variables.vars[q]);
-              }
-              console.log("While Loop Block: ", whileLoopBlock);
+              whileLoopBlock.SYMBOLS = whileBlock;
+              whileLoopBlock.variables = this.variables.vars;
   
               while (whileBoolean) {
                 // Validate whileBlock symbols only
@@ -326,7 +313,7 @@ export class Flowchart {
                 whileBlock = whileSymbol.parseWhileLoopExpression(x);
                 if (whileBlock.length != 0) { whileBoolean = true; }
                 else { whileBoolean = false; }
-                console.log("While Loop pass: ", x);
+                console.log("While Loop passed: ", x);
               }
               break;
             }

@@ -38,24 +38,19 @@ export class Output {
         } else {
           // consoleLog.value+="ERROR: syntax"+"\n";
         }
-
       } else if (ob.indexOf("'") != -1) {
-
         isValid = false;
         // TODO: Add "SINGLE_QUOTES" error
         console.error("ERROR: Single Quotes NOT ALLOWED at Output symbol!");
         consoleLog.value += "ERROR: Single Quotes NOT ALLOWED at Output symbol!";
       } else {
-
         isValid = this.checkIfVariable(ob, variables);
-        if(isValid==false){
+        if (isValid == false){
           var sl_tip="SOLUTION TIP : Please Check Declared Variable Name !";
           consoleLog.value += "ERROR: Undefined / Null Variable or Array at Output symbol!"+"\n"+sl_tip.toString();
-        }else{
+        } else {
           //consoleLog.value+="ERROR: Undefined / Null Array Variable at Output symbol!"+"\n";
-
         }
-      
       }
 
       if (isValid == false || isValid == null || isValid == undefined) {

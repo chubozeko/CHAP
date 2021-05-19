@@ -72,8 +72,8 @@ export class IfCase {
     } else {
       opers = [];
     }
-    console.log("If Case exps: ", exps);
-    console.log("If Case opers: ", opers);
+    // console.log("If Case exps: ", exps);
+    // console.log("If Case opers: ", opers);
     
     // Check if it is a variable name & parse to desired data type
     for (let i = 0; i < exps.length; i++) {
