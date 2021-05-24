@@ -222,19 +222,13 @@ textarea{
 /* Clear Workspace Alert */
 .clearWS-yes { --background: #f04141; }
 
-    
 .aalert_input{
- 
     font-family: sans-serif;
     font-weight: bold;
     font-size: 15px;
     border-width: 45px;
     border-color: black;
     border-inline-start-color: black;
-    
-  
-    
-    
 }
 .alertTitle{
     font-family: sans-serif;
@@ -252,4 +246,3 @@ textarea{
     
    color:#ddd;
 }
-

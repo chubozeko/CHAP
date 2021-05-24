@@ -139,6 +139,13 @@ font-weight: bolder;
  // margin-inline-start: -50px !important;
 }
 
+.fab[mini] {
+  margin: 8px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+
 #symbolsFAB {
   position: absolute;
   
