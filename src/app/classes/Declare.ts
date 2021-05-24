@@ -42,7 +42,10 @@ export class Declare {
 
     getArraySize() { return this.arraySize; }
 
-    createArray(isArray: boolean, arraySize: number) { this.isArray = isArray; this.arraySize = arraySize; }
+    createArray(isArray: boolean, arraySize: number) { 
+        this.isArray = isArray; 
+        this.arraySize = arraySize; 
+    }
 
     getDeclareExpression() {
         let arrayStr = '';
@@ -52,7 +55,7 @@ export class Declare {
         return this.declareExpression;
     }
 
-    parseDeclareExp() {
+    async parseDeclareExp() {
         let vars: Variable[] = [];
 
         let varNames = this.getVariableName().split(",");
@@ -80,6 +83,7 @@ export class Declare {
             }
             var1.setName(varNames[i].trim());
             var1.setDataType(this.getDataType());
+            var1.setValue(undefined);
             vars.splice(vars.length, 0, var1);
         }
 

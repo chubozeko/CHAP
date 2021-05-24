@@ -40,6 +40,7 @@
     /* grid-template-columns: 100px auto; */
     grid-template-columns: 0fr 1fr;
     height: 100%;
+   
 }
 .showSymbolPanel { grid-template-columns: 100px auto; }
 #left_symbols {
@@ -173,9 +174,10 @@ li a:hover{ color: #039be5; }
 
 textarea{ 
     width: 100%; padding: 5px; float: right; 
-    background-color: #333; color: #ddd; 
-    font-family: Consolas, monaco, monospace; 
-    resize: none; white-space: pre-wrap;
+    background-color: #333;
+     color: #ddd;  
+    font-family: sans-serif; 
+    resize: none; white-space: pre-wrap;/* Resize Edilme Açıla Bilir*/
   }
 
 /* Symbol Pop Up (.popover-content)  Değişti 200 dü*/
@@ -213,10 +215,34 @@ textarea{
 
 /* Symbol Modal Textbox Focus */
 .dialogTextbox {
-    border: 2px solid #ffff;
+    border: 2px solid rgb(248, 246, 246);
+    
   }
 
 /* Clear Workspace Alert */
 .clearWS-yes { --background: #f04141; }
 
+.aalert_input{
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    border-width: 45px;
+    border-color: black;
+    border-inline-start-color: black;
+}
+.alertTitle{
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color:crimson;
+}
+.errorAlert{
+    font-family: sans-serif;
+    font-weight: bold;
+   color:crimson;
+}
+.noerrorAlert{
+    font-family: sans-serif;
     
+   color:#ddd;
+}

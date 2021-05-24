@@ -13,21 +13,21 @@
   </ion-item>
 
   <ion-item color="primary">
-    <ion-input type="text" id="process_tooltip_info" value="{{toolTipInfoText}}" readonly></ion-input>
+    <ion-input type="text" id="process_tooltip_info"  value="{{toolTipInfoText}}" readonly></ion-input>
   </ion-item>
 
   <div style="background-color: #ffffff;">
-    <ion-input id="process_var_name" type="text" placeholder="Variable" [value]=""
+    <ion-input id="process_var_name" type="text" style="background-color: cornflowerblue;" placeholder=">Enter Variable Name Here" [value]=""
       class="process_elements dialogTextbox" data-text="Enter a variable to assign a value to" maxlength="50">
     </ion-input>
   </div>
 
   <ion-item>
-    <ion-label style="text-align: center;">=</ion-label>
+    <ion-label style="text-align: center; font-family: sans-serif;font-weight: bold;  color: cornflowerblue;">=</ion-label>
   </ion-item>
 
   <div style="background-color: #ffffff;">
-    <ion-input id="process_expression" type="text" placeholder="Expression" [value]="" style="float: left; "
+    <ion-input id="process_expression" type="text" placeholder=">Enter Expression Here"   [value]="" style="float: left; background-color: cornflowerblue; "
       class="process_elements dialogTextbox" data-text="Enter an expression or value to assign to the variable"
       maxlength="100">
     </ion-input>

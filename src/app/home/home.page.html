@@ -3,6 +3,7 @@
   <div class="flb">
     <div class="Aligner-item Aligner-item--top"></div>
     <img src="./assets/icon/chap_logo.png" class="animation-target">
+    <!-- <ion-progress-bar value="0.5"></ion-progress-bar> -->
     <div class="Aligner-item Aligner-item--bottom"></div>
   </div>
 </div>
@@ -23,7 +24,7 @@
     &nbsp; &nbsp;
     <!-- </ion-buttons> -->
 
-    <ion-input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}" clearInput></ion-input>
+    <ion-input type="text" id="fileName" placeholder="Untitled Project" value="{{fileName}}" ></ion-input>
 
     <!-- Menu Toolbar Buttons -->
     <!-- <ion-buttons slot="end"> -->
@@ -109,8 +110,8 @@
 
 <ion-content>
 
-  <div id="infoPrompt">
-    <p>{{infoMessage}}</p>
+  <div id="infoPrompt" class="infoPrompt">
+    <p class="prompttext">{{infoMessage}}</p>
   </div>
 
   <div class="wrapper">
@@ -161,7 +162,7 @@
             </ion-button>
           </div>
           <textarea id="console" class="toggleConsole" rows="4" disabled="true" contenteditable="false"
-            style="color: #ddd; display: none;"></textarea>
+            style=" display: none;"></textarea>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { create, all } from 'mathjs'
+import { LoopBlock } from './LoopBlock';
 const config = {};
 const math = create(all, config);
 
@@ -12,13 +13,19 @@ export class IfCase {
 
   trueExpression: string;
   trueBlockSymbols: any[];
+  // trueBlock: LoopBlock;
 
   falseExpression: string;
   falseBlockSymbols: any[];
+  // falseBlock: LoopBlock;
 
   constructor() {
     this.trueBlockSymbols = [];
+    // this.trueBlock = new LoopBlock();
+    // this.trueBlock.SYMBOLS = [];
     this.falseBlockSymbols = [];
+    // this.falseBlock = new LoopBlock();
+    // this.falseBlock.SYMBOLS = [];
   }
 
   createIfCaseSymbol(ifCaseSym: any) {
@@ -26,8 +33,10 @@ export class IfCase {
     this.ifcaseSymbol = ifCaseSym.ifcaseSymbol;
     this.trueExpression = ifCaseSym.trueExpression;
     this.trueBlockSymbols = ifCaseSym.trueBlockSymbols;
+    // this.trueBlock.SYMBOLS = ifCaseSym.trueBlockSymbols;
     this.falseExpression = ifCaseSym.falseExpression;
     this.falseBlockSymbols = ifCaseSym.falseBlockSymbols;
+    // this.falseBlock.SYMBOLS = ifCaseSym.falseBlockSymbols;
   }
 
   setIfStatement(if_exp: string) { this.ifStatement = if_exp; }
@@ -36,6 +45,7 @@ export class IfCase {
   setIfCaseSymbol(ifSym: any) { this.ifcaseSymbol = ifSym; }
   getIfCaseSymbol() { return this.ifcaseSymbol; }
 
+  
   addSymbolToTrueBlock(symbol: any, position: number) { this.trueBlockSymbols.splice(position, 0, symbol); }
   getSymbolFromTrueBlock(index: number) { return this.trueBlockSymbols[index]; }
   removeSymbolFromTrueBlock(position: number) { this.trueBlockSymbols.splice(position, 1); }
@@ -45,27 +55,26 @@ export class IfCase {
   removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
 
   parseIfCaseExpression(variables: any[]) {
-    let opers = [], parsedValues = [], exps = [], exps1 = [];
+    let opers = [], exps = [], exps1 = [];
     let op = '', oper1, oper2, result, j = 0, tempArrIndex;
-    let isVarDeclared = false, isParsingStrings = false;
+    let isVarDeclared = false, isParsingStrings = false, strSplit;
 
-    // LOGICAL Operators: &&, ||, !
+    strSplit = this.ifStatement.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
+    for (let i = 0; i < strSplit.length; i++) { exps[i] = strSplit[i].trim(); }
+
+    // Store LOGICAL Operators: &&, ||, ! in "opers"
     if ((this.ifStatement.indexOf('&&') != -1) || (this.ifStatement.indexOf('||') != -1) || (this.ifStatement.indexOf('!') != -1)
       || (this.ifStatement.indexOf('<') != -1) || (this.ifStatement.indexOf('>') != -1) || (this.ifStatement.indexOf('==') != -1)
       || (this.ifStatement.indexOf('<=') != -1) || (this.ifStatement.indexOf('>=') != -1) || (this.ifStatement.indexOf('!=') != -1)
       || (this.ifStatement.indexOf('+') != -1) || (this.ifStatement.indexOf('-') != -1) || (this.ifStatement.indexOf('*') != -1)
       || (this.ifStatement.indexOf('/') != -1) || (this.ifStatement.indexOf('%') != -1)) {
-      // Split by logical operators
-      exps1 = this.ifStatement.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
-      for (let i = 0; i < exps1.length; i++) { exps[i] = exps1[i].trim(); }
-      // Store logical operators in "opers"
       opers = this.ifStatement.match(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
     } else {
-      exps.splice(exps.length, 0, this.ifStatement.trim());
+      opers = [];
     }
-
-    console.log("If Case exps: ", exps);
-    console.log("If Case opers: ", opers);
+    // console.log("If Case exps: ", exps);
+    // console.log("If Case opers: ", opers);
+    
     // Check if it is a variable name & parse to desired data type
     for (let i = 0; i < exps.length; i++) {
       for (let j = 0; j < variables.length; j++) {
@@ -85,36 +94,11 @@ export class IfCase {
               }
             }
             exps.splice(i, 1, variables[j].variable[tempArrIndex]);
-            // if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].variable[tempArrIndex]));
-            // else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].variable[tempArrIndex]));
-            // else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].variable[tempArrIndex].toString());
-            // else if (variables[j].getDataType() == 'Boolean') {
-            //   if (variables[j].variable[tempArrIndex] == "true") exps.splice(i, 1, true);
-            //   if (variables[j].variable[tempArrIndex] == "false") exps.splice(i, 1, false);
-            // }
           }
         } else {
           if (variables[j].getName() == exps[i]) {
             isVarDeclared = true;
-            // if (variables[j].getDataType() == 'Integer') exps.splice(i, 1, parseInt(variables[j].value));
-            // else if (variables[j].getDataType() == 'Real') exps.splice(i, 1, parseFloat(variables[j].value));
-            // else if (variables[j].getDataType() == 'String') exps.splice(i, 1, variables[j].value.toString());
-            // else if (variables[j].getDataType() == 'Boolean') {
-            //   if (variables[j] == "true") exps.splice(i, 1, true);
-            //   if (variables[j] == "false") exps.splice(i, 1, false);
-            // }
             exps.splice(i, 1, variables[j].value);
-          }
-          else {
-            // let v = exps[i];
-            // let temp: any;
-            // if (!isNaN(parseInt(v)) || !isNaN(parseFloat(v))) {
-            //   let a = v.split('.');
-            //   if (a.length > 1) temp = parseFloat(v); else temp = parseInt(v);
-            // } else if (v == 'true') { temp = true; }
-            // else if (v == 'false') { temp = false; }
-            // else { temp = v.toString(); }
-            // exps.splice(i, 1, temp);
           }
         }
       }

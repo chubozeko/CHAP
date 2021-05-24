@@ -249,7 +249,7 @@ export class HomePage {
     let genCode = document.getElementById("btn_generateCode");
     genCode.addEventListener("click", () => this.generatePseudoCode());
     let clearWS = document.getElementById("btn_clearWorkspace");
-    clearWS.addEventListener("click", () => this.clearWorkspaceAlert());
+    clearWS.addEventListener("click", () => this.clearWorkspaceAlert(false));
     let aboutPg = document.getElementById("btn_aboutPage");
     aboutPg.addEventListener("click", () => this.openAboutPage());
     let tutorPg = document.getElementById("btn_tutorialPage");
@@ -2562,7 +2562,7 @@ export class HomePage {
     consoleCHAP.value = "";
   }
 
-  async clearWorkspaceAlert() {
+  async clearWorkspaceAlert(newProject: boolean) {
     const alert = await this.alertC.create({
       cssClass: '',
       header: 'Clear Workspace...',
@@ -2572,7 +2572,7 @@ export class HomePage {
           text: 'Yes',
           cssClass: 'danger',
           handler: () => {
-            this.clearWorkspace();
+            this.clearWorkspace(newProject);
           }
         },
         {
@@ -2586,7 +2586,7 @@ export class HomePage {
     await alert.present();
   }
 
-  public clearWorkspace() {
+  public clearWorkspace(clearProjectName: boolean) {
     this.menu.close();
     this.clearConsole();
     let startSym, stopSym, arrowInit;
@@ -2610,12 +2610,16 @@ export class HomePage {
     // workspace.appendChild(symbolsList);
     this.flowchart = new Flowchart(this.alertC);
     this.paste_sym_buffer = [];
+
+    if (clearProjectName) {
+      let fileN = document.getElementById("fileName") as HTMLInputElement;
+      fileN.value = "";
+    }
+
   }
 
   public newProject() {
-    let fileN = document.getElementById("fileName") as HTMLInputElement;
-    fileN.value = "";
-    this.clearWorkspace();
+    this.clearWorkspaceAlert(true);
   }
 
   async openProjectOptions() {
@@ -2745,7 +2749,7 @@ export class HomePage {
   }
 
   public loadProject(chapFileName, fileData: string) {
-    this.newProject();
+    this.clearWorkspace(true);
     let dataSyms, arrowT, els, p, tlb, flb;
     console.log(fileData);
     dataSyms = JSON.parse(fileData);
@@ -2760,7 +2764,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getDeclareExpression();
           break;
@@ -2770,7 +2774,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getInputExpression();
           break;
@@ -2780,7 +2784,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           let tempX = sym.getOutputExpression().replace(/`/g, '"');
           sym.setOutputExpression(tempX);
@@ -2792,7 +2796,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getProcessExpression();
           break;
@@ -2802,7 +2806,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getCommentExpression();
           break;
@@ -2812,7 +2816,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getIfStatement();
           tlb = els[p].parentElement.querySelector("#ifTrueBlock");
@@ -2826,7 +2830,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getForExpression();
           tlb = els[p].parentElement.querySelector("#forTrueBlock");
@@ -2838,7 +2842,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getWhileExpression();
           tlb = els[p].parentElement.querySelector("#whileTrueBlock");
@@ -2850,7 +2854,7 @@ export class HomePage {
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id, arrowT[i]);
-          els = document.getElementsByClassName("symbol");
+          els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getDoWhileExpression();
           tlb = els[p].parentElement.querySelector("#doWhileTrueBlock");
@@ -3253,6 +3257,7 @@ export class HomePage {
     if (this.isConsoleOpen == false) {
       this.toggleConsole();
     }
+    this.flowchart.isProgramRunning = true;
     this.flowchart.validateFlowchart(0, this.flowchart.SYMBOLS.length);
   }
 

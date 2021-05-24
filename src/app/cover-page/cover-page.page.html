@@ -1,58 +1,100 @@
-<ion-toolbar style="padding: 5px; " color="primary">
-  <ion-icon name="create" slot="start" style="width: 24px; height: 24px;"></ion-icon>
-  <ion-title>Getting Started with CHAP</ion-title>
-  <ion-buttons slot="end">
-    <ion-button (click)="closeModal()" color="secondary" style="float: right;">
-      <ion-icon name="close"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-</ion-toolbar>
 
-<ion-content color="secondary">
 
-  <ion-slides id="tutorSlides" [options]="slideOpts" scrollbar="true">
-    <ion-slide>
-      <ion-card style="padding: 0px 15px;" color="light">
-        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
-          <p class="card-text">
-            Opening the list of Symbols
-          </p>
-        </ion-card-title>
-        <ion-card-content>
-          <ion-img src="./assets/tutorials/open_menuV1.gif"></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ion-slide>
 
-    <ion-slide>
-      <ion-card style="padding: 0px 15px;" color="light">
-        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
-          <p class="card-text">
-            Drag and Drop Symbols onto an Arrow to add a Symbol
-          </p>
-        </ion-card-title>
-        <ion-card-content>
-          <ion-img src="./assets/tutorials/drag_drop.gif"></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ion-slide>
-    <ion-slide>
-      <ion-card style="padding: 0px 15px;" color="light">
-        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
-          <p class="card-text">
-            Double Tap on Symbol to open the Symbol's Properties
-          </p>
-        </ion-card-title>
-        <ion-card-content>
-          <ion-img src="./assets/tutorials/process.gif"></ion-img>
-        </ion-card-content>
-      </ion-card>
-    </ion-slide>
-  </ion-slides>
+  <ion-toolbar   style="padding: 5px;"   color="primary" >
+    <ion-icon name="create" slot="start" style="width: 24px; height: 24px;"></ion-icon>
+    <ion-title>Getting Started with CHAP</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" color="secondary" style="float: right;">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+  <ion-content color="secondary" style="width: 100%; height: 100%;">
+  
+    <ion-slides id="tutorSlides" style="width: 100%; height: 100%;" [options]="slideOpts" scrollbar="true">
+      <ion-slide>
+        <ion-card style=" width: 100%; height: 100%;" color="light">
+          <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
+            <p class="card-text">
+              Opening the list of Symbols  <b>Step: 1/4</b>
+            </p>
+          </ion-card-title>
+          <ion-card-content>
+            <video width="100%" height="auto"  controls autoplay muted loop>
+              <source src="./assets/tutorials/open_menuV2.mp4"  type="video/mp4" media="all and (max-width: 768px)">
+             
+           
+            </video>
+            <!-- <ion-img src="./assets/tutorials/open_menuV1.gif" style="width: fit-content; height: 100%;" ></ion-img> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card style=" width: 100%; height: 100%;" color="light">
+          <ion-card-title class="card-body" style="--background-color: #f4f5f8; ">
+            <p class="card-text">
+              Drag and Drop Symbols onto an Arrow to add a Symbol <b>Step: 2/4</b> 
+            </p>
+          </ion-card-title>
+          <ion-card-content>
+            <video width="100%" height="auto" controls autoplay muted loop>
+              <source src="./assets/tutorials/drag_dropV2.mp4"  type="video/mp4" media="all and (max-width: 768px)">
+             
+           
+            </video>
+            <!-- <ion-img src="./assets/tutorials/drag_drop.gif" style="width: fit-content; height: 100%;" ></ion-img> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card style=" width: 100%; height: 100%;" color="light">
+          <ion-card-title class="card-body" style="--background-color: #f4f5f8; ">
+            <p class="card-text">
+              Double Tap on Symbol to open the Symbol's Properties <b>Step: 3/4</b> 
+            </p>
+          </ion-card-title>
+          <ion-card-content>
+            <video width="100%" height="auto" height="100%" controls autoplay muted loop>
+              <source src="./assets/tutorials/processV2.mp4" type="video/mp4"  media="all and (max-width: 768px)">
+             
+           
+            </video>
+            <!-- <ion-img src="./assets/tutorials/drag_drop.gif" style="width: fit-content; height: 100%;" ></ion-img> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card style=" width: 100%; height: 100%;" color="light">
+          <ion-card-title class="card-body" style="--background-color: #f4f5f8; ">
+            <p class="card-text">
+              Hello World  <b>Step: 4/4</b> 
+            </p>
+          </ion-card-title>
+          <ion-card-content>
+            <video width="100%" height="auto"  controls autoplay muted loop>
+              <source src="./assets/tutorials/chaptutorialHelloWorld.mp4" type="video/mp4" media="all and (max-width: 768px)"> 
+              <source src="./assets/tutorials/chaptutorialHelloWorld.mp4" type="video/webm" media="all and (max-width: 768px)"> 
+              <!-- <source src="./assets/tutorials/chaptutorialHelloWorld.mp4" type="video/mp4"> -->
+             
+           
+            </video>
+            <!-- <ion-img src="./assets/tutorials/drag_drop.gif" style="width: fit-content; height: 100%;" ></ion-img> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+  
+  </ion-content>
+  
+  <ion-footer id="tutor_modal_footer" color="primary" >
+    <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> &lt; Previous </ion-button>
+    <ion-button (click)="nextSlide()" color="dark" full style="float: right;"> Next &gt; </ion-button>
+  </ion-footer> 
 
-</ion-content>
 
-<ion-footer id="tutor_modal_footer" color="primary">
-  <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> &lt; Previous </ion-button>
-  <ion-button (click)="nextSlide()" color="dark" full style="float: right;"> Next &gt; </ion-button>
-</ion-footer>
+
+
+
+ 
