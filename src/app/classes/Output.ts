@@ -58,8 +58,17 @@ export class Output {
         return false;
       }
     };
+    if(this.outputS=="NaN"){
+     //var solutionTip="SOLUTION TIP : Please Check IF DECLARED DATA TYPE IS INTEGER REMOVE {'','}"+"MARK AT PROCESS SYMBOL" ;
+      consoleLog.value += "SYNTAX ERROR: Check Entered Expression at PROCESS Symbol"+"\n"+"SOLUTION TIP : Please Check IF DECLARED DATA TYPE IS INTEGER REMOVE {'','}"+"MARK AT PROCESS SYMBOL !" ;
+
+    }else if(this.outputS=="null"){
+      consoleLog.value += "SYNTAX ERROR: Check Entered Expression at PROCESS Symbol"+"\n"+"SOLUTION TIP : Please Check IF DECLARED DATA TYPE IS STRING ONLY USE DOUBLE QUATATIONS AT THE PROCESS SYMBOL TO DISPLAY VALUE !";
+    }
+    else{
     consoleLog.value += "Output: " + this.outputS + "\n";
     return true;
+    }
   }
 
   private checkIfVariable(oBlock: string, variables: any[]): boolean {
