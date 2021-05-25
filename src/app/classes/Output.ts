@@ -46,7 +46,7 @@ export class Output {
       } else {
         isValid = this.checkIfVariable(ob, variables);
         if (isValid == false){
-          var sl_tip="SOLUTION TIP : Please Check Declared Variable Name !";
+          var sl_tip="SOLUTION TIP : Please Check Declared Variable Name or Entered Data Type !";
           consoleLog.value += "ERROR: Undefined / Null Variable or Array at Output symbol!"+"\n"+sl_tip.toString();
         } else {
           //consoleLog.value+="ERROR: Undefined / Null Array Variable at Output symbol!"+"\n";

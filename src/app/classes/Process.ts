@@ -93,6 +93,7 @@ export class Process {
         } else {
           this.consoleLog.className = "errorAlert";
           this.consoleLog.value += "ERROR: Variable " + tempVal + " is not declared at 'PROCESS'" + "\n";
+          this.consoleLog.value +="SOLUTION TIP: Please use DOUBLE QUOTATION Mark at PROCESS SYMBOL to Display Declared String Value !"
           return false;
         }
       }
