@@ -319,7 +319,6 @@ export class Flowchart {
                 else { whileBoolean = false; }
                 console.log("While Loop passed: ", this.variables.vars);
               }
-              break;
             }
           }
         }
@@ -354,7 +353,7 @@ export class Flowchart {
                     this.variables.vars = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     console.log("loop pass: ", props);
-                  } break;
+                  }
                 }
               } else if (forSymbol.getStepDirection() === 'Decreasing') {
                 // Validation to prevent INFINITE LOOPS:
@@ -368,7 +367,7 @@ export class Flowchart {
                     this.variables.vars = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     console.log("loop pass: ", props);
-                  } break;
+                  }
                 }
               } else { break; }
             } else {
@@ -414,7 +413,6 @@ export class Flowchart {
                 else { doWhileBoolean = false; }
                 console.log("Do While Loop pass: " + doWhileBoolean, props);
               } while (doWhileBoolean);
-              break;
             }
           }
         }

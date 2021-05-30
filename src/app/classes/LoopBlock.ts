@@ -294,7 +294,6 @@ export class LoopBlock {
               else { whileBoolean = false; }
               console.log("While Loop pass: ", props);
             }
-            break;
           }
         }
       }
@@ -327,7 +326,7 @@ export class LoopBlock {
                   this.variables = props.variables;
                   this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                   console.log("loop pass: ", props);
-                } break;
+                }
               }
             } else if (forSymbol.getStepDirection() === 'Decreasing') {
               // Validation to prevent INFINITE LOOPS:
@@ -341,7 +340,7 @@ export class LoopBlock {
                   this.variables = props.variables;
                   this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                   console.log("loop pass: ", props);
-                } break;
+                }
               }
             } else { break; }
           } else {
@@ -385,7 +384,6 @@ export class LoopBlock {
               else { doWhileBoolean = false; }
               console.log("Do While Loop pass: " + doWhileBoolean, props);
             } while (doWhileBoolean);
-            break;
           }
         }
         
