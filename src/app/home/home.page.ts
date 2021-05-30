@@ -2108,16 +2108,14 @@ export class HomePage {
       let syms = document
         .getElementById("workspace")
         .getElementsByClassName("symbol");
-      // let nrOfDoWhileSyms = 0;
-      // for (let i = 0; i < syms.length; i++) {
-      //   if (syms[i].parentElement.id == "doWhileTrueBlock") nrOfDoWhileSyms++;
-      //   else if (syms[i].classList.contains("active-symbol")) {
-      //     active_sym_index = i - nrOfDoWhileSyms - 1;
-      //   }
-      // }
+      let nrOfLoopBlockSyms = 0;
       for (let i = 0; i < syms.length; i++) {
-        if (syms[i].classList.contains("active-symbol")) {
-          active_sym_index = i - 1;
+        if (syms[i].parentElement.id == "ifTrueBlock" || syms[i].parentElement.id == "ifFalseBlock" || 
+        syms[i].parentElement.id == "forTrueBlock" || syms[i].parentElement.id == "whileTrueBlock" || 
+        syms[i].parentElement.id == "forTrueBlock")
+        { nrOfLoopBlockSyms++; }
+        else if (syms[i].classList.contains("active-symbol")) {
+          active_sym_index = (i-1) - nrOfLoopBlockSyms;
         }
       }
       tempSym = this.flowchart.getSymbolFromFlowchart(active_sym_index);

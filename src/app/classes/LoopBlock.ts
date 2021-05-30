@@ -256,7 +256,9 @@ export class LoopBlock {
             let ifLoopBlock = new LoopBlock();
             ifLoopBlock.SYMBOLS = ifBlock;
             ifLoopBlock.variables = this.variables;
-            await ifLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+            let props = await ifLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+            this.variables = props.variables;
+            this.isAnInputBlockRunning = props.isAnInputBlockRunning;
           }
         }
         
@@ -265,7 +267,6 @@ export class LoopBlock {
       // WHILE LOOP
       else if (this.tempSymbols[i] instanceof WhileLoop) {
         if (!this.isAnInputBlockRunning) {
-          // TODO: Refactor While Loop Validation
           let whileBoolean: boolean;
           let whileSymbol = this.tempSymbols[i] as WhileLoop;
           let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables);
@@ -284,13 +285,14 @@ export class LoopBlock {
             console.log("While Loop Block: ", whileLoopBlock);
 
             while (whileBoolean) {
-              // Validate whileBlock symbols only
-              let x = await whileLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
+              let props = await whileLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
               // Check whileBoolean after validating While Loop Block symbols
-              whileBlock = whileSymbol.parseWhileLoopExpression(x);
+              this.variables = props.variables;
+              this.isAnInputBlockRunning = props.isAnInputBlockRunning;
+              whileBlock = whileSymbol.parseWhileLoopExpression(this.variables);
               if (whileBlock.length != 0) { whileBoolean = true; }
               else { whileBoolean = false; }
-              console.log("While Loop pass: ", x);
+              console.log("While Loop pass: ", props);
             }
             break;
           }
@@ -321,8 +323,10 @@ export class LoopBlock {
                   tempVar = forSymbol.iterateForStepDirection(tempVar)) {
                   // Validate forBlock symbols only
                   this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
-                  let x = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
-                  console.log("loop pass: ", x);
+                  let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
+                  this.variables = props.variables;
+                  this.isAnInputBlockRunning = props.isAnInputBlockRunning;
+                  console.log("loop pass: ", props);
                 } break;
               }
             } else if (forSymbol.getStepDirection() === 'Decreasing') {
@@ -333,8 +337,10 @@ export class LoopBlock {
                   tempVar = forSymbol.iterateForStepDirection(tempVar)) {
                   // Validate forBlock symbols only
                   this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
-                  let x = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
-                  console.log("loop pass: ", x);
+                  let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
+                  this.variables = props.variables;
+                  this.isAnInputBlockRunning = props.isAnInputBlockRunning;
+                  console.log("loop pass: ", props);
                 } break;
               }
             } else { break; }
@@ -350,11 +356,9 @@ export class LoopBlock {
       // DO WHILE LOOP
       else if (this.tempSymbols[i] instanceof DoWhileLoop) {
         if (!this.isAnInputBlockRunning) {
-          // TODO: Refactor Do While Loop Validation
           let doWhileBoolean, doWhileIndex, doWhileSymCount;
           let doWhileSymbol = this.tempSymbols[i] as DoWhileLoop;
           doWhileIndex = i;
-
           let doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables);
           if (doWhileBlock == null) {
             // TODO: Show Error in Console
@@ -362,23 +366,24 @@ export class LoopBlock {
             this.consoleLog.value += "ERROR at 'DO WHILE LOOP'" + "\n";
             break;
           } else {
+            this.consoleLog.className = "noerrorAlert";
             doWhileSymCount = doWhileBlock.length;
             if (doWhileBlock.length != 0) { doWhileBoolean = true; }
             else { doWhileBoolean = false; }
-
             let doWhileLoopBlock = new LoopBlock();
             doWhileLoopBlock.SYMBOLS = doWhileSymbol.trueLoopBlock;
             doWhileLoopBlock.variables = this.variables;
             console.log("Do While Loop Block: ", doWhileLoopBlock);
 
             do {
-              // Validate whileBlock symbols only [version 2]
-              let x = await doWhileLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
+              let props = await doWhileLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
               // Check whileBoolean after validating While Loop Block symbols
-              doWhileBlock = doWhileSymbol.parseDoWhileExpression(x);
+              this.variables = props.variables;
+              this.isAnInputBlockRunning = props.isAnInputBlockRunning;
+              doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables);
               if (doWhileBlock.length != 0) { doWhileBoolean = true; }
               else { doWhileBoolean = false; }
-              console.log("Do While Loop pass: " + doWhileBoolean, x);
+              console.log("Do While Loop pass: " + doWhileBoolean, props);
             } while (doWhileBoolean);
             break;
           }
@@ -390,7 +395,7 @@ export class LoopBlock {
     console.log("Variables (LoopBlock)", this.variables);
     console.log("Symbols (LoopBlock)", this.SYMBOLS);
     console.log("Temporary symbols (LoopBlock)", this.tempSymbols);
-    return this.variables;
+    return { variables: this.variables, isAnInputBlockRunning: this.isAnInputBlockRunning };
   }
 
   async validateSymbol(symbol: any, variables: any[], isAnInputBlockRunning: boolean, startIndex?: number, endIndex?: number) {
