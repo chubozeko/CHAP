@@ -66,7 +66,7 @@ export class Output {
       consoleLog.value += "SYNTAX ERROR: Check Entered Expression at PROCESS Symbol"+"\n"+"SOLUTION TIP : Please Check IF DECLARED DATA TYPE IS STRING ONLY USE DOUBLE QUATATIONS AT THE PROCESS SYMBOL TO DISPLAY VALUE !";
     }
     else{
-    consoleLog.value += "Output: " + this.outputS + "\n";
+    consoleLog.value += "Output : " + this.outputS + "\n";
     return true;
     }
   }
