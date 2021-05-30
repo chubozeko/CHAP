@@ -19,6 +19,13 @@ export class IfCase {
   falseBlockSymbols: any[];
   // falseBlock: LoopBlock;
 
+  // TREE STRUCTURE
+  // node = {
+  //   symbolNode: IfCase,
+  //   trueNode: this.trueBlockSymbols,
+  //   falseNode: LoopBlock
+  // };
+
   constructor() {
     this.trueBlockSymbols = [];
     // this.trueBlock = new LoopBlock();
@@ -26,6 +33,7 @@ export class IfCase {
     this.falseBlockSymbols = [];
     // this.falseBlock = new LoopBlock();
     // this.falseBlock.SYMBOLS = [];
+    
   }
 
   createIfCaseSymbol(ifCaseSym: any) {
@@ -44,7 +52,6 @@ export class IfCase {
 
   setIfCaseSymbol(ifSym: any) { this.ifcaseSymbol = ifSym; }
   getIfCaseSymbol() { return this.ifcaseSymbol; }
-
   
   addSymbolToTrueBlock(symbol: any, position: number) { this.trueBlockSymbols.splice(position, 0, symbol); }
   getSymbolFromTrueBlock(index: number) { return this.trueBlockSymbols[index]; }
@@ -53,6 +60,14 @@ export class IfCase {
   addSymbolToFalseBlock(symbol: any, position: number) { this.falseBlockSymbols.splice(position, 0, symbol); }
   getSymbolFromFalseBlock(index: number) { return this.falseBlockSymbols[index]; }
   removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
+
+  // async validateIfCaseNode(variables: any[]) {
+  //   this.parseIfCaseExpression(variables);
+  //   let ifLoopBlock = new LoopBlock();
+  //   ifLoopBlock.SYMBOLS = ifBlock;
+  //   ifLoopBlock.variables = this.variables.vars;
+  //   await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+  // }
 
   parseIfCaseExpression(variables: any[]) {
     let opers = [], exps = [], exps1 = [];

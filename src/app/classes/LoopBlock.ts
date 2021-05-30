@@ -393,5 +393,15 @@ export class LoopBlock {
     return this.variables;
   }
 
+  async validateSymbol(symbol: any, variables: any[], isAnInputBlockRunning: boolean, startIndex?: number, endIndex?: number) {
+    if (symbol == null) {
+      return;
+    }
+    for (let i=0; i<symbol.children.length; i++) {
+      // Validate symbol according to their symbol type
+      // this.validateSymbol(symbol.children[i]);
+    }
+  }
+
   // TODO: Add "prepareFlowchartForSaving()"
 }

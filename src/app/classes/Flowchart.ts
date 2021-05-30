@@ -267,6 +267,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let ifSymbol = this.tempSymbols[i] as IfCase;
+            // let ifBlock = await ifSymbol.validateIfCaseNode(this.variables.vars);
             let ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
             if (ifBlock == null) {
               this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
@@ -278,7 +279,7 @@ export class Flowchart {
               let ifLoopBlock = new LoopBlock();
               ifLoopBlock.SYMBOLS = ifBlock;
               ifLoopBlock.variables = this.variables.vars;
-              await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+              this.variables.vars = await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
             }
             console.log("If Case Complete");
           }
@@ -289,7 +290,6 @@ export class Flowchart {
       else if (this.tempSymbols[i] instanceof WhileLoop) {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
-            // TODO: Refactor While Loop Validation
             let whileBoolean: boolean;
             let whileSymbol = this.tempSymbols[i] as WhileLoop;
             let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
@@ -308,13 +308,12 @@ export class Flowchart {
               console.log("While Loop Block: ", whileLoopBlock);
   
               while (whileBoolean) {
-                // Validate whileBlock symbols only
-                let x = await whileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, whileLoopBlock.SYMBOLS.length);
+                this.variables.vars = await whileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, whileLoopBlock.SYMBOLS.length);
                 // Check whileBoolean after validating While Loop Block symbols
-                whileBlock = whileSymbol.parseWhileLoopExpression(x);
+                whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
                 if (whileBlock.length != 0) { whileBoolean = true; }
                 else { whileBoolean = false; }
-                console.log("While Loop passed: ", x);
+                console.log("While Loop passed: ", this.variables.vars);
               }
               break;
             }
@@ -378,7 +377,6 @@ export class Flowchart {
       else if (this.tempSymbols[i] instanceof DoWhileLoop) {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
-            // TODO: Refactor Do While Loop Validation
             let doWhileBoolean, doWhileIndex, doWhileSymCount;
             let doWhileSymbol = this.tempSymbols[i] as DoWhileLoop;
             doWhileIndex = i;
@@ -394,20 +392,18 @@ export class Flowchart {
               doWhileSymCount = doWhileBlock.length;
               if (doWhileBlock.length != 0) { doWhileBoolean = true; }
               else { doWhileBoolean = false; }
-  
               let doWhileLoopBlock = new LoopBlock();
               doWhileLoopBlock.SYMBOLS = doWhileSymbol.trueLoopBlock;
               doWhileLoopBlock.variables = this.variables.vars;
               console.log("Do While Loop Block: ", doWhileLoopBlock);
   
               do {
-                // Validate whileBlock symbols only [version 2]
-                let x = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
-                // Check whileBoolean after validating While Loop Block symbols
-                doWhileBlock = doWhileSymbol.parseDoWhileExpression(x);
+                this.variables.vars = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
+                // Check doWhileBoolean after validating Do While Loop Block symbols
+                doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
                 if (doWhileBlock.length != 0) { doWhileBoolean = true; }
                 else { doWhileBoolean = false; }
-                console.log("Do While Loop pass: " + doWhileBoolean, x);
+                console.log("Do While Loop pass: " + doWhileBoolean, this.variables.vars);
               } while (doWhileBoolean);
               break;
             }
