@@ -2108,11 +2108,14 @@ export class HomePage {
       let syms = document
         .getElementById("workspace")
         .getElementsByClassName("symbol");
-      let nrOfDoWhileSyms = 0;
+      let nrOfLoopBlockSyms = 0;
       for (let i = 0; i < syms.length; i++) {
-        if (syms[i].parentElement.id == "doWhileTrueBlock") nrOfDoWhileSyms++;
+        if (syms[i].parentElement.id == "ifTrueBlock" || syms[i].parentElement.id == "ifFalseBlock" || 
+        syms[i].parentElement.id == "forTrueBlock" || syms[i].parentElement.id == "whileTrueBlock" || 
+        syms[i].parentElement.id == "forTrueBlock")
+        { nrOfLoopBlockSyms++; }
         else if (syms[i].classList.contains("active-symbol")) {
-          active_sym_index = i - nrOfDoWhileSyms - 1;
+          active_sym_index = (i-1) - nrOfLoopBlockSyms;
         }
       }
       tempSym = this.flowchart.getSymbolFromFlowchart(active_sym_index);
@@ -2267,36 +2270,8 @@ export class HomePage {
     );
     let tempBranch = this.branch.cloneNode(true);
     this.addEventListenersToArrow(tempBranch);
-    // tempBranch.addEventListener("mouseenter", (e) => this.openSymbolPopUp(e));
-    // tempBranch.addEventListener("mouseleave", (e) => this.closeSymbolPopUp(e));
-    // tempBranch.addEventListener("contextmenu", (e) => {
-    //   e.preventDefault();
-    //   this.openArrowsAS(e);
-    // });
-    // tempBranch.addEventListener("mouseover", (e) => {
-    //   let prompt = document.getElementById("infoPrompt");
-    //   prompt.style.display = "flex";
-    //   this.infoMessage = "Double-Click on an Arrow to Open small Symbol List";
-    //   setTimeout(() => {
-    //     prompt.style.display = "none";
-    //     this.infoMessage = "";
-    //   }, 3000);
-    // });
-    // tempBranch.addEventListener("mouseout", (e) => {
-    //   let prompt = document.getElementById("infoPrompt");
-    //   prompt.style.display = "none";
-    //   this.infoMessage = "";
-    // });
-    // interact(tempBranch)
-    //   .gesturable({ hold: 1500 })
-    //   .on("doubletap", (e) => this.openSymbolPopUp(e))
-    //   .on("tap", (e) => this.openSymbolsFAB(e))
-    //   .on("hold", (e) => this.openArrowsAS(e));
-    //tempBranch.classList.remove('active-arrow');
 
     /* Checking which BLOCK the symbol should be added to */
-    /* --- Switch blocks --- */
-
     switch (branches[0].parentElement.id) {
       case "ifTrueBlock":
         let par1 = branches[0].parentElement.getElementsByClassName(
@@ -2468,23 +2443,6 @@ export class HomePage {
         branches[i].classList.remove("active-arrow");
       }
     }
-    // let dz = document.getElementsByClassName("arrow dropzone");
-    // for (let i = 0; i < dz.length; i++) {
-    //   dz[i].removeEventListener("contextmenu", (e) => {
-    //     e.preventDefault();
-    //     this.openArrowsAS(e);
-    //   });
-    //   dz[i].addEventListener("contextmenu", (e) => {
-    //     e.preventDefault();
-    //     this.openArrowsAS(e);
-    //   });
-    //   interact(dz[i]).unset();
-    //   interact(dz[i])
-    //     .gesturable({ hold: 1500 })
-    //     .on("tap", (e) => this.openSymbolsFAB(e))
-    //     .on("doubletap", (e) => this.openSymbolPopUp(e))
-    //     .on("hold", (e) => this.openArrowsAS(e));
-    // }
 
     if (this.popOver)
       this.popCtrl.dismiss();
