@@ -246,3 +246,8 @@ textarea{
     
    color:#ddd;
 }
+.errorWAlert{
+    font-family: sans-serif;
+    font-weight: bold;
+   color:gold;
+}
