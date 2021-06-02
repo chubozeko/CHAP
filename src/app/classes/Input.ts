@@ -96,12 +96,24 @@ export class Input {
         typeof var_value1 == "boolean"
       ) {
         var1.value = var_value1;
-      } else {
+      } else{
+       if((var1.getDataType()!="Integer" && typeof var_value1!="number" )|| (var1.getDataType() != "Real" && typeof var_value1 != "number") ||(var1.getDataType() != "String" &&
+      typeof var_value1 != "string") ||( var1.getDataType() != "Boolean" && typeof var_value1 != "boolean" )) {
+     
         // TODO: Show Error in Console
         //this.showAlert("Invalid datatype entered!", "");
-        this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
-        this.consoleLog.value += "ERROR: Invalid Datatype Entered !" + "\n";
+        this.consoleLog.className="errorWAlert"; // Eror Message Color Change Code Here
+        this.consoleLog.value += "WARNING: Invalid Datatype Entered !" + "\n";
+
+        
+      
+      }else{
+        
+        this.consoleLog.className = "noerrorAlert";
+       
       }
+      this.consoleLog.className = "noerrorAlert";
+    }
     }
   }
 
