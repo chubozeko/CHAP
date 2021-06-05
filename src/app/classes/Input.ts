@@ -84,18 +84,22 @@ export class Input {
     } else {
       if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
         var1.value = var_value1;
+        this.consoleLog.className = "noerrorAlert";
       } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
         var1.value = var_value1;
+        this.consoleLog.className = "noerrorAlert";
       } else if (
         var1.getDataType() == "String" &&
         typeof var_value1 == "string"
       ) {
         var1.value = var_value1;
+        this.consoleLog.className = "noerrorAlert";
       } else if (
         var1.getDataType() == "Boolean" &&
         typeof var_value1 == "boolean"
       ) {
         var1.value = var_value1;
+        this.consoleLog.className = "noerrorAlert";
       } else{
        if((var1.getDataType()!="Integer" && typeof var_value1!="number" )|| (var1.getDataType() != "Real" && typeof var_value1 != "number") ||(var1.getDataType() != "String" &&
       typeof var_value1 != "string") ||( var1.getDataType() != "Boolean" && typeof var_value1 != "boolean" )) {
@@ -109,10 +113,10 @@ export class Input {
       
       }else{
         
-        this.consoleLog.className = "noerrorAlert";
+        //this.consoleLog.className = "noerrorAlert";
        
       }
-      this.consoleLog.className = "noerrorAlert";
+     // this.consoleLog.className = "noerrorAlert";
     }
     }
   }
@@ -165,7 +169,7 @@ export class Input {
     }
     if (!isVarDeclared) {
       this.consoleLog.className = "errorAlert";
-      this.consoleLog.value += "ERROR: Invalid Statement at 'INPUT' => Variable" + 
+      this.consoleLog.value += "ERROR CODE I-01: Invalid Statement at 'INPUT' => Variable" + 
         this.getVariableName() + " is not declared!" + "\n";
       return false;
     } else {

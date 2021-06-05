@@ -480,9 +480,9 @@ export class ForLoop {
     if (!isVarDeclared) {
       // TODO: Show Error in Console
       consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-      consoleLog.value += "ERROR: Variable " + this.getVariableName() + " is not declared at 'FOR-LOOP'." + "\n";
+      consoleLog.value += "ERROR CODE F/R-01: Variable " + this.getVariableName() + " is not declared at 'FOR-LOOP'." + "\n";
     } else {
-      consoleLog.className = "noerrorAlert";
+      //consoleLog.className = "noerrorAlert";
       return true;
     }
   }

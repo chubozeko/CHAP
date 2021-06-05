@@ -113,12 +113,14 @@ export class Flowchart {
           variable.getName() == this.variables.vars[j].getName()
         ) {
           this.variables.vars[j].variable[arrayIndex] = variable.getValue();
+          this.consoleLog.className = "noerrorAlert";
         }
       } else {
         if (
           variable.getName() == this.variables.vars[j].getName()
         ) {
           this.variables.vars[j].setValue(variable.getValue());
+          this.consoleLog.className = "noerrorAlert";
         }
       }
     }
@@ -184,9 +186,12 @@ export class Flowchart {
     }
 
     for (let i = startIndex; i < endIndex; i++) {
+     // this.consoleLog.className = "noerrorAlert";
+      
       // START
       if (this.tempSymbols[i] instanceof Start) {
         this.isProgramRunning = true;
+      //  this.consoleLog.className = "noerrorAlert";
       }
 
       // DECLARE
@@ -211,7 +216,7 @@ export class Flowchart {
             if (!didInputRun) {
               this.isProgramRunning = false;
             } else {
-              this.consoleLog.className = "noerrorAlert";
+             
               this.isAnInputBlockRunning = true;
               this.showInputPrompt(inputSym,
                 inputSym.inputPromptProps[0],
@@ -234,7 +239,7 @@ export class Flowchart {
             if (!didProcessRun) {
               this.isProgramRunning = false;
             } else {
-              this.consoleLog.className = "noerrorAlert";
+              //this.consoleLog.className = "noerrorAlert";
             }
           }
         }
@@ -251,7 +256,7 @@ export class Flowchart {
               this.isProgramRunning = false;
               this.consoleLog.className = "errorAlert";
             } else {
-              this.consoleLog.className = "noerrorAlert";
+            //  this.consoleLog.className = "noerrorAlert";
             }
           }
         }
@@ -271,10 +276,10 @@ export class Flowchart {
             let ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
             if (ifBlock == null) {
               this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-              this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
+              this.consoleLog.value += "ERROR CODE IF-F01: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
               break;
             } else {
-              this.consoleLog.className = "noerrorAlert";
+              //this.consoleLog.className = "noerrorAlert";
               // Add ifBlock symbols to a LoopBlock
               let ifLoopBlock = new LoopBlock();
               ifLoopBlock.SYMBOLS = ifBlock;
@@ -298,10 +303,10 @@ export class Flowchart {
             if (whileBlock == null) {
               // TODO: Show Error in Console
               this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-              this.consoleLog.value += "ERROR at 'WHILE-LOOP'" + "\n";
+              this.consoleLog.value += "ERROR CODE WL-F01:Error at 'WHILE-LOOP'" + "\n";
               break;
             } else {
-              this.consoleLog.className = "noerrorAlert";
+              //this.consoleLog.className = "noerrorAlert";
               if (whileBlock.length != 0) { whileBoolean = true; }
               else { whileBoolean = false; }
               let whileLoopBlock = new LoopBlock();
@@ -373,7 +378,7 @@ export class Flowchart {
             } else {
               // TODO: Show Errors in Console
               this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-              this.consoleLog.value += "ERROR at 'FOR-LOOP'" + "\n";
+              this.consoleLog.value += "ERROR CODE FL-F01: Error at 'FOR-LOOP'" + "\n";
             }
             
           }
@@ -391,10 +396,10 @@ export class Flowchart {
             if (doWhileBlock == null) {
               // TODO: Show Error in Console
               this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-              this.consoleLog.value += "ERROR at 'DO WHILE LOOP'" + "\n";
+              this.consoleLog.value += "ERROR CODE DW-F01:Error at 'DO WHILE LOOP'" + "\n";
               break;
             } else {
-              this.consoleLog.className = "noerrorAlert";
+              //this.consoleLog.className = "noerrorAlert";
               doWhileSymCount = doWhileBlock.length;
               if (doWhileBlock.length != 0) { doWhileBoolean = true; }
               else { doWhileBoolean = false; }

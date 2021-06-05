@@ -94,12 +94,14 @@ export class LoopBlock {
           variable.getName() == this.variables[j].getName()
         ) {
           this.variables[j].variable[arrayIndex] = variable.getValue();
+          //this.consoleLog.className = "noerrorAlert";
         }
       } else {
         if (
           variable.getName() == this.variables[j].getName()
         ) {
           this.variables[j].setValue(variable.getValue());
+          //this.consoleLog.className = "noerrorAlert";
         }
       }
     }
@@ -176,6 +178,7 @@ export class LoopBlock {
     this.isAnInputBlockRunning = isAnInputBlockRunning;
 
     for (let i = startIndex; i < this.tempSymbols.length; i++) {
+     // this.consoleLog.className = "noerrorAlert";
       // DECLARE
       if (this.tempSymbols[i] instanceof Declare) {
         if (!this.isAnInputBlockRunning) {
@@ -196,7 +199,7 @@ export class LoopBlock {
           if (!didInputRun) {
             // TODO: this.isProgramRunning = false;
           } else {
-            this.consoleLog.className = "noerrorAlert";
+            //this.consoleLog.className = "noerrorAlert";
             this.isAnInputBlockRunning = true;
             this.showInputPrompt(inputSym,
               inputSym.inputPromptProps[0],
@@ -205,6 +208,7 @@ export class LoopBlock {
               inputSym.inputPromptProps[3],
               inputSym.inputPromptProps[4]);
             console.log("< Input Symbol Complete in LB");
+          // this.consoleLog.className = "noerrorAlert";
           }
         }
       }
@@ -217,7 +221,7 @@ export class LoopBlock {
           if (!didProcessRun) {
             // TODO: this.isProgramRunning = false;
           } else {
-            this.consoleLog.className = "noerrorAlert";
+           // this.consoleLog.className = "noerrorAlert";
           }
         }
       }
@@ -231,7 +235,7 @@ export class LoopBlock {
             // TODO: this.isProgramRunning = false;
             this.consoleLog.className = "errorAlert";
           } else {
-            this.consoleLog.className = "noerrorAlert";
+           // this.consoleLog.className = "noerrorAlert";
           }
         } 
       }
@@ -248,10 +252,10 @@ export class LoopBlock {
           let ifBlock = ifSymbol.parseIfCaseExpression(this.variables);
           if (ifBlock == null) {
             this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
+            this.consoleLog.value += "ERROR CODE IF-L01: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
             break;
           } else {
-            this.consoleLog.className = "noerrorAlert";
+           // this.consoleLog.className = "noerrorAlert";
             // Add ifBlock symbols to a LoopBlock
             let ifLoopBlock = new LoopBlock();
             ifLoopBlock.SYMBOLS = ifBlock;
@@ -259,6 +263,7 @@ export class LoopBlock {
             let props = await ifLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
             this.variables = props.variables;
             this.isAnInputBlockRunning = props.isAnInputBlockRunning;
+           // this.consoleLog.className = "noerrorAlert";
           }
         }
         
@@ -273,17 +278,17 @@ export class LoopBlock {
           if (whileBlock == null) {
             // // TODO: Show Error in Console
             this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR at 'WHILE-LOOP'" + "\n";
+            this.consoleLog.value += "ERROR CODE WL-LO1: Error at 'WHILE-LOOP'" + "\n";
             break;
           } else {
-            this.consoleLog.className = "noerrorAlert";
+           // this.consoleLog.className = "noerrorAlert";
             if (whileBlock.length != 0) { whileBoolean = true; }
             else { whileBoolean = false; }
             let whileLoopBlock = new LoopBlock();
             whileLoopBlock.SYMBOLS = whileSymbol.trueLoopBlock;
             whileLoopBlock.variables = this.variables;
             console.log("While Loop Block: ", whileLoopBlock);
-
+          //  this.consoleLog.className = "noerrorAlert";
             while (whileBoolean) {
               let props = await whileLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
               // Check whileBoolean after validating While Loop Block symbols
@@ -326,6 +331,7 @@ export class LoopBlock {
                   this.variables = props.variables;
                   this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                   console.log("loop pass: ", props);
+
                 }
               }
             } else if (forSymbol.getStepDirection() === 'Decreasing') {
@@ -340,6 +346,7 @@ export class LoopBlock {
                   this.variables = props.variables;
                   this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                   console.log("loop pass: ", props);
+                  //this.consoleLog.className = "noerrorAlert";
                 }
               }
             } else { break; }
@@ -362,10 +369,10 @@ export class LoopBlock {
           if (doWhileBlock == null) {
             // TODO: Show Error in Console
             this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR at 'DO WHILE LOOP'" + "\n";
+            this.consoleLog.value += "ERROR CODE D/W-L01 :Eror at 'DO WHILE LOOP'" + "\n";
             break;
           } else {
-            this.consoleLog.className = "noerrorAlert";
+            
             doWhileSymCount = doWhileBlock.length;
             if (doWhileBlock.length != 0) { doWhileBoolean = true; }
             else { doWhileBoolean = false; }
@@ -373,7 +380,7 @@ export class LoopBlock {
             doWhileLoopBlock.SYMBOLS = doWhileSymbol.trueLoopBlock;
             doWhileLoopBlock.variables = this.variables;
             console.log("Do While Loop Block: ", doWhileLoopBlock);
-
+           // this.consoleLog.className = "noerrorAlert";
             do {
               let props = await doWhileLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
               // Check whileBoolean after validating While Loop Block symbols
@@ -383,6 +390,7 @@ export class LoopBlock {
               if (doWhileBlock.length != 0) { doWhileBoolean = true; }
               else { doWhileBoolean = false; }
               console.log("Do While Loop pass: " + doWhileBoolean, props);
+            //  this.consoleLog.className = "noerrorAlert";
             } while (doWhileBoolean);
           }
         }

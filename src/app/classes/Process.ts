@@ -87,12 +87,12 @@ export class Process {
       if ((values[i] == null || values[i] == undefined) && isNaN(values[i])) {
         if (isDeclared) {
           this.consoleLog.className = "errorAlert";
-          this.consoleLog.value += "Data Type ERROR: Invalid value at OUTPUT symbol: " +
+          this.consoleLog.value += "DATA TYPE ERROR CODE P-01: Invalid value at OUTPUT symbol: " +
             tempVal + "\n" + dataType + " Expected.\n";
           return false;
         } else {
           this.consoleLog.className = "errorAlert";
-          this.consoleLog.value += "ERROR: Variable " + tempVal + " is not declared at 'PROCESS'" + "\n";
+          this.consoleLog.value += "ERROR CODE P-02: Variable " + tempVal + " is not declared at 'PROCESS'" + "\n";
           this.consoleLog.value +="SOLUTION TIP: Please use DOUBLE QUOTATION Mark at PROCESS SYMBOL to Display Declared String Value !"
           return false;
         }
@@ -173,22 +173,26 @@ export class Process {
       // Even quotes => OK; Uneven quotes => Missing Quotation
       if (quoteCount % 2 != 0) {
         // TODO: Show "MISSING QUOTATION" Error
-        console.error("ERROR: Missing Quotation Mark at Process symbol!");
+        this.consoleLog.className="errorAlert";
+        console.error("ERROR CODE P-03: Missing Quotation Mark at Process symbol!");
         return null;
       } else {
         if (pBlock.charAt(0) == '"' && pBlock.charAt(pBlock.length-1) == '"') {
           // Output String expression
+          this.consoleLog.className="errorAlert";
           console.log("new process string: " + pBlock.substring(1, pBlock.length-1));
           return pBlock.substring(1, pBlock.length-1);
         } else {
+          this.consoleLog.className="errorAlert";
           // TODO: Show Syntax Error for misplaced quotation marks
-          console.error("ERROR: Syntax error at Process symbol!");
+          console.error("ERROR CODE P-04: Syntax error at Process symbol!");
           return null;
         }
       }
     } else if (pBlock.indexOf("'") != -1) {
       // TODO: Add "SINGLE_QUOTES" error
-      console.error("ERROR: Single Quotes NOT ALLOWED at Process symbol!");
+      this.consoleLog.className="errorAlert";
+      console.error("ERROR CODE P-05: Single Quotes NOT ALLOWED at Process symbol!");
       return null;
     }
   }
@@ -288,7 +292,7 @@ export class Process {
             }
             if (!isArrIndexDeclared || arrIndex == undefined) {
               this.consoleLog.className = "errorAlert";
-              this.consoleLog.value += "ERROR: Undeclared Array Index Variable " +
+              this.consoleLog.value += "ERROR CODE P-06: Undeclared Array Index Variable " +
                 arrIndex + " at OUTPUT symbol." + "\n";
               // console.error("ERROR: Undeclared / Undefined Array Index Variable at Output symbol!");
             }
@@ -305,7 +309,7 @@ export class Process {
               isNaN(variables[j].variable[arrIndex])
             ) {
               this.consoleLog.className = "errorAlert";
-              this.consoleLog.value += "ERROR: Undefined / Null Array Variable " +
+              this.consoleLog.value += "ERROR CODE P-07: Undefined / Null Array Variable " +
                 pBlock + " at OUTPUT symbol." + "\n";
               // console.error("ERROR: Undefined / Null Array Variable at Process symbol!");
               return false;
@@ -332,7 +336,7 @@ export class Process {
           } else {
             if (variables[j].value == undefined || isNaN(variables[j].value)) {
               this.consoleLog.className = "errorAlert";
-              this.consoleLog.value += "ERROR: Undefined / Null Variable " +
+              this.consoleLog.value += "ERROR CODE P-08 : Undefined / Null Variable " +
                 pBlock + " at PROCESS symbol." + "\n";
               // console.error("ERROR: Undefined / Null Variable at Output symbol!");
               return false;
