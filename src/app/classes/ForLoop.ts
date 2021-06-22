@@ -107,8 +107,8 @@ export class ForLoop {
       this.setCurrentValue(forVar -= this.getStepValue());
       return this.currentValue;
     } else {
-      let consoleLog = document.getElementById("console") as HTMLTextAreaElement;
-      consoleLog.value += "\nStep Direction of For Loop undefined!";
+      let consoleLog = document.getElementById("console") as HTMLDivElement;
+      consoleLog.innerHTML += "\nStep Direction of For Loop undefined!";
       return null;
     }
   }
@@ -443,7 +443,7 @@ export class ForLoop {
     return '\t\tfor (' + forExp + '){\n' + forTrue + '\t\t} \n';
   }
 
-  async validateForLoop(variables: any[], consoleLog: HTMLTextAreaElement) {
+  async validateForLoop(variables: any[], consoleLog: HTMLDivElement) {
     let isVarDeclared = false, isVarAnArray = false;
     let tempArrIndex: number;
 
@@ -480,7 +480,7 @@ export class ForLoop {
     if (!isVarDeclared) {
       // TODO: Show Error in Console
       consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-      consoleLog.value += "ERROR CODE F/R-01: Variable " + this.getVariableName() + " is not declared at 'FOR-LOOP'." + "\n";
+      consoleLog.innerHTML += "ERROR CODE F/R-01: Variable " + this.getVariableName() + " is not declared at 'FOR-LOOP'." + "\n";
     } else {
       //consoleLog.className = "noerrorAlert";
       return true;

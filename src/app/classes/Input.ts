@@ -14,7 +14,7 @@ export class Input {
   inputData: any;
   isInputEntered: boolean = false;
   isAnInputBlockRunning: boolean;
-  consoleLog: HTMLTextAreaElement;
+  consoleLog: HTMLDivElement;
   alertC: AlertController;
   inputPromptProps = {};
 
@@ -79,7 +79,7 @@ export class Input {
         // TODO: Show Error in Console
        // this.showAlert("Invalid datatype entered!", "");
        this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
-       this.consoleLog.value += "ERROR: Invalid Datatype Entered !" + "\n";
+       this.consoleLog.innerHTML += "ERROR: Invalid Datatype Entered !" + "\n";
       }
     } else {
       if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
@@ -107,7 +107,7 @@ export class Input {
         // TODO: Show Error in Console
         //this.showAlert("Invalid datatype entered!", "");
         this.consoleLog.className="errorWAlert"; // Eror Message Color Change Code Here
-        this.consoleLog.value += "WARNING: Invalid Datatype Entered !" + "\n";
+        this.consoleLog.innerHTML += "WARNING: Invalid Datatype Entered !" + "\n";
 
         
       
@@ -131,7 +131,7 @@ export class Input {
     return '\t\t' + this.getVariableName() + ' = System.console().readLine();\n';
   }
 
-  async validateInputSymbol(variables: any[], symIndex: number, consoleLog: HTMLTextAreaElement) {
+  async validateInputSymbol(variables: any[], symIndex: number, consoleLog: HTMLDivElement) {
     let isVarDeclared = false, isVarAnArray = false;
     let tempArrIndex: number, varIndex, continueDebugIndex;
     this.consoleLog = consoleLog;
@@ -169,7 +169,7 @@ export class Input {
     }
     if (!isVarDeclared) {
       this.consoleLog.className = "errorAlert";
-      this.consoleLog.value += "ERROR CODE I-01: Invalid Statement at 'INPUT' => Variable" + 
+      this.consoleLog.innerHTML += "ERROR CODE I-01: Invalid Statement at 'INPUT' => Variable" + 
         this.getVariableName() + " is not declared!" + "\n";
       return false;
     } else {

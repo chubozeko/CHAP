@@ -26,7 +26,7 @@ export class LoopBlock {
   outputStatement: string = "";
   continueDebugIndex: number = 0;
 
-  consoleLog: HTMLTextAreaElement;
+  chapConsole: HTMLDivElement;
   consoleInput: HTMLInputElement;
   alertC: AlertController;
 
@@ -36,16 +36,7 @@ export class LoopBlock {
     this.tempSymbols = [];
 
     this.alertC = new AlertController();
-    this.consoleLog = document.getElementById("console") as HTMLTextAreaElement;
-  }
-
-  async showAlert(alertTitle: string, alertMsg: string) {
-    const alert = await this.alertC.create({
-      header: alertTitle,
-      message: alertMsg,
-      buttons: ["OK"]
-    });
-    await alert.present();
+    this.chapConsole = document.getElementById("console") as HTMLDivElement;
   }
 
   addSymbolToLoopBlock(symbol: any, position: number) {
@@ -85,6 +76,20 @@ export class LoopBlock {
       javaCode = javaCode + syms.getJavaCode();
     }
     return javaCode;
+  }
+
+  async showAlert(alertTitle: string, alertMsg: string) {
+    const alert = await this.alertC.create({
+      header: alertTitle,
+      message: alertMsg,
+      buttons: ["OK"]
+    });
+    await alert.present();
+  }
+
+  public consoleLog(textColourClass, lineOutput) {
+    this.chapConsole = document.getElementById("console") as HTMLDivElement;
+    this.chapConsole.innerHTML += `<span class="` + textColourClass + `"> ` + lineOutput + "</span> \n";
   }
 
   updateVariables(variable: Variable, arrayIndex?: number) {
@@ -138,7 +143,7 @@ export class LoopBlock {
             inputSym.inputData = data.inputText;
             inputSym.isInputEntered = false;
             inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
-            this.consoleLog.value += "> " + data.inputText + "\n";
+            this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
             this.isAnInputBlockRunning = false;
             this.validateLoopBlock(this.variables, this.isAnInputBlockRunning, ++symIndex, this.tempSymbols.length);
             console.log("> [LoopBlock] Input (entered) Complete");
@@ -195,13 +200,13 @@ export class LoopBlock {
       else if (this.tempSymbols[i] instanceof Input) {
         if (!this.isAnInputBlockRunning) {
           let inputSym = this.tempSymbols[i] as Input;
-          let didInputRun = await inputSym.validateInputSymbol(this.variables, i, this.consoleLog);
+          let didInputRun = await inputSym.validateInputSymbol(this.variables, i, this.chapConsole);
           if (!didInputRun) {
             // TODO: this.isProgramRunning = false;
           } else {
             //this.consoleLog.className = "noerrorAlert";
             this.isAnInputBlockRunning = true;
-            this.showInputPrompt(inputSym,
+            await this.showInputPrompt(inputSym,
               inputSym.inputPromptProps[0],
               inputSym.inputPromptProps[1],
               inputSym.inputPromptProps[2],
@@ -217,7 +222,7 @@ export class LoopBlock {
       else if (this.tempSymbols[i] instanceof Process) {
         if (!this.isAnInputBlockRunning) {
           let processSym = this.tempSymbols[i] as Process;
-          let didProcessRun = await processSym.validateProcessSymbol(this.variables, this.consoleLog);
+          let didProcessRun = await processSym.validateProcessSymbol(this.variables, this.chapConsole);
           if (!didProcessRun) {
             // TODO: this.isProgramRunning = false;
           } else {
@@ -230,12 +235,12 @@ export class LoopBlock {
       else if (this.tempSymbols[i] instanceof Output) {
         if (!this.isAnInputBlockRunning) {
           let outputSym = this.tempSymbols[i] as Output;
-          let didOutputRun = await outputSym.validateOutputSymbol(this.variables, this.consoleLog);
+          let didOutputRun = await outputSym.validateOutputSymbol(this.variables);
           if (!didOutputRun) {
             // TODO: this.isProgramRunning = false;
-            this.consoleLog.className = "errorAlert";
+            // this.consoleLog.className = "errorAlert";
           } else {
-           // this.consoleLog.className = "noerrorAlert";
+            // this.consoleLog.className = "noerrorAlert";
           }
         } 
       }
@@ -251,8 +256,7 @@ export class LoopBlock {
           let ifSymbol = this.tempSymbols[i] as IfCase;
           let ifBlock = ifSymbol.parseIfCaseExpression(this.variables);
           if (ifBlock == null) {
-            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR CODE IF-L01: Invalid Statement at 'IF-CASE' => Variable is not declared!" + "\n";
+            this.consoleLog("errorAlert", "ERROR CODE IF-F01: Invalid Statement at 'IF-CASE' => Variable is not declared!");
             break;
           } else {
            // this.consoleLog.className = "noerrorAlert";
@@ -277,8 +281,7 @@ export class LoopBlock {
           let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables);
           if (whileBlock == null) {
             // // TODO: Show Error in Console
-            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR CODE WL-LO1: Error at 'WHILE-LOOP'" + "\n";
+            this.consoleLog("errorAlert", "ERROR CODE WL-F01: Error at 'WHILE-LOOP'");
             break;
           } else {
            // this.consoleLog.className = "noerrorAlert";
@@ -309,7 +312,7 @@ export class LoopBlock {
           // TODO: Refactor For Loop Validation
           let tempArrIndex: number;
           let forSymbol = this.tempSymbols[i] as ForLoop;
-          let didForLoopRun = await forSymbol.validateForLoop(this.variables, this.consoleLog);
+          let didForLoopRun = await forSymbol.validateForLoop(this.variables, this.chapConsole);
           if (didForLoopRun) {
             forSymbol.setCurrentValue(forSymbol.getStartValue());
             // Add forBlock symbols to a LoopBlock
@@ -352,8 +355,7 @@ export class LoopBlock {
             } else { break; }
           } else {
             // TODO: Show Errors in Console
-            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR at 'FOR-LOOP'" + "\n";
+            this.consoleLog("errorAlert", "ERROR CODE FL-F01: Error at 'FOR-LOOP'");
           }
         }
 
@@ -368,8 +370,7 @@ export class LoopBlock {
           let doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables);
           if (doWhileBlock == null) {
             // TODO: Show Error in Console
-            this.consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
-            this.consoleLog.value += "ERROR CODE D/W-L01 :Eror at 'DO WHILE LOOP'" + "\n";
+            this.consoleLog("errorAlert", "ERROR CODE DW-F01:Error at 'DO WHILE LOOP'");
             break;
           } else {
             

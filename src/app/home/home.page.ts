@@ -62,6 +62,7 @@ import { CoverPagePage } from "../cover-page/cover-page.page";
 import { PromptPage } from "../prompt/prompt.page";
 import { THEMES } from "../themes";
 import { ThemesPage } from "../themes/themes.page";
+import { createElement } from "@angular/core/src/view/element";
 
 @Component({
   selector: "app-home",
@@ -2475,9 +2476,9 @@ export class HomePage {
       .on("hold", (e) => this.openArrowsAS(e));
   }
 
-  public consoleLog(lineOutput) {
-    let consoleCHAP = document.getElementById("console") as HTMLTextAreaElement;
-    consoleCHAP.value = consoleCHAP.value + lineOutput + "\n";
+  public consoleLog(textColourClass, lineOutput) {
+    let chapConsole = document.getElementById("console") as HTMLDivElement;
+    chapConsole.innerHTML += `<span class="` + textColourClass + `"> ` + lineOutput + "</span> \n";
   }
 
   async showAlert(alertTitle: string, alertMsg: string) {
@@ -2490,23 +2491,23 @@ export class HomePage {
   }
 
   public toggleConsole() {
-    let console1 = document.getElementById("console");
+    let chapConsole = document.getElementById("console");
     let consoleBtns = document.getElementById("consoleBtns");
-    if (console1.classList.contains("toggleConsole")) {
-      console1.classList.remove("toggleConsole");
-      console1.style.display = "block";
-      console1.style.position = "absolute";
-      console1.style.bottom = "0";
-      if (!this.isSymbolsFABOpen) console1.style.marginLeft = "100px";
-      else console1.style.marginLeft = "0px";
+    if (chapConsole.classList.contains("toggleConsole")) {
+      chapConsole.classList.remove("toggleConsole");
+      chapConsole.style.display = "block";
+      chapConsole.style.position = "absolute";
+      chapConsole.style.bottom = "0";
+      if (!this.isSymbolsFABOpen) chapConsole.style.marginLeft = "100px";
+      else chapConsole.style.marginLeft = "0px";
       consoleBtns.style.position = "absolute";
       consoleBtns.style.right = "5px";
-      consoleBtns.style.bottom = console1.offsetHeight + "px";
+      consoleBtns.style.bottom = chapConsole.offsetHeight + "px";
       this.consoleButtonText = "Close Console";
       this.isConsoleOpen = true;
     } else {
-      console1.classList.add("toggleConsole");
-      console1.style.display = "none";
+      chapConsole.classList.add("toggleConsole");
+      chapConsole.style.display = "none";
       consoleBtns.style.position = "absolute";
       consoleBtns.style.right = "5px";
       consoleBtns.style.bottom = "5px";
@@ -2516,8 +2517,8 @@ export class HomePage {
   }
 
   public clearConsole() {
-    let consoleCHAP = document.getElementById("console") as HTMLTextAreaElement;
-    consoleCHAP.value = "";
+    let consoleCHAP = document.getElementById("console") as HTMLDivElement;
+    consoleCHAP.innerHTML = "";
   }
 
   async clearWorkspaceAlert(newProject: boolean) {

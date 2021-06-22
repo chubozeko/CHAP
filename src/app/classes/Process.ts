@@ -16,7 +16,7 @@ export class Process {
 
   processSymbol: any;
 
-  consoleLog: HTMLTextAreaElement;
+  consoleLog: HTMLDivElement;
 
   constructor() { this.processValue = new Array(); }
 
@@ -87,13 +87,13 @@ export class Process {
       if ((values[i] == null || values[i] == undefined) && isNaN(values[i])) {
         if (isDeclared) {
           this.consoleLog.className = "errorAlert";
-          this.consoleLog.value += "DATA TYPE ERROR CODE P-01: Invalid value at OUTPUT symbol: " +
+          this.consoleLog.innerHTML += "DATA TYPE ERROR CODE P-01: Invalid value at OUTPUT symbol: " +
             tempVal + "\n" + dataType + " Expected.\n";
           return false;
         } else {
           this.consoleLog.className = "errorAlert";
-          this.consoleLog.value += "ERROR CODE P-02: Variable " + tempVal + " is not declared at 'PROCESS'" + "\n";
-          this.consoleLog.value +="SOLUTION TIP: Please use DOUBLE QUOTATION Mark at PROCESS SYMBOL to Display Declared String Value !"
+          this.consoleLog.innerHTML += "ERROR CODE P-02: Variable " + tempVal + " is not declared at 'PROCESS'" + "\n";
+          this.consoleLog.innerHTML +="SOLUTION TIP: Please use DOUBLE QUOTATION Mark at PROCESS SYMBOL to Display Declared String Value !"
           return false;
         }
       }
@@ -259,7 +259,7 @@ export class Process {
     return '\t\t' + this.getProcessExpression() + ';\n';
   }
 
-  async validateProcessSymbol(variables: any[], consoleLog: HTMLTextAreaElement) {
+  async validateProcessSymbol(variables: any[], consoleLog: HTMLDivElement) {
     this.consoleLog = consoleLog;
     let isValid = this.checkIfVariable(this.getVariableName(), variables, false, null);
     if (!isValid) {
@@ -292,7 +292,7 @@ export class Process {
             }
             if (!isArrIndexDeclared || arrIndex == undefined) {
               this.consoleLog.className = "errorAlert";
-              this.consoleLog.value += "ERROR CODE P-06: Undeclared Array Index Variable " +
+              this.consoleLog.innerHTML += "ERROR CODE P-06: Undeclared Array Index Variable " +
                 arrIndex + " at OUTPUT symbol." + "\n";
               // console.error("ERROR: Undeclared / Undefined Array Index Variable at Output symbol!");
             }
@@ -309,7 +309,7 @@ export class Process {
               isNaN(variables[j].variable[arrIndex])
             ) {
               this.consoleLog.className = "errorAlert";
-              this.consoleLog.value += "ERROR CODE P-07: Undefined / Null Array Variable " +
+              this.consoleLog.innerHTML += "ERROR CODE P-07: Undefined / Null Array Variable " +
                 pBlock + " at OUTPUT symbol." + "\n";
               // console.error("ERROR: Undefined / Null Array Variable at Process symbol!");
               return false;
@@ -336,7 +336,7 @@ export class Process {
           } else {
             if (variables[j].value == undefined || isNaN(variables[j].value)) {
               this.consoleLog.className = "errorAlert";
-              this.consoleLog.value += "ERROR CODE P-08 : Undefined / Null Variable " +
+              this.consoleLog.innerHTML += "ERROR CODE P-08 : Undefined / Null Variable " +
                 pBlock + " at PROCESS symbol." + "\n";
               // console.error("ERROR: Undefined / Null Variable at Output symbol!");
               return false;
