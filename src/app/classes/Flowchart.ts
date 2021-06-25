@@ -13,6 +13,7 @@ import { DoWhileLoop } from "./DoWhileLoop";
 import { ForLoop } from "./ForLoop";
 import { LoopBlock } from "./LoopBlock";
 import { create, all } from 'mathjs';
+import { LoopblockstateService } from "../loopblockstate.service";
 const config = {};
 const math = create(all, config);
 
@@ -32,13 +33,13 @@ export class Flowchart {
   consoleInput: HTMLInputElement;
   //alertC: AlertController;
 
-  constructor(public alertC: AlertController) {
+  // loopBlockState: LoopblockstateService;
+
+  constructor(public alertC: AlertController, private loopBlockState: LoopblockstateService) {
     // let defaultSymbols = document.getElementsByClassName('symbols');
     // for (let i = 0; i < defaultSymbols.length; i++) {
     //   this.SYMBOLS.splice( i, 0, defaultSymbols[i] );
     // }
-    let start = new Start();
-    let stop = new Stop();
     this.SYMBOLS = [];
     this.variables.vars = [];
     this.tempSymbols = [];
@@ -151,10 +152,7 @@ export class Flowchart {
           text: "Cancel",
           role: "cancel",
           cssClass: "secondary",
-          handler: data => { 
-            // inputSym.isInputEntered = false;
-            // this.isAnInputBlockRunning = false;
-            // this.validateFlowchart(++inputSym.inputPromptProps[2], this.tempSymbols.length);
+          handler: () => { 
             console.log("> Input (canceled) Complete");
           }
         },
@@ -162,45 +160,41 @@ export class Flowchart {
           text: "OK",
           handler: data => {
             inputSym.inputData = data.inputText;
-            // inputSym.isInputEntered = false;
             inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
             this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
-            // this.isAnInputBlockRunning = false;
-            // this.validateFlowchart(++symIndex, this.tempSymbols.length);
             console.log("> Input (entered) Complete");
           }
         }
       ]
     });
-    alert.onDidDismiss().then(data => {
+    alert.onDidDismiss().then(() => {
       inputSym.isInputEntered = false;
       this.isAnInputBlockRunning = false;
-      this.validateFlowchart(++symIndex, this.tempSymbols.length);
+      this.loopBlockState.isAnInputBlockRunning = false;
+      this.loopBlockState.isProgramRunning = true;
+      this.validateFlowchart(++symIndex, this.tempSymbols.length, this.variables.vars);
       console.log("> Input (dismissed) Complete");
     });
     await alert.present();
   }
 
-  async validateFlowchart(startIndex: number, endIndex: number) {
-    if (startIndex == 0) {
+  async validateFlowchart(startIndex: number, endIndex: number, variables: any[]) {
+    if (variables == null) {
       this.variables.vars = [];
       this.tempSymbols = [];
       for (let q = 0; q < this.SYMBOLS.length; q++) {
         this.tempSymbols.splice(q, 0, this.SYMBOLS[q]);
       }
+      this.isProgramRunning = true;
+      this.loopBlockState.isProgramRunning = this.isProgramRunning;
+    } else {
+      this.isProgramRunning = this.loopBlockState.isProgramRunning;
+      this.isAnInputBlockRunning = this.loopBlockState.isAnInputBlockRunning;
     }
 
     for (let i = startIndex; i < endIndex; i++) {
-     // this.consoleLog.className = "noerrorAlert";
-      
-      // START
-      if (this.tempSymbols[i] instanceof Start) {
-        this.isProgramRunning = true;
-      //  this.consoleLog.className = "noerrorAlert";
-      }
-
       // DECLARE
-      else if (this.tempSymbols[i] instanceof Declare) {
+      if (this.tempSymbols[i] instanceof Declare) {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let declareSym = this.tempSymbols[i] as Declare;
@@ -220,9 +214,13 @@ export class Flowchart {
             let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, i, this.chapConsole);
             if (!didInputRun) {
               this.isProgramRunning = false;
+              this.loopBlockState.isProgramRunning = this.isProgramRunning;
             } else {
-             
               this.isAnInputBlockRunning = true;
+              // Store Loop Block State (LoopBlock, inputSymbolIndex)
+              this.loopBlockState.currentBlock = this;
+              this.loopBlockState.inputSymbolIndex = i;
+
               this.showInputPrompt(inputSym,
                 inputSym.inputPromptProps[0],
                 inputSym.inputPromptProps[1],
@@ -243,8 +241,8 @@ export class Flowchart {
             let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars, this.chapConsole);
             if (!didProcessRun) {
               this.isProgramRunning = false;
+              this.loopBlockState.isProgramRunning = this.isProgramRunning;
             } else {
-              //this.consoleLog.className = "noerrorAlert";
             }
           }
         }
@@ -259,9 +257,8 @@ export class Flowchart {
             let didOutputRun = outputSym.validateOutputSymbol(this.variables.vars);
             if (!didOutputRun) {
               this.isProgramRunning = false;
-              // this.consoleLog.className = "errorAlert";
+              this.loopBlockState.isProgramRunning = this.isProgramRunning;
             } else {
-              // this.consoleLog.className = "noerrorAlert";
             }
           }
         }
@@ -277,23 +274,26 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let ifSymbol = this.tempSymbols[i] as IfCase;
-            // let ifBlock = await ifSymbol.validateIfCaseNode(this.variables.vars);
             let ifBlock = ifSymbol.parseIfCaseExpression(this.variables.vars);
             if (ifBlock == null) {
+              // TODO: Show If Case Errors in Console
               this.consoleLog("errorAlert", "ERROR CODE IF-F01: Invalid Statement at 'IF-CASE' => Variable is not declared!");
+              this.isProgramRunning = false;
+              this.loopBlockState.isProgramRunning = this.isProgramRunning;
               break;
             } else {
-              //this.consoleLog.className = "noerrorAlert";
               // Add ifBlock symbols to a LoopBlock
-              let ifLoopBlock = new LoopBlock();
+              let ifLoopBlock = new LoopBlock(this.loopBlockState);
               ifLoopBlock.SYMBOLS = ifBlock;
               ifLoopBlock.variables = this.variables.vars;
               let props = await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
               this.variables.vars = props.variables;
               this.isAnInputBlockRunning = props.isAnInputBlockRunning;
-              if (this.isAnInputBlockRunning) break;
+              if (this.isAnInputBlockRunning) {
+                // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
+                break;
+              }
             }
-            console.log("If Case Complete");
           }
         }
       }
@@ -306,14 +306,15 @@ export class Flowchart {
             let whileSymbol = this.tempSymbols[i] as WhileLoop;
             let whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
             if (whileBlock == null) {
-              // TODO: Show Error in Console
+              // TODO: Show While Loop Errors in Console
               this.consoleLog("errorAlert", "ERROR CODE WL-F01: Error at 'WHILE-LOOP'");
+              this.isProgramRunning = false;
+              this.loopBlockState.isProgramRunning = this.isProgramRunning;
               break;
             } else {
-              //this.consoleLog.className = "noerrorAlert";
               if (whileBlock.length != 0) { whileBoolean = true; }
               else { whileBoolean = false; }
-              let whileLoopBlock = new LoopBlock();
+              let whileLoopBlock = new LoopBlock(this.loopBlockState);
               whileLoopBlock.SYMBOLS = whileSymbol.trueLoopBlock;
               whileLoopBlock.variables = this.variables.vars;
               console.log("While Loop Block: ", whileLoopBlock);
@@ -323,11 +324,17 @@ export class Flowchart {
                 // Check whileBoolean after validating While Loop Block symbols
                 this.variables.vars = props.variables;
                 this.isAnInputBlockRunning = props.isAnInputBlockRunning;
-                if (this.isAnInputBlockRunning) break;
+                if (this.isAnInputBlockRunning) {
+                  // Store LoopBlock State (parentBlock, loopSymbolIndex)
+                  this.loopBlockState.parentBlock = this;
+                  this.loopBlockState.loopSymbolIndex = i;
+                  console.log(" Skip this [Flowchart] While Loop since an Input symbol is running...");
+                  break;
+                }
                 whileBlock = whileSymbol.parseWhileLoopExpression(this.variables.vars);
                 if (whileBlock.length != 0) { whileBoolean = true; }
                 else { whileBoolean = false; }
-                console.log("While Loop passed: ", this.variables.vars);
+                console.log("While Loop passed: ", props);
               }
             }
           }
@@ -345,7 +352,7 @@ export class Flowchart {
             if (didForLoopRun) {
               forSymbol.setCurrentValue(forSymbol.getStartValue());
               // Add forBlock symbols to a LoopBlock
-              let forLoopBlock = new LoopBlock();
+              let forLoopBlock = new LoopBlock(this.loopBlockState);
               forLoopBlock.SYMBOLS = forSymbol.trueLoopBlock;
               // Pass Variables to forLoopBlock
               forLoopBlock.variables = this.variables.vars;
@@ -362,7 +369,10 @@ export class Flowchart {
                     let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
                     this.variables.vars = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
-                    if (this.isAnInputBlockRunning) break;
+                    if (this.isAnInputBlockRunning) {
+                      // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
+                      break;
+                    }
                     console.log("loop pass: ", props);
                   }
                 }
@@ -377,14 +387,19 @@ export class Flowchart {
                     let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
                     this.variables.vars = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
-                    if (this.isAnInputBlockRunning) break;
+                    if (this.isAnInputBlockRunning) {
+                      // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
+                      break;
+                    }
                     console.log("loop pass: ", props);
                   }
                 }
               } else { break; }
             } else {
-              // TODO: Show Errors in Console
+              // TODO: Show For Loop Errors in Console
               this.consoleLog("errorAlert", "ERROR CODE FL-F01: Error at 'FOR-LOOP'");
+              this.isProgramRunning = false;
+              this.loopBlockState.isProgramRunning = this.isProgramRunning;
             }
             
           }
@@ -400,25 +415,28 @@ export class Flowchart {
             doWhileIndex = i;
             let doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
             if (doWhileBlock == null) {
-              // TODO: Show Error in Console
+              // TODO: Show Do While Loop Error in Console
               this.consoleLog("errorAlert", "ERROR CODE DW-F01:Error at 'DO WHILE LOOP'");
+              this.isProgramRunning = false;
+              this.loopBlockState.isProgramRunning = this.isProgramRunning;
               break;
             } else {
-              //this.consoleLog.className = "noerrorAlert";
               doWhileSymCount = doWhileBlock.length;
               if (doWhileBlock.length != 0) { doWhileBoolean = true; }
               else { doWhileBoolean = false; }
-              let doWhileLoopBlock = new LoopBlock();
+              let doWhileLoopBlock = new LoopBlock(this.loopBlockState);
               doWhileLoopBlock.SYMBOLS = doWhileSymbol.trueLoopBlock;
               doWhileLoopBlock.variables = this.variables.vars;
               console.log("Do While Loop Block: ", doWhileLoopBlock);
-  
               do {
                 let props = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
                 // Check doWhileBoolean after validating Do While Loop Block symbols
                 this.variables.vars = props.variables;
                 this.isAnInputBlockRunning = props.isAnInputBlockRunning;
-                if (this.isAnInputBlockRunning) break;
+                if (this.isAnInputBlockRunning) {
+                  // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
+                  break;
+                }
                 doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
                 if (doWhileBlock.length != 0) { doWhileBoolean = true; }
                 else { doWhileBoolean = false; }
@@ -430,18 +448,38 @@ export class Flowchart {
         
       }
 
-      // STOP
-      else if (this.tempSymbols[i] instanceof Stop) {
-        if (!this.isAnInputBlockRunning) {
-          this.isProgramRunning = false;
-        }
-      }
     }
 
-    console.log("Variables", this.variables);
-    console.log("Symbols", this.SYMBOLS);
-    console.log("Temporary symbols", this.tempSymbols);
-    // this.isProgramRunning = false;
+    console.log("Flowchart Props: ", { 
+      variables: this.variables, 
+      symbols: this.SYMBOLS,
+      tempSymbols: this.tempSymbols,
+      isAnInputBlockRunning: this.isAnInputBlockRunning,
+      isProgramRunning: this.isProgramRunning
+    });
+
+    // Update Loop Block State (variables, isAnInputBlockRunning)
+    this.loopBlockState.variables = this.variables.vars;
+    this.loopBlockState.isAnInputBlockRunning = this.isAnInputBlockRunning;
+    console.log("<== Loop Block State (from Flowchart) ==>", this.loopBlockState);
+    /*
+    if (!this.loopBlockState.isAnInputBlockRunning) {
+      // Resume (restart) Loop Block from parent Flowchart/LoopBlock [parentFlowchartLoopBlock.validateLoopBlock()]
+      if (this.loopBlockState.parentBlock instanceof Flowchart) {
+        this.loopBlockState.parentBlock.validateFlowchart(
+          this.loopBlockState.loopSymbolIndex, 
+          this.loopBlockState.parentBlock.tempSymbols.length,
+          this.loopBlockState.variables);
+      } else if (this.loopBlockState.parentBlock instanceof LoopBlock) {
+        this.loopBlockState.parentBlock.validateLoopBlock(
+          this.loopBlockState.variables,
+          this.loopBlockState.isAnInputBlockRunning,
+          this.loopBlockState.loopSymbolIndex, 
+          this.loopBlockState.parentBlock.tempSymbols.length);
+      }
+    } 
+    */
+    this.isProgramRunning = false;
   }
 
   prepareFlowchartForSaving() {

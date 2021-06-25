@@ -63,6 +63,7 @@ import { PromptPage } from "../prompt/prompt.page";
 import { THEMES } from "../themes";
 import { ThemesPage } from "../themes/themes.page";
 import { createElement } from "@angular/core/src/view/element";
+import { LoopblockstateService } from "../loopblockstate.service";
 
 @Component({
   selector: "app-home",
@@ -73,7 +74,7 @@ import { createElement } from "@angular/core/src/view/element";
 export class HomePage {
   @ViewChild("symbolsFAB") symbolsFAB: Fab;
 
-  flowchart: Flowchart = new Flowchart(this.alertC);
+  flowchart: Flowchart = new Flowchart(this.alertC, this.loopBlockState);
   title = "CHAP";
   fileName = "";
   toolbarTooltip = "";
@@ -128,7 +129,8 @@ export class HomePage {
     public navCtrl: NavController,
     private auth: AuthService,
     private splashScreen: SplashScreen,
-    public popCtrl: PopoverController
+    public popCtrl: PopoverController,
+    private loopBlockState: LoopblockstateService
   ) //public navParams: NavParams
   { }
 
@@ -297,7 +299,8 @@ export class HomePage {
     });
 
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
-    this.flowchart = new Flowchart(this.alertC);
+    this.loopBlockState.initialize();
+    this.flowchart = new Flowchart(this.alertC, this.loopBlockState);
     this.workspace = document.getElementById("workspace");
     let bs = document.getElementsByClassName("arrow dropzone");
     for (let b = 0; b < bs.length; b++) {
@@ -2567,7 +2570,8 @@ export class HomePage {
     workspace.appendChild(arrowInit);
     workspace.appendChild(stopSym);
     // workspace.appendChild(symbolsList);
-    this.flowchart = new Flowchart(this.alertC);
+    this.loopBlockState.initialize();
+    this.flowchart = new Flowchart(this.alertC, this.loopBlockState);
     this.paste_sym_buffer = [];
 
     if (clearProjectName) {
@@ -3216,8 +3220,9 @@ export class HomePage {
     if (this.isConsoleOpen == false) {
       this.toggleConsole();
     }
+    this.loopBlockState.initialize();
     this.flowchart.isProgramRunning = true;
-    this.flowchart.validateFlowchart(0, this.flowchart.SYMBOLS.length);
+    this.flowchart.validateFlowchart(0, this.flowchart.SYMBOLS.length, null);
   }
 
   public generatePseudoCode() {
