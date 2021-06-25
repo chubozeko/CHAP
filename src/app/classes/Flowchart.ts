@@ -328,6 +328,7 @@ export class Flowchart {
                   // Store LoopBlock State (parentBlock, loopSymbolIndex)
                   this.loopBlockState.parentBlock = this;
                   this.loopBlockState.loopSymbolIndex = i;
+                  this.loopBlockState.loopSymbolType = "WhileLoop";
                   console.log(" Skip this [Flowchart] While Loop since an Input symbol is running...");
                   break;
                 }
@@ -427,20 +428,33 @@ export class Flowchart {
               let doWhileLoopBlock = new LoopBlock(this.loopBlockState);
               doWhileLoopBlock.SYMBOLS = doWhileSymbol.trueLoopBlock;
               doWhileLoopBlock.variables = this.variables.vars;
+              this.loopBlockState.loopSymbolType = "DoWhileLoop";
               console.log("Do While Loop Block: ", doWhileLoopBlock);
               do {
-                let props = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
-                // Check doWhileBoolean after validating Do While Loop Block symbols
-                this.variables.vars = props.variables;
-                this.isAnInputBlockRunning = props.isAnInputBlockRunning;
-                if (this.isAnInputBlockRunning) {
-                  // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
-                  break;
+                if (!this.loopBlockState.passDoWhile) {
+                  this.loopBlockState.passDoWhile = true;
+                  doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
+                  if (doWhileBlock.length != 0) { doWhileBoolean = true; }
+                  else { doWhileBoolean = false; }
+                  continue;
+                } else {
+                  let props = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
+                  // Check doWhileBoolean after validating Do While Loop Block symbols
+                  this.variables.vars = props.variables;
+                  this.isAnInputBlockRunning = props.isAnInputBlockRunning;
+                  doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
+                  if (doWhileBlock.length != 0) { doWhileBoolean = true; }
+                  else { doWhileBoolean = false; }
+                  if (this.isAnInputBlockRunning) {
+                    // Store LoopBlock State (parentBlock, loopSymbolIndex)
+                    this.loopBlockState.parentBlock = this;
+                    this.loopBlockState.loopSymbolIndex = i;
+                    this.loopBlockState.loopSymbolType = "DoWhileLoop";
+                    console.log(" Skip this [Flowchart] Do While Loop since an Input symbol is running...");
+                    break;
+                  }
+                  console.log("Do While Loop pass: " + doWhileBoolean, props);
                 }
-                doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables.vars);
-                if (doWhileBlock.length != 0) { doWhileBoolean = true; }
-                else { doWhileBoolean = false; }
-                console.log("Do While Loop pass: " + doWhileBoolean, props);
               } while (doWhileBoolean);
             }
           }

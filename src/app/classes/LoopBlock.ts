@@ -316,6 +316,7 @@ export class LoopBlock {
                   // Store LoopBlock State (parentBlock, loopSymbolIndex)
                   this.loopBlockState.parentBlock = this;
                   this.loopBlockState.loopSymbolIndex = i;
+                  this.loopBlockState.loopSymbolType = "WhileLoop";
                   console.log(" Skip this [LoopBlock] While Loop since an Input symbol is running...");
                   break;
                 }
@@ -375,7 +376,10 @@ export class LoopBlock {
                     let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
                     this.variables = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
-                    if (this.isAnInputBlockRunning) break;
+                    if (this.isAnInputBlockRunning) {
+                      // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
+                      break;
+                    }
                     console.log("loop pass: ", props);
                   }
                 }
@@ -411,20 +415,33 @@ export class LoopBlock {
               let doWhileLoopBlock = new LoopBlock(this.loopBlockState);
               doWhileLoopBlock.SYMBOLS = doWhileSymbol.trueLoopBlock;
               doWhileLoopBlock.variables = this.variables;
+              this.loopBlockState.loopSymbolType = "DoWhileLoop";
               console.log("Do While Loop Block: ", doWhileLoopBlock);
               do {
-                let props = await doWhileLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
-                // Check doWhileBoolean after validating While Loop Block symbols
-                this.variables = props.variables;
-                this.isAnInputBlockRunning = props.isAnInputBlockRunning;
-                if (this.isAnInputBlockRunning) {
-                  // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
-                  break;
+                if (!this.loopBlockState.passDoWhile) {
+                  this.loopBlockState.passDoWhile = true;
+                  doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables);
+                  if (doWhileBlock.length != 0) { doWhileBoolean = true; }
+                  else { doWhileBoolean = false; }
+                  continue;
+                } else {
+                  let props = await doWhileLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning);
+                  // Check doWhileBoolean after validating While Loop Block symbols
+                  this.variables = props.variables;
+                  this.isAnInputBlockRunning = props.isAnInputBlockRunning;
+                  doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables);
+                  if (doWhileBlock.length != 0) { doWhileBoolean = true; }
+                  else { doWhileBoolean = false; }
+                  if (this.isAnInputBlockRunning) {
+                    // Store LoopBlock State (parentBlock, loopSymbolIndex)
+                    this.loopBlockState.parentBlock = this;
+                    this.loopBlockState.loopSymbolIndex = i;
+                    this.loopBlockState.loopSymbolType = "DoWhileLoop";
+                    console.log(" Skip this [LoopBlock] Do While Loop since an Input symbol is running...");
+                    break;
+                  }
+                  console.log("Do While Loop pass: " + doWhileBoolean, props);
                 }
-                doWhileBlock = doWhileSymbol.parseDoWhileExpression(this.variables);
-                if (doWhileBlock.length != 0) { doWhileBoolean = true; }
-                else { doWhileBoolean = false; }
-                console.log("Do While Loop pass: " + doWhileBoolean, props);
               } while (doWhileBoolean);
             }
           }
@@ -448,11 +465,17 @@ export class LoopBlock {
     if (!this.loopBlockState.isAnInputBlockRunning) {
       // Resume (restart) Loop Block from parent Flowchart/LoopBlock [parentFlowchartLoopBlock.validateLoopBlock()]
       if (this.loopBlockState.parentBlock instanceof Flowchart) {
+        if (this.loopBlockState.loopSymbolType == "DoWhileLoop")
+          this.loopBlockState.passDoWhile = false;
+
         this.loopBlockState.parentBlock.validateFlowchart(
           this.loopBlockState.loopSymbolIndex, 
           this.loopBlockState.parentBlock.tempSymbols.length,
           this.loopBlockState.variables);
       } else if (this.loopBlockState.parentBlock instanceof LoopBlock) {
+        if (this.loopBlockState.loopSymbolType == "DoWhileLoop")
+          this.loopBlockState.passDoWhile = false;
+
         this.loopBlockState.parentBlock.validateLoopBlock(
           this.loopBlockState.variables,
           this.loopBlockState.isAnInputBlockRunning,
