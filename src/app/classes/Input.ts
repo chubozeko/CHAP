@@ -83,22 +83,22 @@ export class Input {
       }
     } else {
       if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
-        var1.value = var_value1;
+        var1.setValue(var_value1);
         this.consoleLog.className = "noerrorAlert";
       } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
-        var1.value = var_value1;
+        var1.setValue(var_value1);
         this.consoleLog.className = "noerrorAlert";
       } else if (
         var1.getDataType() == "String" &&
         typeof var_value1 == "string"
       ) {
-        var1.value = var_value1;
+        var1.setValue(var_value1);
         this.consoleLog.className = "noerrorAlert";
       } else if (
         var1.getDataType() == "Boolean" &&
         typeof var_value1 == "boolean"
       ) {
-        var1.value = var_value1;
+        var1.setValue(var_value1);
         this.consoleLog.className = "noerrorAlert";
       } else{
        if((var1.getDataType()!="Integer" && typeof var_value1!="number" )|| (var1.getDataType() != "Real" && typeof var_value1 != "number") ||(var1.getDataType() != "String" &&

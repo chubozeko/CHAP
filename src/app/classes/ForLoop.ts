@@ -55,14 +55,20 @@ export class ForLoop {
   setVariableName(var_name: string) { this.forVariableName = var_name; }
   getVariableName() { return this.forVariableName; }
 
-  setForVariable(variable: Variable, arrayIndex?: number) {
+  setForVariable(variable: Variable, value: any, arrayIndex?: number) {
     this.forLoopVariable.setName(variable.getName());
     this.forLoopVariable.setIsArray(variable.getIsArray());
     this.forLoopVariable.setDataType(variable.getDataType());
     if (variable.getIsArray()) {
-      this.forLoopVariable.setValue(variable.variable[arrayIndex]);
+      if (value == null)
+        this.forLoopVariable.setValue(variable.variable[arrayIndex]);
+      else
+        this.forLoopVariable.setValue(value);
     } else {
-      this.forLoopVariable.setValue(variable.getValue());
+      if (value == null)
+        this.forLoopVariable.setValue(variable.getValue());
+      else
+        this.forLoopVariable.setValue(value);
     }
   }
   getForVariable() {
@@ -465,24 +471,27 @@ export class ForLoop {
               }
             }
           }
-          variables[j].variable[tempArrIndex] = this.getStartValue();
-          this.setForVariable(variables[j], tempArrIndex);
+          if (variables[j].variable[tempArrIndex] == undefined && isNaN(variables[j].variable[tempArrIndex])) {
+            variables[j].variable[tempArrIndex] = this.getStartValue();
+          }
+          this.setForVariable(variables[j], this.getStartValue(), tempArrIndex);
         }
       } else if (
         this.getVariableName() == variables[j].getName()
       ) {
-        variables[j].setValue(this.getStartValue());
-        this.setForVariable(variables[j]);
+        if (variables[j].getValue() == undefined && isNaN(variables[j].getValue())) {
+          variables[j].setValue(this.getStartValue());
+        }
+        this.setForVariable(variables[j], this.getStartValue());
         isVarDeclared = true;
       }
     }
 
     if (!isVarDeclared) {
       // TODO: Show Error in Console
-      consoleLog.className = "errorAlert"; // Error Message Color Change Code Here
+      consoleLog.className = "errorAlert";
       consoleLog.innerHTML += "ERROR CODE F/R-01: Variable " + this.getVariableName() + " is not declared at 'FOR-LOOP'." + "\n";
     } else {
-      //consoleLog.className = "noerrorAlert";
       return true;
     }
   }

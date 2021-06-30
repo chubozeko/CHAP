@@ -101,14 +101,31 @@ export class LoopBlock {
           variable.getName() == this.variables[j].getName()
         ) {
           this.variables[j].variable[arrayIndex] = variable.getValue();
-          //this.consoleLog.className = "noerrorAlert";
         }
       } else {
         if (
           variable.getName() == this.variables[j].getName()
         ) {
           this.variables[j].setValue(variable.getValue());
-          //this.consoleLog.className = "noerrorAlert";
+        }
+      }
+    }
+    this.loopBlockState.variables = this.variables;
+  }
+
+  findVariable(variable: Variable, arrayIndex?: number) : Variable {
+    for (let j = 0; j < this.variables.length; j++) {
+      if (variable.getIsArray()) {
+        if (
+          variable.getName() == this.variables[j].getName()
+        ) {
+          return this.variables[j].variable[arrayIndex];
+        }
+      } else {
+        if (
+          variable.getName() == this.variables[j].getName()
+        ) {
+          return this.variables[j];
         }
       }
     }
@@ -178,8 +195,9 @@ export class LoopBlock {
         this.variables.splice(q, 0, variables[q]);
       }
     }
-    this.isAnInputBlockRunning = isAnInputBlockRunning;
     this.isProgramRunning = this.loopBlockState.isProgramRunning;
+    this.isAnInputBlockRunning = isAnInputBlockRunning;
+    this.variables = variables;
 
     for (let i = startIndex; i < this.tempSymbols.length; i++) {
       // DECLARE
@@ -339,47 +357,58 @@ export class LoopBlock {
             let forSymbol = this.tempSymbols[i] as ForLoop;
             let didForLoopRun = await forSymbol.validateForLoop(this.variables, this.chapConsole);
             if (didForLoopRun) {
-              forSymbol.setCurrentValue(forSymbol.getStartValue());
+              forSymbol.setCurrentValue(forSymbol.forLoopVariable.getValue());
               // Add forBlock symbols to a LoopBlock
               let forLoopBlock = new LoopBlock(this.loopBlockState);
               forLoopBlock.SYMBOLS = forSymbol.trueLoopBlock;
-              // Pass Variables to forLoopBlock
-              forLoopBlock.variables = this.variables;
+              if (this.loopBlockState.forLoopVariable != null) {
+                forSymbol.setCurrentValue(this.loopBlockState.forLoopVariable.getValue());
+              } else {
+                forSymbol.setCurrentValue(forSymbol.getStartValue());
+              }
               console.log("For Loop Block: ", forLoopBlock);
   
               if (forSymbol.getStepDirection() === 'Increasing') {
                 // Validation to prevent INFINITE LOOPS:
                 if (forSymbol.getStartValue() < forSymbol.getEndValue()) {
-                  for (let tempVar = forSymbol.getStartValue();
-                    tempVar <= forSymbol.getEndValue();
-                    tempVar = forSymbol.iterateForStepDirection(tempVar)) {
+                  while (forSymbol.getCurrentValue() <= forSymbol.getEndValue()) {
                     // Validate forBlock symbols only
                     this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
+                    this.loopBlockState.loopSymbolType = "ForLoop";
                     let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
                     this.variables = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     if (this.isAnInputBlockRunning) {
-                      // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
+                      // Store LoopBlock State (parentBlock, loopSymbolIndex)
+                      this.loopBlockState.parentBlock = this;
+                      this.loopBlockState.loopSymbolIndex = i;
+                      this.loopBlockState.loopSymbolType = "ForLoop";
+                      console.log(" Skip this [LoopBlock] For Loop since an Input symbol is running...");
                       break;
                     }
+                    forSymbol.setCurrentValue(forSymbol.getCurrentValue()+1);
                     console.log("loop pass: ", props);
                   }
                 }
               } else if (forSymbol.getStepDirection() === 'Decreasing') {
                 // Validation to prevent INFINITE LOOPS:
                 if (forSymbol.getStartValue() > forSymbol.getEndValue()) {
-                  for (let tempVar = forSymbol.getStartValue();
-                    tempVar >= forSymbol.getEndValue();
-                    tempVar = forSymbol.iterateForStepDirection(tempVar)) {
+                  while (forSymbol.getCurrentValue() >= forSymbol.getEndValue()) {
                     // Validate forBlock symbols only
                     this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
+                    this.loopBlockState.loopSymbolType = "ForLoop";
                     let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
                     this.variables = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     if (this.isAnInputBlockRunning) {
-                      // TODO: Store LoopBlock State (parentBlock, loopSymbolIndex)
+                      // Store LoopBlock State (parentBlock, loopSymbolIndex)
+                      this.loopBlockState.parentBlock = this;
+                      this.loopBlockState.loopSymbolIndex = i;
+                      this.loopBlockState.loopSymbolType = "ForLoop";
+                      console.log(" Skip this [LoopBlock] For Loop since an Input symbol is running...");
                       break;
                     }
+                    forSymbol.setCurrentValue(forSymbol.getCurrentValue()-1);
                     console.log("loop pass: ", props);
                   }
                 }
@@ -449,25 +478,32 @@ export class LoopBlock {
       }
     }
 
-    console.log("LoopBlock Props: ", { 
-      variables: this.variables, 
-      symbols: this.SYMBOLS,
-      tempSymbols: this.tempSymbols,
-      isAnInputBlockRunning: this.isAnInputBlockRunning,
-      isProgramRunning: this.isProgramRunning
-    });
+    this.updateLoopBlockState();
+    return { variables: this.variables, isAnInputBlockRunning: this.isAnInputBlockRunning };
+  }
 
+  updateLoopBlockState() {
     // Update Loop Block State (variables, isAnInputBlockRunning)
     this.loopBlockState.variables = this.variables;
     this.loopBlockState.isAnInputBlockRunning = this.isAnInputBlockRunning;
-    console.log("<== Loop Block State (from LoopBlock) ==>", this.loopBlockState);
     
     if (!this.loopBlockState.isAnInputBlockRunning) {
       // Resume (restart) Loop Block from parent Flowchart/LoopBlock [parentFlowchartLoopBlock.validateLoopBlock()]
       if (this.loopBlockState.parentBlock instanceof Flowchart) {
         if (this.loopBlockState.loopSymbolType == "DoWhileLoop")
           this.loopBlockState.passDoWhile = false;
-
+        if (this.loopBlockState.loopSymbolType == "ForLoop") {
+          let forLoop = this.loopBlockState.parentBlock.tempSymbols[this.loopBlockState.loopSymbolIndex] as ForLoop;
+          this.loopBlockState.forLoopVariable = this.findVariable(forLoop.getForVariable());
+          if (forLoop.getStepDirection() == 'Increasing') {
+            this.loopBlockState.forLoopVariable.setValue(this.loopBlockState.forLoopVariable.getValue()+1);
+          } else if (forLoop.getStepDirection() == 'Decreasing') {
+            this.loopBlockState.forLoopVariable.setValue(this.loopBlockState.forLoopVariable.getValue()-1);
+          }
+          this.updateVariables(this.loopBlockState.forLoopVariable);
+          this.loopBlockState.parentBlock.updateVariables(this.loopBlockState.forLoopVariable);
+          console.log("Loop B var: " + this.loopBlockState.forLoopVariable.getValue());
+        }
         this.loopBlockState.parentBlock.validateFlowchart(
           this.loopBlockState.loopSymbolIndex, 
           this.loopBlockState.parentBlock.tempSymbols.length,
@@ -475,7 +511,17 @@ export class LoopBlock {
       } else if (this.loopBlockState.parentBlock instanceof LoopBlock) {
         if (this.loopBlockState.loopSymbolType == "DoWhileLoop")
           this.loopBlockState.passDoWhile = false;
-
+        if (this.loopBlockState.loopSymbolType == "ForLoop") {
+          let forLoop = this.loopBlockState.parentBlock.tempSymbols[this.loopBlockState.loopSymbolIndex] as ForLoop;
+          this.loopBlockState.forLoopVariable = this.findVariable(forLoop.getForVariable());
+          if (forLoop.getStepDirection() == 'Increasing') {
+            this.loopBlockState.forLoopVariable.setValue(this.loopBlockState.forLoopVariable.getValue()+1);
+          } else if (forLoop.getStepDirection() == 'Decreasing') {
+            this.loopBlockState.forLoopVariable.setValue(this.loopBlockState.forLoopVariable.getValue()-1);
+          }
+          this.updateVariables(this.loopBlockState.forLoopVariable);
+          this.loopBlockState.parentBlock.updateVariables(this.loopBlockState.forLoopVariable);
+        }
         this.loopBlockState.parentBlock.validateLoopBlock(
           this.loopBlockState.variables,
           this.loopBlockState.isAnInputBlockRunning,
@@ -483,8 +529,8 @@ export class LoopBlock {
           this.loopBlockState.parentBlock.tempSymbols.length);
       }
     }
-    
-    return { variables: this.variables, isAnInputBlockRunning: this.isAnInputBlockRunning };
+
+    console.log("<== Loop Block State (from LoopBlock) ==>", this.loopBlockState);
   }
 
   // TODO: Add "prepareFlowchartForSaving()"

@@ -3,6 +3,7 @@ import { DoWhileLoop } from './classes/DoWhileLoop';
 import { Flowchart } from './classes/Flowchart';
 import { ForLoop } from './classes/ForLoop';
 import { LoopBlock } from './classes/LoopBlock';
+import { Variable } from './classes/Variable';
 import { WhileLoop } from './classes/WhileLoop';
 
 @Injectable({
@@ -23,6 +24,8 @@ export class LoopblockstateService {
 
   passDoWhile: boolean;
 
+  forLoopVariable: Variable;
+
   constructor() { }
 
   initialize() {
@@ -34,5 +37,6 @@ export class LoopblockstateService {
     this.parentBlock = null;
     this.loopSymbolIndex = null;
     this.passDoWhile = true;
+    this.forLoopVariable = null;
   }
 }

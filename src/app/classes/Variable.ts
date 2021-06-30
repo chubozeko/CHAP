@@ -1,9 +1,9 @@
 export class Variable {
 
-  dataType: any;
-  name: string;
-  value: any;
-  isArray: boolean;
+  private dataType: any;
+  private name: string;
+  private value: any;
+  private isArray: boolean;
   arraySize: number;
 
   variable: any;
