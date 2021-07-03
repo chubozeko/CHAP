@@ -137,33 +137,35 @@ export class LoopBlock {
 
   async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
     const alert = await this.alertC.create({
-      header: alertTitle,
-      inputs: [
-        {
-          name: "inputText",
-          type: "text"
-        }
-      ],
-      buttons: [
-        {
-          text: "Cancel",
-          role: "cancel",
-          cssClass: "secondary",
-          handler: () => { 
-            console.log("> [LoopBlock] Input (canceled) Complete");
-           }
-        },
-        {
-          text: "OK",
-          handler: data => {
-            inputSym.inputData = data.inputText;
-            inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
-            this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
-            console.log("> [LoopBlock] Input (entered) Complete");
-          }
-        }
-      ]
-    });
+     // header: alertTitle,
+     message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
+     inputs: [
+       {
+        
+         name: "inputText",
+         type: "text"
+       }
+     ],
+     buttons: [
+       {
+         text: "Cancel",
+         role: "cancel",
+         cssClass: "secondary",
+         handler: () => { 
+           console.log("> Input (canceled) Complete");
+         }
+       },
+       {
+         text: "OK",
+         handler: data => {
+           inputSym.inputData = data.inputText;
+           inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+           this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
+           console.log("> Input (entered) Complete");
+         }
+       }
+     ]
+   });
     alert.onDidDismiss().then(() => {
       inputSym.isInputEntered = false;
       this.isAnInputBlockRunning = false;
