@@ -170,7 +170,7 @@ border-radius: 10px;
  
  
  .navbar {
-   text-transform: uppercase;
+   //text-transform: uppercase;
    margin-bottom: 0px;
  }
  
@@ -178,7 +178,15 @@ border-radius: 10px;
 //    /* padding-bottom: 70px;
 //    padding-top: 70px; */
 //  }
- 
+ .pad{
+   padding-top: 15px;
+ }
+ .nvbr{
+  color: #7b7b7b;
+ }
+ .nvbr:hover{
+   color:red;
+ }
  .navbar-inverse {
    background-color: #020807;
    border-color: #16a085;

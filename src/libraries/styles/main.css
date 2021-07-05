@@ -34,7 +34,7 @@
 #toolbar, #lowerbar, #upperbar{ margin: 0; padding: 0; }
 
 /* SIDEBAR */
-.wrapper > #right_ws > #workspace{ background: seashell; padding: 1em; }
+.wrapper > #right_ws > #workspace{ background: white; padding: 1em; }
 .wrapper {
     display: grid;
     /* grid-template-columns: 100px auto; */
@@ -46,7 +46,7 @@
 #left_symbols {
     float: left; 
     /* background-color: aqua; */
-    background-color: seashell;
+    background-color: white;
     display: block;
     align-items: center;
 }
@@ -59,7 +59,7 @@
     overflow: auto;
 }
 .sidebar{ 
-    background: seashell; 
+    background: white; 
     margin: 0; 
     display: grid;
     grid-template-columns: 1.5fr 4fr;
@@ -244,7 +244,7 @@ textarea{
 .noerrorAlert{
     font-family: sans-serif;
     
-   color: seashell;
+   color: white;
 }
 .errorWAlert{
     font-family: sans-serif;
