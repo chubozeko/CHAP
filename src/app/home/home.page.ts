@@ -512,10 +512,10 @@ export class HomePage {
           t.classList.remove("active-arrow");
         } catch (error) { console.log(error); }
       });
-      event.stopImmediatePropagation();
+      // event.stopImmediatePropagation();
       return await this.popOver.present();
     }
-    event.stopImmediatePropagation();
+    // event.stopImmediatePropagation();
   }
 
   public closeSymbolPopUp(event) {

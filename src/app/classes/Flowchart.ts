@@ -222,7 +222,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let inputSym = this.tempSymbols[i] as Input;
-            let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, i, this.chapConsole);
+            let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, i);
             if (!didInputRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;

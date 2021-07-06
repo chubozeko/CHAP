@@ -40,37 +40,32 @@ export class Output {
       if (ob.indexOf('"') != -1) {
         isValid = this.quotationChecker(ob);
         if (isValid == false) {
-          var sl_tip = "SOLUTION TIP : Make Sure You Open / Close Quotation Mark at Output Symbol !";
-          this.consoleLog("errorAlert", "ERROR CODE O-01: Missing Quotation Mark at Output symbol! \n" + sl_tip.toString());
-        } else {
-          // consoleLog.value+="ERROR: syntax"+"\n";
+          var sl_tip = "SOLUTION TIP : Make Sure You Open / Close Quotation Mark at Output Symbol.";
+          this.consoleLog("errorAlert", "ERROR CODE O-01: Missing Quotation Mark at 'OUTPUT' symbol!\n" + sl_tip.toString());
         }
       } else if (ob.indexOf("'") != -1) {
         isValid = false;
-        // TODO: Add "SINGLE_QUOTES" error
         console.error("ERROR: Single Quotes NOT ALLOWED at Output symbol!");
-        this.consoleLog("errorAlert", "ERROR CODE O-02: Single Quotes NOT ALLOWED at Output symbol!");
+        this.consoleLog("errorAlert", "ERROR CODE O-02: Single Quotes NOT ALLOWED at 'OUTPUT' symbol!");
       } else {
         isValid = this.checkIfVariable(ob, variables);
         if (isValid == false){
-          var sl_tip="SOLUTION TIP : Please Check Declared Variable Name or Entered Data Type !";
-          this.consoleLog("errorAlert", "ERROR CODE O-03: Undefined / Null Variable or Array at Output symbol! \n" + sl_tip.toString());
-        } else {
-          // this.consoleLog("errorAlert", "ERROR: Undefined / Null Array Variable at Output symbol! \n");
+          var sl_tip = "SOLUTION TIP : Please Check Declared Variable Name or Entered Data Type.";
+          this.consoleLog("errorAlert", "ERROR CODE O-03: Undefined / Null Variable or Array at 'OUTPUT' symbol!\n" + sl_tip.toString());
         }
       }
 
       if (isValid == false || isValid == null || isValid == undefined) {
         return false;
       }
-    };
+    }
 
     if (this.outputS == "NaN"){
-      var solutionTip = `SOLUTION TIP : Please Check IF DECLARED DATA TYPE IS INTEGER REMOVE {'','} MARK AT PROCESS SYMBOL.`;
-      this.consoleLog("errorAlert", "SYNTAX ERROR CODE O-04: Check Entered Expression at PROCESS Symbol. \n" + solutionTip);
+      var solutionTip = `SOLUTION TIP : Please Check IF DECLARED DATA TYPE IS INTEGER REMOVE {'','} MARK AT OUTPUT SYMBOL.`;
+      this.consoleLog("errorAlert", "SYNTAX ERROR CODE O-04: Check Entered Expression at 'OUTPUT' Symbol. \n" + solutionTip);
     } else if(this.outputS == "null") {
-      var solutionTip = `SOLUTION TIP : Please Check IF DECLARED DATA TYPE IS STRING ONLY USE DOUBLE QUATATIONS AT THE PROCESS SYMBOL TO DISPLAY VALUE !`;
-      this.consoleLog("errorAlert", "SYNTAX ERROR CODE O-05: Check Entered Expression at PROCESS Symbol. \n" + solutionTip);
+      var solutionTip = `SOLUTION TIP : Please Check IF DECLARED DATA TYPE IS STRING ONLY USE DOUBLE QUATATIONS AT THE OUTPUT SYMBOL TO DISPLAY VALUE !`;
+      this.consoleLog("errorAlert", "SYNTAX ERROR CODE O-05: Check Entered Expression at 'OUTPUT' Symbol. \n" + solutionTip);
     } else {
       // Eğer hata mesajı yok ise rengi beyaz yapsın
       this.consoleLog("noerrorAlert", "Output : " + this.outputS);
@@ -100,18 +95,16 @@ export class Output {
               }
             }
             if (!isArrIndexDeclared || arrIndex == undefined) {
-              // TODO: Show "UNDECLARED ARRAY INDEX VARIABLE" Error
-              this.consoleLog("errorAlert", "ERROR CODE O-06: Undeclared / Undefined Array Index Variable at Output symbol!");
-              console.error("ERROR CODE O-06: Undeclared / Undefined Array Index Variable at Output symbol!");
+              this.consoleLog("errorAlert", "ERROR CODE O-06: Undeclared / Undefined Array Index Variable at 'OUTPUT' symbol!");
+              console.error("ERROR CODE O-06: Undeclared / Undefined Array Index Variable at 'OUTPUT' symbol!");
             }
           }
           if (
             variables[j].variable[arrIndex] == undefined &&
             isNaN(variables[j].variable[arrIndex])
           ) {
-            // TODO: Show "UNDEFINED / NULL VARIABLE" Error
-            this.consoleLog("errorAlert", "ERROR CODE O-07: Undefined / Null Array Variable at Output symbol!");
-            console.error("ERROR CODE O-07: Undefined / Null Array Variable at Output symbol!");
+            this.consoleLog("errorAlert", "ERROR CODE O-07: Undefined / Null Array Variable at 'OUTPUT' symbol!");
+            console.error("ERROR CODE O-07: Undefined / Null Array Variable at 'OUTPUT' symbol!");
             return false;
           } else { this.outputS += variables[j].variable[arrIndex]; }
           break;
@@ -121,9 +114,8 @@ export class Output {
           isVarDeclared = true;
           isVarAnArray = false;
           if (variables[j].value == undefined && isNaN(variables[j].value)) {
-            // TODO: Show "UNDEFINED / NULL VARIABLE" Error
-            this.consoleLog("errorAlert", "ERROR CODE O-08: Undefined / Null Variable at Output symbol!");
-            console.error("ERROR CODE O-08: Undefined / Null Variable at Output symbol!");
+            this.consoleLog("errorAlert", "ERROR CODE O-08: Undefined / Null Variable at 'OUTPUT' symbol!");
+            console.error("ERROR CODE O-08: Undefined / Null Variable at 'OUTPUT' symbol!");
             return false;
           } else { this.outputS += variables[j].value; }
           break;
@@ -142,9 +134,8 @@ export class Output {
     }
     // Even quotes => OK; Uneven quotes => Missing Quotation
     if (quoteCount % 2 != 0) {
-      // TODO: Show "MISSING QUOTATION" Error
-      this.consoleLog("errorAlert", "ERROR CODE O-09: Missing Quotation Mark at Output symbol!");
-      console.error("ERROR CODE O-09: Missing Quotation Mark at Output symbol!");
+      this.consoleLog("errorAlert", "ERROR CODE O-09: Missing Quotation Mark at 'OUTPUT' symbol!");
+      console.error("ERROR CODE O-09: Missing Quotation Mark at 'OUTPUT' symbol!");
       return false;
     } else {
       if (oBlock.charAt(0) == '"' && oBlock.charAt(oBlock.length-1) == '"') {
@@ -154,9 +145,8 @@ export class Output {
         this.outputS += str;
         return true;
       } else {
-        // TODO: Show Syntax Error for misplaced quotation marks
-        this.consoleLog("errorAlert", "ERROR CODE O-10: Syntax error at Output symbol!");
-        console.error("ERROR CODE O-10: Syntax error at Output symbol!");
+        this.consoleLog("errorAlert", "ERROR CODE O-10: Syntax error at 'OUTPUT' symbol!");
+        console.error("ERROR CODE O-10: Syntax error at 'OUTPUT' symbol!");
         return false;
       }
       

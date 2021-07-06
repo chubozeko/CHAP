@@ -14,7 +14,7 @@ export class Input {
   inputData: any;
   isInputEntered: boolean = false;
   isAnInputBlockRunning: boolean;
-  consoleLog: HTMLDivElement;
+  chapConsole: HTMLDivElement;
   alertC: AlertController;
   inputPromptProps = {};
 
@@ -43,6 +43,11 @@ export class Input {
   parseInputExp(variable: Variable) {
     this.inputPrompt = 'Enter a value of type ' + variable.getDataType() + ' for variable ' + variable.getName();
     return this.inputPrompt;
+  }
+
+  consoleLog(textColourClass, lineOutput) {
+    this.chapConsole = document.getElementById("console") as HTMLDivElement;
+    this.chapConsole.innerHTML += `<span class="` + textColourClass + `"> ` + lineOutput + "</span> \n";
   }
 
   inputParsing(var1: Variable, var_val: any, arrayIndex?: number) {
@@ -76,48 +81,33 @@ export class Input {
       ) {
         var1.variable[arrayIndex] = var_value1;
       } else {
-        // TODO: Show Error in Console
-       // this.showAlert("Invalid datatype entered!", "");
-       this.consoleLog.className="errorAlert"; // Eror Message Color Change Code Here
-       this.consoleLog.innerHTML += "ERROR: Invalid Datatype Entered !" + "\n";
+        this.consoleLog("errorAlert", "ERROR CODE I-02: Invalid Data Type Entered at 'INPUT'.");
       }
     } else {
       if (var1.getDataType() == "Integer" && typeof var_value1 == "number") {
         var1.setValue(var_value1);
-        this.consoleLog.className = "noerrorAlert";
       } else if (var1.getDataType() == "Real" && typeof var_value1 == "number") {
         var1.setValue(var_value1);
-        this.consoleLog.className = "noerrorAlert";
       } else if (
         var1.getDataType() == "String" &&
         typeof var_value1 == "string"
       ) {
         var1.setValue(var_value1);
-        this.consoleLog.className = "noerrorAlert";
       } else if (
         var1.getDataType() == "Boolean" &&
         typeof var_value1 == "boolean"
       ) {
         var1.setValue(var_value1);
-        this.consoleLog.className = "noerrorAlert";
-      } else{
-       if((var1.getDataType()!="Integer" && typeof var_value1!="number" )|| (var1.getDataType() != "Real" && typeof var_value1 != "number") ||(var1.getDataType() != "String" &&
-      typeof var_value1 != "string") ||( var1.getDataType() != "Boolean" && typeof var_value1 != "boolean" )) {
-     
-        // TODO: Show Error in Console
-        //this.showAlert("Invalid datatype entered!", "");
-        this.consoleLog.className="errorWAlert"; // Eror Message Color Change Code Here
-        this.consoleLog.innerHTML += "WARNING: Invalid Datatype Entered !" + "\n";
-
+      } else {
+        if ((var1.getDataType() != "Integer" && typeof var_value1 != "number" ) || 
+          (var1.getDataType() != "Real" && typeof var_value1 != "number") || 
+          (var1.getDataType() != "String" && typeof var_value1 != "string") || 
+          (var1.getDataType() != "Boolean" && typeof var_value1 != "boolean" )) {
+          // this.consoleLog("errorAlert", "ERROR CODE I-02: Invalid Data Type Entered at 'INPUT'.");
+          this.consoleLog("errorWAlert", "WARNING CODE I-03: Invalid Data Type Entered at 'INPUT'.");
+        } else {}
         
-      
-      }else{
-        
-        //this.consoleLog.className = "noerrorAlert";
-       
       }
-     // this.consoleLog.className = "noerrorAlert";
-    }
     }
   }
 
@@ -131,10 +121,9 @@ export class Input {
     return '\t\t' + this.getVariableName() + ' = System.console().readLine();\n';
   }
 
-  async validateInputSymbol(variables: any[], symIndex: number, consoleLog: HTMLDivElement) {
+  async validateInputSymbol(variables: any[], symIndex: number) {
     let isVarDeclared = false, isVarAnArray = false;
     let tempArrIndex: number, varIndex, continueDebugIndex;
-    this.consoleLog = consoleLog;
     for (let j = 0; j < variables.length; j++) {
       // Check if the input variable is an array
       if (variables[j].getIsArray()) {
@@ -168,9 +157,7 @@ export class Input {
       }
     }
     if (!isVarDeclared) {
-      this.consoleLog.className = "errorAlert";
-      this.consoleLog.innerHTML += "ERROR CODE I-01: Invalid Statement at 'INPUT' => Variable" + 
-        this.getVariableName() + " is not declared!" + "\n";
+      this.consoleLog("errorAlert", "ERROR CODE I-01: Variable" + this.getVariableName() + " is not declared at 'INPUT'");
       return false;
     } else {
       // Show Input prompt
