@@ -25,10 +25,10 @@ export class WelcomePage implements OnInit {
     public navCtrl: NavController) { }
 
   ngOnInit() {
-    let w_login = document.getElementById("w_login");
-    w_login.addEventListener("click", (e) => this.openLoginModal(e));
-    let w_signup = document.getElementById("w_signup");
-    w_signup.addEventListener("click", (e) => this.openSignUpModal(e));
+    // let w_login = document.getElementById("w_login");
+    // w_login.addEventListener("click", (e) => this.openLoginModal(e));
+    // let w_signup = document.getElementById("w_signup");
+    // w_signup.addEventListener("click", (e) => this.openSignUpModal(e));
     let w_tutorial = document.getElementById("w_tutorial");
     w_tutorial.addEventListener("click", (e) => this.openTutorialModal(e));
     let w_about = document.getElementById("w_about");
