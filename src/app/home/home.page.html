@@ -124,7 +124,7 @@
       <div id="symbolsList"  dragula="symbol" >
         <!-- class="scrollbar" -->
         <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
-          <div id="{{s.id}}" class="symbol s_tooltip {{s.id}} " (click)="addSymbol(s.id, $event)"
+          <div id="{{s.id}}" class="symbol s_tooltip {{s.id}} " (click)="addSymbol(s.id)"
             [style.backgroundColor]="setColor(s.id)">
             {{s.s_name}}
           </div>
@@ -178,7 +178,7 @@
             <div class="arrow_left dropzone" style="width: 17.5px;"></div>
           </div>
           <div id="arrow_horizontal" class="arrows dropzone"></div>
-          <div id="s_if_case" class="symbol if_sym s_if_case" (click)="addSymbol('s_if_case', $event)"
+          <div id="s_if_case" class="symbol if_sym s_if_case" (click)="addSymbol('s_if_case')"
             [style.backgroundColor]="setColor('s_if_case')">If</div>
           <div id="arrow_horizontal" class="arrows dropzone"></div>
           <div class="arrowPiece right">
@@ -223,7 +223,7 @@
         <div class="for_div">
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
-          <div id="s_for_loop" class="symbol for_sym s_for_loop" (click)="addSymbol('s_for_loop',$event)"
+          <div id="s_for_loop" class="symbol for_sym s_for_loop" (click)="addSymbol('s_for_loop')"
             [style.backgroundColor]="setColor('s_for_loop')">For</div>
           <div id="arrow_horizontal" class="arrows"></div>
           <div class="arrowPiece right">
@@ -268,7 +268,7 @@
         <div class="while_div">
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
-          <div id="s_while_loop" class="symbol while_sym s_while_loop" (click)="addSymbol('s_while_loop',$event)"
+          <div id="s_while_loop" class="symbol while_sym s_while_loop" (click)="addSymbol('s_while_loop')"
             [style.backgroundColor]="setColor('s_while_loop')">While</div>
           <div id="arrow_horizontal" class="arrows"></div>
           <div class="arrowPiece right">
@@ -338,7 +338,7 @@
           <div></div>
           <div></div>
           <div id="s_do_while_loop" class="symbol do_while_sym s_do_while_loop"
-            (click)="addSymbol('s_do_while_loop',$event)" [style.backgroundColor]="setColor('s_do_while_loop')">Do</div>
+            (click)="addSymbol('s_do_while_loop')" [style.backgroundColor]="setColor('s_do_while_loop')">Do</div>
           <div id="arrow_left" class="arrows"></div>
           <div class="arrowPiece right">
             <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>

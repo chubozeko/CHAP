@@ -18,8 +18,7 @@ export class Declare {
 
     constructor() { }
 
-    createDeclareSymbol(
-        declareSym: any) {
+    createDeclareSymbol(declareSym: any) {
         this.text = declareSym.text;
         this.variableName = declareSym.variableName;
         this.data_type = declareSym.data_type;

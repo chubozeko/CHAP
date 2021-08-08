@@ -1,8 +1,5 @@
 {
-  "name": "CHAP",
-  "integrations": {
-    "cordova": {},
-    "capacitor": {}
-  },
+  "name": "New Ionic App",
+  "integrations": {},
   "type": "angular"
 }

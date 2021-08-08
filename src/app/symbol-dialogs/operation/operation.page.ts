@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, PopoverController } from '@ionic/angular';
-import { SYMBOLS } from '../../symbol-list';
-import { THEMES } from '../../themes';
+import { SymbolData } from '../../symbol-data';
+import { THEMES } from '../../themes/themes';
 
 @Component({
   selector: 'app-operation',
   templateUrl: './operation.page.html',
   styleUrls: ['./operation.page.scss'],
 })
-export class OperationPage implements OnInit {
+export class OperationPage {
 
-  symbols = SYMBOLS;
+  symbols = SymbolData;
   themes = THEMES;
   themeIndex: number;
   event;
@@ -18,10 +18,6 @@ export class OperationPage implements OnInit {
   constructor(private popCtrl: PopoverController,
     public navP: NavParams) {
     this.event = navP.get("event");
-  }
-
-  ngOnInit() {
-
   }
 
   setColor(id: string) {
@@ -40,8 +36,8 @@ export class OperationPage implements OnInit {
     }
   }
 
-  addSymbol(id, e) {
-    this.popCtrl.dismiss({ id: id, e: this.event });
+  selectSymbolToAdd(id) {
+    this.popCtrl.dismiss({ id: id });
   }
 
   closePopup() {

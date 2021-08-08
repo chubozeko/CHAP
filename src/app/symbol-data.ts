@@ -1,6 +1,4 @@
-import { Symbol } from "../app/symbol";
-
-export const SYMBOLS: Symbol[] = [
+export const SymbolData = [
     // { id: '', cardID: '', s_name: "" },
     { id: 's_declare', cardID: 'card_declare', s_name: "Declare" },
     { id: 's_input', cardID: 'card_input', s_name: "Input" },

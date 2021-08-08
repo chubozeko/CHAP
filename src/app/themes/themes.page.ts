@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams, PopoverController } from '@ionic/angular';
-import { SYMBOLS } from '../symbol-list';
-import { THEMES } from '../themes';
+import { SymbolData } from '../symbol-data';
+import { THEMES } from './themes';
 
 @Component({
   selector: 'app-themes',
@@ -10,7 +10,7 @@ import { THEMES } from '../themes';
 })
 export class ThemesPage implements OnInit {
 
-  symbols = SYMBOLS;
+  symbols = SymbolData;
   themes = THEMES;
   themeIndex: number;
   currTheme: string;

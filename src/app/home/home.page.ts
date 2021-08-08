@@ -8,27 +8,18 @@ import {
   Fab,
   ActionSheetController,
   MenuController,
-  NavParams,
   AlertController,
-  ToastController,
   Platform,
   NavController,
   PopoverController,
 } from "@ionic/angular";
-// import { ActionSheetOptions } from "ionic";
 import html2canvas from "html2canvas";
 const interact = require("interactjs");
-import { File, FileWriter } from "@ionic-native/file/ngx";
+import { File } from "@ionic-native/file/ngx";
 import { Chooser } from "@ionic-native/chooser/ngx";
 import { Toast } from "@ionic-native/toast/ngx";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DragulaService } from "ng2-dragula";
-import { from } from "rxjs";
-import { type } from "os";
-// import "./theme/themes.json";
-
-import { SplashScreen } from "@ionic-native/splash-screen/ngx";
-import { SYMBOLS } from "../symbol-list"; // importing the symbol array from symbol-list.ts
 import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
 import { InputPage } from "../symbol-dialogs/input/input.page";
 import { ProcessPage } from "../symbol-dialogs/process/process.page";
@@ -38,6 +29,7 @@ import { IfElsePage } from "../symbol-dialogs/if-else/if-else.page";
 import { WhileLoopPage } from "../symbol-dialogs/while-loop/while-loop.page";
 import { ForLoopPage } from "../symbol-dialogs/for-loop/for-loop.page";
 import { DoWhileLoopPage } from "../symbol-dialogs/do-while-loop/do-while-loop.page";
+import { Symbols } from "../classes/Symbols";
 import { Declare } from "../classes/Declare";
 import { Input } from "../classes/Input";
 import { Output } from "../classes/Output";
@@ -49,21 +41,18 @@ import { WhileLoop } from "../classes/WhileLoop";
 import { CodeViewerPage } from "../code-viewer/code-viewer.page";
 import { AboutPage } from "../about/about.page";
 import { TutorialPage } from "../tutorial/tutorial.page";
-import { Stop } from "../classes/Stop";
-import { Start } from "../classes/Start";
 import { ForLoop } from "../classes/ForLoop";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
 import { OpenProjectPage } from "../open-project/open-project.page";
 import { AuthService } from "../auth.service";
-import { toBase64String } from "@angular/compiler/src/output/source_map";
 import { FeedbackPage } from "../feedback/feedback.page";
 import { OperationPage } from "../symbol-dialogs/operation/operation.page";
 import { CoverPagePage } from "../cover-page/cover-page.page";
 import { PromptPage } from "../prompt/prompt.page";
-import { THEMES } from "../themes";
+import { THEMES } from "../themes/themes";
 import { ThemesPage } from "../themes/themes.page";
-import { createElement } from "@angular/core/src/view/element";
 import { LoopblockstateService } from "../loopblockstate.service";
+import { SymbolData } from "../symbol-data";
 
 @Component({
   selector: "app-home",
@@ -82,36 +71,19 @@ export class HomePage {
   isConsoleOpen = false;
   isSymbolsFABOpen = false;
   isCutCopyReady = false;
-  fs;
   workspace;
   branch;
   selectedSymbol;
-  symbols = SYMBOLS;
-  newSymbol: any;
-  dupSymbol: any;
+  symbols = SymbolData;
   saveFolder = "CHAP Project Files";
   themes = THEMES;
   themeIndex: number = 0;
-
-  paste_sym_buffer: Array<
-    | Declare
-    | Input
-    | Output
-    | Process
-    | IfCase
-    | ForLoop
-    | WhileLoop
-    | DoWhileLoop
-    | Comment
-  >;
-
-  items: Array<any> = [];
-
   splash = true;
   isSymbolBeingDragged = false;
   isRightClickPromptShowing = false;
   popOver;
   infoMessage = "";
+  paste_sym_buffer: Array<Symbols>;
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -120,7 +92,6 @@ export class HomePage {
     public modalC: ModalController,
     public alertC: AlertController,
     private dragulaService: DragulaService,
-    private toastC: ToastController,
     public chooser: Chooser,
     private http: HttpClient,
     private file: File,
@@ -128,11 +99,9 @@ export class HomePage {
     public toast: Toast,
     public navCtrl: NavController,
     private auth: AuthService,
-    private splashScreen: SplashScreen,
     public popCtrl: PopoverController,
     private loopBlockState: LoopblockstateService
-  ) //public navParams: NavParams
-  { }
+  ) { }
 
   setColor(id: string) {
     switch (id) {
@@ -391,7 +360,6 @@ export class HomePage {
     });
 
     this.dragulaService.dragend("symbol").subscribe(({ name, el }) => {
-      // this.selectedSymbol = el.children[0].id;
       this.isSymbolBeingDragged = false;
 
       let prompt = document.getElementById("infoPrompt");
@@ -404,7 +372,7 @@ export class HomePage {
       .subscribe(({ name, el, target, source }) => {
         target.setAttribute("style", "background: #000000");
         target.removeChild(target.children[0]);
-        this.addSymbol(this.selectedSymbol, el.children[0]);
+        this.addSymbol(this.selectedSymbol);
         this.popOver = null;
         this.popCtrl.dismiss();
         this.isSymbolBeingDragged = false;
@@ -489,11 +457,11 @@ export class HomePage {
 
   async openSymbolPopUp(event) {
     if (!this.isSymbolBeingDragged) {
-      if (this.popOver) {
-        this.popCtrl.dismiss();
-      }
-      let t = event.target || event.srcElement || event.currentTarget;
-      t.classList.add("active-arrow");
+      // Get target arrow and make it active
+      let targetArrow = event.target || event.srcElement || event.currentTarget;
+      targetArrow.classList.add("active-arrow");
+
+      if (this.popOver) { this.popCtrl.dismiss() }
       this.popOver = await this.popCtrl.create({
         component: OperationPage,
         componentProps: { event: event, themeIndex: this.themeIndex },
@@ -505,11 +473,16 @@ export class HomePage {
       this.popOver.onDidDismiss().then((data) => {
         try {
           if (data.data != undefined) {
-            this.addSymbol(data.data.id, data.data.e);
+            this.addSymbol(data.data.id);
           }
 
-          let t = event.target || event.srcElement || event.currentTarget;
-          t.classList.remove("active-arrow");
+          // Get the active arrows and disable them if any
+          let arrows = document.getElementsByClassName("dropzone active-arrow");
+          if (arrows.length > 0) {
+            for (let i = 0; i < arrows.length; i++) {
+              arrows[i].classList.remove("active-arrow");
+            }
+          }
         } catch (error) { console.log(error); }
       });
       // event.stopImmediatePropagation();
@@ -1722,16 +1695,16 @@ export class HomePage {
 
   async openArrowsAS(event) {
     if (!this.isRightClickPromptShowing) {
-      let bs = document.getElementsByClassName("arrow dropzone");
-      for (let i = 0; i < bs.length; i++) {
-        if (bs[i].classList.contains("active-arrow")) {
-          bs[i].classList.remove("active-arrow");
-        }
+      // Disable all active arrows
+      let arrows = document.getElementsByClassName("arrow dropzone");
+      for (let i = 0; i < arrows.length; i++) {
+        arrows[i].classList.remove("active-arrow");
       }
       event.preventDefault();
       // Get the target symbol & make it active
       let targetArrow = event.target || event.srcElement || event.currentTarget;
       targetArrow.classList.add("active-arrow");
+
       if (this.isCutCopyReady) {
         if (this.popOver) {
           this.popCtrl.dismiss();
@@ -1761,63 +1734,63 @@ export class HomePage {
                   case "s_declare":
                     sym = new Declare();
                     sym.createDeclareSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getDeclareExpression();
                     break;
                   case "s_input":
                     sym = new Input();
                     sym.createInputSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getInputExpression();
                     break;
                   case "s_output":
                     sym = new Output();
                     sym.createOutputSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getOutputExpression();
                     break;
                   case "s_process":
                     sym = new Process();
                     sym.createProcessSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getProcessExpression();
                     break;
                   case "s_comment":
                     sym = new Comment();
                     sym.createCommentSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getCommentExpression();
                     break;
                   case "s_if_case":
                     sym = new IfCase();
                     sym.createIfCaseSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getIfStatement();
                     break;
                   case "s_for_loop":
                     sym = new ForLoop();
                     sym.createForLoopSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getForExpression();
                     break;
                   case "s_while_loop":
                     sym = new WhileLoop();
                     sym.createWhileLoopSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getWhileExpression();
                     break;
                   case "s_do_while_loop":
                     sym = new DoWhileLoop();
                     sym.createDoWhileLoopSymbol(tempSym);
-                    this.addSymbol(sym.id, targetArrow);
+                    this.addSymbol(sym.id);
                     this.flowchart.removeSymbolFromFlowchart(active_index);
                     targetArrow.nextSibling.innerHTML = sym.getDoWhileExpression();
                     break;
@@ -1851,14 +1824,14 @@ export class HomePage {
     event.stopImmediatePropagation();
   }
 
-  public toggleSymbolsFAB() {
+  public toggleSymbolsFAB(stayOpen?: boolean) {
     let symbolsList = document.getElementById("symbolsList");
     let symbolsFAB = document.getElementById("symbolsFAB");
     let symbolsTitle = document.getElementById("symbolsTitle");
-    if (symbolsFAB.classList.contains("toggleSymFAB")) {
-      let ss = document.getElementsByClassName("wrapper");
-      ss[0].classList.remove("showSymbolPanel");
-      // Close Symbols List
+    let wrapper = document.getElementsByClassName("wrapper")[0];
+    if (symbolsFAB.classList.contains("toggleSymFAB") && !stayOpen) {
+      // Close Symbols FAB List
+      wrapper.classList.remove("showSymbolPanel");
       symbolsFAB.classList.remove("toggleSymFAB");
       symbolsFAB.innerHTML =
         '<img src="./assets/icon/symbols_icon.png" alt="">';
@@ -1869,16 +1842,13 @@ export class HomePage {
         document.getElementById("console").style.marginLeft = "100px";
       }
     } else {
-      let ss = document.getElementsByClassName("wrapper");
-      ss[0].classList.add("showSymbolPanel");
-      // Show Symbols List
+      // Open Symbols FAB List
+      wrapper.classList.add("showSymbolPanel");
       symbolsFAB.classList.add("toggleSymFAB");
       symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
       symbolsList.style.display = "block";
       symbolsTitle.style.display = "block";
       this.isSymbolsFABOpen = true;
-      // symbolsList.style.position = 'absolute';
-      // symbolsList.style.bottom = '80px';
       if (this.isConsoleOpen) {
         document.getElementById("console").style.marginLeft = "0px";
       }
@@ -1886,66 +1856,25 @@ export class HomePage {
   }
 
   public openSymbolsFAB(event) {
-    // Get the target arrow
-    let t = event.target || event.srcElement || event.currentTarget;
-    // Get symbols FAB
-    let symbolsFAB = document.getElementById("symbolsFAB");
-    let symbolsList = document.getElementById("symbolsList");
-    let symbolsTitle = document.getElementById("symbolsTitle");
-    // Get the active arrow/branch
+    // Get the active arrows and disable them if any
     let arrows = document.getElementsByClassName("dropzone active-arrow");
-    // Check if there are other active arrows/branches
-    if (arrows.length < 1) {
-      t.classList.add("active-arrow");
-
-      if (!symbolsFAB.classList.contains("toggleSymFAB")) {
-        let ss = document.getElementsByClassName("wrapper");
-        ss[0].classList.add("showSymbolPanel");
-        // Show Symbols List
-        symbolsFAB.classList.add("toggleSymFAB");
-        symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
-        symbolsList.style.display = "block";
-        symbolsTitle.style.display = "block";
-        // symbolsList.style.position = 'absolute';
-        // symbolsList.style.bottom = '80px';
-      }
-    } else {
-      let branches = document.getElementsByClassName("dropzone active-arrow");
-      for (let i = 0; i < branches.length; i++) {
-        branches[i].classList.remove("active-arrow");
-      }
-      t.classList.add("active-arrow");
-      // Open symbols FAB
-      this.toggleSymbolsFAB();
-
-      if (!symbolsFAB.classList.contains("toggleSymFAB")) {
-        let ss = document.getElementsByClassName("wrapper");
-        ss[0].classList.add("showSymbolPanel");
-        // Show Symbols List
-        symbolsFAB.classList.add("toggleSymFAB");
-        symbolsFAB.innerHTML = '<ion-icon name="close"></ion-icon>';
-        symbolsList.style.display = "block";
-        symbolsTitle.style.display = "block";
-        // symbolsList.style.position = 'absolute';
-        // symbolsList.style.bottom = '80px';
+    if (arrows.length > 0) {
+      for (let i = 0; i < arrows.length; i++) {
+        arrows[i].classList.remove("active-arrow");
       }
     }
+    // Get the target arrow and make it active
+    let targetArrow = event.target || event.srcElement || event.currentTarget;
+    targetArrow.classList.add("active-arrow");
+    // Toggle symbols FAB
+    this.toggleSymbolsFAB(true);
   }
 
   async openSymbolDialog(event, id) {
     // Get the target symbol & make it active
     let active_sym_index, tempSym, asi;
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
-    if (
-      targetSymbol.id == "s_if_case" ||
-      targetSymbol.id == "s_while_loop" ||
-      targetSymbol.id == "s_do_while_loop" ||
-      targetSymbol.id == "s_for_loop"
-    ) {
-      targetSymbol.classList.add("active-symbol");
-    } else {
-      targetSymbol.classList.add("active-symbol");
-    }
+    targetSymbol.classList.add("active-symbol");
 
     // Checking the Symbol type and opening corresponding Properties Dialog Modals
     if (targetSymbol.parentElement.id == "ifTrueBlock") {
@@ -2014,15 +1943,19 @@ export class HomePage {
       }
     } else if (targetSymbol.parentElement.id == "forTrueBlock") {
       let syms = event.target.parentElement.getElementsByClassName("symbol");
+      console.log('list of ForLoop block syms: ', syms)
       for (let i = 0; i < syms.length; i++) {
         if (syms[i].classList.contains("active-symbol")) {
           asi = i;
         }
       }
+      console.log('asi = ' + asi)
       for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
         const el = this.flowchart.SYMBOLS[l];
         if (el instanceof ForLoop) {
+          console.log('forTrueBlock: ', el.trueLoopBlock)
           tempSym = el.getSymbolFromTrueBlock(asi);
+          console.log('tempSym in ForLoop block on (openSymbolDialog)', tempSym);
           if (targetSymbol.id == "s_declare") {
             this.openDeclareModal(tempSym, event);
           } else if (targetSymbol.id == "s_input") {
@@ -2146,16 +2079,26 @@ export class HomePage {
     }
   }
 
-  public addSymbol(id: string, e) {
-    let symClass, temp, symbol, active_index, act_in, symComponent;
-    let b = document.getElementsByClassName("arrow dropzone");
-    for (let i = 0; i < b.length; i++) {
-      if (b[i].className.endsWith("active-arrow")) {
-        active_index = i;
+  public addSymbol(id: string, currentSymbol?: Symbols) {
+    let symClass, temp, symbol, activeArrowIndex, act_in, symComponent;
+
+    let arrows = document.getElementsByClassName("arrow dropzone");
+    for (let i = 0; i < arrows.length; i++) {
+      if (arrows[i].className.endsWith("active-arrow")) {
+        activeArrowIndex = i;
       }
     }
 
     if (id == "s_declare") {
+      // // frontend
+      // temp = document.getElementById(id);
+      // symbol = temp.cloneNode(true);
+      // symbol.innerHTML = "Declare";
+      // // backend
+      // let dec = new Declare();
+      // dec.setDeclareSymbol(symbol);
+      // symComponent = dec;
+
       let dec = new Declare();
       temp = document.getElementById(id);
       dec.setDeclareSymbol(temp.cloneNode(true));
@@ -2268,17 +2211,15 @@ export class HomePage {
       }
     }
 
-    // Get the selected arrow/branch to append symbol after
-    let branches = document.getElementsByClassName(
-      "arrow dropzone active-arrow"
-    );
     let tempBranch = this.branch.cloneNode(true);
     this.addEventListenersToArrow(tempBranch);
+    // Get the selected arrow/branch to append symbol after
+    let activeArrow = document.getElementsByClassName("arrow dropzone active-arrow")[0];
 
     /* Checking which BLOCK the symbol should be added to */
-    switch (branches[0].parentElement.id) {
+    switch (activeArrow.parentElement.id) {
       case "ifTrueBlock":
-        let par1 = branches[0].parentElement.getElementsByClassName(
+        let par1 = activeArrow.parentElement.getElementsByClassName(
           "arrow dropzone"
         );
         for (let r = 0; r < par1.length; r++) {
@@ -2288,8 +2229,8 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
-        branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
+        activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
+        activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
           const el = this.flowchart.SYMBOLS[l];
           if (el instanceof IfCase) {
@@ -2298,7 +2239,7 @@ export class HomePage {
         }
         break;
       case "ifFalseBlock":
-        let par2 = branches[0].parentElement.getElementsByClassName(
+        let par2 = activeArrow.parentElement.getElementsByClassName(
           "arrow dropzone"
         );
         for (let r = 0; r < par2.length; r++) {
@@ -2308,8 +2249,8 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
-        branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
+        activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
+        activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
           const el = this.flowchart.SYMBOLS[l];
           if (el instanceof IfCase) {
@@ -2318,9 +2259,7 @@ export class HomePage {
         }
         break;
       case "forTrueBlock":
-        let par3 = branches[0].parentElement.getElementsByClassName(
-          "arrow dropzone"
-        );
+        let par3 = activeArrow.parentElement.getElementsByClassName("arrow dropzone");
         for (let r = 0; r < par3.length; r++) {
           if (par3[r].className.endsWith("active-arrow")) {
             act_in = r;
@@ -2328,8 +2267,8 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
-        branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
+        activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
+        activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
           const el = this.flowchart.SYMBOLS[l];
           if (el instanceof ForLoop) {
@@ -2338,7 +2277,7 @@ export class HomePage {
         }
         break;
       case "whileTrueBlock":
-        let par4 = branches[0].parentElement.getElementsByClassName(
+        let par4 = activeArrow.parentElement.getElementsByClassName(
           "arrow dropzone"
         );
         for (let r = 0; r < par4.length; r++) {
@@ -2348,8 +2287,8 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
-        branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
+        activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
+        activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
           const el = this.flowchart.SYMBOLS[l];
           if (el instanceof WhileLoop) {
@@ -2358,7 +2297,7 @@ export class HomePage {
         }
         break;
       case "doWhileTrueBlock":
-        let par5 = branches[0].parentElement.getElementsByClassName(
+        let par5 = activeArrow.parentElement.getElementsByClassName(
           "arrow dropzone"
         );
         for (let r = 0; r < par5.length; r++) {
@@ -2368,8 +2307,8 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        branches[0].parentElement.insertBefore(symbol, branches[0].nextSibling);
-        branches[0].parentElement.insertBefore(tempBranch, symbol.nextSibling);
+        activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
+        activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
           const el = this.flowchart.SYMBOLS[l];
           if (el instanceof DoWhileLoop) {
@@ -2378,28 +2317,19 @@ export class HomePage {
         }
         break;
       default:
-        let ai,
-          totalAD = 0;
-        let b1 = this.workspace.getElementsByClassName("arrow dropzone");
-
+        let ai, totalAD = 0;
+        
         symbol.addEventListener("contextmenu", (e) => {
           e.preventDefault();
           this.openSymbolsAS(e);
         });
         interact(symbol)
-          .gesturable({
-            hold: 1500,
-          })
-          .on(
-            "tap",
-            (e) =>
-              function () {
-                e.preventDefault();
-              }
-          )
+          .gesturable({ hold: 1500 })
+          .on("tap", (e) => { e.preventDefault() })
           .on("doubletap", (e) => this.openSymbolDialog(e, id))
           .on("hold", (e) => this.openSymbolsAS(e));
 
+        let b1 = this.workspace.getElementsByClassName("arrow dropzone");
         for (let l = 0; l < b1.length; l++) {
           //if (b1[l].parentElement.id == 'ifTrueBlock' || b1[l].parentElement.id == 'ifFalseBlock'){ totalAD++; }
           switch (b1[l].parentElement.id) {
@@ -2425,7 +2355,7 @@ export class HomePage {
 
         for (let i = 0; i < b1.length; i++) {
           if (b1[i].className.endsWith("active-arrow")) {
-            ai = i - totalAD;
+            ai = i; // - totalAD;
           }
         }
 
@@ -2433,7 +2363,7 @@ export class HomePage {
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
 
         // Add symbol and corresponding arrow/branch to Workspace
-        this.workspace.insertBefore(symbol, branches[0].nextSibling);
+        this.workspace.insertBefore(symbol, activeArrow.nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
 
         this.flowchart.addSymbolToFlowchart(symComponent, ai);
@@ -2441,11 +2371,9 @@ export class HomePage {
     }
 
     // Make all the arrows/branches on the Workspace inactive
-    branches = document.getElementsByClassName("arrow dropzone active-arrow");
-    for (let i = 0; i < branches.length; i++) {
-      if (branches[i].className == "arrow dropzone active-arrow") {
-        branches[i].classList.remove("active-arrow");
-      }
+    arrows = document.getElementsByClassName("arrow dropzone active-arrow");
+    for (let i = 0; i < arrows.length; i++) {
+      arrows[i].classList.remove("active-arrow");
     }
 
     if (this.popOver)
@@ -2726,7 +2654,7 @@ export class HomePage {
           sym.createDeclareSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getDeclareExpression();
@@ -2736,7 +2664,7 @@ export class HomePage {
           sym.createInputSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getInputExpression();
@@ -2746,7 +2674,7 @@ export class HomePage {
           sym.createOutputSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           let tempX = sym.getOutputExpression().replace(/`/g, '"');
@@ -2758,7 +2686,7 @@ export class HomePage {
           sym.createProcessSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getProcessExpression();
@@ -2768,7 +2696,7 @@ export class HomePage {
           sym.createCommentSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getCommentExpression();
@@ -2778,7 +2706,7 @@ export class HomePage {
           sym.createIfCaseSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getIfStatement();
@@ -2792,7 +2720,7 @@ export class HomePage {
           sym.createForLoopSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getForExpression();
@@ -2804,7 +2732,7 @@ export class HomePage {
           sym.createWhileLoopSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getWhileExpression();
@@ -2816,7 +2744,7 @@ export class HomePage {
           sym.createDoWhileLoopSymbol(dataSyms[i]);
           arrowT = document.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = document.getElementById("workspace").getElementsByClassName("symbol");
           p = i + 1;
           els[p].innerHTML = sym.getDoWhileExpression();
@@ -2855,7 +2783,7 @@ export class HomePage {
           sym.createDeclareSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getDeclareExpression();
           break;
@@ -2864,7 +2792,7 @@ export class HomePage {
           sym.createInputSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getInputExpression();
           break;
@@ -2873,7 +2801,7 @@ export class HomePage {
           sym.createOutputSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           let tempX = sym.getOutputExpression().replace(/`/g, '"');
           sym.setOutputExpression(tempX);
@@ -2884,7 +2812,7 @@ export class HomePage {
           sym.createProcessSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getProcessExpression();
           break;
@@ -2893,7 +2821,7 @@ export class HomePage {
           sym.createCommentSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getCommentExpression();
           break;
@@ -2902,7 +2830,7 @@ export class HomePage {
           sym.createIfCaseSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getIfStatement();
           tlb = els[i].parentElement.querySelector("#ifTrueBlock");
@@ -2915,7 +2843,7 @@ export class HomePage {
           sym.createForLoopSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getForExpression();
           tlb = els[i].parentElement.querySelector("#forTrueBlock");
@@ -2926,7 +2854,7 @@ export class HomePage {
           sym.createWhileLoopSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getWhileExpression();
           tlb = els[i].parentElement.querySelector("#whileTrueBlock");
@@ -2937,7 +2865,7 @@ export class HomePage {
           sym.createDoWhileLoopSymbol(dataSyms[i]);
           arrowT = loopBlock.getElementsByClassName("arrow dropzone");
           arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id, arrowT[i]);
+          this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
           els[i].innerHTML = sym.getDoWhileExpression();
           tlb = els[i].parentElement.querySelector("##doWhileTrueBlock");
