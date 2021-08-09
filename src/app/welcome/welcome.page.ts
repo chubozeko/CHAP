@@ -36,7 +36,7 @@ export class WelcomePage implements OnInit {
     let w_chapTrial = document.getElementById("w_chapTrial");
     w_chapTrial.addEventListener("click", (e) => this.openCHAPTrial(e));
 
-    this.slides = document.getElementById("coverSlides") as HTMLIonSlidesElement;
+   // this.slides = document.getElementById("coverSlides") as HTMLIonSlidesElement;
   }
 
   prevSlide() { this.slides.slidePrev(500); }
