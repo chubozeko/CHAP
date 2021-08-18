@@ -457,6 +457,13 @@ export class HomePage {
 
   async openSymbolPopUp(event) {
     if (!this.isSymbolBeingDragged) {
+      // Get the active arrows and disable them if any
+      let arrows = document.getElementsByClassName("dropzone active-arrow");
+      if (arrows.length > 0) {
+        for (let i = 0; i < arrows.length; i++) {
+          arrows[i].classList.remove("active-arrow");
+        }
+      }
       // Get target arrow and make it active
       let targetArrow = event.target || event.srcElement || event.currentTarget;
       targetArrow.classList.add("active-arrow");
@@ -475,20 +482,12 @@ export class HomePage {
           if (data.data != undefined) {
             this.addSymbol(data.data.id);
           }
-
-          // Get the active arrows and disable them if any
-          let arrows = document.getElementsByClassName("dropzone active-arrow");
-          if (arrows.length > 0) {
-            for (let i = 0; i < arrows.length; i++) {
-              arrows[i].classList.remove("active-arrow");
-            }
-          }
         } catch (error) { console.log(error); }
       });
-      // event.stopImmediatePropagation();
+      event.stopImmediatePropagation();
       return await this.popOver.present();
     }
-    // event.stopImmediatePropagation();
+    event.stopImmediatePropagation();
   }
 
   public closeSymbolPopUp(event) {
@@ -618,7 +617,6 @@ export class HomePage {
   }
 
   async openIfModal(symbol, e) {
-    //console.log(symbol);
     const modal = await this.modalC.create({
       component: IfElsePage,
       componentProps: { symbol: symbol },
@@ -643,7 +641,6 @@ export class HomePage {
   }
 
   async openWhileModal(symbol, e) {
-    console.log(symbol);
     const modal = await this.modalC.create({
       component: WhileLoopPage,
       componentProps: { symbol: symbol },
@@ -668,7 +665,6 @@ export class HomePage {
   }
 
   async openForLoopModal(symbol, e) {
-    // console.log(symbol);
     const modal = await this.modalC.create({
       component: ForLoopPage,
       componentProps: { symbol: symbol },
@@ -693,7 +689,6 @@ export class HomePage {
   }
 
   async openDoWhileModal(symbol, e) {
-    console.log(symbol);
     const modal = await this.modalC.create({
       component: DoWhileLoopPage,
       componentProps: { symbol: symbol },
@@ -1874,7 +1869,8 @@ export class HomePage {
     // Get the target symbol & make it active
     let active_sym_index, tempSym, asi;
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
-    targetSymbol.classList.add("active-symbol");
+    if (targetSymbol.classList.contains("symbol"))
+      targetSymbol.classList.add("active-symbol");
 
     // Checking the Symbol type and opening corresponding Properties Dialog Modals
     if (targetSymbol.parentElement.id == "ifTrueBlock") {
@@ -1943,7 +1939,6 @@ export class HomePage {
       }
     } else if (targetSymbol.parentElement.id == "forTrueBlock") {
       let syms = event.target.parentElement.getElementsByClassName("symbol");
-      console.log('list of ForLoop block syms: ', syms)
       for (let i = 0; i < syms.length; i++) {
         if (syms[i].classList.contains("active-symbol")) {
           asi = i;
@@ -1953,9 +1948,7 @@ export class HomePage {
       for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
         const el = this.flowchart.SYMBOLS[l];
         if (el instanceof ForLoop) {
-          console.log('forTrueBlock: ', el.trueLoopBlock)
           tempSym = el.getSymbolFromTrueBlock(asi);
-          console.log('tempSym in ForLoop block on (openSymbolDialog)', tempSym);
           if (targetSymbol.id == "s_declare") {
             this.openDeclareModal(tempSym, event);
           } else if (targetSymbol.id == "s_input") {
