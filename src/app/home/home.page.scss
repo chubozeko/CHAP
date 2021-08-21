@@ -201,7 +201,7 @@ font-weight: bolder;
 
 .if_div, .while_div, .for_div, .do_while_div{
   display: grid;
-  // grid-template-columns: repeat(5, 70px);
+   grid-template-columns: repeat(5, 70px);
   grid-template-columns: max-content 70px max-content 70px max-content;
   align-items: center;
   justify-content: center;
@@ -234,8 +234,8 @@ font-weight: bolder;
   width: max-content;
   min-height: 35px;
   height: max-content;
-  align-content: center;
-  // justify-content: center;
+align-content: center;
+  justify-content: center;
   margin: auto;
 }
 
@@ -380,6 +380,13 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   -webkit-clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
   clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
   margin: auto;
+}
+.arrowsss{
+  background: #000000;
+  -webkit-clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
+  clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
+  margin: auto;
+ float: right; 
 }
 
 #arrow_up{
