@@ -7,7 +7,7 @@
   width: 150px; 
 }
 .infoPrompt {
-   //width: 75%;
+   
    font-family: sans-serif;
 font-weight: bolder;
    color: #a00505;
@@ -20,7 +20,7 @@ font-weight: bolder;
   z-index: 1;
   left: 15%;
    min-width: max-content;
-  //padding: 2px;
+
   opacity: 0.5;
   font-size: 15px;
 }
@@ -41,7 +41,7 @@ font-weight: bolder;
 #toolbar-tooltip {
   background-color: #333333;
   color: #ddd;
-  // border: 2px solid black;
+  
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
@@ -65,15 +65,14 @@ font-weight: bolder;
   z-index: 1;
   top: 2px;
   right: 105%;
-  // left: 50%;
-  // margin-left: -60px;
+  
 }
 
 
 .s_tooltip {
   position: relative;
   display: inline-block;
-  // border-bottom: 1px dotted black;
+  
 }
 .s_tooltip .s_tooltiptext, .s_tooltiptext {
   visibility: hidden;
@@ -86,7 +85,7 @@ font-weight: bolder;
   position: absolute;
   z-index: 1;
   top: 2px;
-  //right: 105%;
+  
   left: 50%;
   margin-left: -60px;
 }
@@ -104,7 +103,7 @@ font-weight: bolder;
 .toggleConsole {
   display: none;
   margin-bottom: 0px;
- // color: seashell;
+ 
 }
 #consoleBtns {
   position: absolute;
@@ -137,7 +136,7 @@ font-weight: bolder;
    border: none;
    color: white;
    padding: 15px;
-  // background-image: url("/assets/icon/menuN.png");
+  
    text-align: center;
    text-decoration: none;
    display: inline-block;
@@ -145,7 +144,7 @@ font-weight: bolder;
    margin: 4px 2px;
    border-radius: 55%;
  
- // margin-inline-start: -50px !important;
+ 
 }
 
 .fab[mini] {
@@ -163,17 +162,14 @@ font-weight: bolder;
 }
 #symbolsList {
   display: none;
-  // display: block;
+  
   position: relative;
   resize: none;
   background-color: white;
   font-family: Consolas, monaco, monospace; 
   padding: 10px;
   width: 120px;
-  // top: 10px;
-  // bottom: 10px;
- // cursor: -webkit-grab; 
-  //cursor: grab;
+ 
 
 }
 .scrollbar {
@@ -182,7 +178,7 @@ font-weight: bolder;
   direction: rtl;
 }
 .scrollbar::-webkit-scrollbar-track {
-  //-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  
   border-radius: 10px;
   background-color: #ddd;
 }
@@ -192,14 +188,36 @@ font-weight: bolder;
 } 
 .scrollbar::-webkit-scrollbar-thumb {
   border-radius: 6px;
-  // -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  
   background-color: #333;
 }
 
 // SYMBOLS CSS
 #control_loop_list{ display: none; }
 
-.if_div, .while_div, .for_div, .do_while_div{
+.if_div{
+  display: grid;
+   grid-template-columns: repeat(5, 70px);
+  grid-template-columns: max-content 70px max-content 70px max-content;
+  align-items: center;
+  justify-content: center;
+}
+ .while_div{
+  display: grid;
+   grid-template-columns: repeat(5, 70px);
+  grid-template-columns: max-content 70px max-content 70px max-content;
+  align-items: center;
+  justify-content: center;
+}
+ .for_div {
+  display: grid;
+   grid-template-columns: repeat(6, 70px);
+  grid-template-columns: max-content 70px max-content 70px max-content;
+  align-items: center;
+  justify-content: center;
+}
+
+.do_while_div{
   display: grid;
    grid-template-columns: repeat(5, 70px);
   grid-template-columns: max-content 70px max-content 70px max-content;
@@ -225,11 +243,19 @@ font-weight: bolder;
   grid-template-columns: max-content 70px max-content 70px max-content;
 }
 
-.ifFalseBlock, .ifTrueBlock, 
-.forFalseBlock, .forTrueBlock,
-.whileFalseBlock, .whileTrueBlock,
-.doWhileFalseBlock, .doWhileTrueBlock {
-  // display: flex;
+
+.forFalseBlock, .forTrueBlock{
+ 
+    min-width: 70px;
+  width: max-content;
+  min-height: 35px;
+  height: max-content;
+align-content: center;
+  justify-content: center;
+  margin: auto;
+}
+.ifFalseBlock, .ifTrueBlock  {
+ 
   min-width: 70px;
   width: max-content;
   min-height: 35px;
@@ -239,13 +265,47 @@ align-content: center;
   margin: auto;
 }
 
-.ifFalseBlock > div, .ifTrueBlock > div, 
-.forFalseBlock > div, .forTrueBlock > div,
-.whileFalseBlock > div, .whileTrueBlock > div,
-.doWhileFalseBlock > div, .doWhileTrueBlock > div { 
+.whileFalseBlock, .whileTrueBlock
+ {
+  
+  min-width: 70px;
+  width: max-content;
+  min-height: 35px;
+  height: max-content;
+ align-content: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.doWhileFalseBlock, .doWhileTrueBlock {
+  
+  min-width: 70px;
+  width: max-content;
+  min-height: 35px;
+  height: max-content;
+  align-content: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.ifFalseBlock > div, .ifTrueBlock > div 
+{ 
   margin: auto; 
 }
 
+.forFalseBlock > div, .forTrueBlock > div
+ { 
+  margin: auto; 
+}
+
+.whileFalseBlock > div, .whileTrueBlock > div
+ { 
+  margin: auto; 
+}
+
+.doWhileFalseBlock > div, .doWhileTrueBlock > div { 
+  margin: auto; 
+}
 ion-card{
   width: 105px; height: 105px;
   padding-top: 0%; margin: 0 0 5px 0;
@@ -273,7 +333,7 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 }
 
 .arrows { 
-  // width: 70px;
+  
   width: max-content;
   min-width: 70px;
   max-width: 180px;
@@ -284,23 +344,22 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 }
 
 .symbol, .arrow{ 
-  // width: 70px;
+ 
   width: max-content;
   min-width: 70px;
   max-width: 180px;
   height: max-content;
   min-height: 35px;
   max-height: 105px;
-  // white-space: pre;
+  
   padding: 5px;
   display: flex;
   flex-wrap: wrap;
   text-align: center; 
-  // vertical-align: middle;
+  
   align-content: center;
   justify-content: center;
-  // line-height: 1.5;
-  // line-height: normal;
+  
   font-size: 10pt;
   font-weight: bold;
   font-family: Sans-serif;
@@ -309,32 +368,27 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 }
 
 .s_start, .s_stop{
-  //background: #fe547b;
+ 
   -webkit-clip-path: ellipse(50% 50% at 50% 50%);
   clip-path: ellipse(50% 50% at 50% 50%);
 
 }
 .s_declare{
   background-image: url("/assets/icon/declare.png");
-  // background-size: 70px 35px;
+  
   background-size: 100% 100%;
   -webkit-clip-path: inset(0 0 0 0);
   clip-path: inset(0 0 0 0);
-  //cursor: -webkit-grab; 
-  //cursor: grab;
+  
 }
 .s_input{
-  // background: #01c5c4;
-  // -webkit-clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
-  // clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
+  
   -webkit-clip-path: polygon(0 12.3px, 100% 0, 100% 100%, 0% 100%);
   clip-path: polygon(0 12.3px, 100% 0, 100% 100%, 0% 100%);
   padding-top: 13.5px;
 }
 .s_output{
-  //background: #b8de6f;
-  // -webkit-clip-path: polygon(25% 0, 0 50%, 25% 100%, 100% 100%, 100% 0);
-  // clip-path: polygon(25% 0, 0 50%, 25% 100%, 100% 100%, 100% 0);
+ 
   -webkit-clip-path: polygon(17.5px 0, 0 50%, 17.5px 100%, 100% 100%, 100% 0);
   clip-path: polygon(17.5px 0, 0 50%, 17.5px 100%, 100% 100%, 100% 0);
   border-radius: 0 25px 25px 0;
@@ -342,31 +396,40 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   padding: 5px;
 }
 .s_process{
-  //background: #f39233;
+  
   -webkit-clip-path: inset(0 0 0 0);
   clip-path: inset(0 0 0 0);
 }
 .s_if_case{
-  //background: #f1e189;
+  
   -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   padding: 15%;
 }
-.s_for_loop, .s_while_loop, .s_do_while_loop{
-  //background: #9C93E2;
+.s_for_loop{
+  
   -webkit-clip-path: polygon(52.5px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0);
   clip-path: polygon(52.5px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0);
-  // -webkit-clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
-  // clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
+ 
+}
+ .s_do_while_loop{
+  
+  -webkit-clip-path: polygon(52.5px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0);
+  clip-path: polygon(52.5px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0);
+ 
+}
+ .s_while_loop{
+  
+  -webkit-clip-path: polygon(52.5px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0);
+  clip-path: polygon(52.5px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0);
+ 
 }
 #s_terminator{
   font-family: sans-serif;
   font-weight: bold;
   font-size: 15px;
   color: #000000;
-  //background: #ffffff;
-  //-webkit-clip-path: circle(50% at 50% 50%); clip-path: circle(50% at 50% 50%);
-  //width: 35px; height: 35px; margin: auto;
+  
 }
 .s_comment{
   background: #dddddd;
@@ -381,12 +444,12 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
   margin: auto;
 }
-.arrowsss{
+
+.arrowfor{
   background: #000000;
   -webkit-clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
   clip-path: polygon(35% 80%, 45% 80%, 45% 0, 55% 0, 55% 80%, 65% 80%, 50% 100%);
-  margin: auto;
- float: right; 
+  // margin: auto;
 }
 
 #arrow_up{
@@ -491,7 +554,7 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   -webkit-clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
   clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%);
   width: max-content;
-  // min-width: 17.5px;
+  
 }
 
 .grabbing {cursor: -webkit-grabbing; cursor: grabbing;}
@@ -500,60 +563,9 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 
 
 @media screen and (max-width: 768px) {
-  .infoPrompt {
-     //width: 75%;
-  width: fit-content;
-  display: none;
-  justify-content: center;
-  background-color: #aaaaaa;
-  position: absolute;
-  margin-top: 10%;
-  z-index: 1;
-  left: 22.5%;
-   min-width: max-content;
-  //padding: 15px;
-  opacity: 0.5;
-  }
-  .prompttext{
-    font-size: 10px;
-    font-family: sans-serif;
-    font-weight: bold;
-    word-wrap:break-word;
-    width: 200px;
-    text-align: center;
-    //justify-content: center;
-  }
-  #fileName {
-    width: 125px;
-    font-size: 10px;
   
-    background-color: black;
-    color: #ddd;
-    //text-align: start;
-   // text-indent: 5px;
-    border-radius: 6px;
-    //padding: 5px 0;
-    //height: 60%;
-   // min-width: auto;
-   // max-width: 350px;
-   height: fit-content;
-  }
-  #fabSymbols{
-    padding: 5px; 
-    font-size: 10pt;
-    font-weight: bold;
-    font-family: Sans-serif;
-    width: 90px; height: 50px;
-    background-color: rgba(255, 255, 255, 0);
-    cursor: -webkit-grab; cursor: grab;
-  
-  }
-  .symbols-div{ 
-    width: 100%; height: auto;
-    background-color: rgba(187, 195, 199, 0.904);
-    overflow-x: hidden; margin: 0;
     
-  }
+  
   /////////////////////////////////////////////////////////////////////////////////////////@at-root
 
 }
