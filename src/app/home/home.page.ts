@@ -938,9 +938,9 @@ export class HomePage {
         symbol.offsetWidth +
         "px max-content " +
         trueBlock.offsetWidth +
-        "px";
+        "auto";
       whileDiv.style.gridTemplateColumns = gridStr;
-      symbol.style.margin = "0px";
+      symbol.style.margin = "auto";
       symbol.style.clipPath =
         "polygon(" +
         (symbol.offsetWidth - 17.5) +
@@ -997,9 +997,9 @@ export class HomePage {
         symbol.offsetWidth +
         "px max-content " +
         trueBlock.offsetWidth +
-        "px";
+        "auto";
       doWhileDiv.style.gridTemplateColumns = gridStr;
-      symbol.style.margin = "0px";
+      symbol.style.margin = "auto";
       symbol.style.clipPath =
         "polygon(" +
         (symbol.offsetWidth - 17.5) +
