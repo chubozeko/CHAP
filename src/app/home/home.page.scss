@@ -196,9 +196,9 @@ font-weight: bolder;
 #control_loop_list{ display: none; }
 
 .if_div{
-  display: grid;
-   grid-template-columns: repeat(5, 70px);
-  grid-template-columns: max-content 70px max-content 70px max-content;
+  display: flex;
+  //  grid-template-columns: repeat(5, 70px);
+  // grid-template-columns: max-content 70px max-content 70px max-content;
   align-items: center;
   justify-content: center;
 }
@@ -227,7 +227,7 @@ font-weight: bolder;
 
 // If, While, For, Do While DIVS
 .if_div {
-  display: grid;
+  display: flex;
   grid-template-columns: max-content 70px max-content 70px max-content;
 }
 .while_div {
