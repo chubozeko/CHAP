@@ -762,9 +762,9 @@ export class HomePage {
             ifSymbol.offsetWidth +
             "px max-content " +
             trueBlock.offsetWidth +
-            "auto";
+            "px";
           ifDiv.style.gridTemplateColumns = gridStr;
-          trueBlock.style.margin = "auto";
+          trueBlock.style.margin = "0px";
           falseBlock.style.margin = "auto";
         } else if (falseBlock.offsetWidth > trueBlock.offsetWidth) {
           gridStr =
@@ -773,10 +773,10 @@ export class HomePage {
             ifSymbol.offsetWidth +
             "px max-content " +
             falseBlock.offsetWidth +
-            "auto";
+            "px";
           ifDiv.style.gridTemplateColumns = gridStr;
           trueBlock.style.margin = "auto";
-          falseBlock.style.margin = "auto";
+          falseBlock.style.margin = "0px";
         } else {
           gridStr =
             falseBlock.offsetWidth +
@@ -784,10 +784,10 @@ export class HomePage {
             ifSymbol.offsetWidth +
             "px max-content " +
             trueBlock.offsetWidth +
-            "auto";
+            "px";
           ifDiv.style.gridTemplateColumns = gridStr;
-          trueBlock.style.margin = "auto";
-          falseBlock.style.margin = "auto";
+          trueBlock.style.margin = "0px";
+          falseBlock.style.margin = "0px";
         }
       }
       this.resizeIfCaseArrows(symbol.parentElement, true);
@@ -808,7 +808,7 @@ export class HomePage {
           symbol.offsetWidth +
           "px max-content " +
           trueBlock.offsetWidth +
-          "auto";
+          "px";
       } else if (trueBlock.offsetWidth < falseBlock.offsetWidth) {
         gridStr =
           falseBlock.offsetWidth +
@@ -816,7 +816,7 @@ export class HomePage {
           symbol.offsetWidth +
           "px max-content " +
           falseBlock.offsetWidth +
-          "auto";
+          "px";
       } else {
         gridStr =
           falseBlock.offsetWidth +
@@ -824,10 +824,10 @@ export class HomePage {
           symbol.offsetWidth +
           "px max-content " +
           trueBlock.offsetWidth +
-          "auto";
+          "px";
       }
       ifDiv.style.gridTemplateColumns = gridStr;
-      symbol.style.margin = "auto";
+      symbol.style.margin = "0px";
       this.resizeIfCaseArrows(symbol, false);
     }
   }
@@ -857,10 +857,10 @@ export class HomePage {
           forSymbol.offsetWidth +
           "px max-content " +
           trueBlock.offsetWidth +
-          "auto";
+          "px";
         forDiv.style.gridTemplateColumns = gridStr;
-        trueBlock.style.margin = "auto";
-        falseBlock.style.margin = "auto";
+        trueBlock.style.margin = "0px";
+        falseBlock.style.margin = "0px";
       }
       this.resizeForLoopArrows(symbol.parentElement, true);
     } else if (symbol.parentElement.classList.contains("for_div")) {
