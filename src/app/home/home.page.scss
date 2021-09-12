@@ -210,7 +210,7 @@ font-weight: bolder;
   justify-content: center;
 }
  .for_div {
-  display: grid;
+  display: flex;
    grid-template-columns: repeat(6, 70px);
   grid-template-columns: max-content 70px max-content 70px max-content;
   align-items: center;
@@ -231,12 +231,12 @@ font-weight: bolder;
   grid-template-columns: max-content 70px max-content 70px max-content;
 }
 .while_div {
-  display: grid;
+  display: flex;
   grid-template-columns: max-content 70px max-content 70px max-content;
 }
 .for_div {
-  display: grid;
-  grid-template-columns: max-content 70px max-content 70px max-content;
+  display: flex;
+ // grid-template-columns: max-content 70px max-content 70px max-content;
 }
 .do_while_div {
   display: grid;

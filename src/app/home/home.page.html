@@ -211,8 +211,34 @@
 
       
       <li>
-        <div class="for_div">
-          <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
+        <table border="1px;"  class="for_div" >
+     
+            <tr>
+              <td > <div id="s_for_loop" class="symbol for_sym s_for_loop" (click)="addSymbol('s_for_loop')"
+                [style.backgroundColor]="setColor('s_for_loop')">For</div></td>
+                <td><div id="arrow_right" class="arrow"> </div></td>
+              <td>Next</td>
+            </tr>
+            <tr>
+              <td>
+                <div id="arrows_line_up" class="arrows" style="height: 100%;margin-block-end: auto; "></div>
+               
+              </td>
+              <td ></td>
+              <td>  <div id="forTrueBlock" class="forTrueBlock">
+            
+                <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+              </div>
+            </td>
+            
+          </tr>
+          <tr>
+            <td> <div class="blank_arrow_left dropzone" style=" height: 100%;"></div>
+              <div id="arrows_down_down_right" class="arrows" style="height: 100%; "></div></td>
+              <td><div id="arrow_horizontal" class="arrows" ></div></td>
+          </tr>
+          </table>
+          <!-- <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div id="s_for_loop" class="symbol for_sym s_for_loop" (click)="addSymbol('s_for_loop')"
             [style.backgroundColor]="setColor('s_for_loop')">For</div>
@@ -229,7 +255,7 @@
           <div></div>
           <div id="arrows_line_up" class="arrows" style="height: 100%;"></div>
           <div></div>
-          <!-- Problem is Here -->
+          
           <div id="forTrueBlock" class="forTrueBlock">
             
             <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
@@ -254,11 +280,37 @@
           <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
             Done</div>
           <div></div>
-          <div></div>
-        </div>
+          <div></div> -->
+       
       </li>
       <li>
-        <div class="while_div">
+        <table border="1px;"  class="while_div" >
+     
+          <tr>
+            <td >  <div id="s_while_loop" class="symbol while_sym s_while_loop" (click)="addSymbol('s_while_loop')"
+              [style.backgroundColor]="setColor('s_while_loop')">While</div></td>
+              <td><div id="arrow_right" class="arrow"> </div></td>
+            <td>Next</td>
+          </tr>
+          <tr>
+            <td>
+              <div id="arrows_line_up" class="arrows" style="height: 100%; "></div>
+             
+            </td>
+            <td ></td>
+            <td>   <div id="whileTrueBlock" class="whileTrueBlock" >
+              <!-- class="whileTrueBlock"  For solution of drag& drop issue its removed near from id="whileTrueBlock" -->
+              <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+            </div>
+          </td>
+          </tr>
+          <tr>
+            <td> <div class="blank_arrow_left dropzone" style=" height: 100%;"></div>
+              <div id="arrows_down_down_right" class="arrows" style="height: 100%; "></div></td>
+              <td><div id="arrow_horizontal" class="arrows" ></div></td>
+          </tr>
+        </table>
+        <!-- <div class="while_div">
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div id="s_while_loop" class="symbol while_sym s_while_loop" (click)="addSymbol('s_while_loop')"
@@ -277,7 +329,7 @@
           <div id="arrows_line_up" class="arrows" style="height: 100%;"></div>
           <div></div>
           <div id="whileTrueBlock" class="whileTrueBlock" >
-            <!-- class="whileTrueBlock"  For solution of drag& drop issue its removed near from id="whileTrueBlock"-->
+            class="whileTrueBlock"  For solution of drag& drop issue its removed near from id="whileTrueBlock"
             <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
           </div>
 
@@ -301,7 +353,7 @@
             False</div>
           <div></div>
           <div></div>
-        </div>
+        </div> -->
       </li>
       <li>
         <div class="do_while_div">
