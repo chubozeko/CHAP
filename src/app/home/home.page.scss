@@ -196,7 +196,7 @@ font-weight: bolder;
 #control_loop_list{ display: none; }
 
 .if_div{
-  display: flex;
+  display: grid;
   //  grid-template-columns: repeat(5, 70px);
   // grid-template-columns: max-content 70px max-content 70px max-content;
   align-items: center;
@@ -210,13 +210,20 @@ font-weight: bolder;
   justify-content: center;
 }
  .for_div {
-  display: flex;
+  display: grid;
  //  grid-template-columns: repeat(6, 70px);
  // grid-template-columns: max-content 70px max-content 70px max-content;
   align-items: center;
   justify-content: center;
 }
-
+.tabif{
+  display: flex;
+  //  grid-template-columns: repeat(5, 70px);
+  // grid-template-columns: max-content 70px max-content 70px max-content;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+}
 .do_while_div{
   display: grid;
    grid-template-columns: repeat(5, 70px);
@@ -227,16 +234,16 @@ font-weight: bolder;
 
 // If, While, For, Do While DIVS
 .if_div {
-  display: flex;
+  display: grid;
   grid-template-columns: max-content 70px max-content 70px max-content;
 }
 .while_div {
-  display: flex;
-  //grid-template-columns: max-content 70px max-content 70px max-content;
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
 }
 .for_div {
-  display: flex;
- // grid-template-columns: max-content 70px max-content 70px max-content;
+  display: grid;
+  grid-template-columns: max-content 70px max-content 70px max-content;
 }
 .do_while_div {
   display: grid;
