@@ -152,9 +152,15 @@ export class Flowchart {
       message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
       inputs: [
         {
-         
-          name: "inputText",
-          type: "text"
+          
+          name: 'inputText',
+                         
+         placeholder: '❗ Enter Input Value To Here ❗',
+                  
+                                     
+                   type: 'text',
+                 
+          
         }
       ],
       buttons: [
