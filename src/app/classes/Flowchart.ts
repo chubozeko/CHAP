@@ -143,7 +143,7 @@ export class Flowchart {
   }
 
   declareVariable(declareSymbol: Declare, pos: number) {
-    this.variables.vars.splice(pos, 0, declareSymbol.parseDeclareExp());
+    this.variables.vars.splice(pos, 0, declareSymbol.parseDeclareExp(this.variables.vars));
   }
 
   async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
@@ -215,10 +215,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let declareSym = this.tempSymbols[i] as Declare;
-            let vars = await declareSym.parseDeclareExp();
-            for (let a = 0; a < vars.length; a++) {
-              this.variables.vars.splice(this.variables.vars.length, 0, vars[a]);
-            }
+            this.variables.vars = await declareSym.parseDeclareExp(this.variables.vars);
           }
         }
       }

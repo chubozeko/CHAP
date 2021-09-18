@@ -132,7 +132,7 @@ export class LoopBlock {
   }
 
   declareVariable(declareSymbol: Declare, pos: number) {
-    this.variables.splice(pos, 0, declareSymbol.parseDeclareExp());
+    this.variables.splice(pos, 0, declareSymbol.parseDeclareExp(this.variables));
   }
 
   async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
@@ -213,10 +213,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let declareSym = this.tempSymbols[i] as Declare;
-            let vars = await declareSym.parseDeclareExp();
-            for (let a = 0; a < vars.length; a++) {
-              this.variables.splice(this.variables.length, 0, vars[a]);
-            }
+            this.variables = await declareSym.parseDeclareExp(this.variables);
           }
         }
       }

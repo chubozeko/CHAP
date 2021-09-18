@@ -11,12 +11,17 @@ export class Declare {
     isArray: boolean = false;
     arraySize: number = 0;
     declareExpression: string = '';
-
     declareVar: any;
-
     declareSymbol: any;
 
+    chapConsole: HTMLDivElement;
+
     constructor() { }
+
+    consoleLog(textColourClass, lineOutput) {
+        this.chapConsole = document.getElementById("console") as HTMLDivElement;
+        this.chapConsole.innerHTML += `<span class="` + textColourClass + `"> ` + lineOutput + "</span> \n";
+    }
 
     createDeclareSymbol(declareSym: any) {
         this.text = declareSym.text;
@@ -54,9 +59,8 @@ export class Declare {
         return this.declareExpression;
     }
 
-    async parseDeclareExp() {
-        let vars: Variable[] = [];
-
+    async parseDeclareExp(variables) {
+        // let vars: Variable[] = [];
         let varNames = this.getVariableName().split(",");
         for (let i = 0; i < varNames.length; i++) {
             let var1 = new Variable();
@@ -83,10 +87,23 @@ export class Declare {
             var1.setName(varNames[i].trim());
             var1.setDataType(this.getDataType());
             var1.setValue(undefined);
-            vars.splice(vars.length, 0, var1);
+
+            let doesVariableExist = false;
+            for(let j=0; j<variables.length; j++) {
+                if (var1.getName() == variables[j].getName()) {
+                    doesVariableExist = true;
+                }
+            }
+            if (!doesVariableExist) {
+                variables.splice(variables.length, 0, var1);
+            } else {
+                // Show Duplicate Definition warning (comment out the next 2 lines to hide them)
+                let extraInfo = "The duplicate variable will be overwritten by the most recent declaration.";
+                this.consoleLog("errorWAlert", "WARNING CODE D-01: Duplicate definition of variable '" + var1.getName() + "' at 'DECLARE' symbol.\n" + extraInfo);
+            }
         }
 
-        return vars;
+        return variables;
     }
 
     pseudoCode() { return '\tDeclare ' + this.getDeclareExpression() + '\n'; }

@@ -95,7 +95,7 @@ export class Process {
         } else {
           this.consoleLog.className = "errorAlert";
           this.consoleLog.innerHTML += "ERROR CODE P-02: Variable " + tempVal + " is not declared at 'PROCESS'" + "\n";
-          this.consoleLog.innerHTML +="SOLUTION TIP: Please use DOUBLE QUOTATION Mark at PROCESS SYMBOL to Display Declared String Value !"
+          this.consoleLog.innerHTML += "SOLUTION TIP: Please use DOUBLE QUOTATION Mark at PROCESS SYMBOL to Display Declared String Value !"
           return false;
         }
       }
@@ -108,6 +108,7 @@ export class Process {
         newExpression += values[j] + operators[j];
       }
       newExpression += values[values.length - 1];
+      console.log("Process newExpression for mathjs: " + newExpression);
       // Evaluate the expression with math.js and return the result
       result = math.evaluate(newExpression);
     } else {
