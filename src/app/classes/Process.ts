@@ -66,22 +66,24 @@ export class Process {
       }
       // Parse values[i] to desired data type
       let tempVal = values[i];
-      switch (dataType) {
-        case 'Integer':
-          values[i] = parseInt(values[i], 10);
-          break;
-        case 'Real':
-          values[i] = parseFloat(values[i]);
-          break;
-        case 'String':
-          values[i] = this.parseString(values[i]);
-          break;
-        case 'Boolean':
-          if (values[i] == "true") values[i] = true;
-          else if (values[i] == "false") values[i] = false;
-          else values[i] = undefined;
-          break;
-        default: break;
+      if (values[i] != '') {
+        switch (dataType) {
+          case 'Integer':
+            values[i] = parseInt(values[i], 10);
+            break;
+          case 'Real':
+            values[i] = parseFloat(values[i]);
+            break;
+          case 'String':
+            values[i] = this.parseString(values[i]);
+            break;
+          case 'Boolean':
+            if (values[i] == "true") values[i] = true;
+            else if (values[i] == "false") values[i] = false;
+            else values[i] = undefined;
+            break;
+          default: break;
+        }
       }
 
       if ((values[i] == null || values[i] == undefined) && isNaN(values[i])) {
