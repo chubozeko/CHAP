@@ -89,7 +89,7 @@ export class Declare {
             var1.setValue(undefined);
 
             let doesVariableExist = false;
-            for(let j=0; j<variables.length; j++) {
+            for (let j=0; j<variables.length; j++) {
                 if (var1.getName() == variables[j].getName()) {
                     doesVariableExist = true;
                 }
@@ -98,8 +98,8 @@ export class Declare {
                 variables.splice(variables.length, 0, var1);
             } else {
                 // Show Duplicate Definition warning (comment out the next 2 lines to hide them)
-                let extraInfo = "The duplicate variable will be overwritten by the most recent declaration.";
-                this.consoleLog("errorWAlert", "WARNING CODE D-01: Duplicate definition of variable '" + var1.getName() + "' at 'DECLARE' symbol.\n" + extraInfo);
+                // let extraInfo = "The duplicate variable will be overwritten by the most recent declaration.";
+                // this.consoleLog("errorWAlert", "WARNING CODE D-01: Duplicate definition of variable '" + var1.getName() + "' at 'DECLARE' symbol.\n" + extraInfo);
             }
         }
 
