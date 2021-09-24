@@ -25,17 +25,17 @@ font-weight: bolder;
   font-size: 15px;
 }
 
-#fileName {
-  background-color: black;
-  color: #ddd;
-  text-align: start;
-  text-indent: 5px;
-  border-radius: 6px;
-  padding: 5px 0;
-  height: 60%;
-  min-width: auto;
-  max-width: 350px;
-}
+.filenametxt{
+  background-color:black;
+   width: 300px;
+   height: 60%;
+   font-size: 10px;
+   border-width: 1px;
+   color:white;
+   position:sticky;
+  
+   resize: none;
+ }
 
 // Tooltips
 #toolbar-tooltip {
@@ -567,12 +567,18 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 .subnavhide{
   display:none;
 }
+.dropdownmenuhide{
+  display:none;
+}
 
 .grabbing {cursor: -webkit-grabbing; cursor: grabbing;}
 .grab {cursor: -webkit-grab; cursor: grab;}
 .pointer {cursor: pointer;}
 
-
+ion-modal{
+  --width: 150%;
+ --height: 100%;
+}
 @media screen and (max-width: 768px) {
 
 .tooltip {
@@ -580,9 +586,14 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
   display: none;
   border-bottom: 1px dotted black;
 }
+.dropdownmenuhide{
+  display:none;
+}
 
-
-
+.iconsize{
+  width: 20px;
+  height: 20px;
+}
 
 .subnav {
    float: left;
@@ -608,11 +619,12 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 
 .subnav-content {
   display: none;
- 
+  width: fit-content;
+  height: fit-content;
  
   background-color: black;
-  width: 100%;
-  z-index: 1;
+  
+  z-index: 1px;
 float: left;
 }
 
@@ -621,10 +633,11 @@ float: left;
 .subnav-content a:hover {
   background-color: #eee;
   color: black;
+  margin-top: 60px;
 }
 
 .subnav:hover .subnav-content {
-  display: flex;
+  display: inline-block;
   width: 100%;
   justify-content: center;
   text-align: center;
@@ -1136,7 +1149,7 @@ ion-row{ float: left; overflow-y: hidden; padding: 0; }
 .infoPrompt {
    
    font-family: sans-serif;
-font-weight: bolder;
+   font-weight: bolder;
    color: #a00505;
   width: fit-content;
   display: none;
@@ -1152,22 +1165,112 @@ font-weight: bolder;
   font-size: 15px;
 }
 
-#fileName {
-  background-color: black;
-  color: #ddd;
-  text-align: start;
-  text-indent: 5px;
-  border-radius: 6px;
-  padding: 5px 0;
-  height: 60%;
-  min-width: auto;
-  max-width: 350px;
+
+.filenametxt{
+ background-color:black;
+ width: fit-content;
+ height: fit-content;
+  font-size: 10px;
+  border-width: 1px;
+  color:white;
+  position:sticky;
+  float: initial;
 }
-
-
-}
-
 ion-modal{
   --width: 150%;
  --height: 100%;
+}
+}
+@media only screen and (max-width: 600px) {
+  ion-modal{
+    --width: 150%;
+   --height: 100%;
+  }
+
+  .filenametxt{
+    background-color:black;
+     width: fit-content;
+     height: fit-content;
+     font-size: 9px;
+     border-width: 1px;
+     color:white;
+     position:sticky;
+     float: left;
+   }
+   .iconsize{
+    width: 15px;
+    height: 15px;
+  }
+  
+  
+  .subnavhide{
+    display:none;
+  }
+  .drpsub {
+    //float: left;
+   overflow: auto;
+   display: inline-block;
+ }
+ 
+ .drpsub .drpbtn {
+   font-size: 16px;  
+   border: none;
+   outline: none;
+   color: white;
+  
+   background-color: inherit;
+   font-family: inherit;
+   margin: 0;
+ }
+ 
+ .drpbar a:hover, .drpbar:hover .drpbtn {
+   background-color:black;
+   float: right;
+ }
+ 
+ .drp-content {
+   display: none;
+    width: fit-content;
+    height: fit-content;
+  
+   background-color: black;
+   
+   z-index: 1px;
+   justify-content: center;
+   text-align: center;
+   align-items: centers;
+ }
+ 
+ 
+ 
+ .drp-content a:hover {
+   background-color: #eee;
+   color: black;
+   margin-top: 60px;
+ }
+ 
+ .drpsub:hover .drp-content {
+   display: flex;
+  // width: fit-content;
+  //  justify-content: center;
+  //  text-align: center;
+   
+   
+ }
+ .drpbar {
+   overflow: auto;
+   background-color: #333; 
+ }
+ 
+ .drpbar a {
+  
+   font-size: 16px;
+   color: white;
+   text-align: center;
+  // padding: 14px 16px;
+   text-decoration: none;
+ }
+ .removebullets{
+  list-style-type: none;
+ }
 }
