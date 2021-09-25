@@ -166,13 +166,13 @@ li a:hover{ color: #039be5; }
 #btn_goOnline:hover, #btn_backToWelcome:hover { color: #ddd; }
 
 textarea{ 
-  position: absolute;
+ /* position: absolute;
   justify-content: baseline;
     width: 100%; padding: 5px; float: right; 
     background-color: #333;
      
     font-family: sans-serif; 
-    resize: none; white-space: pre-wrap;/* Resize Edilme Açıla Bilir*/
+    resize: none; white-space: pre-wrap;Resize Edilme Açıla Bilir*/
   }
 
 /* Symbol Pop Up (.popover-content)  Değişti 200 dü*/
@@ -230,11 +230,13 @@ textarea{
     font-weight: bold;
     font-size: 20px;
     color:crimson;
+    width: fit-content;
 }
 .errorAlert{
     font-family: sans-serif;
     font-weight: bold;
    color:crimson;
+   width: fit-content;
 }
 .noerrorAlert{
     font-family: sans-serif;
@@ -245,4 +247,70 @@ textarea{
     font-family: sans-serif;
     font-weight: bold;
    color:gold;
+   width: fit-content;
+}
+@media screen and (max-width: 768px) {
+    .aalert_input{
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    border-width: 45px;
+    border-color: black;
+    border-inline-start-color: black;
+}
+.alertTitle{
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color:crimson;
+}
+.errorAlert{
+    font-family: sans-serif;
+    font-weight: bold;
+   color:crimson;
+   font-size: 12px;
+   word-wrap: normal;
+   width: fit-content;
+}
+.noerrorAlert{
+    font-family: sans-serif;
+    font-size: 12px;
+   color: white;
+   font-weight: bold;
+}
+.errorWAlert{
+    font-family: sans-serif;
+    font-weight: bold;
+   color:gold;
+   font-size: 12px;
+   word-wrap: normal;
+   width: fit-content;
+}
+}
+@media only screen and (max-width: 600px) {
+    .errorAlert{
+        font-family: sans-serif;
+        font-weight: bold;
+       color:crimson;
+       font-size: 12px;
+       word-wrap: normal;
+       width: fit-content;
+    }
+    .noerrorAlert{
+        font-family: sans-serif;
+        font-size: 12px;
+       color: white;
+       font-weight: bold;
+       width: fit-content;
+       overflow-x: scroll;
+    }
+    .errorWAlert{
+        font-family: sans-serif;
+        font-weight: bold;
+       color:gold;
+       font-size: 12px;
+       word-wrap: normal;
+       width: fit-content;
+       overflow-x: scroll;
+    }
 }
