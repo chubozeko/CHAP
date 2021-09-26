@@ -288,6 +288,20 @@ textarea{
 }
 }
 @media only screen and (max-width: 600px) {
+    .aalert_input{
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 13px;
+        border-width: 45px;
+        border-color: black;
+        border-inline-start-color: black;
+    }
+    .alertTitle{
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 13px;
+        color:crimson;
+    }
     .errorAlert{
         font-family: sans-serif;
         font-weight: bold;
