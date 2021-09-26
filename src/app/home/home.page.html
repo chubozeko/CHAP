@@ -8,9 +8,7 @@
   </div>
 </div>
 
-<ion-header>
- 
-</ion-header>
+<ion-header></ion-header>
 
 <ion-toolbar color="primary">
 
@@ -21,12 +19,9 @@
     <ion-button>
       <ion-img style="width: 32px; height: 32px;" src="./assets/icon/chap_logo.png"></ion-img>
     </ion-button>
-  
     <!-- </ion-buttons> -->
-
     <ion-input type="text"  id="fileName" class="filenametxt" placeholder="Untitled Project" value="{{fileName}}" ></ion-input>
     <!-- id="" -->
-
     <!-- Menu Toolbar Buttons -->
     <!-- <ion-buttons slot="end"> -->
    
@@ -43,8 +38,6 @@
       </ion-button>
       <span class="tooltiptext" style="width: 140px;">Generate Code</span>
     </div>
-
-   
 
     <div class="tooltip">
       <ion-button (click)="clearWorkspaceAlert()">
@@ -75,17 +68,14 @@
       </ion-button>
       <span class="tooltiptext" style="width: 120px;">Save Project</span>
     </div>
-
-   
    
   </ion-buttons>
+
   <ion-buttons slot="end">
     <div class="navbar">
-      <div class="subnav subnavhide">
-        
-        <ion-button class="subnavbtn" style=" float: right;">Tools </ion-button>
+      <div class="subnav subnavhide"> 
+        <ion-button class="subnavbtn" style=" float: right;"> Tools </ion-button>
         <div class="subnav-content">
-         
           <ion-button (click)="debugProgram()">
             <ion-icon name="play" class="iconsize" color="success"></ion-icon>
           </ion-button>
@@ -107,99 +97,63 @@
           <ion-button (click)="openTutorialPage()">
             <ion-icon slot="icon-only" name="help-circle" class="iconsize" style="color: #C180A3;"></ion-icon>
           </ion-button>
-  
-         
         </div>
       </div>
     </div>
-    
 
-
-
-
-
-
-    <div class="drpbar"  >
+    <div class="drpbar">
       <div class="drpsub dropdownmenuhide">
-        
-        <ion-button class="drpbtn" style="float: right;" >
-       Tools 
-        </ion-button>
+        <ion-button class="drpbtn" style="float: right;" > Tools </ion-button>
         <div class="drp-content" style="float:right; " >
-         <ul class="removebullets">
-           <li style="align-items: center;">
-            <ion-button (click)="debugProgram()">
-              <ion-icon name="play" class="iconsize" color="success"></ion-icon>
-            </ion-button>
-           </li>
-           <li>
-            <ion-button (click)="generatePseudoCode()">
-              <ion-icon slot="icon-only" name="code" class="iconsize"style="color: #AFF3CA;"></ion-icon>
-            </ion-button>
-           </li>
-           <li>
-            <ion-button (click)="clearWorkspaceAlert()">
-              <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
-            </ion-button>
-           </li>
-           <li>
-            <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
-              <ion-icon slot="icon-only" name="add-circle-outline" class="iconsize"  style="color: #54CBC9;"></ion-icon>
-            </ion-button>
-           </li>
-           <li>
-            <ion-button (click)="openProjectOptions()">
-              <ion-icon slot="icon-only" class="iconsize" name="folder-open" color="warning"></ion-icon>
-            </ion-button>
-           </li>
-           <li>
-            <ion-button (click)="saveProjectOptions()">
-              <ion-icon slot="icon-only" name="save"  class="iconsize" style="color: #4c8dff;"></ion-icon>
-            </ion-button>
-           </li>
-           <li>
-            <ion-button (click)="openTutorialPage()">
-              <ion-icon slot="icon-only" name="help-circle" class="iconsize" style="color: #C180A3;"></ion-icon>
-            </ion-button>
-           </li>
-
-         </ul>
-         
-          
-         
-          
-          
-         
-        
-  
-         
+          <ul class="removebullets">
+            <li style="align-items: center;">
+              <ion-button (click)="debugProgram()">
+                <ion-icon name="play" class="iconsize" color="success"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="generatePseudoCode()">
+                <ion-icon slot="icon-only" name="code" class="iconsize"style="color: #AFF3CA;"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="clearWorkspaceAlert()">
+                <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
+                <ion-icon slot="icon-only" name="add-circle-outline" class="iconsize"  style="color: #54CBC9;"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="openProjectOptions()">
+                <ion-icon slot="icon-only" class="iconsize" name="folder-open" color="warning"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="saveProjectOptions()">
+                <ion-icon slot="icon-only" name="save"  class="iconsize" style="color: #4c8dff;"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="openTutorialPage()">
+                <ion-icon slot="icon-only" name="help-circle" class="iconsize" style="color: #C180A3;"></ion-icon>
+              </ion-button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
     <div class="tooltip">
       <ion-button (click)="openTutorialPage()">
         <ion-icon slot="icon-only" name="help-circle" style="color: #C180A3;"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 80px;">Tutorial</span>
-      
-  </div>
+    </div>
   
   </ion-buttons>
-
-  
   
 </ion-toolbar>
 
@@ -284,31 +238,28 @@
               True</div>
             <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
           </div>
-<table class="tabif">
-  <tr>
-    <td>
-      <div id="ifFalseBlock" class="ifFalseBlock">
-      <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
-    </div>
-  </td>
-   
-    </tr>
-</table>
 
-        
+          <table class="tabif">
+            <tr>
+              <td>
+                <div id="ifFalseBlock" class="ifFalseBlock">
+                  <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
           <div></div>
           <div></div>
           <div></div>
-         <table class="tabif">
-           <tr>
-             <td>
-              <div id="ifTrueBlock" class="ifTrueBlock">
-                <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
-              </div>
-             </td>
-           </tr>
-         </table>
-        
+          <table class="tabif">
+            <tr>
+              <td>
+                <div id="ifTrueBlock" class="ifTrueBlock">
+                  <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
 
           <div class="arrowPiece left">
             <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
@@ -329,15 +280,9 @@
           </div>
         </div>
       </li>
-
-
-
-
-
-
       
       <li>
-       <div class="for_div">
+        <div class="for_div">
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div id="s_for_loop" class="symbol for_sym s_for_loop" (click)="addSymbol('s_for_loop')"
@@ -355,17 +300,15 @@
           <div></div>
           <div id="arrows_line_up" class="arrows" style="height: 100%;"></div>
           <div></div>
-         <table class="tabif">
-           <tr>
-             <td>
-              <div id="forTrueBlock" class="forTrueBlock">
-            
-                <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
-              </div>
-             </td>
-           </tr>
-         </table> 
-          
+          <table class="tabif">
+            <tr>
+              <td>
+                <div id="forTrueBlock" class="forTrueBlock">
+                  <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+                </div>
+              </td>
+            </tr>
+          </table> 
 
           <div></div>
           <div></div>
@@ -386,12 +329,12 @@
           <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
             Done</div>
           <div></div>
-          <div></div> 
+          <div></div>
         </div>
       </li>
       <li>
+
         <!-- <table border="1px;"  class="while_div" >
-     
           <tr>
             <td >  <div id="s_while_loop" class="symbol while_sym s_while_loop" (click)="addSymbol('s_while_loop')"
               [style.backgroundColor]="setColor('s_while_loop')">While</div></td>
@@ -416,7 +359,8 @@
               <td><div id="arrow_horizontal" class="arrows" ></div></td>
           </tr>
         </table> -->
-       <div class="while_div">
+
+        <div class="while_div">
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
           <div id="s_while_loop" class="symbol while_sym s_while_loop" (click)="addSymbol('s_while_loop')"
@@ -445,7 +389,6 @@
             </tr>
           </table>
          
-
           <div></div>
           <div></div>
           <div class="arrowPiece bottom_center" style="grid-template-columns: 0px 70px 0px;">
@@ -468,6 +411,7 @@
           <div></div>
         </div>
       </li>
+
       <li>
         <div class="do_while_div">
           <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
@@ -500,7 +444,6 @@
               </td>
             </tr>
           </table>
-          
 
           <div></div>
           <div></div>

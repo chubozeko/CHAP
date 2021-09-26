@@ -2042,7 +2042,7 @@ export class HomePage {
       for (let i = 0; i < syms.length; i++) {
         if (syms[i].parentElement.id == "ifTrueBlock" || syms[i].parentElement.id == "ifFalseBlock" || 
         syms[i].parentElement.id == "forTrueBlock" || syms[i].parentElement.id == "whileTrueBlock" || 
-        syms[i].parentElement.id == "forTrueBlock")
+        syms[i].parentElement.id == "doWhileTrueBlock")
         { nrOfLoopBlockSyms++; }
         else if (syms[i].classList.contains("active-symbol")) {
           active_sym_index = (i-1) - nrOfLoopBlockSyms;
