@@ -10,7 +10,7 @@
 
 <ion-header></ion-header>
 
-<ion-toolbar color="primary">
+<ion-toolbar color="primary" class="navbar drpbar">
 
   <ion-buttons slot="start">
     <ion-button menuToggle="right" style="background-color: #333;" (click)="openMenu()">
@@ -72,7 +72,7 @@
   </ion-buttons>
 
   <ion-buttons slot="end">
-    <div class="navbar">
+    <!-- <div class="navbar"> -->
       <div class="subnav subnavhide"> 
         <ion-button class="subnavbtn" style=" float: right;"> Tools </ion-button>
         <div class="subnav-content">
@@ -99,9 +99,9 @@
           </ion-button>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
 
-    <div class="drpbar">
+    <!-- <div class="drpbar"> -->
       <div class="drpsub dropdownmenuhide">
         <ion-button class="drpbtn" style="float: right;" > Tools </ion-button>
         <div class="drp-content" style="float:right; " >
@@ -144,7 +144,7 @@
           </ul>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
 
     <div class="tooltip">
       <ion-button (click)="openTutorialPage()">
