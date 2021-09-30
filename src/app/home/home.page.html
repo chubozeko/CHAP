@@ -40,7 +40,8 @@
     </div>
 
     <div class="tooltip">
-      <ion-button (click)="clearWorkspaceAlert()">
+      <ion-button  (click)="clearWorkspaceAlert()"  >
+        <!-- -->
         <ion-icon slot="icon-only"  name="close" color="danger"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 140px;">Clear Workspace</span>
@@ -72,79 +73,7 @@
   </ion-buttons>
 
   <ion-buttons slot="end">
-    <div class="navbar">
-      <div class="subnav subnavhide"> 
-        <ion-button class="subnavbtn" style=" float: right;"> Tools </ion-button>
-        <div class="subnav-content">
-          <ion-button (click)="debugProgram()">
-            <ion-icon name="play" class="iconsize" color="success"></ion-icon>
-          </ion-button>
-          <ion-button (click)="generatePseudoCode()">
-            <ion-icon slot="icon-only" name="code" class="iconsize"style="color: #AFF3CA;"></ion-icon>
-          </ion-button>
-          <ion-button (click)="clearWorkspaceAlert()">
-            <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
-          </ion-button>
-          <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
-            <ion-icon slot="icon-only" name="add-circle-outline" class="iconsize"  style="color: #54CBC9;"></ion-icon>
-          </ion-button>
-          <ion-button (click)="openProjectOptions()">
-            <ion-icon slot="icon-only" class="iconsize" name="folder-open" color="warning"></ion-icon>
-          </ion-button>
-          <ion-button (click)="saveProjectOptions()">
-            <ion-icon slot="icon-only" name="save"  class="iconsize" style="color: #4c8dff;"></ion-icon>
-          </ion-button>
-          <ion-button (click)="openTutorialPage()">
-            <ion-icon slot="icon-only" name="help-circle" class="iconsize" style="color: #C180A3;"></ion-icon>
-          </ion-button>
-        </div>
-      </div>
-    </div>
-
-    <div class="drpbar">
-      <div class="drpsub dropdownmenuhide">
-        <ion-button class="drpbtn" style="float: right;" > Tools </ion-button>
-        <div class="drp-content" style="float:right; " >
-          <ul class="removebullets">
-            <li style="align-items: center;">
-              <ion-button (click)="debugProgram()">
-                <ion-icon name="play" class="iconsize" color="success"></ion-icon>
-              </ion-button>
-            </li>
-            <li>
-              <ion-button (click)="generatePseudoCode()">
-                <ion-icon slot="icon-only" name="code" class="iconsize"style="color: #AFF3CA;"></ion-icon>
-              </ion-button>
-            </li>
-            <li>
-              <ion-button (click)="clearWorkspaceAlert()">
-                <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
-              </ion-button>
-            </li>
-            <li>
-              <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
-                <ion-icon slot="icon-only" name="add-circle-outline" class="iconsize"  style="color: #54CBC9;"></ion-icon>
-              </ion-button>
-            </li>
-            <li>
-              <ion-button (click)="openProjectOptions()">
-                <ion-icon slot="icon-only" class="iconsize" name="folder-open" color="warning"></ion-icon>
-              </ion-button>
-            </li>
-            <li>
-              <ion-button (click)="saveProjectOptions()">
-                <ion-icon slot="icon-only" name="save"  class="iconsize" style="color: #4c8dff;"></ion-icon>
-              </ion-button>
-            </li>
-            <li>
-              <ion-button (click)="openTutorialPage()">
-                <ion-icon slot="icon-only" name="help-circle" class="iconsize" style="color: #C180A3;"></ion-icon>
-              </ion-button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    
 
     <div class="tooltip">
       <ion-button (click)="openTutorialPage()">

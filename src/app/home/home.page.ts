@@ -2474,7 +2474,7 @@ export class HomePage {
     this.clearConsole();
     let startSym, stopSym, arrowInit;
     let workspace = document.getElementById("workspace");
-    let symbolsList = document.getElementById("symbolsList");
+    //let symbolsList = document.getElementById("symbolsList");
     let wsSymbols = workspace.getElementsByClassName("symbol");
 
     for (let l = 0; l < wsSymbols.length; l++) {
