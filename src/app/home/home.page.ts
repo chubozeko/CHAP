@@ -334,16 +334,16 @@ export class HomePage {
 
     // Check if it is Offline Mode or Trial Mode
     if (this.auth.mode == "offline") {
-      logOut.style.display = "none";
-      goOnline.style.display = "block";
+      // logOut.style.display = "none";
+      // goOnline.style.display = "block";
       feedbackBtn.style.display = "none";
     } else if (this.auth.mode == "online") {
-      logOut.style.display = "block";
-      goOnline.style.display = "none";
+      // logOut.style.display = "block";
+      // goOnline.style.display = "none";
       feedbackBtn.style.display = "block";
     } else if (this.auth.mode == "trial") {
-      logOut.style.display = "none";
-      goOnline.style.display = "none";
+      // logOut.style.display = "none";
+      // goOnline.style.display = "none";
       feedbackBtn.style.display = "none";
     }
   }
