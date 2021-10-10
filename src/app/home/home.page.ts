@@ -249,14 +249,14 @@ export class HomePage {
     quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
     let feedbackBtn = document.getElementById("btn_feedbackPage");
     feedbackBtn.addEventListener("click", (e) => this.openFeedback());
-    let logOut = document.getElementById("btn_logOut");
-    logOut.addEventListener("click", (e) => this.logOut());
-    let goOnline = document.getElementById("btn_goOnline");
-    goOnline.addEventListener("click", (e) => {
-      this.closeMenu();
+    // let logOut = document.getElementById("btn_logOut");
+    // logOut.addEventListener("click", (e) => this.logOut());
+    // let goOnline = document.getElementById("btn_goOnline");
+    // goOnline.addEventListener("click", (e) => {
+    //  this.closeMenu();
       //this.auth.mode = 'online';
-      this.navCtrl.navigateRoot("/login");
-    });
+     // this.navCtrl.navigateRoot("/login");
+   // });
     let backToWelcome = document.getElementById("btn_backToWelcome");
     backToWelcome.addEventListener("click", (e) => {
       if (this.auth.isLoggedIn) {
@@ -410,18 +410,18 @@ export class HomePage {
   }
 
   public openMenu() {
-    let logOut = document.getElementById("btn_logOut");
-    let goOnline = document.getElementById("btn_goOnline");
+   // let logOut = document.getElementById("btn_logOut");
+   // let goOnline = document.getElementById("btn_goOnline");
     // Check if it is Offline Mode
     if (this.auth.mode == "offline") {
-      logOut.style.display = "none";
-      goOnline.style.display = "block";
+     // logOut.style.display = "none";
+     //goOnline.style.display = "block";
     } else if (this.auth.mode == "online") {
-      logOut.style.display = "block";
-      goOnline.style.display = "none";
+     // logOut.style.display = "block";
+     // goOnline.style.display = "none";
     } else if (this.auth.mode == "trial") {
-      logOut.style.display = "none";
-      goOnline.style.display = "none";
+     // logOut.style.display = "none";
+     // goOnline.style.display = "none";
     }
     this.menu.open();
   }
