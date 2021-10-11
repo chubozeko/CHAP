@@ -247,8 +247,8 @@ export class HomePage {
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let quickGuide = document.getElementById("btn_gettingStartedPage");
     quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
-    let feedbackBtn = document.getElementById("btn_feedbackPage");
-    feedbackBtn.addEventListener("click", (e) => this.openFeedback());
+    // let feedbackBtn = document.getElementById("btn_feedbackPage");
+    // feedbackBtn.addEventListener("click", (e) => this.openFeedback());
     // let logOut = document.getElementById("btn_logOut");
     // logOut.addEventListener("click", (e) => this.logOut());
     // let goOnline = document.getElementById("btn_goOnline");
@@ -336,15 +336,15 @@ export class HomePage {
     if (this.auth.mode == "offline") {
       // logOut.style.display = "none";
       // goOnline.style.display = "block";
-      feedbackBtn.style.display = "none";
+      //feedbackBtn.style.display = "none";
     } else if (this.auth.mode == "online") {
       // logOut.style.display = "block";
       // goOnline.style.display = "none";
-      feedbackBtn.style.display = "block";
+      //feedbackBtn.style.display = "block";
     } else if (this.auth.mode == "trial") {
       // logOut.style.display = "none";
       // goOnline.style.display = "none";
-      feedbackBtn.style.display = "none";
+     //feedbackBtn.style.display = "none";
     }
   }
 
@@ -556,7 +556,7 @@ export class HomePage {
         s[i].classList.remove("active-symbol");
       }
 
-      try {
+      try {//Dikkat Edilmesi Gerek Nokta
         let output = data.data as Output;
         e.target.innerHTML = output.getOutputExpression();
         this.resizeSymbols(e.target);
@@ -564,6 +564,7 @@ export class HomePage {
       } catch (error) {
         console.log(error);
       }
+     
     });
     await modal.present();
   }
@@ -2962,19 +2963,19 @@ export class HomePage {
     console.log("base64:", btoa(data));
 
     // FOR IE:
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(blob, filename);
-    } else {
-      var e = document.createEvent("MouseEvents"),
-        a = document.createElement("a");
-      a.download = filename;
-      a.href = window.URL.createObjectURL(blob);
-      a.dataset.downloadurl = ["text/plain", a.download, a.href].join(":");
-      e.initEvent("click", true, false);
-      a.dispatchEvent(e);
+    // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    //   window.navigator.msSaveOrOpenBlob(blob, filename);
+    // } else {
+    //   var e = document.createEvent("MouseEvents"),
+    //     a = document.createElement("a");
+    //   a.download = filename;
+    //   a.href = window.URL.createObjectURL(blob);
+    //   a.dataset.downloadurl = ["text/plain", a.download, a.href].join(":");
+    //   e.initEvent("click", true, false);
+    //   a.dispatchEvent(e);
 
-      console.log("A link", a.href);
-    }
+    //   console.log("A link", a.href);
+    // }
   }
 
   public saveToAndroid(fileData, filename) {
@@ -3215,17 +3216,17 @@ export class HomePage {
       a = document.createElement("a");
 
     // FOR IE:
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(blob, filename);
-    } else {
-      var e = document.createEvent("MouseEvents"),
-        a = document.createElement("a");
-      a.download = filename;
-      a.href = window.URL.createObjectURL(blob);
-      a.dataset.downloadurl = ["image/png", a.download, a.href].join(":");
-      e.initEvent("click", true, false);
-      a.dispatchEvent(e);
-    }
+    // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    //   window.navigator.msSaveOrOpenBlob(blob, filename);
+    // } else {
+    //   var e = document.createEvent("MouseEvents"),
+    //     a = document.createElement("a");
+    //   a.download = filename;
+    //   a.href = window.URL.createObjectURL(blob);
+    //   a.dataset.downloadurl = ["image/png", a.download, a.href].join(":");
+    //   e.initEvent("click", true, false);
+    //   a.dispatchEvent(e);
+    // }
   }
 
   async logOut() {

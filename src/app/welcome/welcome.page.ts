@@ -99,7 +99,7 @@ export class WelcomePage implements OnInit {
 
   openCHAPTrial(e) {
     console.log("CHAP Trial Version");
-    this.auth.mode = "trial";
+    this.auth.mode = "online";
     this.auth.isLoggedIn = false;
     this.navCtrl.navigateRoot("/home");
     console.log('auth: ', this.auth);
