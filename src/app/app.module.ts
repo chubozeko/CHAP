@@ -13,7 +13,6 @@ import { IonicGestureConfig } from "./gestures/ionic-gesture-config";
 import { DragulaModule } from "ng2-dragula";
 
 import { HttpClientModule } from "@angular/common/http";
-import { HttpModule } from "@angular/http";
 import { InterceptorModule } from "./interceptor.module";
 import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";

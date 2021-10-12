@@ -16,11 +16,8 @@ import {
   FormControl,
   Validators,
 } from "@angular/forms";
-import { SignupPage } from "../signup/signup.page";
 import "rxjs/add/operator/map";
-import { RequestOptions } from "@angular/http";
 import { Toast } from "@ionic-native/toast/ngx";
-import { Navigation } from "selenium-webdriver";
 
 const cors = require("cors");
 
@@ -30,8 +27,8 @@ const cors = require("cors");
   styleUrls: ["./login.page.scss"],
 })
 export class LoginPage implements OnInit {
-  @ViewChild("email") username;
-  @ViewChild("password") password;
+  @ViewChild("email", {static: false}) username;
+  @ViewChild("password", {static: false}) password;
 
   data: string;
   loginForm: FormGroup;
