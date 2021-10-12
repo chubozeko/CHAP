@@ -65,7 +65,7 @@ import { Opener } from "./opener";
 })
 @Injectable()
 export class HomePage {
-  @ViewChild("symbolsFAB") symbolsFAB: Fab;
+  @ViewChild("symbolsFAB", {static: false}) symbolsFAB: Fab;
   symModals: SymbolModals = new SymbolModals(this.modalC);
   resizer: Resizer = new Resizer();
   saver: Saver = new Saver(this.menu, this.alertC, this.navCtrl, this.auth, this.arrowsOptionsAS, this.file, this.toast, this.http, this.platform);
