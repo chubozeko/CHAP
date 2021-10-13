@@ -220,9 +220,9 @@ export class Flowchart {
         }
       }
 //comment
-else if (this.tempSymbols[i] instanceof Comment){
+      else if (this.tempSymbols[i] instanceof Comment){
 
-if (this.isProgramRunning) {
+        if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let commentSym = this.tempSymbols[i] as Comment;
             let didCommentRun = commentSym;
@@ -292,10 +292,7 @@ if (this.isProgramRunning) {
         }
       }
 
-      // COMMENT
-      else if (this.tempSymbols[i] instanceof Comment) {
-        if (this.isProgramRunning) { break; }
-      }
+      
 
       // IF CASE
       else if (this.tempSymbols[i] instanceof IfCase) {
