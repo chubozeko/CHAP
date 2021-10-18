@@ -44,10 +44,10 @@ import { THEMES } from "../themes/themes";
 import { ThemesPage } from "../themes/themes.page";
 import { LoopblockstateService } from "../loopblockstate.service";
 import { SymbolData } from "../symbol-data";
-import { Resizer } from "./resizer";
+//import { Resizer } from "./resizer";
 import { SymbolModals } from "./symbol-modals";
-import { Saver } from "./saver";
-import { Opener } from "./opener";
+//import { Saver } from "./saver";
+//import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
 
 @Component({
@@ -57,11 +57,14 @@ import { SymbolId } from "./symbol-ids";
 })
 @Injectable()
 export class HomePage {
-  @ViewChild("symbolsFAB", {static: false}) symbolsFAB: Fab;
+  @ViewChild("symbolsFAB", {
+    //static: false
+  })
+   symbolsFAB: Fab;
   symModals: SymbolModals = new SymbolModals(this.modalC);
-  resizer: Resizer = new Resizer();
-  saver: Saver = new Saver(this.alertC, this.arrowsOptionsAS, this.auth, this.file, this.http, this.menu, this.navCtrl, this.toast);
-  opener: Opener = new Opener(this.alertC, this.auth, this.modalC, this.navCtrl, this.toast);
+  //resizer: Resizer = new Resizer();
+  //saver: Saver = new Saver(this.alertC, this.arrowsOptionsAS, this.auth, this.file, this.http, this.menu, this.navCtrl, this.toast);
+ // opener: Opener = new Opener(this.alertC, this.auth, this.modalC, this.navCtrl, this.toast);
   symbolId: SymbolId = new SymbolId();
 
   flowchart: Flowchart = new Flowchart(this.alertC, this.loopBlockState);
@@ -248,16 +251,16 @@ export class HomePage {
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let quickGuide = document.getElementById("btn_gettingStartedPage");
     quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
-    let feedbackBtn = document.getElementById("btn_feedbackPage");
-    feedbackBtn.addEventListener("click", (e) => this.openFeedback());
-    let logOut = document.getElementById("btn_logOut");
-    logOut.addEventListener("click", (e) => this.logOut());
-    let goOnline = document.getElementById("btn_goOnline");
-    goOnline.addEventListener("click", (e) => {
-      this.closeMenu();
+   // let feedbackBtn = document.getElementById("btn_feedbackPage");
+    //feedbackBtn.addEventListener("click", (e) => this.openFeedback());
+   // let logOut = document.getElementById("btn_logOut");
+   // logOut.addEventListener("click", (e) => this.logOut());
+   // let goOnline = document.getElementById("btn_goOnline");
+   // goOnline.addEventListener("click", (e) => {
+    //  this.closeMenu();
       //this.auth.mode = 'online';
-      this.navCtrl.navigateRoot("/login");
-    });
+    //  this.navCtrl.navigateRoot("/login");
+    //});
     let backToWelcome = document.getElementById("btn_backToWelcome");
     backToWelcome.addEventListener("click", (e) => {
       if (this.auth.isLoggedIn) {
@@ -333,19 +336,19 @@ export class HomePage {
         });
     }
     // Check if it is Offline Mode or Trial Mode
-    if (this.auth.mode == "offline") {
-      logOut.style.display = "none";
-      goOnline.style.display = "block";
-      feedbackBtn.style.display = "none";
-    } else if (this.auth.mode == "online") {
-      logOut.style.display = "block";
-      goOnline.style.display = "none";
-      feedbackBtn.style.display = "block";
-    } else if (this.auth.mode == "trial") {
-      logOut.style.display = "none";
-      goOnline.style.display = "none";
-      feedbackBtn.style.display = "none";
-    }
+    // if (this.auth.mode == "offline") {
+    //   logOut.style.display = "none";
+    //   goOnline.style.display = "block";
+    //   feedbackBtn.style.display = "none";
+    // } else if (this.auth.mode == "online") {
+    //   logOut.style.display = "block";
+    //   goOnline.style.display = "none";
+    //   feedbackBtn.style.display = "block";
+    // } else if (this.auth.mode == "trial") {
+    //   logOut.style.display = "none";
+    //   goOnline.style.display = "none";
+    //   feedbackBtn.style.display = "none";
+    // }
   }
 
   public subscribeToDragula() {
@@ -410,19 +413,19 @@ export class HomePage {
   }
 
   public openMenu() {
-    let logOut = document.getElementById("btn_logOut");
-    let goOnline = document.getElementById("btn_goOnline");
+   // let logOut = document.getElementById("btn_logOut");
+    //let goOnline = document.getElementById("btn_goOnline");
     // Check if it is Offline Mode
-    if (this.auth.mode == "offline") {
-      logOut.style.display = "none";
-      goOnline.style.display = "block";
-    } else if (this.auth.mode == "online") {
-      logOut.style.display = "block";
-      goOnline.style.display = "none";
-    } else if (this.auth.mode == "trial") {
-      logOut.style.display = "none";
-      goOnline.style.display = "none";
-    }
+    // if (this.auth.mode == "offline") {
+    //   logOut.style.display = "none";
+    //   goOnline.style.display = "block";
+    // } else if (this.auth.mode == "online") {
+    //   logOut.style.display = "block";
+    //   goOnline.style.display = "none";
+    // } else if (this.auth.mode == "trial") {
+    //   logOut.style.display = "none";
+    //   goOnline.style.display = "none";
+    // }
     this.menu.open();
   }
 
@@ -575,7 +578,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize ** [CHUBO! = resize before removing symbol]
-                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                //  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -601,7 +604,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                //  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -627,7 +630,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                 // this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "whileTrueBlock"
                 ) {
@@ -655,7 +658,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                 // this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
                 ) {
@@ -683,7 +686,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  //this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else {
                   let syms = document
                     .getElementById("workspace")
@@ -868,7 +871,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                 // this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -890,7 +893,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                 // this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -912,7 +915,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  //this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "whileTrueBlock"
                 ) {
@@ -936,7 +939,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                 // this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
                 ) {
@@ -960,7 +963,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  //this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else {
                   let syms = document
                     .getElementById("workspace")
@@ -1104,7 +1107,7 @@ export class HomePage {
                     break;
                 }
                 this.flowchart.addSymbolToFlowchart(sym, active_index);
-                this.resizer.resizeSymbols(targetArrow);
+                //this.resizer.resizeSymbols(targetArrow);
                 let bs = document.getElementsByClassName("arrow dropzone");
                 for (let i = 0; i < b.length; i++) {
                   if (bs[i].classList.contains("active-arrow")) {
@@ -1399,9 +1402,10 @@ export class HomePage {
       symbol = temp.cloneNode(true);
       symbol.innerHTML = "Declare";
       // backend
-      let dec = new Declare();
+      let dec = new Declare( ) ;
       dec.setDeclareSymbol(symbol);
       symComponent = dec;
+    
     } else if (id == "s_input") {
       // frontend
       temp = document.getElementById(id);
@@ -2207,7 +2211,7 @@ export class HomePage {
           text: "Internal Storage",
           icon: "folder",
           handler: () => {
-            this.saver.saveProject(this.fileName, this.flowchart, this.platform);
+           // this.saver.saveProject(this.fileName, this.flowchart, this.platform);
           },
         },
         {
@@ -2223,7 +2227,7 @@ export class HomePage {
           text: "Internal Storage",
           icon: "folder",
           handler: () => {
-            this.saver.saveProject(this.fileName, this.flowchart, this.platform);
+            //this.saver.saveProject(this.fileName, this.flowchart, this.platform);
           },
         },
         {
@@ -2231,7 +2235,7 @@ export class HomePage {
           icon: "cloud-upload",
           handler: () => {
             this.checkInternetConnection();
-            this.saver.saveProjectToDatabase(this.fileName, this.flowchart, this.platform);
+            //this.saver.saveProjectToDatabase(this.fileName, this.flowchart, this.platform);
           },
         },
         {
