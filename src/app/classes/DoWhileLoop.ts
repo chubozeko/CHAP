@@ -6,6 +6,9 @@ export class DoWhileLoop {
 
   static s_name: string = 'Do';
   id: string = 's_do_while_loop';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
   doWhileExpression: string;
   doWhileSymbol: any;

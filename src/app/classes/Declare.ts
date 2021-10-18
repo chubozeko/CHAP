@@ -4,6 +4,9 @@ export class Declare {
 
     static s_name: string = 'Declare';
     id: string = 's_declare';
+    symbolIndex: number = -1;
+    parentIndex: number = -1;
+    isInTrueLoopBlock: boolean = true;
 
     text = '';
     variableName: string = '';

@@ -20,15 +20,6 @@ import { Chooser } from "@ionic-native/chooser/ngx";
 import { Toast } from "@ionic-native/toast/ngx";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DragulaService } from "ng2-dragula";
-import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
-import { InputPage } from "../symbol-dialogs/input/input.page";
-import { ProcessPage } from "../symbol-dialogs/process/process.page";
-import { OutputPage } from "../symbol-dialogs/output/output.page";
-import { CommentPage } from "../symbol-dialogs/comment/comment.page";
-import { IfElsePage } from "../symbol-dialogs/if-else/if-else.page";
-import { WhileLoopPage } from "../symbol-dialogs/while-loop/while-loop.page";
-import { ForLoopPage } from "../symbol-dialogs/for-loop/for-loop.page";
-import { DoWhileLoopPage } from "../symbol-dialogs/do-while-loop/do-while-loop.page";
 import { Symbols } from "../classes/Symbols";
 import { Declare } from "../classes/Declare";
 import { Input } from "../classes/Input";
@@ -57,6 +48,7 @@ import { Resizer } from "./resizer";
 import { SymbolModals } from "./symbol-modals";
 import { Saver } from "./saver";
 import { Opener } from "./opener";
+import { SymbolId } from "./symbol-ids";
 
 @Component({
   selector: "app-home",
@@ -68,8 +60,9 @@ export class HomePage {
   @ViewChild("symbolsFAB", {static: false}) symbolsFAB: Fab;
   symModals: SymbolModals = new SymbolModals(this.modalC);
   resizer: Resizer = new Resizer();
-  saver: Saver = new Saver(this.menu, this.alertC, this.navCtrl, this.auth, this.arrowsOptionsAS, this.file, this.toast, this.http, this.platform);
-  opener: Opener = new Opener(this.alertC, this.navCtrl, this.auth, this.modalC, this.toast);
+  saver: Saver = new Saver(this.alertC, this.arrowsOptionsAS, this.auth, this.file, this.http, this.menu, this.navCtrl, this.toast);
+  opener: Opener = new Opener(this.alertC, this.auth, this.modalC, this.navCtrl, this.toast);
+  symbolId: SymbolId = new SymbolId();
 
   flowchart: Flowchart = new Flowchart(this.alertC, this.loopBlockState);
   title = "CHAP";
@@ -323,11 +316,22 @@ export class HomePage {
       | Comment
     >();
 
-    // if (this.platform.is("android")) { this.fileName = 'android'; }
-    // else if (this.platform.is("ios")) { this.fileName = 'ios'; }
-    // else if (this.platform.is("desktop")) { this.fileName = 'desktop'; }
-    // else if (this.platform.is("pwa")) { this.fileName = 'pwa'; }
+    if (this.platform.is("android")) { this.fileName = 'android'; }
+    else if (this.platform.is("ios")) { this.fileName = 'ios'; }
+    else if (this.platform.is("desktop")) { this.fileName = 'desktop'; }
+    else if (this.platform.is("pwa")) { this.fileName = 'pwa'; }
 
+    // FOR ANDROID: Creating Save Folder if directory does not exist
+    if (this.platform.is("android")) {
+      this.file
+        .createDir(`${this.file.externalRootDirectory}`, this.saveFolder, false)
+        .then((res) => {
+          console.log("Directory exists");
+        })
+        .catch((err) => {
+          console.log("Directory does not exist");
+        });
+    }
     // Check if it is Offline Mode or Trial Mode
     if (this.auth.mode == "offline") {
       logOut.style.display = "none";
@@ -1380,7 +1384,7 @@ export class HomePage {
   }
 
   public addSymbol(id: string, currentSymbol?: Symbols) {
-    let symClass, temp, symbol, activeArrowIndex, act_in, symComponent;
+    let temp, symbol, activeArrowIndex, act_in, symComponent;
 
     let arrows = document.getElementsByClassName("arrow dropzone");
     for (let i = 0; i < arrows.length; i++) {
@@ -1390,125 +1394,126 @@ export class HomePage {
     }
 
     if (id == "s_declare") {
-      // // frontend
-      // temp = document.getElementById(id);
-      // symbol = temp.cloneNode(true);
-      // symbol.innerHTML = "Declare";
-      // // backend
-      // let dec = new Declare();
-      // dec.setDeclareSymbol(symbol);
-      // symComponent = dec;
-
-      let dec = new Declare();
+      // frontend
       temp = document.getElementById(id);
-      dec.setDeclareSymbol(temp.cloneNode(true));
-      symbol = dec.getDeclareSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Declare";
+      // backend
+      let dec = new Declare();
+      dec.setDeclareSymbol(symbol);
       symComponent = dec;
     } else if (id == "s_input") {
-      let input = new Input();
+      // frontend
       temp = document.getElementById(id);
-      input.setInputSymbol(temp.cloneNode(true));
-      symbol = input.getInputSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Input";
+      // backend
+      let input = new Input();
+      input.setInputSymbol(symbol);
       symComponent = input;
     } else if (id == "s_output") {
-      let output = new Output();
+      // frontend
       temp = document.getElementById(id);
-      output.setOutputSymbol(temp.cloneNode(true));
-      symbol = output.getOutputSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Output";
+      // backend
+      let output = new Output();
+      output.setOutputSymbol(symbol);
       symComponent = output;
     } else if (id == "s_process") {
-      let proc = new Process();
+      // frontend
       temp = document.getElementById(id);
-      proc.setProcessSymbol(temp.cloneNode(true));
-      symbol = proc.getProcessSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Process";
+      // backend
+      let proc = new Process();
+      proc.setProcessSymbol(symbol);
       symComponent = proc;
     } else if (id == "s_comment") {
-      let com = new Comment();
+      // frontend
       temp = document.getElementById(id);
-      com.setCommentSymbol(temp.cloneNode(true));
-      symbol = com.getCommentSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Comment";
+      // backend
+      let com = new Comment();
+      com.setCommentSymbol(symbol);
       symComponent = com;
     } else if (id == "s_if_case") {
+      // frontend
+      temp = document
+        .getElementById("control_loop_list")
+        .getElementsByClassName("if_div");
+      symbol = temp[0].cloneNode(true);
+      // - add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
+        // - add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
+      }
+      // backend
       let ifcase = new IfCase();
-      symClass = "if_div";
-      temp = document
-        .getElementById("control_loop_list")
-        .getElementsByClassName(symClass);
-      let t1 = document.getElementById("s_if_case");
-      ifcase.setIfCaseSymbol(t1);
-      symbol = temp[0].cloneNode(true);
+      ifcase.setIfCaseSymbol(symbol);
       symComponent = ifcase;
-      // add inner arrows to dragula containers
-      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
-      for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService
-          .find("symbol")
-          .drake.containers.push(innerArrows[a]);
-        // add event listeners to inner arrows
-        this.addEventListenersToArrow(innerArrows[a]);
-      }
     } else if (id == "s_while_loop") {
+      // frontend
+      temp = document
+        .getElementById("control_loop_list")
+        .getElementsByClassName("while_div");
+      symbol = temp[0].cloneNode(true);
+      // - add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
+        // - add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
+      }
+      // backend
       let whileloop = new WhileLoop();
-      symClass = "while_div";
-      temp = document
-        .getElementById("control_loop_list")
-        .getElementsByClassName(symClass);
-      let t2 = document.getElementById("s_while_loop");
-      whileloop.setWhileSymbol(t2);
-      symbol = temp[0].cloneNode(true);
+      whileloop.setWhileSymbol(symbol);
       symComponent = whileloop;
-      // add inner arrows to dragula containers
-      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
-      for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService
-          .find("symbol")
-          .drake.containers.push(innerArrows[a]);
-        // add event listeners to inner arrows
-        this.addEventListenersToArrow(innerArrows[a]);
-      }
     } else if (id == "s_for_loop") {
+      // frontend
+      temp = document
+        .getElementById("control_loop_list")
+        .getElementsByClassName("for_div");
+      symbol = temp[0].cloneNode(true);
+      // - add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
+        // - add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
+      }
+      // backend
       let forloop = new ForLoop();
-      symClass = "for_div";
-      temp = document
-        .getElementById("control_loop_list")
-        .getElementsByClassName(symClass);
-      let t3 = document.getElementById("s_for_loop");
-      forloop.setForSymbol(t3);
-      symbol = temp[0].cloneNode(true);
+      forloop.setForSymbol(symbol);
       symComponent = forloop;
-      // add inner arrows to dragula containers
-      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
-      for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService
-          .find("symbol")
-          .drake.containers.push(innerArrows[a]);
-        // add event listeners to inner arrows
-        this.addEventListenersToArrow(innerArrows[a]);
-      }
     } else if (id == "s_do_while_loop") {
-      let doWhileLoop = new DoWhileLoop();
-      symClass = "do_while_div";
+      // frontend
       temp = document
         .getElementById("control_loop_list")
-        .getElementsByClassName(symClass);
-      let t4 = document.getElementById("s_do_while_loop");
-      doWhileLoop.setDoWhileSymbol(t4);
+        .getElementsByClassName("do_while_div");
       symbol = temp[0].cloneNode(true);
-      symComponent = doWhileLoop;
-      // add inner arrows to dragula containers
+      // - add inner arrows to dragula containers
       let innerArrows = symbol.getElementsByClassName("arrow dropzone");
       for (let a = 0; a < innerArrows.length; a++) {
         this.dragulaService
           .find("symbol")
           .drake.containers.push(innerArrows[a]);
-        // add event listeners to inner arrows
+        // - add event listeners to inner arrows
         this.addEventListenersToArrow(innerArrows[a]);
       }
+      // backend
+      let doWhileLoop = new DoWhileLoop();
+      doWhileLoop.setDoWhileSymbol(symbol);
+      symComponent = doWhileLoop;
     }
 
     let tempBranch = this.branch.cloneNode(true);
@@ -1529,14 +1534,18 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        // TODO: assign temp ID
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof IfCase) {
-            el.addSymbolToTrueBlock(symComponent, act_in);
-          }
-        }
+        // TODO: assign ID
+        // generateId(activeArrow.parentElement, symComponent);
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof IfCase) {
+        //     el.addSymbolToTrueBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       case "ifFalseBlock":
         let par2 = activeArrow.parentElement.getElementsByClassName(
@@ -1549,14 +1558,15 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof IfCase) {
-            el.addSymbolToFalseBlock(symComponent, act_in);
-          }
-        }
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof IfCase) {
+        //     el.addSymbolToFalseBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       case "forTrueBlock":
         let par3 = activeArrow.parentElement.getElementsByClassName("arrow dropzone");
@@ -1567,14 +1577,15 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        // symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof ForLoop) {
-            el.addSymbolToTrueBlock(symComponent, act_in);
-          }
-        }
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof ForLoop) {
+        //     el.addSymbolToTrueBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       case "whileTrueBlock":
         let par4 = activeArrow.parentElement.getElementsByClassName(
@@ -1587,14 +1598,15 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof WhileLoop) {
-            el.addSymbolToTrueBlock(symComponent, act_in);
-          }
-        }
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof WhileLoop) {
+        //     el.addSymbolToTrueBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       case "doWhileTrueBlock":
         let par5 = activeArrow.parentElement.getElementsByClassName(
@@ -1607,14 +1619,15 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof DoWhileLoop) {
-            el.addSymbolToTrueBlock(symComponent, act_in);
-          }
-        }
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof DoWhileLoop) {
+        //     el.addSymbolToTrueBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       default:
         let ai, totalAD = 0;
@@ -1655,18 +1668,20 @@ export class HomePage {
 
         for (let i = 0; i < b1.length; i++) {
           if (b1[i].className.endsWith("active-arrow")) {
-            ai = i; // - totalAD;
+            ai = i - totalAD;
           }
         }
 
+        console.log("workspace active arrow: ", tempBranch);
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-
+        // TODO: assign temp id
+        // symbol.id = "s_temp_id";
         // Add symbol and corresponding arrow/branch to Workspace
         this.workspace.insertBefore(symbol, activeArrow.nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
 
-        this.flowchart.addSymbolToFlowchart(symComponent, ai);
+        // this.flowchart.addSymbolToFlowchart(symComponent, ai);
         break;
     }
 
@@ -1679,6 +1694,11 @@ export class HomePage {
     if (this.popOver)
       this.popCtrl.dismiss();
     console.log(this.flowchart.SYMBOLS);
+
+    let sy = this.workspace.getElementsByClassName("symbol");
+    console.log("workspace symbols: ", sy);
+    console.log("symbolIndex: ", this.symbolId.getSymbolIndex("s_for_loop", activeArrow.parentElement));
+    console.log("parentIndex: ", this.symbolId.getParentIndex("s_for_loop", activeArrow.parentElement));
   }
 
   public addEventListenersToArrow(arrow) {

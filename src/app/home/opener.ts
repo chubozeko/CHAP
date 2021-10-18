@@ -21,9 +21,9 @@ export class Opener {
 
   constructor(
     public alertC: AlertController,
-    public navCtrl: NavController,
     private auth: AuthService,
     public modalC: ModalController,
+    public navCtrl: NavController,
     public toast: Toast,
   ) {}
 

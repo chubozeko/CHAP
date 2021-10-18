@@ -10,27 +10,16 @@ export class Saver {
   saveFolder = "CHAP Project Files";
 
   constructor(
-    public menu: MenuController,
+    
     public alertC: AlertController,
-    public navCtrl: NavController,
-    private auth: AuthService,
     public arrowsOptionsAS: ActionSheetController,
+    private auth: AuthService,
     private file: File,
-    public toast: Toast,
     private http: HttpClient,
-    platform: Platform
+    public menu: MenuController,
+    public navCtrl: NavController,
+    public toast: Toast
   ) {
-    // FOR ANDROID: Creating Save Folder if directory does not exist
-    if (platform.is("android")) {
-      this.file
-        .createDir(`${this.file.externalRootDirectory}`, this.saveFolder, false)
-        .then((res) => {
-          console.log("Directory exists");
-        })
-        .catch((err) => {
-          console.log("Directory does not exist");
-        });
-    }
   }
 
   public saveProject(fileName, flowchart: Flowchart, platform: Platform) {
@@ -71,11 +60,7 @@ export class Saver {
 
     console.log("base64:", btoa(data));
 
-    // FOR IE:
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(blob, filename);
-    } else {
-      var e = document.createEvent("MouseEvents"),
+    var e = document.createEvent("MouseEvents"),
         a = document.createElement("a");
       a.download = filename;
       a.href = window.URL.createObjectURL(blob);
@@ -84,7 +69,6 @@ export class Saver {
       a.dispatchEvent(e);
 
       console.log("A link", a.href);
-    }
   }
 
   public saveToAndroid(fileData, filename) {
@@ -255,18 +239,13 @@ export class Saver {
       e = document.createEvent("MouseEvents"),
       a = document.createElement("a");
 
-    // FOR IE:
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(blob, filename);
-    } else {
-      var e = document.createEvent("MouseEvents"),
-        a = document.createElement("a");
-      a.download = filename;
-      a.href = window.URL.createObjectURL(blob);
-      a.dataset.downloadurl = ["image/png", a.download, a.href].join(":");
-      e.initEvent("click", true, false);
-      a.dispatchEvent(e);
-    }
+    var e = document.createEvent("MouseEvents"),
+    a = document.createElement("a");
+    a.download = filename;
+    a.href = window.URL.createObjectURL(blob);
+    a.dataset.downloadurl = ["image/png", a.download, a.href].join(":");
+    e.initEvent("click", true, false);
+    a.dispatchEvent(e);
   }
 
   async showAlert(alertTitle: string, alertMsg: string) {

@@ -6,6 +6,9 @@ export class Input {
 
   static s_name: string = 'Input';
   id: string = 's_input';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
   variableName: string = '';
   inputExpression: string = '';
