@@ -40,7 +40,7 @@
     </div>
 
     <div class="tooltip">
-      <ion-button (click)="clearWorkspaceAlert()">
+      <ion-button (click)="clearWorkspaceAlert(false)">
         <ion-icon slot="icon-only"  name="close" color="danger"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 140px;">Clear Workspace</span>
@@ -82,7 +82,7 @@
           <ion-button (click)="generatePseudoCode()">
             <ion-icon slot="icon-only" name="code" class="iconsize"style="color: #AFF3CA;"></ion-icon>
           </ion-button>
-          <ion-button (click)="clearWorkspaceAlert()">
+          <ion-button (click)="clearWorkspaceAlert(false)">
             <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
           </ion-button>
           <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
@@ -117,7 +117,7 @@
               </ion-button>
             </li>
             <li>
-              <ion-button (click)="clearWorkspaceAlert()">
+              <ion-button (click)="clearWorkspaceAlert(false)">
                 <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
               </ion-button>
             </li>
@@ -167,9 +167,9 @@
     <!-- <canvas id="canvas" style="display: none"></canvas> -->
 
     <div id="left_symbols">
-      <ion-card id="symbolsTitle" >
-        <ion-text class="symbolTXT_Title">SYMBOLS</ion-text>
-        <!--  -->
+      <ion-card id="symbolsTitle">
+        <ion-text  >SYMBOLS</ion-text>
+        <!-- style="padding: 5px; font-size: 15pt; font-weight: bold;" -->
       </ion-card>
       <div id="symbolsList"  dragula="symbol" >
         <!-- class="scrollbar" -->
@@ -195,10 +195,8 @@
         </div> -->
 
         <div id="s_start" class="symbol s_start" style="font-size: 10pt;">START</div>
-     
-          <span id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></span>
-        
-       
+        <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols">
+        </div>
         <div id="s_stop" class="symbol s_stop" style="font-size: 10pt;">STOP</div>
       </div>
 

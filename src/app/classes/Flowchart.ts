@@ -219,21 +219,7 @@ export class Flowchart {
           }
         }
       }
-//comment
-      else if (this.tempSymbols[i] instanceof Comment){
 
-        if (this.isProgramRunning) {
-          if (!this.isAnInputBlockRunning) {
-            let commentSym = this.tempSymbols[i] as Comment;
-            let didCommentRun = commentSym;
-            if (!didCommentRun ) {
-              this.isProgramRunning = false;
-              this.loopBlockState.isProgramRunning = this.isProgramRunning;
-            } else {
-            }
-          }
-        }
-}
       // INPUT
       else if (this.tempSymbols[i] instanceof Input) {
         if (this.isProgramRunning) {
@@ -292,7 +278,10 @@ export class Flowchart {
         }
       }
 
-      
+      // COMMENT
+      else if (this.tempSymbols[i] instanceof Comment) {
+        if (this.isProgramRunning) { break; }
+      }
 
       // IF CASE
       else if (this.tempSymbols[i] instanceof IfCase) {

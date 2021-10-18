@@ -7,6 +7,9 @@ export class IfCase {
 
   static s_name: string = 'If';
   id: string = 's_if_case';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
   ifStatement: string = '';
   ifcaseSymbol: any;

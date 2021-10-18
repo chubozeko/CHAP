@@ -6,6 +6,9 @@ export class WhileLoop {
 
   static s_name: string = "While";
   id: string = "s_while_loop";
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
   whileExpression: string = "";
   whileSymbol: any;

@@ -7,6 +7,9 @@ export class ForLoop {
 
   static s_name: string = 'For';
   id: string = 's_for_loop';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
   forLoopExpression: string = '';
   forLoopSymbol: any;

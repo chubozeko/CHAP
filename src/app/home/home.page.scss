@@ -122,7 +122,7 @@ font-weight: bolder;
 // Symbols FAB & List
 #symbolsTitle {
   margin-top: 5px;
-  //margin-left: 10px;
+  margin-left: 10px;
   display: none;
   background-color: #333333;
   color:white;
@@ -145,11 +145,6 @@ font-weight: bolder;
    border-radius: 55%;
  
  
-}
-.symbolTXT_Title{
-  padding: 5px;
-   font-size: 15pt; 
-   font-weight: bold;
 }
 
 .fab[mini] {
@@ -594,11 +589,7 @@ ion-modal{
 .dropdownmenuhide{
   display:none;
 }
-.symbolTXT_Title{
-  padding: 5px;
-   font-size: 10pt; 
-   font-weight: bold;
-}
+
 .iconsize{
   width: 20px;
   height: 20px;
@@ -1212,11 +1203,7 @@ ion-modal{
     width: 15px;
     height: 15px;
   }
-  .symbolTXT_Title{
-    padding: 5px;
-     font-size: 10pt; 
-     font-weight: bold;
-  }
+  
   
   .subnavhide{
     display:none;

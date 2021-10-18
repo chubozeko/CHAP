@@ -6,6 +6,9 @@ export class Input {
 
   static s_name: string = 'Input';
   id: string = 's_input';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
   variableName: string = '';
   inputExpression: string = '';
@@ -53,9 +56,10 @@ export class Input {
   inputParsing(var1: Variable, var_val: any, arrayIndex?: number) {
     // Checking the data type of an entered variable into the Console
     let var_value1: any;
-    if (!isNaN((var_val))) {
+    if (!isNaN(parseInt(var_val))) {
+      var_value1 = parseInt(var_val);
+    } else if (!isNaN(parseFloat(var_val))) {
       var_value1 = parseFloat(var_val);
-    
     } else if (var_val == "true") {
       var_value1 = true;
     } else if (var_val == "false") {

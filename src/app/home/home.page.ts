@@ -20,15 +20,6 @@ import { Chooser } from "@ionic-native/chooser/ngx";
 import { Toast } from "@ionic-native/toast/ngx";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DragulaService } from "ng2-dragula";
-import { DeclarePage } from "../symbol-dialogs/declare/declare.page";
-import { InputPage } from "../symbol-dialogs/input/input.page";
-import { ProcessPage } from "../symbol-dialogs/process/process.page";
-import { OutputPage } from "../symbol-dialogs/output/output.page";
-import { CommentPage } from "../symbol-dialogs/comment/comment.page";
-import { IfElsePage } from "../symbol-dialogs/if-else/if-else.page";
-import { WhileLoopPage } from "../symbol-dialogs/while-loop/while-loop.page";
-import { ForLoopPage } from "../symbol-dialogs/for-loop/for-loop.page";
-import { DoWhileLoopPage } from "../symbol-dialogs/do-while-loop/do-while-loop.page";
 import { Symbols } from "../classes/Symbols";
 import { Declare } from "../classes/Declare";
 import { Input } from "../classes/Input";
@@ -53,6 +44,11 @@ import { THEMES } from "../themes/themes";
 import { ThemesPage } from "../themes/themes.page";
 import { LoopblockstateService } from "../loopblockstate.service";
 import { SymbolData } from "../symbol-data";
+import { Resizer } from "./resizer";
+import { SymbolModals } from "./symbol-modals";
+import { Saver } from "./saver";
+import { Opener } from "./opener";
+import { SymbolId } from "./symbol-ids";
 
 @Component({
   selector: "app-home",
@@ -61,7 +57,12 @@ import { SymbolData } from "../symbol-data";
 })
 @Injectable()
 export class HomePage {
-  @ViewChild("symbolsFAB") symbolsFAB: Fab;
+  @ViewChild("symbolsFAB", {static: false}) symbolsFAB: Fab;
+  symModals: SymbolModals = new SymbolModals(this.modalC);
+  resizer: Resizer = new Resizer();
+  saver: Saver = new Saver(this.alertC, this.arrowsOptionsAS, this.auth, this.file, this.http, this.menu, this.navCtrl, this.toast);
+  opener: Opener = new Opener(this.alertC, this.auth, this.modalC, this.navCtrl, this.toast);
+  symbolId: SymbolId = new SymbolId();
 
   flowchart: Flowchart = new Flowchart(this.alertC, this.loopBlockState);
   title = "CHAP";
@@ -247,16 +248,16 @@ export class HomePage {
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let quickGuide = document.getElementById("btn_gettingStartedPage");
     quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
-    // let feedbackBtn = document.getElementById("btn_feedbackPage");
-    // feedbackBtn.addEventListener("click", (e) => this.openFeedback());
-    // let logOut = document.getElementById("btn_logOut");
-    // logOut.addEventListener("click", (e) => this.logOut());
-    // let goOnline = document.getElementById("btn_goOnline");
-    // goOnline.addEventListener("click", (e) => {
-    //  this.closeMenu();
+    let feedbackBtn = document.getElementById("btn_feedbackPage");
+    feedbackBtn.addEventListener("click", (e) => this.openFeedback());
+    let logOut = document.getElementById("btn_logOut");
+    logOut.addEventListener("click", (e) => this.logOut());
+    let goOnline = document.getElementById("btn_goOnline");
+    goOnline.addEventListener("click", (e) => {
+      this.closeMenu();
       //this.auth.mode = 'online';
-     // this.navCtrl.navigateRoot("/login");
-   // });
+      this.navCtrl.navigateRoot("/login");
+    });
     let backToWelcome = document.getElementById("btn_backToWelcome");
     backToWelcome.addEventListener("click", (e) => {
       if (this.auth.isLoggedIn) {
@@ -315,10 +316,10 @@ export class HomePage {
       | Comment
     >();
 
-    // if (this.platform.is("android")) { this.fileName = 'android'; }
-    // else if (this.platform.is("ios")) { this.fileName = 'ios'; }
-    // else if (this.platform.is("desktop")) { this.fileName = 'desktop'; }
-    // else if (this.platform.is("pwa")) { this.fileName = 'pwa'; }
+    if (this.platform.is("android")) { this.fileName = 'android'; }
+    else if (this.platform.is("ios")) { this.fileName = 'ios'; }
+    else if (this.platform.is("desktop")) { this.fileName = 'desktop'; }
+    else if (this.platform.is("pwa")) { this.fileName = 'pwa'; }
 
     // FOR ANDROID: Creating Save Folder if directory does not exist
     if (this.platform.is("android")) {
@@ -331,20 +332,19 @@ export class HomePage {
           console.log("Directory does not exist");
         });
     }
-
     // Check if it is Offline Mode or Trial Mode
     if (this.auth.mode == "offline") {
-      // logOut.style.display = "none";
-      // goOnline.style.display = "block";
-      //feedbackBtn.style.display = "none";
+      logOut.style.display = "none";
+      goOnline.style.display = "block";
+      feedbackBtn.style.display = "none";
     } else if (this.auth.mode == "online") {
-      // logOut.style.display = "block";
-      // goOnline.style.display = "none";
-      //feedbackBtn.style.display = "block";
+      logOut.style.display = "block";
+      goOnline.style.display = "none";
+      feedbackBtn.style.display = "block";
     } else if (this.auth.mode == "trial") {
-      // logOut.style.display = "none";
-      // goOnline.style.display = "none";
-     //feedbackBtn.style.display = "none";
+      logOut.style.display = "none";
+      goOnline.style.display = "none";
+      feedbackBtn.style.display = "none";
     }
   }
 
@@ -410,18 +410,18 @@ export class HomePage {
   }
 
   public openMenu() {
-   // let logOut = document.getElementById("btn_logOut");
-   // let goOnline = document.getElementById("btn_goOnline");
+    let logOut = document.getElementById("btn_logOut");
+    let goOnline = document.getElementById("btn_goOnline");
     // Check if it is Offline Mode
     if (this.auth.mode == "offline") {
-     // logOut.style.display = "none";
-     //goOnline.style.display = "block";
+      logOut.style.display = "none";
+      goOnline.style.display = "block";
     } else if (this.auth.mode == "online") {
-     // logOut.style.display = "block";
-     // goOnline.style.display = "none";
+      logOut.style.display = "block";
+      goOnline.style.display = "none";
     } else if (this.auth.mode == "trial") {
-     // logOut.style.display = "none";
-     // goOnline.style.display = "none";
+      logOut.style.display = "none";
+      goOnline.style.display = "none";
     }
     this.menu.open();
   }
@@ -493,696 +493,6 @@ export class HomePage {
   public closeSymbolPopUp(event) {
     if (!this.isSymbolBeingDragged) {
       this.popCtrl.dismiss();
-    }
-  }
-
-  async openDeclareModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: DeclarePage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {
-        let dec = data.data as Declare;
-        e.target.innerHTML = dec.getDeclareExpression();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    await modal.present();
-  }
-
-  async openInputModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: InputPage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {
-        let input = data.data as Input;
-        e.target.innerHTML = input.getInputExpression();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    await modal.present();
-  }
-
-  async openOutputModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: OutputPage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {//Dikkat Edilmesi Gerek Nokta
-        let output = data.data as Output;
-        e.target.innerHTML = output.getOutputExpression();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-     
-    });
-    await modal.present();
-  }
-
-  async openProcessModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: ProcessPage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {
-        let proc = data.data as Process;
-        e.target.innerHTML = proc.getProcessExpression();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    await modal.present();
-  }
-
-  async openCommentModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: CommentPage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {
-        let com = data.data as Comment;
-        e.target.innerHTML = com.getCommentExpression();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    await modal.present();
-  }
-
-  async openIfModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: IfElsePage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {
-        let ifcase = data.data as IfCase;
-        e.target.innerHTML = ifcase.getIfStatement();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    await modal.present();
-  }
-
-  async openWhileModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: WhileLoopPage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {
-        let whileloop = data.data as WhileLoop;
-        e.target.innerHTML = whileloop.getWhileExpression();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    await modal.present();
-  }
-
-  async openForLoopModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: ForLoopPage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("symbol active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {
-        let forloop = data.data as ForLoop;
-        e.target.innerHTML = forloop.getForExpression();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    await modal.present();
-  }
-
-  async openDoWhileModal(symbol, e) {
-    const modal = await this.modalC.create({
-      component: DoWhileLoopPage,
-      componentProps: { symbol: symbol },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      let s = document.getElementsByClassName("active-symbol");
-      for (let i = 0; i < s.length; i++) {
-        s[i].classList.remove("active-symbol");
-      }
-
-      try {
-        let dowhileloop = data.data as DoWhileLoop;
-        e.target.innerHTML = dowhileloop.getDoWhileExpression();
-        this.resizeSymbols(e.target);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    await modal.present();
-  }
-
-  public resizeSymbols(symbol) {
-    if (
-      symbol.parentElement.parentElement.classList.contains("if_div") ||
-      symbol.parentElement.classList.contains("if_div")
-    ) {
-      this.resizeIfCaseBlocks(symbol);
-    } else if (
-      symbol.parentElement.parentElement.classList.contains("for_div") ||
-      symbol.parentElement.classList.contains("for_div")
-    ) {
-      this.resizeForLoopBlocks(symbol);
-    } else if (
-      symbol.parentElement.parentElement.classList.contains("while_div") ||
-      symbol.parentElement.classList.contains("while_div")
-    ) {
-      this.resizeWhileLoopBlocks(symbol);
-    } else if (
-      symbol.parentElement.parentElement.classList.contains("do_while_div") ||
-      symbol.parentElement.classList.contains("do_while_div")
-    ) {
-      this.resizeDoWhileLoopBlocks(symbol);
-    }
-  }
-
-  public resizeIfCaseBlocks(symbol) {
-    // If Case Symbols
-    if (symbol.parentElement.parentElement.classList.contains("if_div")) {
-      if (
-        symbol.parentElement.id == "ifTrueBlock" ||
-        symbol.parentElement.id == "ifFalseBlock"
-      ) {
-        let ifDiv = symbol.parentElement.parentElement as HTMLDivElement;
-        let ifSymbol = ifDiv.getElementsByClassName(
-          "if_sym"
-        )[0] as HTMLDivElement;
-        let falseBlock = ifDiv.getElementsByClassName(
-          "ifFalseBlock"
-        )[0] as HTMLDivElement;
-        let trueBlock = ifDiv.getElementsByClassName(
-          "ifTrueBlock"
-        )[0] as HTMLDivElement;
-        // Resize to the Block with the larger width
-        let gridStr: string = "";
-        if (trueBlock.offsetWidth > falseBlock.offsetWidth) {
-          gridStr =
-            trueBlock.offsetWidth +
-            "px max-content " +
-            ifSymbol.offsetWidth +
-            "px max-content " +
-            trueBlock.offsetWidth +
-            "px";
-          ifDiv.style.gridTemplateColumns = gridStr;
-          trueBlock.style.margin = "0px";
-          falseBlock.style.margin = "auto";
-        } else if (falseBlock.offsetWidth > trueBlock.offsetWidth) {
-          gridStr =
-            falseBlock.offsetWidth +
-            "px max-content " +
-            ifSymbol.offsetWidth +
-            "px max-content " +
-            falseBlock.offsetWidth +
-            "px";
-          ifDiv.style.gridTemplateColumns = gridStr;
-          trueBlock.style.margin = "auto";
-          falseBlock.style.margin = "0px";
-        } else {
-          gridStr =
-            falseBlock.offsetWidth +
-            "px max-content " +
-            ifSymbol.offsetWidth +
-            "px max-content " +
-            trueBlock.offsetWidth +
-            "px";
-          ifDiv.style.gridTemplateColumns = gridStr;
-          trueBlock.style.margin = "0px";
-          falseBlock.style.margin = "0px";
-        }
-      }
-      this.resizeIfCaseArrows(symbol.parentElement, true);
-    } else if (symbol.parentElement.classList.contains("if_div")) {
-      // If Symbol
-      let ifDiv = symbol.parentElement as HTMLDivElement;
-      let falseBlock = ifDiv.getElementsByClassName(
-        "ifFalseBlock"
-      )[0] as HTMLDivElement;
-      let trueBlock = ifDiv.getElementsByClassName(
-        "ifTrueBlock"
-      )[0] as HTMLDivElement;
-      let gridStr = "";
-      if (trueBlock.offsetWidth > falseBlock.offsetWidth) {
-        gridStr =
-          trueBlock.offsetWidth +
-          "px max-content " +
-          symbol.offsetWidth +
-          "px max-content " +
-          trueBlock.offsetWidth +
-          "px";
-      } else if (trueBlock.offsetWidth < falseBlock.offsetWidth) {
-        gridStr =
-          falseBlock.offsetWidth +
-          "px max-content " +
-          symbol.offsetWidth +
-          "px max-content " +
-          falseBlock.offsetWidth +
-          "px";
-      } else {
-        gridStr =
-          falseBlock.offsetWidth +
-          "px max-content " +
-          symbol.offsetWidth +
-          "px max-content " +
-          trueBlock.offsetWidth +
-          "px";
-      }
-      ifDiv.style.gridTemplateColumns = gridStr;
-      symbol.style.margin = "0px";
-      this.resizeIfCaseArrows(symbol, false);
-    }
-  }
-
-  public resizeForLoopBlocks(symbol) {
-    // For Loop Symbols
-    if (symbol.parentElement.parentElement.classList.contains("for_div")) {
-      if (
-        symbol.parentElement.id == "forTrueBlock" ||
-        symbol.parentElement.id == "forFalseBlock"
-      ) {
-        let forDiv = symbol.parentElement.parentElement as HTMLDivElement;
-        let forSymbol = forDiv.getElementsByClassName(
-          "for_sym"
-        )[0] as HTMLDivElement;
-        let falseBlock = forDiv.getElementsByClassName(
-          "forFalseBlock"
-        )[0] as HTMLDivElement;
-        let trueBlock = forDiv.getElementsByClassName(
-          "forTrueBlock"
-        )[0] as HTMLDivElement;
-        // Resize to the Block with the larger width
-        let gridStr: string = "";
-        gridStr =
-          trueBlock.offsetWidth +
-          "px max-content " +
-          forSymbol.offsetWidth +
-          "px max-content " +
-          trueBlock.offsetWidth +
-          "px";
-        forDiv.style.gridTemplateColumns = gridStr;
-        trueBlock.style.margin = "0px";
-        falseBlock.style.margin = "0px";
-      }
-      this.resizeForLoopArrows(symbol.parentElement, true);
-    } else if (symbol.parentElement.classList.contains("for_div")) {
-      // For Symbol
-      let forDiv = symbol.parentElement as HTMLDivElement;
-      let falseBlock = forDiv.getElementsByClassName(
-        "forFalseBlock"
-      )[0] as HTMLDivElement;
-      let trueBlock = forDiv.getElementsByClassName(
-        "forTrueBlock"
-      )[0] as HTMLDivElement;
-      let gridStr = "";
-      gridStr =
-        trueBlock.offsetWidth +
-        "px max-content " +
-        symbol.offsetWidth +
-        "px max-content " +
-        trueBlock.offsetWidth +
-        "auto";
-      forDiv.style.gridTemplateColumns = gridStr;
-      symbol.style.margin = "auto";
-      symbol.style.clipPath =
-        "polygon(" +
-        (symbol.offsetWidth - 17.5) +
-        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      symbol.style.webkitClipPath =
-        "polygon(" +
-        (symbol.offsetWidth - 17.5) +
-        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      this.resizeForLoopArrows(symbol.parentElement, false);
-    }
-  }
-
-  public resizeWhileLoopBlocks(symbol) {
-    // While Loop Symbols
-    if (symbol.parentElement.parentElement.classList.contains("while_div")) {
-      if (symbol.parentElement.id == "whileTrueBlock") {
-        let whileDiv = symbol.parentElement.parentElement as HTMLDivElement;
-        let whileSymbol = whileDiv.getElementsByClassName(
-          "while_sym"
-        )[0] as HTMLDivElement;
-        let falseBlock = whileDiv.getElementsByClassName(
-          "whileFalseBlock"
-        )[0] as HTMLDivElement;
-        let trueBlock = whileDiv.getElementsByClassName(
-          "whileTrueBlock"
-        )[0] as HTMLDivElement;
-        // Resize to the Block with the larger width
-        let gridStr: string = "";
-        gridStr =
-          trueBlock.offsetWidth +
-          "px max-content " +
-          whileSymbol.offsetWidth +
-          "px max-content " +
-          trueBlock.offsetWidth +
-          "px";
-        whileDiv.style.gridTemplateColumns = gridStr;
-        trueBlock.style.margin = "0px";
-        falseBlock.style.margin = "0px";
-      }
-      this.resizeWhileLoopArrows(symbol.parentElement, true);
-    } else if (symbol.parentElement.classList.contains("while_div")) {
-      // While Symbol
-      let whileDiv = symbol.parentElement as HTMLDivElement;
-      let falseBlock = whileDiv.getElementsByClassName(
-        "whileFalseBlock"
-      )[0] as HTMLDivElement;
-      let trueBlock = whileDiv.getElementsByClassName(
-        "whileTrueBlock"
-      )[0] as HTMLDivElement;
-      let gridStr = "";
-      gridStr =
-        trueBlock.offsetWidth +
-        "px max-content " +
-        symbol.offsetWidth +
-        "px max-content " +
-        trueBlock.offsetWidth +
-        "auto";
-      whileDiv.style.gridTemplateColumns = gridStr;
-      symbol.style.margin = "auto";
-      symbol.style.clipPath =
-        "polygon(" +
-        (symbol.offsetWidth - 17.5) +
-        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      symbol.style.webkitClipPath =
-        "polygon(" +
-        (symbol.offsetWidth - 17.5) +
-        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      this.resizeWhileLoopArrows(symbol.parentElement, false);
-    }
-  }
-
-  public resizeDoWhileLoopBlocks(symbol) {
-    // Do While Loop Symbols
-    if (symbol.parentElement.parentElement.classList.contains("do_while_div")) {
-      if (symbol.parentElement.id == "doWhileTrueBlock") {
-        let doWhileDiv = symbol.parentElement.parentElement as HTMLDivElement;
-        let doWhileSymbol = doWhileDiv.getElementsByClassName(
-          "do_while_sym"
-        )[0] as HTMLDivElement;
-        let falseBlock = doWhileDiv.getElementsByClassName(
-          "doWhileFalseBlock"
-        )[0] as HTMLDivElement;
-        let trueBlock = doWhileDiv.getElementsByClassName(
-          "doWhileTrueBlock"
-        )[0] as HTMLDivElement;
-        // Resize to the Block with the larger width
-        let gridStr: string = "";
-        gridStr =
-          trueBlock.offsetWidth +
-          "px max-content " +
-          doWhileSymbol.offsetWidth +
-          "px max-content " +
-          trueBlock.offsetWidth +
-          "px";
-        doWhileDiv.style.gridTemplateColumns = gridStr;
-        trueBlock.style.margin = "0px";
-        falseBlock.style.margin = "0px";
-      }
-      this.resizeDoWhileLoopArrows(symbol.parentElement, true);
-    } else if (symbol.parentElement.classList.contains("do_while_div")) {
-      // Do While Symbol
-      let doWhileDiv = symbol.parentElement as HTMLDivElement;
-      let falseBlock = doWhileDiv.getElementsByClassName(
-        "doWhileFalseBlock"
-      )[0] as HTMLDivElement;
-      let trueBlock = doWhileDiv.getElementsByClassName(
-        "doWhileTrueBlock"
-      )[0] as HTMLDivElement;
-      let gridStr = "";
-      gridStr =
-        trueBlock.offsetWidth +
-        "px max-content " +
-        symbol.offsetWidth +
-        "px max-content " +
-        trueBlock.offsetWidth +
-        "auto";
-      doWhileDiv.style.gridTemplateColumns = gridStr;
-      symbol.style.margin = "auto";
-      symbol.style.clipPath =
-        "polygon(" +
-        (symbol.offsetWidth - 17.5) +
-        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      symbol.style.webkitClipPath =
-        "polygon(" +
-        (symbol.offsetWidth - 17.5) +
-        "px 0, 100% 17.5px, 100% 100%, 0 100%, 0 17.5px, 17.5px 0)";
-      this.resizeDoWhileLoopArrows(symbol.parentElement, false);
-    }
-  }
-
-  public resizeIfCaseArrows(symbol, resizeBlocks: boolean) {
-    // If Case Symbols
-    if (resizeBlocks) {
-      // Resize arrows to the Left and Right
-      let ifDiv = symbol.parentElement as HTMLDivElement;
-      let leftArrowPieces = ifDiv.getElementsByClassName("arrowPiece left");
-      for (let i = 0; i < leftArrowPieces.length; i++) {
-        let aPiece = leftArrowPieces[i] as HTMLDivElement;
-        let gridStr = "";
-        let z = aPiece.offsetWidth / 2 - 35 / 2;
-        gridStr = z + "px 35px " + z + "px";
-        aPiece.style.gridTemplateColumns = gridStr;
-        let arrowP = aPiece.getElementsByClassName("dropzone");
-        for (let j = 0; j < arrowP.length; j++) {
-          let p = arrowP[j] as HTMLDivElement;
-          p.style.width = z + "px";
-        }
-      }
-      let rightArrowPieces = ifDiv.getElementsByClassName("arrowPiece right");
-      for (let i = 0; i < rightArrowPieces.length; i++) {
-        let aPiece = rightArrowPieces[i] as HTMLDivElement;
-        let gridStr = "";
-        let z = aPiece.offsetWidth / 2 - 35 / 2;
-        gridStr = z + "px 35px " + z + "px";
-        aPiece.style.gridTemplateColumns = gridStr;
-        let arrowP = aPiece.getElementsByClassName("dropzone");
-        for (let j = 0; j < arrowP.length; j++) {
-          let p = arrowP[j] as HTMLDivElement;
-          p.style.width = z + "px";
-        }
-      }
-    } else {
-      // Resize arrows below If Symbol
-      let ifDiv = symbol.parentElement as HTMLDivElement;
-      let arrowPiece = ifDiv.getElementsByClassName(
-        "arrowPiece bottom_center"
-      )[0] as HTMLDivElement;
-      let gridStr = "";
-      let z = arrowPiece.offsetWidth / 2 - 35 / 2;
-      gridStr = z + "px 35px " + z + "px";
-      arrowPiece.style.gridTemplateColumns = gridStr;
-      let right1 = arrowPiece.getElementsByClassName(
-        "arrow_right"
-      )[0] as HTMLDivElement;
-      let left1 = arrowPiece.getElementsByClassName(
-        "arrow_left"
-      )[0] as HTMLDivElement;
-      right1.style.width = z + "px";
-      left1.style.width = z + "px";
-    }
-  }
-
-  public resizeForLoopArrows(symbol, resizeBlocks: boolean) {
-    // For Loop Symbols
-    if (resizeBlocks) {
-      // Resize arrows to the Left and Right
-      let forDiv = symbol.parentElement as HTMLDivElement;
-      let rightArrowPieces = forDiv.getElementsByClassName("arrowPiece right");
-      for (let i = 0; i < rightArrowPieces.length; i++) {
-        let aPiece = rightArrowPieces[i] as HTMLDivElement;
-        let gridStr = "";
-        let z = aPiece.offsetWidth / 2 - 35 / 2;
-        gridStr = z + "px 35px " + z + "px";
-        aPiece.style.gridTemplateColumns = gridStr;
-        let arrowP = aPiece.getElementsByClassName("dropzone");
-        for (let j = 0; j < arrowP.length; j++) {
-          let p = arrowP[j] as HTMLDivElement;
-          p.style.width = z + "px";
-        }
-      }
-    } else {
-      // Resize arrows below For Symbol
-      let forDiv = symbol.parentElement as HTMLDivElement;
-      let arrowPiece = forDiv.getElementsByClassName(
-        "arrowPiece bottom_center"
-      )[0] as HTMLDivElement;
-      let gridStr = "";
-      let z = arrowPiece.offsetWidth / 2 - 70 / 2;
-      gridStr = z + "px 70px " + z + "px";
-      arrowPiece.style.gridTemplateColumns = gridStr;
-      let right1 = arrowPiece.getElementsByClassName(
-        "arrow_horizontal"
-      )[0] as HTMLDivElement;
-      let left1 = arrowPiece.getElementsByClassName(
-        "blank_arrow_left"
-      )[0] as HTMLDivElement;
-      right1.style.width = z + "px";
-      left1.style.width = z + "px";
-    }
-  }
-
-  public resizeWhileLoopArrows(symbol, resizeBlocks: boolean) {
-    // While Loop Symbols
-    if (resizeBlocks) {
-      // Resize arrows to the Left and Right
-      let whileDiv = symbol.parentElement as HTMLDivElement;
-      let rightArrowPieces = whileDiv.getElementsByClassName(
-        "arrowPiece right"
-      );
-      for (let i = 0; i < rightArrowPieces.length; i++) {
-        let aPiece = rightArrowPieces[i] as HTMLDivElement;
-        let gridStr = "";
-        let z = aPiece.offsetWidth / 2 - 35 / 2;
-        gridStr = z + "px 35px " + z + "px";
-        aPiece.style.gridTemplateColumns = gridStr;
-        let arrowP = aPiece.getElementsByClassName("dropzone");
-        for (let j = 0; j < arrowP.length; j++) {
-          let p = arrowP[j] as HTMLDivElement;
-          p.style.width = z + "px";
-        }
-      }
-    } else {
-      // Resize arrows below While Symbol
-      let whileDiv = symbol.parentElement as HTMLDivElement;
-      let arrowPiece = whileDiv.getElementsByClassName(
-        "arrowPiece bottom_center"
-      )[0] as HTMLDivElement;
-      let gridStr = "";
-      let z = arrowPiece.offsetWidth / 2 - 70 / 2;
-      gridStr = z + "px 70px " + z + "px";
-      arrowPiece.style.gridTemplateColumns = gridStr;
-      let right1 = arrowPiece.getElementsByClassName(
-        "arrow_horizontal"
-      )[0] as HTMLDivElement;
-      let left1 = arrowPiece.getElementsByClassName(
-        "blank_arrow_left"
-      )[0] as HTMLDivElement;
-      right1.style.width = z + "px";
-      left1.style.width = z + "px";
-    }
-  }
-
-  public resizeDoWhileLoopArrows(symbol, resizeBlocks: boolean) {
-    // Do Loop Symbols
-    if (resizeBlocks) {
-      // Resize arrows to the Left and Right
-      let doWhileDiv = symbol.parentElement as HTMLDivElement;
-      let rightArrowPieces = doWhileDiv.getElementsByClassName(
-        "arrowPiece right"
-      );
-      for (let i = 0; i < rightArrowPieces.length; i++) {
-        let aPiece = rightArrowPieces[i] as HTMLDivElement;
-        let gridStr = "";
-        let z = aPiece.offsetWidth / 2 - 35 / 2;
-        gridStr = z + "px 35px " + z + "px";
-        aPiece.style.gridTemplateColumns = gridStr;
-        let arrowP = aPiece.getElementsByClassName("dropzone");
-        for (let j = 0; j < arrowP.length; j++) {
-          let p = arrowP[j] as HTMLDivElement;
-          p.style.width = z + "px";
-        }
-      }
-    } else {
-      // Resize arrows below Do While Symbol
-      let doWhileDiv = symbol.parentElement as HTMLDivElement;
-      let arrowPiece = doWhileDiv.getElementsByClassName(
-        "arrowPiece bottom_center"
-      )[0] as HTMLDivElement;
-      let gridStr = "";
-      let z = arrowPiece.offsetWidth / 2 - 35 / 2;
-      gridStr = z + "px 35px " + z + "px";
-      arrowPiece.style.gridTemplateColumns = gridStr;
-      let right1 = arrowPiece.getElementsByClassName(
-        "arrow_horizontal"
-      )[0] as HTMLDivElement;
-      let left1 = arrowPiece.getElementsByClassName(
-        "blank_arrow_left"
-      )[0] as HTMLDivElement;
-      right1.style.width = z + "px";
-      left1.style.width = z + "px";
     }
   }
 
@@ -1265,7 +575,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize ** [CHUBO! = resize before removing symbol]
-                  this.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -1291,7 +601,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -1317,7 +627,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "whileTrueBlock"
                 ) {
@@ -1345,7 +655,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
                 ) {
@@ -1373,7 +683,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else {
                   let syms = document
                     .getElementById("workspace")
@@ -1558,7 +868,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -1580,7 +890,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -1602,7 +912,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "whileTrueBlock"
                 ) {
@@ -1626,7 +936,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
                 ) {
@@ -1650,7 +960,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  this.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else {
                   let syms = document
                     .getElementById("workspace")
@@ -1794,7 +1104,7 @@ export class HomePage {
                     break;
                 }
                 this.flowchart.addSymbolToFlowchart(sym, active_index);
-                this.resizeSymbols(targetArrow);
+                this.resizer.resizeSymbols(targetArrow);
                 let bs = document.getElementsByClassName("arrow dropzone");
                 for (let i = 0; i < b.length; i++) {
                   if (bs[i].classList.contains("active-arrow")) {
@@ -1886,23 +1196,23 @@ export class HomePage {
         if (el instanceof IfCase) {
           tempSym = el.getSymbolFromTrueBlock(asi);
           if (targetSymbol.id == "s_declare") {
-            this.openDeclareModal(tempSym, event);
+            this.symModals.openDeclareModal(tempSym, event);
           } else if (targetSymbol.id == "s_input") {
-            this.openInputModal(tempSym, event);
+            this.symModals.openInputModal(tempSym, event);
           } else if (targetSymbol.id == "s_output") {
-            this.openOutputModal(tempSym, event);
+            this.symModals.openOutputModal(tempSym, event);
           } else if (targetSymbol.id == "s_comment") {
-            this.openCommentModal(tempSym, event);
+            this.symModals.openCommentModal(tempSym, event);
           } else if (targetSymbol.id == "s_process") {
-            this.openProcessModal(tempSym, event);
+            this.symModals.openProcessModal(tempSym, event);
           } else if (targetSymbol.id == "s_if_case") {
-            this.openIfModal(tempSym, event);
+            this.symModals.openIfModal(tempSym, event);
           } else if (targetSymbol.id == "s_for_loop") {
-            this.openForLoopModal(tempSym, event);
+            this.symModals.openForLoopModal(tempSym, event);
           } else if (targetSymbol.id == "s_while_loop") {
-            this.openWhileModal(tempSym, event);
+            this.symModals.openWhileModal(tempSym, event);
           } else if (targetSymbol.id == "s_do_while_loop") {
-            this.openDoWhileModal(tempSym, event);
+            this.symModals.openDoWhileModal(tempSym, event);
           }
         }
       }
@@ -1918,23 +1228,23 @@ export class HomePage {
         if (el instanceof IfCase) {
           tempSym = el.getSymbolFromFalseBlock(asi);
           if (targetSymbol.id == "s_declare") {
-            this.openDeclareModal(tempSym, event);
+            this.symModals.openDeclareModal(tempSym, event);
           } else if (targetSymbol.id == "s_input") {
-            this.openInputModal(tempSym, event);
+            this.symModals.openInputModal(tempSym, event);
           } else if (targetSymbol.id == "s_output") {
-            this.openOutputModal(tempSym, event);
+            this.symModals.openOutputModal(tempSym, event);
           } else if (targetSymbol.id == "s_comment") {
-            this.openCommentModal(tempSym, event);
+            this.symModals.openCommentModal(tempSym, event);
           } else if (targetSymbol.id == "s_process") {
-            this.openProcessModal(tempSym, event);
+            this.symModals.openProcessModal(tempSym, event);
           } else if (targetSymbol.id == "s_if_case") {
-            this.openIfModal(tempSym, event);
+            this.symModals.openIfModal(tempSym, event);
           } else if (targetSymbol.id == "s_for_loop") {
-            this.openForLoopModal(tempSym, event);
+            this.symModals.openForLoopModal(tempSym, event);
           } else if (targetSymbol.id == "s_while_loop") {
-            this.openWhileModal(tempSym, event);
+            this.symModals.openWhileModal(tempSym, event);
           } else if (targetSymbol.id == "s_do_while_loop") {
-            this.openDoWhileModal(tempSym, event);
+            this.symModals.openDoWhileModal(tempSym, event);
           }
         }
       }
@@ -1951,23 +1261,23 @@ export class HomePage {
         if (el instanceof ForLoop) {
           tempSym = el.getSymbolFromTrueBlock(asi);
           if (targetSymbol.id == "s_declare") {
-            this.openDeclareModal(tempSym, event);
+            this.symModals.openDeclareModal(tempSym, event);
           } else if (targetSymbol.id == "s_input") {
-            this.openInputModal(tempSym, event);
+            this.symModals.openInputModal(tempSym, event);
           } else if (targetSymbol.id == "s_output") {
-            this.openOutputModal(tempSym, event);
+            this.symModals.openOutputModal(tempSym, event);
           } else if (targetSymbol.id == "s_comment") {
-            this.openCommentModal(tempSym, event);
+            this.symModals.openCommentModal(tempSym, event);
           } else if (targetSymbol.id == "s_process") {
-            this.openProcessModal(tempSym, event);
+            this.symModals.openProcessModal(tempSym, event);
           } else if (targetSymbol.id == "s_if_case") {
-            this.openIfModal(tempSym, event);
+            this.symModals.openIfModal(tempSym, event);
           } else if (targetSymbol.id == "s_for_loop") {
-            this.openForLoopModal(tempSym, event);
+            this.symModals.openForLoopModal(tempSym, event);
           } else if (targetSymbol.id == "s_while_loop") {
-            this.openWhileModal(tempSym, event);
+            this.symModals.openWhileModal(tempSym, event);
           } else if (targetSymbol.id == "s_do_while_loop") {
-            this.openDoWhileModal(tempSym, event);
+            this.symModals.openDoWhileModal(tempSym, event);
           }
         }
       }
@@ -1983,23 +1293,23 @@ export class HomePage {
         if (el instanceof WhileLoop) {
           tempSym = el.getSymbolFromTrueBlock(asi);
           if (targetSymbol.id == "s_declare") {
-            this.openDeclareModal(tempSym, event);
+            this.symModals.openDeclareModal(tempSym, event);
           } else if (targetSymbol.id == "s_input") {
-            this.openInputModal(tempSym, event);
+            this.symModals.openInputModal(tempSym, event);
           } else if (targetSymbol.id == "s_output") {
-            this.openOutputModal(tempSym, event);
+            this.symModals.openOutputModal(tempSym, event);
           } else if (targetSymbol.id == "s_comment") {
-            this.openCommentModal(tempSym, event);
+            this.symModals.openCommentModal(tempSym, event);
           } else if (targetSymbol.id == "s_process") {
-            this.openProcessModal(tempSym, event);
+            this.symModals.openProcessModal(tempSym, event);
           } else if (targetSymbol.id == "s_if_case") {
-            this.openIfModal(tempSym, event);
+            this.symModals.openIfModal(tempSym, event);
           } else if (targetSymbol.id == "s_for_loop") {
-            this.openForLoopModal(tempSym, event);
+            this.symModals.openForLoopModal(tempSym, event);
           } else if (targetSymbol.id == "s_while_loop") {
-            this.openWhileModal(tempSym, event);
+            this.symModals.openWhileModal(tempSym, event);
           } else if (targetSymbol.id == "s_do_while_loop") {
-            this.openDoWhileModal(tempSym, event);
+            this.symModals.openDoWhileModal(tempSym, event);
           }
         }
       }
@@ -2015,23 +1325,23 @@ export class HomePage {
         if (el instanceof DoWhileLoop) {
           tempSym = el.getSymbolFromTrueBlock(asi);
           if (targetSymbol.id == "s_declare") {
-            this.openDeclareModal(tempSym, event);
+            this.symModals.openDeclareModal(tempSym, event);
           } else if (targetSymbol.id == "s_input") {
-            this.openInputModal(tempSym, event);
+            this.symModals.openInputModal(tempSym, event);
           } else if (targetSymbol.id == "s_output") {
-            this.openOutputModal(tempSym, event);
+            this.symModals.openOutputModal(tempSym, event);
           } else if (targetSymbol.id == "s_comment") {
-            this.openCommentModal(tempSym, event);
+            this.symModals.openCommentModal(tempSym, event);
           } else if (targetSymbol.id == "s_process") {
-            this.openProcessModal(tempSym, event);
+            this.symModals.openProcessModal(tempSym, event);
           } else if (targetSymbol.id == "s_if_case") {
-            this.openIfModal(tempSym, event);
+            this.symModals.openIfModal(tempSym, event);
           } else if (targetSymbol.id == "s_for_loop") {
-            this.openForLoopModal(tempSym, event);
+            this.symModals.openForLoopModal(tempSym, event);
           } else if (targetSymbol.id == "s_while_loop") {
-            this.openWhileModal(tempSym, event);
+            this.symModals.openWhileModal(tempSym, event);
           } else if (targetSymbol.id == "s_do_while_loop") {
-            this.openDoWhileModal(tempSym, event);
+            this.symModals.openDoWhileModal(tempSym, event);
           }
         }
       }
@@ -2052,29 +1362,29 @@ export class HomePage {
       tempSym = this.flowchart.getSymbolFromFlowchart(active_sym_index);
 
       if (targetSymbol.id == "s_declare") {
-        this.openDeclareModal(tempSym, event);
+        this.symModals.openDeclareModal(tempSym, event);
       } else if (targetSymbol.id == "s_input") {
-        this.openInputModal(tempSym, event);
+        this.symModals.openInputModal(tempSym, event);
       } else if (targetSymbol.id == "s_output") {
-        this.openOutputModal(tempSym, event);
+        this.symModals.openOutputModal(tempSym, event);
       } else if (targetSymbol.id == "s_comment") {
-        this.openCommentModal(tempSym, event);
+        this.symModals.openCommentModal(tempSym, event);
       } else if (targetSymbol.id == "s_process") {
-        this.openProcessModal(tempSym, event);
+        this.symModals.openProcessModal(tempSym, event);
       } else if (targetSymbol.id == "s_if_case") {
-        this.openIfModal(tempSym, event);
+        this.symModals.openIfModal(tempSym, event);
       } else if (targetSymbol.id == "s_for_loop") {
-        this.openForLoopModal(tempSym, event);
+        this.symModals.openForLoopModal(tempSym, event);
       } else if (targetSymbol.id == "s_while_loop") {
-        this.openWhileModal(tempSym, event);
+        this.symModals.openWhileModal(tempSym, event);
       } else if (targetSymbol.id == "s_do_while_loop") {
-        this.openDoWhileModal(tempSym, event);
+        this.symModals.openDoWhileModal(tempSym, event);
       }
     }
   }
 
   public addSymbol(id: string, currentSymbol?: Symbols) {
-    let symClass, temp, symbol, activeArrowIndex, act_in, symComponent;
+    let temp, symbol, activeArrowIndex, act_in, symComponent;
 
     let arrows = document.getElementsByClassName("arrow dropzone");
     for (let i = 0; i < arrows.length; i++) {
@@ -2084,125 +1394,126 @@ export class HomePage {
     }
 
     if (id == "s_declare") {
-      // // frontend
-      // temp = document.getElementById(id);
-      // symbol = temp.cloneNode(true);
-      // symbol.innerHTML = "Declare";
-      // // backend
-      // let dec = new Declare();
-      // dec.setDeclareSymbol(symbol);
-      // symComponent = dec;
-
-      let dec = new Declare();
+      // frontend
       temp = document.getElementById(id);
-      dec.setDeclareSymbol(temp.cloneNode(true));
-      symbol = dec.getDeclareSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Declare";
+      // backend
+      let dec = new Declare();
+      dec.setDeclareSymbol(symbol);
       symComponent = dec;
     } else if (id == "s_input") {
-      let input = new Input();
+      // frontend
       temp = document.getElementById(id);
-      input.setInputSymbol(temp.cloneNode(true));
-      symbol = input.getInputSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Input";
+      // backend
+      let input = new Input();
+      input.setInputSymbol(symbol);
       symComponent = input;
     } else if (id == "s_output") {
-      let output = new Output();
+      // frontend
       temp = document.getElementById(id);
-      output.setOutputSymbol(temp.cloneNode(true));
-      symbol = output.getOutputSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Output";
+      // backend
+      let output = new Output();
+      output.setOutputSymbol(symbol);
       symComponent = output;
     } else if (id == "s_process") {
-      let proc = new Process();
+      // frontend
       temp = document.getElementById(id);
-      proc.setProcessSymbol(temp.cloneNode(true));
-      symbol = proc.getProcessSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Process";
+      // backend
+      let proc = new Process();
+      proc.setProcessSymbol(symbol);
       symComponent = proc;
     } else if (id == "s_comment") {
-      let com = new Comment();
+      // frontend
       temp = document.getElementById(id);
-      com.setCommentSymbol(temp.cloneNode(true));
-      symbol = com.getCommentSymbol();
+      symbol = temp.cloneNode(true);
       symbol.innerHTML = "Comment";
+      // backend
+      let com = new Comment();
+      com.setCommentSymbol(symbol);
       symComponent = com;
     } else if (id == "s_if_case") {
+      // frontend
+      temp = document
+        .getElementById("control_loop_list")
+        .getElementsByClassName("if_div");
+      symbol = temp[0].cloneNode(true);
+      // - add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
+        // - add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
+      }
+      // backend
       let ifcase = new IfCase();
-      symClass = "if_div";
-      temp = document
-        .getElementById("control_loop_list")
-        .getElementsByClassName(symClass);
-      let t1 = document.getElementById("s_if_case");
-      ifcase.setIfCaseSymbol(t1);
-      symbol = temp[0].cloneNode(true);
+      ifcase.setIfCaseSymbol(symbol);
       symComponent = ifcase;
-      // add inner arrows to dragula containers
-      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
-      for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService
-          .find("symbol")
-          .drake.containers.push(innerArrows[a]);
-        // add event listeners to inner arrows
-        this.addEventListenersToArrow(innerArrows[a]);
-      }
     } else if (id == "s_while_loop") {
+      // frontend
+      temp = document
+        .getElementById("control_loop_list")
+        .getElementsByClassName("while_div");
+      symbol = temp[0].cloneNode(true);
+      // - add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
+        // - add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
+      }
+      // backend
       let whileloop = new WhileLoop();
-      symClass = "while_div";
-      temp = document
-        .getElementById("control_loop_list")
-        .getElementsByClassName(symClass);
-      let t2 = document.getElementById("s_while_loop");
-      whileloop.setWhileSymbol(t2);
-      symbol = temp[0].cloneNode(true);
+      whileloop.setWhileSymbol(symbol);
       symComponent = whileloop;
-      // add inner arrows to dragula containers
-      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
-      for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService
-          .find("symbol")
-          .drake.containers.push(innerArrows[a]);
-        // add event listeners to inner arrows
-        this.addEventListenersToArrow(innerArrows[a]);
-      }
     } else if (id == "s_for_loop") {
+      // frontend
+      temp = document
+        .getElementById("control_loop_list")
+        .getElementsByClassName("for_div");
+      symbol = temp[0].cloneNode(true);
+      // - add inner arrows to dragula containers
+      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
+      for (let a = 0; a < innerArrows.length; a++) {
+        this.dragulaService
+          .find("symbol")
+          .drake.containers.push(innerArrows[a]);
+        // - add event listeners to inner arrows
+        this.addEventListenersToArrow(innerArrows[a]);
+      }
+      // backend
       let forloop = new ForLoop();
-      symClass = "for_div";
-      temp = document
-        .getElementById("control_loop_list")
-        .getElementsByClassName(symClass);
-      let t3 = document.getElementById("s_for_loop");
-      forloop.setForSymbol(t3);
-      symbol = temp[0].cloneNode(true);
+      forloop.setForSymbol(symbol);
       symComponent = forloop;
-      // add inner arrows to dragula containers
-      let innerArrows = symbol.getElementsByClassName("arrow dropzone");
-      for (let a = 0; a < innerArrows.length; a++) {
-        this.dragulaService
-          .find("symbol")
-          .drake.containers.push(innerArrows[a]);
-        // add event listeners to inner arrows
-        this.addEventListenersToArrow(innerArrows[a]);
-      }
     } else if (id == "s_do_while_loop") {
-      let doWhileLoop = new DoWhileLoop();
-      symClass = "do_while_div";
+      // frontend
       temp = document
         .getElementById("control_loop_list")
-        .getElementsByClassName(symClass);
-      let t4 = document.getElementById("s_do_while_loop");
-      doWhileLoop.setDoWhileSymbol(t4);
+        .getElementsByClassName("do_while_div");
       symbol = temp[0].cloneNode(true);
-      symComponent = doWhileLoop;
-      // add inner arrows to dragula containers
+      // - add inner arrows to dragula containers
       let innerArrows = symbol.getElementsByClassName("arrow dropzone");
       for (let a = 0; a < innerArrows.length; a++) {
         this.dragulaService
           .find("symbol")
           .drake.containers.push(innerArrows[a]);
-        // add event listeners to inner arrows
+        // - add event listeners to inner arrows
         this.addEventListenersToArrow(innerArrows[a]);
       }
+      // backend
+      let doWhileLoop = new DoWhileLoop();
+      doWhileLoop.setDoWhileSymbol(symbol);
+      symComponent = doWhileLoop;
     }
 
     let tempBranch = this.branch.cloneNode(true);
@@ -2223,14 +1534,18 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        // TODO: assign temp ID
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof IfCase) {
-            el.addSymbolToTrueBlock(symComponent, act_in);
-          }
-        }
+        // TODO: assign ID
+        // generateId(activeArrow.parentElement, symComponent);
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof IfCase) {
+        //     el.addSymbolToTrueBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       case "ifFalseBlock":
         let par2 = activeArrow.parentElement.getElementsByClassName(
@@ -2243,14 +1558,15 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof IfCase) {
-            el.addSymbolToFalseBlock(symComponent, act_in);
-          }
-        }
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof IfCase) {
+        //     el.addSymbolToFalseBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       case "forTrueBlock":
         let par3 = activeArrow.parentElement.getElementsByClassName("arrow dropzone");
@@ -2261,14 +1577,15 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        // symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof ForLoop) {
-            el.addSymbolToTrueBlock(symComponent, act_in);
-          }
-        }
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof ForLoop) {
+        //     el.addSymbolToTrueBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       case "whileTrueBlock":
         let par4 = activeArrow.parentElement.getElementsByClassName(
@@ -2281,14 +1598,15 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof WhileLoop) {
-            el.addSymbolToTrueBlock(symComponent, act_in);
-          }
-        }
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof WhileLoop) {
+        //     el.addSymbolToTrueBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       case "doWhileTrueBlock":
         let par5 = activeArrow.parentElement.getElementsByClassName(
@@ -2301,14 +1619,15 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const el = this.flowchart.SYMBOLS[l];
-          if (el instanceof DoWhileLoop) {
-            el.addSymbolToTrueBlock(symComponent, act_in);
-          }
-        }
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const el = this.flowchart.SYMBOLS[l];
+        //   if (el instanceof DoWhileLoop) {
+        //     el.addSymbolToTrueBlock(symComponent, act_in);
+        //   }
+        // }
         break;
       default:
         let ai, totalAD = 0;
@@ -2349,18 +1668,20 @@ export class HomePage {
 
         for (let i = 0; i < b1.length; i++) {
           if (b1[i].className.endsWith("active-arrow")) {
-            ai = i; // - totalAD;
+            ai = i - totalAD;
           }
         }
 
+        console.log("workspace active arrow: ", tempBranch);
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-
+        // TODO: assign temp id
+        // symbol.id = "s_temp_id";
         // Add symbol and corresponding arrow/branch to Workspace
         this.workspace.insertBefore(symbol, activeArrow.nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
 
-        this.flowchart.addSymbolToFlowchart(symComponent, ai);
+        // this.flowchart.addSymbolToFlowchart(symComponent, ai);
         break;
     }
 
@@ -2373,6 +1694,11 @@ export class HomePage {
     if (this.popOver)
       this.popCtrl.dismiss();
     console.log(this.flowchart.SYMBOLS);
+
+    let sy = this.workspace.getElementsByClassName("symbol");
+    console.log("workspace symbols: ", sy);
+    console.log("symbolIndex: ", this.symbolId.getSymbolIndex("s_for_loop", activeArrow.parentElement));
+    console.log("parentIndex: ", this.symbolId.getParentIndex("s_for_loop", activeArrow.parentElement));
   }
 
   public addEventListenersToArrow(arrow) {
@@ -2881,7 +2207,7 @@ export class HomePage {
           text: "Internal Storage",
           icon: "folder",
           handler: () => {
-            this.saveProject();
+            this.saver.saveProject(this.fileName, this.flowchart, this.platform);
           },
         },
         {
@@ -2897,7 +2223,7 @@ export class HomePage {
           text: "Internal Storage",
           icon: "folder",
           handler: () => {
-            this.saveProject();
+            this.saver.saveProject(this.fileName, this.flowchart, this.platform);
           },
         },
         {
@@ -2905,7 +2231,7 @@ export class HomePage {
           icon: "cloud-upload",
           handler: () => {
             this.checkInternetConnection();
-            this.saveProjectToDatabase();
+            this.saver.saveProjectToDatabase(this.fileName, this.flowchart, this.platform);
           },
         },
         {
@@ -2922,218 +2248,6 @@ export class HomePage {
       buttons: buttons
     });
     await actionSheet.present();
-  }
-
-  public saveProject() {
-    let fileName, flowchartJSON;
-    // this.menu.close();
-    let fName = document.getElementById("fileName") as HTMLInputElement;
-    this.fileName = fName.value;
-
-    if (this.fileName == "") {
-      this.showAlert(
-        "Failed to Save",
-        `Please enter a name for the project in the TextBox above, before saving it.`
-      );
-    } else {
-      fileName = this.fileName + ".chap";
-      this.flowchart.prepareFlowchartForSaving();
-      flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
-
-      if (this.platform.is("android")) {
-        this.saveToAndroid(flowchartJSON, fileName);
-      } else if (this.platform.is("ios")) {
-        this.saveToIOS(flowchartJSON, fileName);
-      } else if (this.platform.is("desktop")) {
-        this.saveTextAsFile(flowchartJSON, fileName);
-      }
-    }
-  }
-
-  public saveTextAsFile(data, filename) {
-    if (!data) {
-      console.error("Console.save: No data");
-      return;
-    }
-    if (!filename) filename = "console.json";
-    var blob = new Blob([data], { type: "text/plain" }),
-      e = document.createEvent("MouseEvents"),
-      a = document.createElement("a");
-
-    console.log("base64:", btoa(data));
-
-    // FOR IE:
-    // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-    //   window.navigator.msSaveOrOpenBlob(blob, filename);
-    // } else {
-    //   var e = document.createEvent("MouseEvents"),
-    //     a = document.createElement("a");
-    //   a.download = filename;
-    //   a.href = window.URL.createObjectURL(blob);
-    //   a.dataset.downloadurl = ["text/plain", a.download, a.href].join(":");
-    //   e.initEvent("click", true, false);
-    //   a.dispatchEvent(e);
-
-    //   console.log("A link", a.href);
-    // }
-  }
-
-  public saveToAndroid(fileData, filename) {
-    this.file
-      .writeFile(
-        `${this.file.externalRootDirectory}/${this.saveFolder}`,
-        `${filename}`,
-        fileData,
-        { replace: true, append: false }
-      )
-      .then((res) => {
-        this.toast
-          .show(
-            'The project "' + filename + '" has successfully saved.',
-            "3000",
-            "bottom"
-          )
-          .subscribe((toast) => {
-            console.log(toast);
-          });
-      });
-  }
-
-  public saveToIOS(flowchartJSON, filename) { }
-
-  async saveProjectToDatabase() {
-    // Check if it is in Offline Mode
-    if (this.auth.mode == "offline") {
-      let alert = await this.alertC.create({
-        header: "Offline Mode",
-        message: "Please turn on your internet connection to use CHAP online.",
-        buttons: [
-          {
-            text: "Go Online",
-            handler: () => {
-              //this.auth.mode = 'online';
-              this.navCtrl.navigateRoot("/login");
-            },
-          },
-          {
-            text: "Close",
-            role: "cancel",
-            handler: () => { },
-          },
-        ],
-      });
-      alert.present();
-    } else if (this.auth.isLoggedIn) {
-      let fileName, flowchartJSON;
-
-      let fName = document.getElementById("fileName") as HTMLInputElement;
-      this.fileName = fName.value;
-
-      if (this.fileName == "") {
-        this.showAlert(
-          "Failed to Save",
-          `Please enter a name for the project in the TextBox above, before saving it.`
-        );
-      } else {
-        fileName = this.fileName + ".chap";
-        this.flowchart.prepareFlowchartForSaving();
-        flowchartJSON = JSON.stringify(this.flowchart.SYMBOLS);
-
-        let uploadFile = {
-          userid: this.auth.sessionToken.session.user_id,
-          name: fileName,
-          type: "text/plain",
-          blob: flowchartJSON,
-        };
-        console.log("upload data", uploadFile);
-
-        var headers = new HttpHeaders();
-        headers.append("Accept", "application/json");
-        headers.append("Content-Type", "application/json");
-
-        this.http.post("http://www.chapprogramming.com/saveProject.php", uploadFile, {})
-        // this.http.post("http://www.chapchap.ga/saveProject.php", uploadFile, {})
-        // this.http.post('https://chapweb.000webhostapp.com/saveProject.php', uploadFile, {})
-        // this.http.post('http://localhost:80/chap_2/saveProject.php', uploadFile, {})
-          .map((res: any) => res)
-          .subscribe(async (res) => {
-            console.log(res);
-
-            if (res.message == "Save successful") {
-              if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast
-                  .show("Save successful!.", "3000", "bottom")
-                  .subscribe((toast) => {
-                    console.log(toast);
-                  });
-              } else {
-                let alert = await this.alertC.create({
-                  header: "File Uploaded to database",
-                  message: "Save successful",
-                  buttons: ["OK"],
-                });
-                alert.present();
-              }
-            } else if (
-              res.message == "Invaild File Upload! Please Re-Check your File."
-            ) {
-              if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast
-                  .show(
-                    "Invaild File Upload! Please Re-Check your File.",
-                    "3000",
-                    "bottom"
-                  )
-                  .subscribe((toast) => {
-                    console.log(toast);
-                  });
-              } else {
-                let alert = await this.alertC.create({
-                  header: "ERROR",
-                  message: "Invaild File Upload! Please Re-Check your File.",
-                  buttons: ["OK"],
-                });
-                alert.present();
-              }
-            } else {
-              if (this.platform.is("android") || this.platform.is("ios")) {
-                this.toast
-                  .show(res.message, "3000", "bottom")
-                  .subscribe((toast) => {
-                    console.log(toast);
-                  });
-              } else {
-                let alert = await this.alertC.create({
-                  header: "ERROR",
-                  message: res.message,
-                  buttons: ["OK"],
-                });
-                alert.present();
-              }
-            }
-          });
-      }
-    } else {
-      let alert = await this.alertC.create({
-        header: "Cannot Save Online",
-        message: "Please log in to save your CHAP projects online.",
-        buttons: [
-          {
-            text: "Login",
-            handler: () => {
-              //this.auth.mode = 'online';
-              this.navCtrl.navigateRoot("/login");
-            },
-          },
-          {
-            text: "Use Offline Mode",
-            role: "cancel",
-            handler: () => { },
-          },
-        ],
-      });
-      alert.present();
-    }
   }
 
   public debugProgram() {
@@ -3203,30 +2317,6 @@ export class HomePage {
 
       // this.saveAsImageFile(image, 'fileName');
     });
-  }
-
-  public saveAsImageFile(data, filename) {
-    if (!data) {
-      console.error("Console.save: No data");
-      return;
-    }
-    if (!filename) filename = "temp.png";
-    var blob = new Blob([data], { type: "image/png" }),
-      e = document.createEvent("MouseEvents"),
-      a = document.createElement("a");
-
-    // FOR IE:
-    // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-    //   window.navigator.msSaveOrOpenBlob(blob, filename);
-    // } else {
-    //   var e = document.createEvent("MouseEvents"),
-    //     a = document.createElement("a");
-    //   a.download = filename;
-    //   a.href = window.URL.createObjectURL(blob);
-    //   a.dataset.downloadurl = ["image/png", a.download, a.href].join(":");
-    //   e.initEvent("click", true, false);
-    //   a.dispatchEvent(e);
-    // }
   }
 
   async logOut() {

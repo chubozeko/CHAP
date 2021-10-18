@@ -259,21 +259,6 @@ export class LoopBlock {
           }
         }
       }
-//comment
-else if (this.tempSymbols[i] instanceof Comment){
-
-  if (this.isProgramRunning) {
-            if (!this.isAnInputBlockRunning) {
-              let commentSym = this.tempSymbols[i] as Comment;
-              let didCommentRun = commentSym;
-              if (!didCommentRun ) {
-                this.isProgramRunning = false;
-                this.loopBlockState.isProgramRunning = this.isProgramRunning;
-              } else {
-              }
-            }
-          }
-  }
 
       // OUTPUT
       else if (this.tempSymbols[i] instanceof Output) {
