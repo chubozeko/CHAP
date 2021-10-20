@@ -40,7 +40,7 @@ export class SymbolId {
         }
       }
     }
-    // return -1;
+     return -1;
   }
 
   
