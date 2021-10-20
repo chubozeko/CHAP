@@ -1675,16 +1675,15 @@ export class HomePage {
             ai = i - totalAD;
           }
         }
-
         console.log("workspace active arrow: ", tempBranch);
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
         // TODO: assign temp id
-        // symbol.id = "s_temp_id";
+        symbol.id = "s_temp_id";
         // Add symbol and corresponding arrow/branch to Workspace
         this.workspace.insertBefore(symbol, activeArrow.nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
-
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
         // this.flowchart.addSymbolToFlowchart(symComponent, ai);
         break;
     }
