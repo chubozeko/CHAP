@@ -58,8 +58,8 @@ import { SymbolId } from "./symbol-ids";
 @Injectable()
 export class HomePage {
   @ViewChild("symbolsFAB", {
-    //static: false
-  })
+    static: false
+})
    symbolsFAB: Fab;
   symModals: SymbolModals = new SymbolModals(this.modalC);
   //resizer: Resizer = new Resizer();
