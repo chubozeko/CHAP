@@ -1522,7 +1522,7 @@ export class HomePage {
     let activeArrow = document.getElementsByClassName("arrow dropzone active-arrow")[0];
 
     /* Checking which BLOCK the symbol should be added to */
-    switch (activeArrow.parentElement.id) {
+    switch (activeArrow.parentElement.className) {
       case "ifTrueBlock":
         let par1 = activeArrow.parentElement.getElementsByClassName(
           "arrow dropzone"
@@ -1534,18 +1534,17 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        // TODO: assign temp ID
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // TODO: assign ID
-        // generateId(activeArrow.parentElement, symComponent);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof IfCase) {
-        //     el.addSymbolToTrueBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof IfCase) {
+            el.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       case "ifFalseBlock":
         let par2 = activeArrow.parentElement.getElementsByClassName(
@@ -1561,12 +1560,14 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof IfCase) {
-        //     el.addSymbolToFalseBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof IfCase) {
+            el.addSymbolToFalseBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       case "forTrueBlock":
         let par3 = activeArrow.parentElement.getElementsByClassName("arrow dropzone");
@@ -1577,15 +1578,17 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        // symbol.id = "s_temp_id";
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof ForLoop) {
-        //     el.addSymbolToTrueBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof ForLoop) {
+            el.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       case "whileTrueBlock":
         let par4 = activeArrow.parentElement.getElementsByClassName(
@@ -1601,12 +1604,14 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof WhileLoop) {
-        //     el.addSymbolToTrueBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof WhileLoop) {
+            el.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       case "doWhileTrueBlock":
         let par5 = activeArrow.parentElement.getElementsByClassName(
@@ -1622,12 +1627,14 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof DoWhileLoop) {
-        //     el.addSymbolToTrueBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof DoWhileLoop) {
+            el.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       default:
         let ai, totalAD = 0;
@@ -1681,7 +1688,7 @@ export class HomePage {
         this.workspace.insertBefore(symbol, activeArrow.nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        // this.flowchart.addSymbolToFlowchart(symComponent, ai);
+        this.flowchart.addSymbolToFlowchart(symComponent, symComponent.symbolIndex);
         break;
     }
 

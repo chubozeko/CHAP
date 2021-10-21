@@ -24,6 +24,7 @@ export class ForLoop {
 
   trueExpression: string;
   trueLoopBlock: any[];
+  trueBlockId: string = 'forTrueBlock';
 
   falseExpression: string;
   falseLoopBlock: any[];

@@ -15,6 +15,7 @@ export class WhileLoop {
 
   trueExpression: string;
   trueLoopBlock: any[];
+  trueBlockId: string = 'whileTrueBlock';
 
   falseExpression: string;
   falseLoopBlock: any[];

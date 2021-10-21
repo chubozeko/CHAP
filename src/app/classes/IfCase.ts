@@ -16,10 +16,12 @@ export class IfCase {
 
   trueExpression: string;
   trueBlockSymbols: any[];
+  trueBlockId: string = 'ifTrueBlock';
   // trueBlock: LoopBlock;
 
   falseExpression: string;
   falseBlockSymbols: any[];
+  falseBlockId: string = 'ifFalseBlock';
   // falseBlock: LoopBlock;
 
   // TREE STRUCTURE
