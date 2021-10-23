@@ -8,30 +8,30 @@ import { WelcomePage } from "./welcome/welcome.page";
 const routes: Routes = [
   // { path: "", redirectTo: "home", pathMatch: "full" },
   { path: "", redirectTo: "welcome", pathMatch: "full" },
-  { path: "home", loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
+  { path: "home", loadChildren: "./home/home.module#HomePageModule" },
   // { path: "/home", redirectTo: "home", pathMatch: "full" },
-  { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule) },
-  { path: 'signup', loadChildren: () => import('./signup/signup.module').then(m => m.SignupPageModule) },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
+  { path: 'signup', loadChildren: './signup/signup.module#SignupPageModule' },
   {
     path: "admin-panel",
-    loadChildren: () => import('./admin-panel/admin-panel.module').then(m => m.AdminPanelPageModule),
+    loadChildren: "./admin-panel/admin-panel.module#AdminPanelPageModule",
   },
   {
     path: "feedback",
-    loadChildren: () => import('./feedback/feedback.module').then(m => m.FeedbackPageModule),
+    loadChildren: "./feedback/feedback.module#FeedbackPageModule",
   },
   {
     path: "cover-page",
-    loadChildren: () => import('./cover-page/cover-page.module').then(m => m.CoverPagePageModule),
+    loadChildren: "./cover-page/cover-page.module#CoverPagePageModule",
   },
   // {
   //   path: "/welcome",
   //   redirectTo: "welcome",
   //   pathMatch: "full"
   // },
-  { path: "welcome", loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule) },
-  { path: 'prompt', loadChildren: () => import('./prompt/prompt.module').then(m => m.PromptPageModule) },
-  { path: 'themes', loadChildren: () => import('./themes/themes.module').then(m => m.ThemesPageModule) },
+  { path: "welcome", loadChildren: "./welcome/welcome.module#WelcomePageModule" },
+  { path: 'prompt', loadChildren: './prompt/prompt.module#PromptPageModule' },
+  { path: 'themes', loadChildren: './themes/themes.module#ThemesPageModule' },
 
 
   // { path: 'open-project', loadChildren: './open-project/open-project.module#OpenProjectPageModule' }

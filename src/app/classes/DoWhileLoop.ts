@@ -15,6 +15,7 @@ export class DoWhileLoop {
 
   trueExpression: string;
   trueLoopBlock: any[];
+  trueBlockId: string = 'doWhileTrueBlock';
 
   falseExpression: string;
   falseLoopBlock: any[];

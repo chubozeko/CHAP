@@ -7,7 +7,6 @@ import {
 import { HttpClient, HttpHeaders, HttpRequest } from "@angular/common/http";
 import { AuthService } from "../auth.service";
 import "rxjs/add/operator/map";
-// import { HomePage } from '../home/home';
 
 @Component({
   selector: "app-signup",
@@ -15,13 +14,13 @@ import "rxjs/add/operator/map";
   styleUrls: ["./signup.page.scss"],
 })
 export class SignupPage implements OnInit {
-  @ViewChild("fullname", { static: true }) fullname;
-  @ViewChild("surname", { static: true }) surname;
-  @ViewChild("gender", { static: false }) gender;
-  @ViewChild("cntry", { static: false }) cntry;
-  @ViewChild("email", { static: true }) email;
-  @ViewChild("password", { static: true }) password;
-  @ViewChild("CNFRPASS", { static: true }) CNFRPASS;
+  @ViewChild("fullname", {static: false}) fullname;
+  @ViewChild("surname", {static: false}) surname;
+  @ViewChild("gender", {static: false}) gender;
+  @ViewChild("cntry", {static: false}) cntry;
+  @ViewChild("email", {static: false}) email;
+  @ViewChild("password", {static: false}) password;
+  @ViewChild("CNFRPASS", {static: false}) CNFRPASS;
 
   corsOptions;
 

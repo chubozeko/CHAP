@@ -44,10 +44,10 @@ import { THEMES } from "../themes/themes";
 import { ThemesPage } from "../themes/themes.page";
 import { LoopblockstateService } from "../loopblockstate.service";
 import { SymbolData } from "../symbol-data";
-//import { Resizer } from "./resizer";
+import { Resizer } from "./resizer";
 import { SymbolModals } from "./symbol-modals";
-//import { Saver } from "./saver";
-//import { Opener } from "./opener";
+import { Saver } from "./saver";
+import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
 
 @Component({
@@ -57,14 +57,11 @@ import { SymbolId } from "./symbol-ids";
 })
 @Injectable()
 export class HomePage {
-  @ViewChild("symbolsFAB", {
-    static: false
-})
-   symbolsFAB: Fab;
+  @ViewChild("symbolsFAB", {static: false}) symbolsFAB: Fab;
   symModals: SymbolModals = new SymbolModals(this.modalC);
-  //resizer: Resizer = new Resizer();
-  //saver: Saver = new Saver(this.alertC, this.arrowsOptionsAS, this.auth, this.file, this.http, this.menu, this.navCtrl, this.toast);
- // opener: Opener = new Opener(this.alertC, this.auth, this.modalC, this.navCtrl, this.toast);
+  resizer: Resizer = new Resizer();
+  saver: Saver = new Saver(this.alertC, this.arrowsOptionsAS, this.auth, this.file, this.http, this.menu, this.navCtrl, this.toast);
+  opener: Opener = new Opener(this.alertC, this.auth, this.modalC, this.navCtrl, this.toast);
   symbolId: SymbolId = new SymbolId();
 
   flowchart: Flowchart = new Flowchart(this.alertC, this.loopBlockState);
@@ -251,16 +248,16 @@ export class HomePage {
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let quickGuide = document.getElementById("btn_gettingStartedPage");
     quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
-   // let feedbackBtn = document.getElementById("btn_feedbackPage");
-    //feedbackBtn.addEventListener("click", (e) => this.openFeedback());
-   // let logOut = document.getElementById("btn_logOut");
-   // logOut.addEventListener("click", (e) => this.logOut());
-   // let goOnline = document.getElementById("btn_goOnline");
-   // goOnline.addEventListener("click", (e) => {
-    //  this.closeMenu();
+    let feedbackBtn = document.getElementById("btn_feedbackPage");
+    feedbackBtn.addEventListener("click", (e) => this.openFeedback());
+    let logOut = document.getElementById("btn_logOut");
+    logOut.addEventListener("click", (e) => this.logOut());
+    let goOnline = document.getElementById("btn_goOnline");
+    goOnline.addEventListener("click", (e) => {
+      this.closeMenu();
       //this.auth.mode = 'online';
-    //  this.navCtrl.navigateRoot("/login");
-    //});
+      this.navCtrl.navigateRoot("/login");
+    });
     let backToWelcome = document.getElementById("btn_backToWelcome");
     backToWelcome.addEventListener("click", (e) => {
       if (this.auth.isLoggedIn) {
@@ -336,19 +333,19 @@ export class HomePage {
         });
     }
     // Check if it is Offline Mode or Trial Mode
-    // if (this.auth.mode == "offline") {
-    //   logOut.style.display = "none";
-    //   goOnline.style.display = "block";
-    //   feedbackBtn.style.display = "none";
-    // } else if (this.auth.mode == "online") {
-    //   logOut.style.display = "block";
-    //   goOnline.style.display = "none";
-    //   feedbackBtn.style.display = "block";
-    // } else if (this.auth.mode == "trial") {
-    //   logOut.style.display = "none";
-    //   goOnline.style.display = "none";
-    //   feedbackBtn.style.display = "none";
-    // }
+    if (this.auth.mode == "offline") {
+      logOut.style.display = "none";
+      goOnline.style.display = "block";
+      feedbackBtn.style.display = "none";
+    } else if (this.auth.mode == "online") {
+      logOut.style.display = "block";
+      goOnline.style.display = "none";
+      feedbackBtn.style.display = "block";
+    } else if (this.auth.mode == "trial") {
+      logOut.style.display = "none";
+      goOnline.style.display = "none";
+      feedbackBtn.style.display = "none";
+    }
   }
 
   public subscribeToDragula() {
@@ -413,19 +410,19 @@ export class HomePage {
   }
 
   public openMenu() {
-   // let logOut = document.getElementById("btn_logOut");
-    //let goOnline = document.getElementById("btn_goOnline");
+    let logOut = document.getElementById("btn_logOut");
+    let goOnline = document.getElementById("btn_goOnline");
     // Check if it is Offline Mode
-    // if (this.auth.mode == "offline") {
-    //   logOut.style.display = "none";
-    //   goOnline.style.display = "block";
-    // } else if (this.auth.mode == "online") {
-    //   logOut.style.display = "block";
-    //   goOnline.style.display = "none";
-    // } else if (this.auth.mode == "trial") {
-    //   logOut.style.display = "none";
-    //   goOnline.style.display = "none";
-    // }
+    if (this.auth.mode == "offline") {
+      logOut.style.display = "none";
+      goOnline.style.display = "block";
+    } else if (this.auth.mode == "online") {
+      logOut.style.display = "block";
+      goOnline.style.display = "none";
+    } else if (this.auth.mode == "trial") {
+      logOut.style.display = "none";
+      goOnline.style.display = "none";
+    }
     this.menu.open();
   }
 
@@ -578,7 +575,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize ** [CHUBO! = resize before removing symbol]
-                //  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -604,7 +601,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                //  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -630,7 +627,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                 // this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "whileTrueBlock"
                 ) {
@@ -658,7 +655,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                 // this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
                 ) {
@@ -686,7 +683,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  //this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else {
                   let syms = document
                     .getElementById("workspace")
@@ -871,7 +868,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                 // this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "ifFalseBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -893,7 +890,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                 // this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeIfCaseBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (selectedSymbol[0].parentElement.id == "forTrueBlock") {
                   let syms = selectedSymbol[0].parentElement.getElementsByClassName(
                     "symbol"
@@ -915,7 +912,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  //this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeForLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "whileTrueBlock"
                 ) {
@@ -939,7 +936,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                 // this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else if (
                   selectedSymbol[0].parentElement.id == "doWhileTrueBlock"
                 ) {
@@ -963,7 +960,7 @@ export class HomePage {
                   syms[asi].parentElement.removeChild(nextArrow);
                   syms[asi].remove();
                   // Resize
-                  //this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
+                  this.resizer.resizeDoWhileLoopBlocks(curBlock.getElementsByClassName("arrow")[0]);
                 } else {
                   let syms = document
                     .getElementById("workspace")
@@ -1107,7 +1104,7 @@ export class HomePage {
                     break;
                 }
                 this.flowchart.addSymbolToFlowchart(sym, active_index);
-                //this.resizer.resizeSymbols(targetArrow);
+                this.resizer.resizeSymbols(targetArrow);
                 let bs = document.getElementsByClassName("arrow dropzone");
                 for (let i = 0; i < b.length; i++) {
                   if (bs[i].classList.contains("active-arrow")) {
@@ -1402,10 +1399,9 @@ export class HomePage {
       symbol = temp.cloneNode(true);
       symbol.innerHTML = "Declare";
       // backend
-      let dec = new Declare( ) ;
+      let dec = new Declare();
       dec.setDeclareSymbol(symbol);
       symComponent = dec;
-    
     } else if (id == "s_input") {
       // frontend
       temp = document.getElementById(id);
@@ -1526,7 +1522,7 @@ export class HomePage {
     let activeArrow = document.getElementsByClassName("arrow dropzone active-arrow")[0];
 
     /* Checking which BLOCK the symbol should be added to */
-    switch (activeArrow.parentElement.id) {
+    switch (activeArrow.parentElement.className) {
       case "ifTrueBlock":
         let par1 = activeArrow.parentElement.getElementsByClassName(
           "arrow dropzone"
@@ -1538,18 +1534,17 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        // TODO: assign temp ID
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // TODO: assign ID
-        // generateId(activeArrow.parentElement, symComponent);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof IfCase) {
-        //     el.addSymbolToTrueBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof IfCase) {
+            el.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       case "ifFalseBlock":
         let par2 = activeArrow.parentElement.getElementsByClassName(
@@ -1565,12 +1560,14 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof IfCase) {
-        //     el.addSymbolToFalseBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof IfCase) {
+            el.addSymbolToFalseBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       case "forTrueBlock":
         let par3 = activeArrow.parentElement.getElementsByClassName("arrow dropzone");
@@ -1581,15 +1578,17 @@ export class HomePage {
         }
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
-        // symbol.id = "s_temp_id";
+        symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof ForLoop) {
-        //     el.addSymbolToTrueBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof ForLoop) {
+            el.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       case "whileTrueBlock":
         let par4 = activeArrow.parentElement.getElementsByClassName(
@@ -1605,12 +1604,14 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof WhileLoop) {
-        //     el.addSymbolToTrueBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof WhileLoop) {
+            el.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       case "doWhileTrueBlock":
         let par5 = activeArrow.parentElement.getElementsByClassName(
@@ -1626,12 +1627,14 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const el = this.flowchart.SYMBOLS[l];
-        //   if (el instanceof DoWhileLoop) {
-        //     el.addSymbolToTrueBlock(symComponent, act_in);
-        //   }
-        // }
+        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        // this.flowchart[symComponent.parentIndex].addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+          const el = this.flowchart.SYMBOLS[l];
+          if (el instanceof DoWhileLoop) {
+            el.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+          }
+        }
         break;
       default:
         let ai, totalAD = 0;
@@ -1675,6 +1678,7 @@ export class HomePage {
             ai = i - totalAD;
           }
         }
+
         console.log("workspace active arrow: ", tempBranch);
         tempBranch.classList.remove("active-arrow");
         this.dragulaService.find("symbol").drake.containers.push(tempBranch);
@@ -1684,7 +1688,7 @@ export class HomePage {
         this.workspace.insertBefore(symbol, activeArrow.nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        // this.flowchart.addSymbolToFlowchart(symComponent, ai);
+        this.flowchart.addSymbolToFlowchart(symComponent, symComponent.symbolIndex);
         break;
     }
 
@@ -1700,8 +1704,6 @@ export class HomePage {
 
     let sy = this.workspace.getElementsByClassName("symbol");
     console.log("workspace symbols: ", sy);
-    console.log("symbolIndex: ", this.symbolId.getSymbolIndex("s_for_loop", activeArrow.parentElement));
-    console.log("parentIndex: ", this.symbolId.getParentIndex("s_for_loop", activeArrow.parentElement));
   }
 
   public addEventListenersToArrow(arrow) {
@@ -2210,7 +2212,7 @@ export class HomePage {
           text: "Internal Storage",
           icon: "folder",
           handler: () => {
-           // this.saver.saveProject(this.fileName, this.flowchart, this.platform);
+            this.saver.saveProject(this.fileName, this.flowchart, this.platform);
           },
         },
         {
@@ -2226,7 +2228,7 @@ export class HomePage {
           text: "Internal Storage",
           icon: "folder",
           handler: () => {
-            //this.saver.saveProject(this.fileName, this.flowchart, this.platform);
+            this.saver.saveProject(this.fileName, this.flowchart, this.platform);
           },
         },
         {
@@ -2234,7 +2236,7 @@ export class HomePage {
           icon: "cloud-upload",
           handler: () => {
             this.checkInternetConnection();
-            //this.saver.saveProjectToDatabase(this.fileName, this.flowchart, this.platform);
+            this.saver.saveProjectToDatabase(this.fileName, this.flowchart, this.platform);
           },
         },
         {

@@ -17,11 +17,11 @@ import { InputPage } from "../symbol-dialogs/input/input.page";
 import { OutputPage } from "../symbol-dialogs/output/output.page";
 import { ProcessPage } from "../symbol-dialogs/process/process.page";
 import { WhileLoopPage } from "../symbol-dialogs/while-loop/while-loop.page";
-//import { Resizer } from "./resizer";
+import { Resizer } from "./resizer";
 
 export class SymbolModals {
 
- // resizer: Resizer = new Resizer();
+  resizer: Resizer = new Resizer();
 
   constructor(
     public modalC: ModalController  
@@ -42,7 +42,7 @@ export class SymbolModals {
       try {
         let dec = data.data as Declare;
         e.target.innerHTML = dec.getDeclareExpression();
-       // this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -66,7 +66,7 @@ export class SymbolModals {
       try {
         let input = data.data as Input;
         e.target.innerHTML = input.getInputExpression();
-       // this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -90,7 +90,7 @@ export class SymbolModals {
       try {
         let output = data.data as Output;
         e.target.innerHTML = output.getOutputExpression();
-       // this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -114,7 +114,7 @@ export class SymbolModals {
       try {
         let proc = data.data as Process;
         e.target.innerHTML = proc.getProcessExpression();
-        //this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -138,7 +138,7 @@ export class SymbolModals {
       try {
         let com = data.data as Comment;
         e.target.innerHTML = com.getCommentExpression();
-      //  this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -162,7 +162,7 @@ export class SymbolModals {
       try {
         let ifcase = data.data as IfCase;
         e.target.innerHTML = ifcase.getIfStatement();
-       // this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -186,7 +186,7 @@ export class SymbolModals {
       try {
         let whileloop = data.data as WhileLoop;
         e.target.innerHTML = whileloop.getWhileExpression();
-       // this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -210,7 +210,7 @@ export class SymbolModals {
       try {
         let forloop = data.data as ForLoop;
         e.target.innerHTML = forloop.getForExpression();
-       // this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
@@ -234,7 +234,7 @@ export class SymbolModals {
       try {
         let dowhileloop = data.data as DoWhileLoop;
         e.target.innerHTML = dowhileloop.getDoWhileExpression();
-        //this.resizer.resizeSymbols(e.target);
+        this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
         console.log(error);
