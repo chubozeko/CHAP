@@ -1214,6 +1214,8 @@ export class HomePage {
           } else if (targetSymbol.className.includes( "s_do_while_loop")) {
             this.symModals.openDoWhileModal(tempSym, event);
           }
+          //TODO Find Solution for why loop stop with using regular symbol adding method top to down
+          break;
         }
       }
     } else if (targetSymbol.parentElement.className.includes("ifFalseBlock"))  {
