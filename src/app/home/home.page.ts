@@ -64,7 +64,8 @@ export class HomePage {
   opener: Opener = new Opener(this.alertC, this.auth, this.modalC, this.navCtrl, this.toast);
   symbolId: SymbolId = new SymbolId();
 
-  flowchart: Flowchart = new Flowchart(this.alertC, this.loopBlockState);
+  flowchart: Flowchart;
+  flowchartSymbolList: Flowchart;
   title = "CHAP";
   fileName = "";
   toolbarTooltip = "";
@@ -271,6 +272,7 @@ export class HomePage {
     // Initializing Workspace & Arrows/Branches & adding buttonClick listeners
     this.loopBlockState.initialize();
     this.flowchart = new Flowchart(this.alertC, this.loopBlockState);
+    this.flowchartSymbolList = new Flowchart(this.alertC, this.loopBlockState);
     this.workspace = document.getElementById("workspace");
     let bs = document.getElementsByClassName("arrow dropzone");
     for (let b = 0; b < bs.length; b++) {
@@ -510,10 +512,10 @@ export class HomePage {
       // Get the target symbol & make it active
       let targetSymbol = event.target || event.srcElement || event.currentTarget;
       if (
-        targetSymbol.id == "s_if_case" ||
-        targetSymbol.id == "s_for_loop" ||
-        targetSymbol.id == "s_while_loop" ||
-        targetSymbol.id == "s_do_while_loop"
+        targetSymbol.className.includes("s_if_case") ||
+        targetSymbol.className.includes("s_for_loop") ||
+        targetSymbol.className.includes("s_while_loop") ||
+        targetSymbol.className.includes("s_do_while_loop")
       ) {
         targetSymbol.parentElement.classList.add("active-symbol");
       } else {
@@ -521,15 +523,15 @@ export class HomePage {
       }
 
       if (
-        targetSymbol.id == "s_declare" ||
-        targetSymbol.id == "s_input" ||
-        targetSymbol.id == "s_output" ||
-        targetSymbol.id == "s_comment" ||
-        targetSymbol.id == "s_process" ||
-        targetSymbol.id == "s_if_case" ||
-        targetSymbol.id == "s_for_loop" ||
-        targetSymbol.id == "s_while_loop" ||
-        targetSymbol.id == "s_do_while_loop"
+        targetSymbol.className.includes("s_declare") ||
+        targetSymbol.className.includes("s_input") ||
+        targetSymbol.className.includes("s_output") ||
+        targetSymbol.className.includes("s_comment") ||
+        targetSymbol.className.includes("s_process") ||
+        targetSymbol.className.includes("s_if_case") ||
+        targetSymbol.className.includes("s_for_loop") ||
+        targetSymbol.className.includes("s_while_loop") ||
+        targetSymbol.className.includes("s_do_while_loop")
       ) {
         if (this.popOver) {
           this.popCtrl.dismiss();
@@ -567,6 +569,7 @@ export class HomePage {
                       this.paste_sym_buffer.push(
                         this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
                       );
+                      // TODO: Cut symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                     }
                   }
@@ -593,6 +596,7 @@ export class HomePage {
                       this.paste_sym_buffer.push(
                         this.flowchart.SYMBOLS[l].getSymbolFromFalseBlock(asi)
                       );
+                      // TODO: Cut symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromFalseBlock(asi);
                     }
                   }
@@ -619,6 +623,7 @@ export class HomePage {
                       this.paste_sym_buffer.push(
                         this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
                       );
+                      // TODO: Cut symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                     }
                   }
@@ -647,6 +652,7 @@ export class HomePage {
                       this.paste_sym_buffer.push(
                         this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
                       );
+                      // TODO: Cut symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                     }
                   }
@@ -675,6 +681,7 @@ export class HomePage {
                       this.paste_sym_buffer.push(
                         this.flowchart.SYMBOLS[l].getSymbolFromTrueBlock(asi)
                       );
+                      // TODO: Cut symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                     }
                   }
@@ -698,6 +705,7 @@ export class HomePage {
                   this.paste_sym_buffer.push(
                     this.flowchart.getSymbolFromFlowchart(asi)
                   );
+                  // TODO: Cut symbol from this.flowchartSymbolList
                   this.flowchart.removeSymbolFromFlowchart(asi);
                   // Remove symbol and trailing arrow from Workspace
                   let nextArrow = selectedSymbol[0].nextSibling;
@@ -860,6 +868,7 @@ export class HomePage {
                   }
                   for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                     if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
+                      // TODO: Delete symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                     }
                   }
@@ -882,6 +891,7 @@ export class HomePage {
                   }
                   for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                     if (this.flowchart.SYMBOLS[l] instanceof IfCase) {
+                      // TODO: Delete symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromFalseBlock(asi);
                     }
                   }
@@ -904,6 +914,7 @@ export class HomePage {
                   }
                   for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                     if (this.flowchart.SYMBOLS[l] instanceof ForLoop) {
+                      // TODO: Delete symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                     }
                   }
@@ -928,6 +939,7 @@ export class HomePage {
                   }
                   for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                     if (this.flowchart.SYMBOLS[l] instanceof WhileLoop) {
+                      // TODO: Delete symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                     }
                   }
@@ -952,6 +964,7 @@ export class HomePage {
                   }
                   for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
                     if (this.flowchart.SYMBOLS[l] instanceof DoWhileLoop) {
+                      // TODO: Delete symbol from this.flowchartSymbolList
                       this.flowchart.SYMBOLS[l].removeSymbolFromTrueBlock(asi);
                     }
                   }
@@ -971,6 +984,7 @@ export class HomePage {
                       asi = i - 1;
                     }
                   }
+                  // TODO: Delete symbol from this.flowchartSymbolList
                   this.flowchart.removeSymbolFromFlowchart(asi);
                   // Remove symbol and trailing arrow from Workspace
                   let nextArrow = selectedSymbol[0].nextSibling;
@@ -1195,25 +1209,7 @@ export class HomePage {
         const el = this.flowchart.SYMBOLS[l];
         if (el instanceof IfCase) {
           tempSym = el.getSymbolFromTrueBlock(asi);
-          if (targetSymbol.id == "s_declare") {
-            this.symModals.openDeclareModal(tempSym, event);
-          } else if (targetSymbol.id == "s_input") {
-            this.symModals.openInputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_output") {
-            this.symModals.openOutputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_comment") {
-            this.symModals.openCommentModal(tempSym, event);
-          } else if (targetSymbol.id == "s_process") {
-            this.symModals.openProcessModal(tempSym, event);
-          } else if (targetSymbol.id == "s_if_case") {
-            this.symModals.openIfModal(tempSym, event);
-          } else if (targetSymbol.id == "s_for_loop") {
-            this.symModals.openForLoopModal(tempSym, event);
-          } else if (targetSymbol.id == "s_while_loop") {
-            this.symModals.openWhileModal(tempSym, event);
-          } else if (targetSymbol.id == "s_do_while_loop") {
-            this.symModals.openDoWhileModal(tempSym, event);
-          }
+          this.openModelForSymbol(targetSymbol, tempSym, event);
         }
       }
     } else if (targetSymbol.parentElement.id == "ifFalseBlock") {
@@ -1227,25 +1223,7 @@ export class HomePage {
         const el = this.flowchart.SYMBOLS[l];
         if (el instanceof IfCase) {
           tempSym = el.getSymbolFromFalseBlock(asi);
-          if (targetSymbol.id == "s_declare") {
-            this.symModals.openDeclareModal(tempSym, event);
-          } else if (targetSymbol.id == "s_input") {
-            this.symModals.openInputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_output") {
-            this.symModals.openOutputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_comment") {
-            this.symModals.openCommentModal(tempSym, event);
-          } else if (targetSymbol.id == "s_process") {
-            this.symModals.openProcessModal(tempSym, event);
-          } else if (targetSymbol.id == "s_if_case") {
-            this.symModals.openIfModal(tempSym, event);
-          } else if (targetSymbol.id == "s_for_loop") {
-            this.symModals.openForLoopModal(tempSym, event);
-          } else if (targetSymbol.id == "s_while_loop") {
-            this.symModals.openWhileModal(tempSym, event);
-          } else if (targetSymbol.id == "s_do_while_loop") {
-            this.symModals.openDoWhileModal(tempSym, event);
-          }
+          this.openModelForSymbol(targetSymbol, tempSym, event);
         }
       }
     } else if (targetSymbol.parentElement.id == "forTrueBlock") {
@@ -1260,25 +1238,7 @@ export class HomePage {
         const el = this.flowchart.SYMBOLS[l];
         if (el instanceof ForLoop) {
           tempSym = el.getSymbolFromTrueBlock(asi);
-          if (targetSymbol.id == "s_declare") {
-            this.symModals.openDeclareModal(tempSym, event);
-          } else if (targetSymbol.id == "s_input") {
-            this.symModals.openInputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_output") {
-            this.symModals.openOutputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_comment") {
-            this.symModals.openCommentModal(tempSym, event);
-          } else if (targetSymbol.id == "s_process") {
-            this.symModals.openProcessModal(tempSym, event);
-          } else if (targetSymbol.id == "s_if_case") {
-            this.symModals.openIfModal(tempSym, event);
-          } else if (targetSymbol.id == "s_for_loop") {
-            this.symModals.openForLoopModal(tempSym, event);
-          } else if (targetSymbol.id == "s_while_loop") {
-            this.symModals.openWhileModal(tempSym, event);
-          } else if (targetSymbol.id == "s_do_while_loop") {
-            this.symModals.openDoWhileModal(tempSym, event);
-          }
+          this.openModelForSymbol(targetSymbol, tempSym, event);
         }
       }
     } else if (targetSymbol.parentElement.id == "whileTrueBlock") {
@@ -1292,25 +1252,7 @@ export class HomePage {
         const el = this.flowchart.SYMBOLS[l];
         if (el instanceof WhileLoop) {
           tempSym = el.getSymbolFromTrueBlock(asi);
-          if (targetSymbol.id == "s_declare") {
-            this.symModals.openDeclareModal(tempSym, event);
-          } else if (targetSymbol.id == "s_input") {
-            this.symModals.openInputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_output") {
-            this.symModals.openOutputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_comment") {
-            this.symModals.openCommentModal(tempSym, event);
-          } else if (targetSymbol.id == "s_process") {
-            this.symModals.openProcessModal(tempSym, event);
-          } else if (targetSymbol.id == "s_if_case") {
-            this.symModals.openIfModal(tempSym, event);
-          } else if (targetSymbol.id == "s_for_loop") {
-            this.symModals.openForLoopModal(tempSym, event);
-          } else if (targetSymbol.id == "s_while_loop") {
-            this.symModals.openWhileModal(tempSym, event);
-          } else if (targetSymbol.id == "s_do_while_loop") {
-            this.symModals.openDoWhileModal(tempSym, event);
-          }
+          this.openModelForSymbol(targetSymbol, tempSym, event);
         }
       }
     } else if (targetSymbol.parentElement.id == "doWhileTrueBlock") {
@@ -1324,25 +1266,7 @@ export class HomePage {
         const el = this.flowchart.SYMBOLS[l];
         if (el instanceof DoWhileLoop) {
           tempSym = el.getSymbolFromTrueBlock(asi);
-          if (targetSymbol.id == "s_declare") {
-            this.symModals.openDeclareModal(tempSym, event);
-          } else if (targetSymbol.id == "s_input") {
-            this.symModals.openInputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_output") {
-            this.symModals.openOutputModal(tempSym, event);
-          } else if (targetSymbol.id == "s_comment") {
-            this.symModals.openCommentModal(tempSym, event);
-          } else if (targetSymbol.id == "s_process") {
-            this.symModals.openProcessModal(tempSym, event);
-          } else if (targetSymbol.id == "s_if_case") {
-            this.symModals.openIfModal(tempSym, event);
-          } else if (targetSymbol.id == "s_for_loop") {
-            this.symModals.openForLoopModal(tempSym, event);
-          } else if (targetSymbol.id == "s_while_loop") {
-            this.symModals.openWhileModal(tempSym, event);
-          } else if (targetSymbol.id == "s_do_while_loop") {
-            this.symModals.openDoWhileModal(tempSym, event);
-          }
+          this.openModelForSymbol(targetSymbol, tempSym, event);
         }
       }
     } else {
@@ -1361,25 +1285,29 @@ export class HomePage {
       }
       tempSym = this.flowchart.getSymbolFromFlowchart(active_sym_index);
 
-      if (targetSymbol.id == "s_declare") {
-        this.symModals.openDeclareModal(tempSym, event);
-      } else if (targetSymbol.id == "s_input") {
-        this.symModals.openInputModal(tempSym, event);
-      } else if (targetSymbol.id == "s_output") {
-        this.symModals.openOutputModal(tempSym, event);
-      } else if (targetSymbol.id == "s_comment") {
-        this.symModals.openCommentModal(tempSym, event);
-      } else if (targetSymbol.id == "s_process") {
-        this.symModals.openProcessModal(tempSym, event);
-      } else if (targetSymbol.id == "s_if_case") {
-        this.symModals.openIfModal(tempSym, event);
-      } else if (targetSymbol.id == "s_for_loop") {
-        this.symModals.openForLoopModal(tempSym, event);
-      } else if (targetSymbol.id == "s_while_loop") {
-        this.symModals.openWhileModal(tempSym, event);
-      } else if (targetSymbol.id == "s_do_while_loop") {
-        this.symModals.openDoWhileModal(tempSym, event);
-      }
+      this.openModelForSymbol(targetSymbol, tempSym, event);
+    }
+  }
+
+  private openModelForSymbol(targetSymbol, tempSym, event) {
+    if (targetSymbol.className.includes("s_declare")) {
+      this.symModals.openDeclareModal(tempSym, event);
+    } else if (targetSymbol.className.includes("s_input")) {
+      this.symModals.openInputModal(tempSym, event);
+    } else if (targetSymbol.className.includes("s_output")) {
+      this.symModals.openOutputModal(tempSym, event);
+    } else if (targetSymbol.className.includes("s_comment")) {
+      this.symModals.openCommentModal(tempSym, event);
+    } else if (targetSymbol.className.includes("s_process")) {
+      this.symModals.openProcessModal(tempSym, event);
+    } else if (targetSymbol.className.includes("s_if_case")) {
+      this.symModals.openIfModal(tempSym, event);
+    } else if (targetSymbol.className.includes("s_for_loop")) {
+      this.symModals.openForLoopModal(tempSym, event);
+    } else if (targetSymbol.className.includes("s_while_loop")) {
+      this.symModals.openWhileModal(tempSym, event);
+    } else if (targetSymbol.className.includes("s_do_while_loop")) {
+      this.symModals.openDoWhileModal(tempSym, event);
     }
   }
 
@@ -1825,6 +1753,7 @@ export class HomePage {
     // workspace.appendChild(symbolsList);
     this.loopBlockState.initialize();
     this.flowchart = new Flowchart(this.alertC, this.loopBlockState);
+    this.flowchartSymbolList = new Flowchart(this.alertC, this.loopBlockState);
     this.paste_sym_buffer = [];
 
     if (clearProjectName) {
