@@ -1,0 +1,43 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <div id="output_sym">Output</div>
+  <ion-title style="float: left; margin: 5.5px;">Output Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ul>
+      <li>
+        <ion-text style="color: #dddddd; padding: 5px;">
+          Displays a given statement on the Console
+        </ion-text>
+      </li>
+      <li>
+        <ion-text style="color: #dddddd; padding: 5px;">
+          String expressions can be displayed by wrapping them in quotation marks (“ ”).
+        </ion-text>
+      </li>
+      <li>
+        <ion-text style="color: #dddddd; padding: 5px;">
+          Variables and String expressions can be linked with an ampersand (&).
+        </ion-text>
+      </li>
+    </ul>
+
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Displays The Result to the Screen </ion-label>
+  </ion-item>
+
+  <div style="background-color: #ffffff;">
+    <ion-textarea id="output_expression" class="dialogTextbox" style="background-color: cornflowerblue;" placeholder=">Enter Value to Print on Console Here"rows="4"></ion-textarea>
+  </div>
+
+</ion-content>
+
+<ion-footer id="output_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
+</ion-footer>

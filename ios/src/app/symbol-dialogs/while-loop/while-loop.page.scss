@@ -1,0 +1,23 @@
+#while_modal_footer{ background-color: #333; }
+
+#while_modal_footer ion-button{
+    float: right;
+    color: #ddd;
+    background-color: #333;
+}
+
+ion-label{ color: #000; font-style: bold; }
+
+#while_expression { color: #000; padding: 5px; background: #fff; }
+
+#while_sym{
+    background: #9C93E2;
+    -webkit-clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
+    clip-path: polygon(75% 0, 100% 50%, 100% 100%, 0 100%, 0 50%, 25% 0);
+    width: 70px; height: 35px;
+    text-align: center; vertical-align: middle;
+    line-height: 35px;
+    color: #000;
+    font-size: 8pt;
+    margin-left: 7px; float: left;
+}

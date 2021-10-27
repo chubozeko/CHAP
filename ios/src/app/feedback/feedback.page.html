@@ -1,0 +1,23 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <!-- <img style="float: left; width: 24px; height: 24px; margin-left: 0;" src="./assets/icon/info-white.png" /> -->
+  <ion-icon name="chatbubbles" style="float: left; width: 24px; height: 24px; margin-left: 0;"></ion-icon>
+  <ion-title>Feedback</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-item>
+    <ion-label position="stacked"> Rating: </ion-label>
+    <ion-range id="fb_rating" min="0" max="10" step="1" snaps="true" ticks="true" pin="true"></ion-range>
+  </ion-item>
+
+  <div id="feedbackText">
+    <ion-textarea id="ta_comment" placeholder="{{ comment_ph }}" autoGrow style="height: 100%;"></ion-textarea>
+  </div>
+
+</ion-content>
+
+<ion-footer id="feedback_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Not Now</ion-button>
+  <ion-button (click)="submitComment()" color="dark" full>Submit</ion-button>
+</ion-footer>

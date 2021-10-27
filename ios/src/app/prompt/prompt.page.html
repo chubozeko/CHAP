@@ -1,0 +1,32 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>prompt</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content id="promptAS">
+  <ion-list id="p_arrowAS">
+    <ion-item (click)="pasteSymbol()">
+      <ion-icon name="clipboard" style="color: rgb(14, 14, 240);"></ion-icon><b>Paste</b> 
+    </ion-item>
+  </ion-list>
+
+  <ion-list id="p_symbolAS">
+    
+    <!-- <ion-button color="danger"  expand="block" (click)="closePopup()">
+      <ion-icon name="close" ></ion-icon> Close
+    </ion-button> -->
+    <ion-item (click)="cutSymbol()">
+      <ion-icon name="cut" style="color: rgb(209, 84, 12);"></ion-icon><b>Cut</b> 
+    </ion-item>
+    <ion-item (click)="copySymbol()">
+      <ion-icon name="copy" style="color: rgb(11, 250, 11);"></ion-icon><b>Copy</b> 
+    </ion-item>
+    <ion-item (click)="deleteSymbol()">
+      <ion-icon name="trash" style="color: rgb(230, 248, 64);"></ion-icon><b>Delete</b> 
+    </ion-item>
+    <ion-item  (click)="closePopup()">
+      <ion-icon name="close" style="color: crimson; font-weight: bold;"></ion-icon><b>Close</b> 
+    </ion-item>
+  </ion-list>
+</ion-content>

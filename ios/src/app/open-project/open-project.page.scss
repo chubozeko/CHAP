@@ -1,0 +1,49 @@
+#openFile_modal_footer{ background-color: #333; }
+
+#openFile_modal_footer ion-button{
+  float: right;
+  color: #ddd;
+  background-color: #333;
+}
+
+.openInternal {
+  display: none;
+}
+
+.openDatabase {
+  display: block;
+}
+
+.openDatabaseBtn {
+  display: block;
+}
+
+#fileDropzone{
+  width: 100%;
+  height: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 5px dashed #333;
+  background-color: #fff;
+  color: #777777;
+  text-align: center;
+  font-size: 18pt;
+}
+
+#fileDropzone span {
+  display: block;
+  align-self: center;
+  white-space: pre-wrap;
+}
+
+#fileDropzone .android {
+  display: block;
+}
+
+#fileDropzone .ios {
+  display: block;
+}
+
+#fileDropzone .desktop {
+  display: none;
+}

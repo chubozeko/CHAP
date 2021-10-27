@@ -1,0 +1,65 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+#loginMainCard {
+  width: 480px; 
+  height: 520px; 
+  align-self: center; 
+  padding: 0 5px;
+}
+
+#login_footer{ 
+  display: flex;
+  background-color: #333; 
+  justify-content: center;
+}
+
+ion-label {
+  font-family: 'Roboto', 'Lato', 'Raleway', 'Oswald', sans-serif;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  #loginMainCard {
+    height: 95%;
+	  width: 95%;
+    align-self: center; 
+    padding: 0 5px;
+    margin-left: auto;
+	  margin-right: auto;
+	  margin-bottom: auto;
+	  margin-top: auto;
+	  border-radius: 10px;
+  }
+}
+
+#btn_login:hover {
+  --background: #10dc60;
+  --color: #ffffff;
+}
+
+#btn_signup {
+  --background: #989aa2;
+  --color: #ffffff;
+}
+#btn_signup:hover {
+  --background: #ffce00;
+  --color: #ffffff;
+}
+
+#btn_fbLogin {
+  --background: #3B5998;
+  --color: #ffffff;
+}
+#btn_fbLogin:hover {
+  --background: #ffffff;
+  --color: #3B5998;
+}
+
+#btn_offline {
+  --background: #f04141;
+  --color: #ffffff;
+}
+#btn_offline:hover {
+  --background: #ffffff;
+  --color: #f04141;
+}
+

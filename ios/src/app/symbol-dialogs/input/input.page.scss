@@ -1,0 +1,23 @@
+#input_modal_footer{ background-color: #333; }
+
+#input_modal_footer ion-button{
+    float: right;
+    color: #ddd;
+    background-color: #333;
+}
+
+ion-label{ color: #000; font-style: bold; }
+
+ion-input{ color: #000; padding: 5px; }
+
+#input_sym{
+    background: #01c5c4;
+    -webkit-clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
+    clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
+    width: 70px; height: 35px;
+    text-align: center; vertical-align: middle;
+    line-height: 35px;
+    color: #000;
+    font-size: 8pt;
+    margin-left: 7px; float: left;
+}

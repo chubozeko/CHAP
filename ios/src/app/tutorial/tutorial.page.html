@@ -1,0 +1,128 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <ion-icon name="help-circle" style="color: #C180A3; float: left; width: 24px; height: 24px; margin-left: 5px;">
+  </ion-icon>
+  <!-- <img style="float: left; width: 24px; height: 24px; margin-left: 5px;" src="./assets/icon/help_white.png" /> -->
+  <ion-title>CHAP Tutorials</ion-title>
+  <ion-buttons slot="end">
+    <ion-button (click)="closeModal()" color="secondary" style="float: right;">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-slides id="tutorSlides" style="width: 100%; height: 100%;" [options]="slideOpts" scrollbar="true">
+    <!-- <ion-slide>
+      <ion-card style="padding: 0px 15px;" color="light">
+        <ion-card-content>
+          <iframe class="card-img-top" src="https://www.youtube.com/embed/Ko8smCzh3K0" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </ion-card-content>
+        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
+          <p class="card-text">
+            CHAP Tutorial #1: Introduction To CHAP
+          </p>
+        </ion-card-title>
+      </ion-card>
+    </ion-slide> -->
+    <!-- <ion-slide>
+      <ion-card style="padding: 0px 15px;" color="light">
+        <ion-card-content>
+          <iframe class="card-img-top" src="https://www.youtube.com/embed/hBzYE91-6UM" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </ion-card-content>
+        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
+          <p class="card-text">
+            CHAP Tutorial #2: Get Two Inputs from a User and Get the Sum
+          </p>
+        </ion-card-title>
+      </ion-card>
+    </ion-slide> -->
+    <ion-slide>
+      <ion-card style=" width: 100%; height: 100%;" color="light">
+        <ion-card-content style="width: 100%; height: 100%;">
+          <iframe class="card-img-top" src="https://www.youtube.com/embed/LGNPoiWJ5t0" width="100%" height="100%" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </ion-card-content>
+        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
+          <p class="card-text">
+            CHAP Tutorial #1: Basic If-Else Condition
+          </p>
+        </ion-card-title>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+
+      <ion-card style="padding: 0px 15px; width: 100%; height: 100%;" color="light">
+        <ion-card-content style="width: 100%; height: 100%;">
+          <iframe class="card-img-top" src="https://www.youtube.com/embed/kD4Mu2a-jWs" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </ion-card-content>
+        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
+          <p class="card-text">
+            CHAP Tutorial #2: Basic For Loop
+          </p>
+        </ion-card-title>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+      <ion-card style="padding: 0px 15px; width: 100%; height: 100%;"  color="light">
+        <ion-card-content style="width: 100%; height: 100%;">
+          <iframe class="card-img-top" src="https://www.youtube.com/embed/1lKDkBqeKww" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </ion-card-content>
+        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
+          <p class="card-text">
+            CHAP Tutorial #3: Basic While Loop
+          </p>
+        </ion-card-title>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+      <ion-card style="padding: 0px 15px; width: 100%; height: 100%;" color="light">
+        <ion-card-content style="width: 100%; height: 100%;">
+                <iframe class="card-img-top" src="https://www.youtube.com/embed/yzoOkj0GvkY" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </ion-card-content>
+        <ion-card-title class="card-body" style="--background-color: #f4f5f8;">
+          <p class="card-text">
+            CHAP Tutorial #4: Basic Do While Loop
+          </p>
+        </ion-card-title>
+      </ion-card>
+    </ion-slide>
+    
+  </ion-slides>
+
+   <!-- <ion-slides id="tutorSlides" [options]="slideOpts" scrollbar="true">
+    <ion-slide>
+      <div>
+        <img width="auto" height="auto" style="padding: 2px;" src="./assets/tutorials/chap_dnd.gif" />
+        <h3>Tap on an Arrow OR use the Drag-and-Drop feature to add Symbols</h3>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div>
+        <img width="auto" height="auto" style="padding: 2px;" src="./assets/tutorials/chap_sym_props.gif" />
+        <h3>Double-Tap on a Symbol to open their Properties </h3>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div>
+        <img width="auto" height="auto" style="padding: 2px;" src="./assets/tutorials/chap_ccp.gif" />
+        <h3>Press and Hold a Symbol to Cut, Copy or Delete the Symbol</h3>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div>
+        <img width="auto" height="auto" style="padding: 2px;" src="./assets/tutorials/chap_paste.gif" />
+        <h3>Press and Hold an Arrow to Paste a Cut or Copied Symbol</h3>
+      </div>
+    </ion-slide>
+  </ion-slides>  -->
+
+</ion-content>
+
+<ion-footer id="tutor_modal_footer" color="primary">
+  <ion-button (click)="prevSlide()" color="dark" full style="float: left;"> &lt; Previous </ion-button>
+  <ion-button (click)="nextSlide()" color="dark" full style="float: right;"> Next &gt; </ion-button>
+</ion-footer>

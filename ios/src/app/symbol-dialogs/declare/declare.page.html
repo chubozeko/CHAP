@@ -1,0 +1,80 @@
+<ion-toolbar style="padding: 5px;" color="primary">
+  <div id="declare_sym">Declare</div>
+  <ion-title style="float: left; margin: 5.5px;">Declare Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ul>
+      <li>
+        <ion-text style="color: #dddddd;">
+          Creates flowchart variables and arrays
+        </ion-text>
+      </li>
+      <li>
+        <ion-text style="color: #dddddd;">
+          Multiple variables of the same data type can be declared all at once by separating the variable names with a
+          comma (,).
+        </ion-text>
+      </li>
+    </ul>
+  </ion-item>
+
+  <ion-item color="primary">
+    <ion-input type="text" id="declare_tooltip_info" value="{{toolTipInfoText}}" readonly></ion-input>
+  </ion-item>
+
+  <div>
+    <ion-input id="declare_var_name" type="text" style="background-color: cornflowerblue;" placeholder="> Enter Variable Name Here" [value]=""
+      class="declare_elements dialogTextbox" data-text="Enter a variable name" maxlength="50">
+    </ion-input>
+  </div>
+
+  <ion-item>
+    <ion-label style="color: cornflowerblue; font-family: sans-serif; font-weight: bold;"> Select Data Type: </ion-label>
+  </ion-item>
+
+  <ion-list style="margin: 0;">
+    <ion-radio-group id="declare_data_type" [value]="" [(ngModel)]="dataType" ok-text="Confirm" cancel-text="Cancel"
+      color="primary">
+      <ion-item class="declare_elements" data-text="A whole number (example: 7)">
+        <ion-radio value="Integer" >Integer</ion-radio>
+        <ion-label style="color: cornflowerblue; font-family: sans-serif; font-weight: bold;">Integer</ion-label>
+        <!-- <span class="tooltiptext"></span> -->
+      </ion-item>
+      <ion-item class="declare_elements" data-text="A decimal number (example: 3.5)">
+        <ion-radio value="Real">Real</ion-radio>
+        <ion-label style="color: cornflowerblue; font-family: sans-serif; font-weight: bold;">Real</ion-label>
+      </ion-item>
+      <ion-item class="declare_elements" data-text="A sequence of text characters (example: `Hello`)">
+        <ion-radio value="String">String</ion-radio>
+        <ion-label style="color: cornflowerblue; font-family: sans-serif; font-weight: bold;">String</ion-label>
+      </ion-item>
+      <ion-item class="declare_elements" data-text="A binary value that is either TRUE or FALSE">
+        <ion-radio value="Boolean">Boolean</ion-radio>
+        <ion-label style="color: cornflowerblue; font-family: sans-serif; font-weight: bold;">Boolean
+        </ion-label>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-item class="declare_elements" data-text="A collection of elements of the same data type">
+    <ion-checkbox id="declare_array_cb" style="float: left;" color="primary" (ionChange)="toggleArraySize()">
+    </ion-checkbox>
+    <ion-label style="float: left;" style="color: cornflowerblue; font-family: sans-serif; font-weight: bold;">Array?</ion-label>
+  </ion-item>
+
+  <div>
+    <ion-input id="declare_array_size" type="text" placeholder=">Enter Array Size"  value="" style="float: left; background-color: rgb(178, 201, 245);"
+      disabled="true" class="declare_elements dialogTextbox" data-text="Enter the size of the array" maxlength="10">
+    </ion-input>
+  </div>
+
+</ion-content>
+
+<ion-footer id="declare_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
+</ion-footer>

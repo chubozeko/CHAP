@@ -1,0 +1,4 @@
+PHP Version = 7.0.33
+MYSQL Database Version = 5.7.26
+Wamp Server = 3.1.9
+PHP MYAdmin = 4.8.5
