@@ -11,7 +11,7 @@ export class CommentPage implements OnInit {
 
   symbol: Comment;
   constructor(public modal: ModalController, public navP: NavParams) {
-    this.symbol = navP.get('symbol');
+    this.symbol = navP.get('symbol') as Comment;
   }
 
   ngOnInit() {

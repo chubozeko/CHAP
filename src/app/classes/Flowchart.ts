@@ -152,15 +152,9 @@ export class Flowchart {
       message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
       inputs: [
         {
-          
-          name: 'inputText',
-                         
-         placeholder: '❗ Enter Input Value To Here ❗',
-                  
-                                     
-                   type: 'text',
-                 
-          
+          name: 'inputText',                
+          placeholder: '❗ Enter Input Value To Here ❗',
+          type: 'text',       
         }
       ],
       buttons: [
@@ -578,4 +572,70 @@ export class Flowchart {
       }
     }
   }
+
+  searchForLoopblockInFlowchart(symbolId) {
+    for (let i = 0; i < this.SYMBOLS.length; i++) {
+      const sym = this.SYMBOLS[i];
+      if (sym.id == symbolId) {
+        return sym;
+      } else {
+        // IF CASE
+        if (sym instanceof IfCase) {
+          // If Case True Block
+          let ifTrueBlock = new LoopBlock(this.loopBlockState);
+          ifTrueBlock.SYMBOLS = sym.trueBlockSymbols;
+          let symFromTrue = ifTrueBlock.searchForLoopblockInLoopBlock(symbolId);
+          // If Case False Block
+          let ifFalseBlock = new LoopBlock(this.loopBlockState);
+          ifFalseBlock.SYMBOLS = sym.falseBlockSymbols;
+          let symFromFalse = ifFalseBlock.searchForLoopblockInLoopBlock(symbolId);
+          if (symFromTrue != null)
+            return symFromTrue;
+          else if (symFromFalse != null)
+            return symFromFalse;
+          else
+            return null;
+        }
+
+        // WHILE LOOP
+        else if (sym instanceof WhileLoop) {
+          // While True Block
+          let whileBlock = new LoopBlock(this.loopBlockState);
+          whileBlock.SYMBOLS = sym.trueLoopBlock;
+          let symFromTrue = whileBlock.searchForLoopblockInLoopBlock(symbolId);
+          if (symFromTrue != null)
+            return symFromTrue;
+          else
+            return null;
+        }
+
+        // FOR LOOP
+        else if (sym instanceof ForLoop) {
+          // For True Block
+          let forBlock = new LoopBlock(this.loopBlockState);
+          forBlock.SYMBOLS = sym.trueLoopBlock;
+          let symFromTrue = forBlock.searchForLoopblockInLoopBlock(symbolId);
+          if (symFromTrue != null)
+            return symFromTrue;
+          else
+            return null;
+        }
+
+        // DO WHILE LOOP
+        else if (sym instanceof DoWhileLoop) {
+          // Do While True Block
+          let doWhileBlock = new LoopBlock(this.loopBlockState);
+          doWhileBlock.SYMBOLS = sym.trueLoopBlock;
+          let symFromTrue = doWhileBlock.searchForLoopblockInLoopBlock(symbolId);
+          if (symFromTrue != null)
+            return symFromTrue;
+          else
+            return null;
+        }
+
+      }
+    }
+    return null;
+  }
+
 }

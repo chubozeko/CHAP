@@ -1328,12 +1328,17 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const temp_if = this.flowchart.SYMBOLS[l];
+        
+        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
+          const temp_if = this.flowchartSymbolList.SYMBOLS[l];
           if (temp_if instanceof IfCase) {
-            if (activeArrow.parentElement.id == temp_if.trueBlockId)
-              temp_if.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-          }
+            if (activeArrow.parentElement.id == temp_if.trueBlockId) {
+              let ifSym = this.flowchart.searchForLoopblockInFlowchart(temp_if.id) as IfCase;
+              ifSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
+            }
+              
+          } 
         }
         break;
       case "ifFalseBlock":
@@ -1343,12 +1348,16 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const temp_if = this.flowchart.SYMBOLS[l];
+        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
+          const temp_if = this.flowchartSymbolList.SYMBOLS[l];
           if (temp_if instanceof IfCase) {
-            if (activeArrow.parentElement.id == temp_if.falseBlockId)
-              temp_if.addSymbolToFalseBlock(symComponent, symComponent.symbolIndex);
-          }
+            if (activeArrow.parentElement.id == temp_if.falseBlockId) {
+              let ifSym = this.flowchart.searchForLoopblockInFlowchart(temp_if.id) as IfCase;
+              ifSym.addSymbolToFalseBlock(symComponent, symComponent.symbolIndex);
+              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
+            }
+              
+          } 
         }
         break;
       case "forTrueBlock":
@@ -1358,12 +1367,23 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const temp_for = this.flowchart.SYMBOLS[l];
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const temp_for = this.flowchart.SYMBOLS[l];
+        //   if (temp_for instanceof ForLoop) {
+        //     if (activeArrow.parentElement.id == temp_for.trueBlockId)
+        //       temp_for.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        //   }
+        // }
+        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
+          const temp_for = this.flowchartSymbolList.SYMBOLS[l];
           if (temp_for instanceof ForLoop) {
-            if (activeArrow.parentElement.id == temp_for.trueBlockId)
-              temp_for.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-          }
+            if (activeArrow.parentElement.id == temp_for.trueBlockId) {
+              let forSym = this.flowchart.searchForLoopblockInFlowchart(temp_for.id) as ForLoop;
+              forSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
+            }
+              
+          } 
         }
         break;
       case "whileTrueBlock":
@@ -1373,12 +1393,23 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const temp_while = this.flowchart.SYMBOLS[l];
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const temp_while = this.flowchart.SYMBOLS[l];
+        //   if (temp_while instanceof WhileLoop) {
+        //     if (activeArrow.parentElement.id == temp_while.trueBlockId)
+        //     temp_while.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        //   }
+        // }
+        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
+          const temp_while = this.flowchartSymbolList.SYMBOLS[l];
           if (temp_while instanceof WhileLoop) {
-            if (activeArrow.parentElement.id == temp_while.trueBlockId)
-            temp_while.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-          }
+            if (activeArrow.parentElement.id == temp_while.trueBlockId) {
+              let whileSym = this.flowchart.searchForLoopblockInFlowchart(temp_while.id) as WhileLoop;
+              whileSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
+            }
+              
+          } 
         }
         break;
       case "doWhileTrueBlock":
@@ -1388,12 +1419,23 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-          const temp_do = this.flowchart.SYMBOLS[l];
+        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
+        //   const temp_do = this.flowchart.SYMBOLS[l];
+        //   if (temp_do instanceof DoWhileLoop) {
+        //     if (activeArrow.parentElement.id == temp_do.trueBlockId)
+        //       temp_do.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        //   }
+        // }
+        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
+          const temp_do = this.flowchartSymbolList.SYMBOLS[l];
           if (temp_do instanceof DoWhileLoop) {
-            if (activeArrow.parentElement.id == temp_do.trueBlockId)
-              temp_do.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-          }
+            if (activeArrow.parentElement.id == temp_do.trueBlockId) {
+              let doSym = this.flowchart.searchForLoopblockInFlowchart(temp_do.id) as DoWhileLoop;
+              doSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
+            }
+              
+          } 
         }
         break;
       default:
@@ -1416,6 +1458,7 @@ export class HomePage {
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
         this.flowchart.addSymbolToFlowchart(symComponent, symComponent.symbolIndex);
+        this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
         break;
     }
 

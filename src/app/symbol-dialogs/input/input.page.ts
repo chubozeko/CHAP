@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
+import { Input } from '../../classes/Input';
 
 @Component({
   selector: 'app-input',
@@ -11,7 +12,7 @@ export class InputPage implements OnInit {
   symbol;
 
   constructor(public modal: ModalController, public navP: NavParams) {
-    this.symbol = navP.get('symbol');
+    this.symbol = navP.get('symbol') as Input;
   }
 
   ngOnInit() {

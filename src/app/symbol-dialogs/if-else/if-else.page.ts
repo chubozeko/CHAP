@@ -11,7 +11,7 @@ export class IfElsePage implements OnInit {
 
   symbol: IfCase;
   constructor(public modal: ModalController, public navP: NavParams) {
-    this.symbol = navP.get('symbol');
+    this.symbol = navP.get('symbol') as IfCase;
   }
 
   ngOnInit() {
