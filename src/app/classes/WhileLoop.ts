@@ -19,6 +19,7 @@ export class WhileLoop {
 
   falseExpression: string;
   falseLoopBlock: any[];
+  falseBlockId: string = '';
 
   constructor() {
     this.whileExpression = "";
@@ -197,6 +198,7 @@ export class WhileLoop {
     result = math.evaluate(newExpression);
     if (result == true) return this.trueLoopBlock;
     else if (result == false) return this.falseLoopBlock;
+     
   }
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {

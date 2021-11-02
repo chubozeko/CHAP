@@ -28,7 +28,7 @@ export class ForLoop {
 
   falseExpression: string;
   falseLoopBlock: any[];
-
+  falseBlockId: string = '';
   constructor() {
     this.forVariableName = '';
     this.startValue = 0;
@@ -271,6 +271,10 @@ export class ForLoop {
     result = math.evaluate(newExpression);
     if (result == true) return this.trueLoopBlock;
     else if (result == false) return this.falseLoopBlock;
+    // Parse && and || for mathjs
+    if (newExpression.indexOf('&&') != -1 || newExpression.indexOf('||') != -1) {
+      newExpression = newExpression.replace('&&', '&').replace('||', '|');
+    }
   }
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {

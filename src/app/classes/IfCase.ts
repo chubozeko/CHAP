@@ -178,6 +178,10 @@ export class IfCase {
     result = math.evaluate(newExpression);
     if (result == true) return this.trueBlockSymbols;
     else if (result == false) return this.falseBlockSymbols;
+    // Parse && and || for mathjs
+    if (newExpression.indexOf('&&') != -1 || newExpression.indexOf('||') != -1) {
+      newExpression = newExpression.replace('&&', '&').replace('||', '|');
+    }
   }
 
   calculateIntegerExpression(num1: number, num2: number, operator: string) {
