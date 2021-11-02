@@ -1328,18 +1328,11 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        
-        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
-          const temp_if = this.flowchartSymbolList.SYMBOLS[l];
-          if (temp_if instanceof IfCase) {
-            if (activeArrow.parentElement.id == temp_if.trueBlockId) {
-              let ifSym = this.flowchart.searchForLoopblockInFlowchart(temp_if.id) as IfCase;
-              ifSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
-            }
-              
-          } 
-        }
+        let ifSym1 = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as IfCase;
+        if (ifSym1 != null)
+          ifSym1.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        else
+          console.log(`ERROR: IfCase not found. Cannot add symbol to True Block '${activeArrow.parentElement.id}'.`);
         break;
       case "ifFalseBlock":
         tempBranch.classList.remove("active-arrow");
@@ -1348,17 +1341,11 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
-          const temp_if = this.flowchartSymbolList.SYMBOLS[l];
-          if (temp_if instanceof IfCase) {
-            if (activeArrow.parentElement.id == temp_if.falseBlockId) {
-              let ifSym = this.flowchart.searchForLoopblockInFlowchart(temp_if.id) as IfCase;
-              ifSym.addSymbolToFalseBlock(symComponent, symComponent.symbolIndex);
-              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
-            }
-              
-          } 
-        }
+        let ifSym0 = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as IfCase;
+        if (ifSym0 != null)
+          ifSym0.addSymbolToFalseBlock(symComponent, symComponent.symbolIndex);
+        else
+          console.log(`ERROR: IfCase not found. Cannot add symbol to False Block '${activeArrow.parentElement.id}'.`);
         break;
       case "forTrueBlock":
         tempBranch.classList.remove("active-arrow");
@@ -1367,24 +1354,11 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const temp_for = this.flowchart.SYMBOLS[l];
-        //   if (temp_for instanceof ForLoop) {
-        //     if (activeArrow.parentElement.id == temp_for.trueBlockId)
-        //       temp_for.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-        //   }
-        // }
-        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
-          const temp_for = this.flowchartSymbolList.SYMBOLS[l];
-          if (temp_for instanceof ForLoop) {
-            if (activeArrow.parentElement.id == temp_for.trueBlockId) {
-              let forSym = this.flowchart.searchForLoopblockInFlowchart(temp_for.id) as ForLoop;
-              forSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
-            }
-              
-          } 
-        }
+        let forSym = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as ForLoop;
+        if (forSym != null)
+          forSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        else
+          console.log(`ERROR: ForLoop not found. Cannot add symbol to True Block '${activeArrow.parentElement.id}'.`);
         break;
       case "whileTrueBlock":
         tempBranch.classList.remove("active-arrow");
@@ -1393,24 +1367,11 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const temp_while = this.flowchart.SYMBOLS[l];
-        //   if (temp_while instanceof WhileLoop) {
-        //     if (activeArrow.parentElement.id == temp_while.trueBlockId)
-        //     temp_while.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-        //   }
-        // }
-        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
-          const temp_while = this.flowchartSymbolList.SYMBOLS[l];
-          if (temp_while instanceof WhileLoop) {
-            if (activeArrow.parentElement.id == temp_while.trueBlockId) {
-              let whileSym = this.flowchart.searchForLoopblockInFlowchart(temp_while.id) as WhileLoop;
-              whileSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
-            }
-              
-          } 
-        }
+        let whileSym = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as WhileLoop;
+        if (whileSym != null)
+          whileSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        else
+          console.log(`ERROR: WhileLoop not found. Cannot add symbol to True Block '${activeArrow.parentElement.id}'.`);
         break;
       case "doWhileTrueBlock":
         tempBranch.classList.remove("active-arrow");
@@ -1419,24 +1380,11 @@ export class HomePage {
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
-        // for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        //   const temp_do = this.flowchart.SYMBOLS[l];
-        //   if (temp_do instanceof DoWhileLoop) {
-        //     if (activeArrow.parentElement.id == temp_do.trueBlockId)
-        //       temp_do.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-        //   }
-        // }
-        for (let l = 0; l < this.flowchartSymbolList.SYMBOLS.length; l++) {
-          const temp_do = this.flowchartSymbolList.SYMBOLS[l];
-          if (temp_do instanceof DoWhileLoop) {
-            if (activeArrow.parentElement.id == temp_do.trueBlockId) {
-              let doSym = this.flowchart.searchForLoopblockInFlowchart(temp_do.id) as DoWhileLoop;
-              doSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
-              this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
-            }
-              
-          } 
-        }
+        let doSym = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as DoWhileLoop;
+        if (doSym != null)
+          doSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
+        else
+          console.log(`ERROR: DoWhileLoop not found. Cannot add symbol to True Block '${activeArrow.parentElement.id}'.`);
         break;
       default:
         symbol.addEventListener("contextmenu", (e) => {
@@ -1458,7 +1406,7 @@ export class HomePage {
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
         this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
         this.flowchart.addSymbolToFlowchart(symComponent, symComponent.symbolIndex);
-        this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
+        // this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
         break;
     }
 
