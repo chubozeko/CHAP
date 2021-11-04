@@ -187,7 +187,10 @@ export class WhileLoop {
     }
 
     // Remove empty elements [""] from parsedValues
-    for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
+    for (let i = 0; i < exps.length; i++) { 
+      if (exps[i] == "") {}
+   // exps.splice(i, 1);
+   }
     // Create newExpression with parsed values instead of variable names
     let newExpression = "";
     for (let j = 0; j < opers.length; j++) {
