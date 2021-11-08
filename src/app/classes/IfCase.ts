@@ -167,10 +167,7 @@ export class IfCase {
     }
 
     // Remove empty elements [""] from parsedValues
-    for (let i = 0; i < exps.length; i++) { 
-      if (exps[i] == "") {}
-    //exps.splice(i, 1); 
-  }
+    for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
     // Create newExpression with parsed values instead of variable names
     let newExpression = "";
     for (let j = 0; j < opers.length; j++) {
@@ -251,45 +248,11 @@ export class IfCase {
       case '<=': result = str1 <= str2; break;
       case '>=': result = str1 >= str2; break;
       case '!=': result = str1 != str2; break;
-      case '==': result = str1 == str2;
-       break;
-      case '&&': 
-      result = str1 && str2; 
-      break;
-      case '||':
-         result = str1 || str2;
-       break;
-   
-      default: console.log('Invalid expression for Strings!'); 
-      break;
+      case '==': result = str1 == str2; break;
+      case '&&': result = str1 && str2; break;
+      case '||': result = str1 || str2; break;
+      default: console.log('Invalid expression for Strings!'); break;
     }
-    //String Math Symbol Checker
-    if(operator=='==' && str1=="+"){
-      result= str1 == "+";
-    }else if (operator =='=='&& str2=="+"){
-      result= str2 == "+";
-    }else if(operator == '==' && str1=="-") {
-      result= str1 == "-";
-    }else if(operator == '==' && str2=="-") {
-      result= str2 == "-";
-    }else if(operator == '==' && str1=="*") {
-      result= str1 == "*";
-    }else if(operator == '==' && str2=="*") {
-      result= str2 == "*";
-    }else if(operator == '==' && str1=="/") {
-      result= str1 == "/";
-    }else if(operator == '==' && str2=="/") {
-      result= str2 == "/";
-    }else if(operator == '==' && str1=="%") {
-      result= str1 == "%";
-    }else if(operator == '==' && str2=="%") {
-      result= str2 == "%";
-    }
-
-      
-  
-    
-   
     return result;
   }
 
