@@ -1107,61 +1107,60 @@ export class HomePage {
 
   async openSymbolDialog(event, id) {
     // Get the target symbol & make it active
-    let tempSym, activeSymbolIndex;
+    let tempSym, activeSymbolIndex, parent, tempTargetSymbol;
     let targetSymbol = event.target || event.srcElement || event.currentTarget;
     if (targetSymbol.classList.contains("symbol"))
       targetSymbol.classList.add("active-symbol");
 
+    if (targetSymbol.className.includes("s_if_case") || targetSymbol.className.includes("s_for_loop") || 
+      targetSymbol.className.includes("s_while_loop") || targetSymbol.className.includes("s_do_while_loop")) {
+      parent = targetSymbol.parentElement.parentElement as HTMLElement;
+      tempTargetSymbol = targetSymbol.parentElement;
+    } else {
+      parent = targetSymbol.parentElement as HTMLElement;
+      tempTargetSymbol = targetSymbol;
+    }
+
     // Checking the Symbol type and opening corresponding Properties Dialog Modals
-    if (targetSymbol.parentElement.className.includes("ifTrueBlock")) {
-      activeSymbolIndex = Number.parseInt(targetSymbol.id.split('_').pop());
-      for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        const temp_if = this.flowchart.SYMBOLS[l];
-        if (temp_if instanceof IfCase) {
-          if (targetSymbol.parentElement.id == temp_if.trueBlockId) {
-            tempSym = temp_if.getSymbolFromTrueBlock(activeSymbolIndex);
-          }
-        }
+    if (parent.className.includes("ifTrueBlock")) {
+      activeSymbolIndex = Number.parseInt(tempTargetSymbol.id.split('_').pop());
+      let temp_if = this.flowchart.searchForLoopblockInFlowchart(parent.id) as IfCase;
+      try {
+        tempSym = temp_if.getSymbolFromTrueBlock(activeSymbolIndex);
+      } catch (err) {
+        console.error(`ERROR: IfCase not found. Cannot get symbol from True Block '${parent.id}'.\n` + err);
       }
-    } else if (targetSymbol.parentElement.className.includes("ifFalseBlock")) {
-      activeSymbolIndex = Number.parseInt(targetSymbol.id.split('_').pop());
-      for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        const temp_if = this.flowchart.SYMBOLS[l];
-        if (temp_if instanceof IfCase) {
-          if (targetSymbol.parentElement.id == temp_if.falseBlockId) {
-            tempSym = temp_if.getSymbolFromFalseBlock(activeSymbolIndex);
-          }
-        }
+    } else if (parent.className.includes("ifFalseBlock")) {
+      activeSymbolIndex = Number.parseInt(tempTargetSymbol.id.split('_').pop());
+      let temp_if = this.flowchart.searchForLoopblockInFlowchart(parent.id) as IfCase;
+      try {
+        tempSym = temp_if.getSymbolFromFalseBlock(activeSymbolIndex);
+      } catch (err) {
+        console.error(`ERROR: IfCase not found. Cannot get symbol from False Block '${parent.id}'.\n` + err);
       }
-    } else if (targetSymbol.parentElement.className.includes("forTrueBlock")) {
-      activeSymbolIndex = Number.parseInt(targetSymbol.id.split('_').pop());
-      for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        const temp_for = this.flowchart.SYMBOLS[l];
-        if (temp_for instanceof ForLoop) {
-          if (targetSymbol.parentElement.id == temp_for.trueBlockId) {
-            tempSym = temp_for.getSymbolFromTrueBlock(activeSymbolIndex);
-          }
-        }
+    } else if (parent.className.includes("forTrueBlock")) {
+      activeSymbolIndex = Number.parseInt(tempTargetSymbol.id.split('_').pop());
+      let temp_for = this.flowchart.searchForLoopblockInFlowchart(parent.id) as ForLoop;
+      try {
+        tempSym = temp_for.getSymbolFromTrueBlock(activeSymbolIndex);
+      } catch (err) {
+        console.error(`ERROR: ForLoop not found. Cannot get symbol from True Block '${parent.id}'.\n` + err);
       }
-    } else if (targetSymbol.parentElement.className.includes("whileTrueBlock")) {
-      activeSymbolIndex = Number.parseInt(targetSymbol.id.split('_').pop());
-      for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        const temp_while = this.flowchart.SYMBOLS[l];
-        if (temp_while instanceof WhileLoop) {
-          if (targetSymbol.parentElement.id == temp_while.trueBlockId) {
-            tempSym = temp_while.getSymbolFromTrueBlock(activeSymbolIndex);
-          }
-        }
+    } else if (parent.className.includes("whileTrueBlock")) {
+      activeSymbolIndex = Number.parseInt(tempTargetSymbol.id.split('_').pop());
+      let temp_while = this.flowchart.searchForLoopblockInFlowchart(parent.id) as WhileLoop;
+      try {
+        tempSym = temp_while.getSymbolFromTrueBlock(activeSymbolIndex);
+      } catch (err) {
+        console.error(`ERROR: WhileLoop not found. Cannot get symbol from True Block '${parent.id}'.\n` + err);
       }
-    } else if (targetSymbol.parentElement.className.includes("doWhileTrueBlock")) {
-      activeSymbolIndex = Number.parseInt(targetSymbol.id.split('_').pop());
-      for (let l = 0; l < this.flowchart.SYMBOLS.length; l++) {
-        const temp_do = this.flowchart.SYMBOLS[l];
-        if (temp_do instanceof DoWhileLoop) {
-          if (targetSymbol.parentElement.id == temp_do.trueBlockId) {
-            tempSym = temp_do.getSymbolFromTrueBlock(activeSymbolIndex);
-          }
-        }
+    } else if (parent.className.includes("doWhileTrueBlock")) {
+      activeSymbolIndex = Number.parseInt(tempTargetSymbol.id.split('_').pop());
+      let temp_do = this.flowchart.searchForLoopblockInFlowchart(parent.id) as DoWhileLoop;
+      try {
+        tempSym = temp_do.getSymbolFromTrueBlock(activeSymbolIndex);
+      } catch (err) {
+        console.error(`ERROR: DoWhileLoop not found. Cannot get symbol from True Block '${parent.id}'.\n` + err);
       }
     } else {
       if (targetSymbol.className.includes("s_if_case") || targetSymbol.className.includes("s_for_loop") || 

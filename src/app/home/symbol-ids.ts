@@ -90,8 +90,7 @@ export class SymbolId {
           syms[i].parentElement.parentElement.className.includes('whileTrueBlock') || 
           syms[i].parentElement.parentElement.className.includes('doWhileTrueBlock')) {
             // Get the ID of parentElement, parse it, and get the last number, which is the "parentIndex"
-            let splitId = syms[i].parentElement.parentElement.id.split('_');
-            return Number.parseInt(splitId[splitId.length-1]);
+            return Number.parseInt(syms[i].parentElement.parentElement.id.split('_').pop());
           } else if (syms[i].parentElement.id == "workspace") {
             return -1;
           }
@@ -103,8 +102,7 @@ export class SymbolId {
           syms[i].parentElement.className.includes('forTrueBlock') || syms[i].parentElement.className.includes('whileTrueBlock') || 
           syms[i].parentElement.className.includes('doWhileTrueBlock')) {
             // Get the ID of parentElement, parse it, and get the last number, which is the "parentIndex"
-            let splitId = syms[i].parentElement.id.split('_');
-            return Number.parseInt(splitId[splitId.length-1]);
+            return Number.parseInt(syms[i].parentElement.id.split('_').pop());
           } else if (syms[i].parentElement.id == "workspace") {
             return -1;
           }
