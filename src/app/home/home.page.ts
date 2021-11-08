@@ -2158,5 +2158,4 @@ export class HomePage {
     script.type = "text/javascript";
     body.appendChild(script);
   }
-  
 }
