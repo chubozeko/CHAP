@@ -1326,7 +1326,7 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        this.symbolId.generateId(symbol.id, activeArrow.parentElement, symComponent);
         let ifSym1 = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as IfCase;
         if (ifSym1 != null)
           ifSym1.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
@@ -1339,7 +1339,7 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        this.symbolId.generateId(symbol.id, activeArrow.parentElement, symComponent);
         let ifSym0 = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as IfCase;
         if (ifSym0 != null)
           ifSym0.addSymbolToFalseBlock(symComponent, symComponent.symbolIndex);
@@ -1352,7 +1352,7 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        this.symbolId.generateId(symbol.id, activeArrow.parentElement, symComponent);
         let forSym = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as ForLoop;
         if (forSym != null)
           forSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
@@ -1365,7 +1365,7 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        this.symbolId.generateId(symbol.id, activeArrow.parentElement, symComponent);
         let whileSym = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as WhileLoop;
         if (whileSym != null)
           whileSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
@@ -1378,7 +1378,7 @@ export class HomePage {
         symbol.id = "s_temp_id";
         activeArrow.parentElement.insertBefore(symbol, activeArrow.nextSibling);
         activeArrow.parentElement.insertBefore(tempBranch, symbol.nextSibling);
-        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        this.symbolId.generateId(symbol.id, activeArrow.parentElement, symComponent);
         let doSym = this.flowchart.searchForLoopblockInFlowchart(activeArrow.parentElement.id) as DoWhileLoop;
         if (doSym != null)
           doSym.addSymbolToTrueBlock(symComponent, symComponent.symbolIndex);
@@ -1403,9 +1403,8 @@ export class HomePage {
         // Add symbol and corresponding arrow/branch to Workspace
         this.workspace.insertBefore(symbol, activeArrow.nextSibling);
         this.workspace.insertBefore(tempBranch, symbol.nextSibling);
-        this.symbolId.generateId("s_temp_id", activeArrow.parentElement, symComponent);
+        this.symbolId.generateId(symbol.id, activeArrow.parentElement, symComponent);
         this.flowchart.addSymbolToFlowchart(symComponent, symComponent.symbolIndex);
-        // this.flowchartSymbolList.addSymbolToFlowchart(symComponent, -1);
         break;
     }
 
@@ -1417,10 +1416,11 @@ export class HomePage {
 
     if (this.popOver)
       this.popCtrl.dismiss();
-    console.log(this.flowchart.SYMBOLS);
 
-    let sy = this.workspace.getElementsByClassName("symbol");
-    console.log("workspace symbols: ", sy);
+    this.symbolId.updateIds(this.workspace, this.flowchart);
+    console.log(this.flowchart.SYMBOLS);
+    let sy = activeArrow.parentElement.getElementsByClassName("symbol");
+    console.log("block symbols: ", sy);
   }
 
   public addEventListenersToArrow(arrow) {

@@ -1,6 +1,7 @@
 import { Comment } from "../classes/Comment";
 import { Declare } from "../classes/Declare";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
+import { Flowchart } from "../classes/Flowchart";
 import { ForLoop } from "../classes/ForLoop";
 import { IfCase } from "../classes/IfCase";
 import { Input } from "../classes/Input";
@@ -172,9 +173,9 @@ export class SymbolId {
           symbol.isInTrueLoopBlock = true;
           break;
         default: 
-          symId += '_' + symbol.parentIndex + '_';
-          trueBlockId += '_' + symbol.parentIndex + '_';
-          falseBlockId += '_' + symbol.parentIndex + '_';
+          symId += 'xxv_' + symbol.parentIndex + '_';
+          trueBlockId += 'ggg_' + symbol.parentIndex + '_';
+          falseBlockId += 'bbb_' + symbol.parentIndex + '_';
           break;
       }
     }
@@ -249,6 +250,34 @@ export class SymbolId {
     }
     
     return;
+  }
+
+  public updateIds(block: HTMLElement, flowchart: Flowchart) {
+    let currentSymId = "", updateSymId = "s_update_id";
+    // 1. Get all the symbols in the flowchart with unique ids
+    let syms = block.getElementsByClassName("symbol");
+    // 2. Traverse through the symbols (foreach) -> For each symbol:
+    for(let i=0; i<syms.length; i++) {
+      if (syms[i].id != "s_start" && syms[i].id != "s_stop") {
+        if (syms[i].className.includes("s_if_case") || syms[i].className.includes("s_for_loop") || 
+        syms[i].className.includes("s_while_loop") || syms[i].className.includes("s_do_while_loop")) {
+          currentSymId = syms[i].parentElement.id;
+        } else {
+          currentSymId = syms[i].id;
+        }
+        console.log(i + '. currentSymId in updateIds: ', currentSymId);
+        // 3. Find that current symbol in the flowchart (backend)
+        let currentSymbol = flowchart.searchForSymbolInFlowchart(currentSymId) as Symbols;
+        console.log(i + '. currentSymbol in updateIds: ', currentSymbol);
+        // 4. Change the current symbol’s id to “s_update_id”
+        let curSymbolElement = document.getElementById(currentSymId);
+        curSymbolElement.id = updateSymId;
+        console.log(i + '. curSymbolElement in updateIds: ', curSymbolElement);
+        // 5. Update the ID by generating a new one using generateId(“s_update_id”, ... )
+        this.generateId(curSymbolElement.id, curSymbolElement.parentElement, currentSymbol);
+      }
+    }
+    
   }
 
 }

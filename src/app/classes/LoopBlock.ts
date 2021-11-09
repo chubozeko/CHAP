@@ -600,4 +600,62 @@ export class LoopBlock {
     }
     return null;
   }
+
+  searchForSymbolInLoopBlock(symbolId) {
+    for (let i = 0; i < this.SYMBOLS.length; i++) {
+      const sym = this.SYMBOLS[i];
+      if (sym.id == symbolId) {
+        return sym;
+      } else {
+        // IF CASE
+        if (sym instanceof IfCase) {
+          // If Case True Block
+          let ifTrueBlock = new LoopBlock(this.loopBlockState);
+          ifTrueBlock.SYMBOLS = sym.trueBlockSymbols;
+          let symFromTrue = ifTrueBlock.searchForSymbolInLoopBlock(symbolId);
+          // If Case False Block
+          let ifFalseBlock = new LoopBlock(this.loopBlockState);
+          ifFalseBlock.SYMBOLS = sym.falseBlockSymbols;
+          let symFromFalse = ifFalseBlock.searchForSymbolInLoopBlock(symbolId);
+          if (symFromTrue != null)
+            return symFromTrue;
+          else if (symFromFalse != null)
+            return symFromFalse;
+        }
+
+        // WHILE LOOP
+        else if (sym instanceof WhileLoop) {
+          // While True Block
+          let whileBlock = new LoopBlock(this.loopBlockState);
+          whileBlock.SYMBOLS = sym.trueLoopBlock;
+          let symFromTrue = whileBlock.searchForSymbolInLoopBlock(symbolId);
+          if (symFromTrue != null)
+            return symFromTrue;
+        }
+
+        // FOR LOOP
+        else if (sym instanceof ForLoop) {
+          // For True Block
+          let forBlock = new LoopBlock(this.loopBlockState);
+          forBlock.SYMBOLS = sym.trueLoopBlock;
+          let symFromTrue = forBlock.searchForSymbolInLoopBlock(symbolId);
+          if (symFromTrue != null)
+            return symFromTrue;
+        }
+
+        // DO WHILE LOOP
+        else if (sym instanceof DoWhileLoop) {
+          // Do While True Block
+          let doWhileBlock = new LoopBlock(this.loopBlockState);
+          doWhileBlock.SYMBOLS = sym.trueLoopBlock;
+          let symFromTrue = doWhileBlock.searchForSymbolInLoopBlock(symbolId);
+          if (symFromTrue != null)
+            return symFromTrue;
+        }
+
+      }
+    }
+    return null;
+  }
+
 }
