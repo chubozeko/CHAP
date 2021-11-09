@@ -11,7 +11,7 @@ export class IfCase {
   parentIndex: number = -1;
   isInTrueLoopBlock: boolean = true;
 
-  ifStatement: string = '';
+  ifStatement: string = 'If';
   ifcaseSymbol: any;
 
   trueExpression: string;

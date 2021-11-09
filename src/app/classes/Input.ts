@@ -11,7 +11,7 @@ export class Input {
   isInTrueLoopBlock: boolean = true;
 
   variableName: string = '';
-  inputExpression: string = '';
+  inputExpression: string = 'Input';
   inputPrompt: string = '';
   inputSymbol: any;
   inputData: any;

@@ -10,7 +10,7 @@ export class WhileLoop {
   parentIndex: number = -1;
   isInTrueLoopBlock: boolean = true;
 
-  whileExpression: string = "";
+  whileExpression: string = "While";
   whileSymbol: any;
 
   trueExpression: string;

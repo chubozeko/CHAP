@@ -265,14 +265,11 @@ export class SymbolId {
         } else {
           currentSymId = syms[i].id;
         }
-        console.log(i + '. currentSymId in updateIds: ', currentSymId);
         // 3. Find that current symbol in the flowchart (backend)
         let currentSymbol = flowchart.searchForSymbolInFlowchart(currentSymId) as Symbols;
-        console.log(i + '. currentSymbol in updateIds: ', currentSymbol);
         // 4. Change the current symbol’s id to “s_update_id”
         let curSymbolElement = document.getElementById(currentSymId);
         curSymbolElement.id = updateSymId;
-        console.log(i + '. curSymbolElement in updateIds: ', curSymbolElement);
         // 5. Update the ID by generating a new one using generateId(“s_update_id”, ... )
         this.generateId(curSymbolElement.id, curSymbolElement.parentElement, currentSymbol);
       }

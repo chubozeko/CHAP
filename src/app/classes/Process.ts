@@ -12,7 +12,7 @@ export class Process {
 
   variableName: string = '';
   expression: string = '';
-  processExpression: string = '';
+  processExpression: string = 'Process';
 
   processValue;
   processDataType: any;

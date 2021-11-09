@@ -11,7 +11,7 @@ export class ForLoop {
   parentIndex: number = -1;
   isInTrueLoopBlock: boolean = true;
 
-  forLoopExpression: string = '';
+  forLoopExpression: string = 'For';
   forLoopSymbol: any;
   forLoopVariable: Variable;
 

@@ -13,7 +13,7 @@ export class Declare {
     data_type: string = '';
     isArray: boolean = false;
     arraySize: number = 0;
-    declareExpression: string = '';
+    declareExpression: string = 'Declare';
     declareVar: any;
     declareSymbol: any;
 
@@ -26,7 +26,7 @@ export class Declare {
         this.chapConsole.innerHTML += `<span class="` + textColourClass + `"> ` + lineOutput + "</span> \n";
     }
 
-    createDeclareSymbol(declareSym: any) {
+    createDeclareSymbol(declareSym: Declare) {
         this.text = declareSym.text;
         this.variableName = declareSym.variableName;
         this.data_type = declareSym.data_type;
