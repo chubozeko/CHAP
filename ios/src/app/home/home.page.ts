@@ -335,7 +335,7 @@ export class HomePage {
         });
     }
     // Check if it is Offline Mode or Trial Mode
-    if (this.auth.mode == "offline") {
+   /* if (this.auth.mode == "offline") {
       logOut.style.display = "none";
       goOnline.style.display = "block";
       feedbackBtn.style.display = "none";
@@ -347,7 +347,7 @@ export class HomePage {
       logOut.style.display = "none";
       goOnline.style.display = "none";
       feedbackBtn.style.display = "none";
-    }
+    }*/
   }
 
   public subscribeToDragula() {
