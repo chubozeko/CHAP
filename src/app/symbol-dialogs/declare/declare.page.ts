@@ -14,7 +14,7 @@ export class DeclarePage implements OnInit {
   toolTipInfoText: string = 'INFO: Hover over any option to view more information.';
 
   constructor(public modal: ModalController, public navP: NavParams) {
-    this.symbol = navP.get('symbol');
+    this.symbol = navP.get('symbol') as Declare;
     this.dataType = this.symbol.getDataType();
   }
 

@@ -11,7 +11,7 @@ export class WhileLoopPage implements OnInit {
 
   symbol: WhileLoop;
   constructor(public modal: ModalController, public navP: NavParams) {
-    this.symbol = navP.get('symbol');
+    this.symbol = navP.get('symbol') as WhileLoop;
   }
 
   ngOnInit() {

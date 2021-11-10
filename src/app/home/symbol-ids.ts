@@ -1,6 +1,7 @@
 import { Comment } from "../classes/Comment";
 import { Declare } from "../classes/Declare";
 import { DoWhileLoop } from "../classes/DoWhileLoop";
+import { Flowchart } from "../classes/Flowchart";
 import { ForLoop } from "../classes/ForLoop";
 import { IfCase } from "../classes/IfCase";
 import { Input } from "../classes/Input";
@@ -21,20 +22,21 @@ export class SymbolId {
   static WHILE_LOOP: string = "whi";
   static DO_WHILE_LOOP: string = "dow";
   static FLOWCHART: string = "fc";
-  static IF_CASE_TRUE: string = "if_t";
-  static IF_CASE_FALSE: string = "if_f";
-  static FOR_LOOP_TRUE: string = "for_t";
-  static WHILE_LOOP_TRUE: string = "whi_t";
-  static DO_WHILE_LOOP_TRUE: string = "dow_t";
+  static IF_CASE_TRUE: string = "ift";
+  static IF_CASE_FALSE: string = "iff";
+  static FOR_LOOP_TRUE: string = "fort";
+  static WHILE_LOOP_TRUE: string = "whit";
+  static DO_WHILE_LOOP_TRUE: string = "dowt";
   static IF_TRUE_BLOCK: string = "if_true";
   static IF_FALSE_BLOCK: string = "if_false";
   static FOR_TRUE_BLOCK: string = "for_true";
   static WHILE_TRUE_BLOCK: string = "whi_true";
   static DO_WHILE_TRUE_BLOCK: string = "dow_true";
+  static DEPTH_LEVEL: string = "lvl_";
 
   constructor() {}
 
-  public getSymbolIndex(symbolId: string, block: HTMLElement) {
+  private getSymbolIndex(symbolId: string, block: HTMLElement) : number {
     let tempIndex, loopBlockSymbols = 0, symbolIndex;
     // Get all the symbols in the given block
     let syms = block.getElementsByClassName("symbol");
@@ -76,7 +78,7 @@ export class SymbolId {
       return symbolIndex;
   }
 
-  public getParentIndex(symbolId: string, block: HTMLElement) {
+  private getParentIndex(symbolId: string, block: HTMLElement) : number {
     let syms = block.getElementsByClassName("symbol");
     for (let i=0; i<syms.length; i++) {
       if (syms[i].className.includes('if_sym') || syms[i].className.includes('for_sym') || 
@@ -89,7 +91,7 @@ export class SymbolId {
           syms[i].parentElement.parentElement.className.includes('whileTrueBlock') || 
           syms[i].parentElement.parentElement.className.includes('doWhileTrueBlock')) {
             // Get the ID of parentElement, parse it, and get the last number, which is the "parentIndex"
-            return Number.parseInt(syms[i].parentElement.parentElement.id.split('_')[2]);
+            return Number.parseInt(syms[i].parentElement.parentElement.id.split('_').pop());
           } else if (syms[i].parentElement.id == "workspace") {
             return -1;
           }
@@ -101,7 +103,7 @@ export class SymbolId {
           syms[i].parentElement.className.includes('forTrueBlock') || syms[i].parentElement.className.includes('whileTrueBlock') || 
           syms[i].parentElement.className.includes('doWhileTrueBlock')) {
             // Get the ID of parentElement, parse it, and get the last number, which is the "parentIndex"
-            return Number.parseInt(syms[i].parentElement.id.split('_')[2]);
+            return Number.parseInt(syms[i].parentElement.id.split('_').pop());
           } else if (syms[i].parentElement.id == "workspace") {
             return -1;
           }
@@ -110,6 +112,20 @@ export class SymbolId {
       
     }
     return -1;
+  }
+
+  public getSymbolDepth(element: Element, depth) {
+    let str = 0;
+    let children = element.children;
+    for (let i = 0; i < children.length; ++i) {
+      if (children[i].nodeType != 3) {
+        if (children[i].id == "s_temp_id") {
+          return depth;
+        }
+        str += this.getSymbolDepth(children[i], depth + 1);
+      }
+    }
+    return str;
   }
 
   public generateId(symbolId: string, block: HTMLElement, symbol: Symbols) {
@@ -127,29 +143,48 @@ export class SymbolId {
       // In LoopBlock
       switch(block.className) {
         case "ifTrueBlock": 
-          symId += SymbolId.IF_CASE_TRUE + '_' + symbol.parentIndex + '_'; 
+          symId += SymbolId.IF_CASE_TRUE + '_' + symbol.parentIndex + '_';
+          trueBlockId += SymbolId.IF_CASE_TRUE + '_' + symbol.parentIndex + '_';
+          falseBlockId += SymbolId.IF_CASE_TRUE + '_' + symbol.parentIndex + '_';
           symbol.isInTrueLoopBlock = true;
           break;
         case "ifFalseBlock": 
-          symId += SymbolId.IF_CASE_FALSE + '_' + symbol.parentIndex + '_'; 
+          symId += SymbolId.IF_CASE_FALSE + '_' + symbol.parentIndex + '_';
+          trueBlockId += SymbolId.IF_CASE_FALSE + '_' + symbol.parentIndex + '_';
+          falseBlockId += SymbolId.IF_CASE_FALSE + '_' + symbol.parentIndex + '_';
           symbol.isInTrueLoopBlock = false;
           break;
         case "forTrueBlock": 
-          symId += SymbolId.FOR_LOOP_TRUE + '_' + symbol.parentIndex + '_'; 
+          symId += SymbolId.FOR_LOOP_TRUE + '_' + symbol.parentIndex + '_';
+          trueBlockId += SymbolId.FOR_LOOP_TRUE + '_' + symbol.parentIndex + '_'; 
+          falseBlockId += SymbolId.FOR_LOOP_TRUE + '_' + symbol.parentIndex + '_';
           symbol.isInTrueLoopBlock = true;
           break;
         case "whileTrueBlock": 
           symId += SymbolId.WHILE_LOOP_TRUE + '_' + symbol.parentIndex + '_'; 
+          trueBlockId += SymbolId.WHILE_LOOP_TRUE + '_' + symbol.parentIndex + '_'; 
+          falseBlockId += SymbolId.WHILE_LOOP_TRUE + '_' + symbol.parentIndex + '_'; 
           symbol.isInTrueLoopBlock = true;
           break;
         case "doWhileTrueBlock": 
           symId += SymbolId.DO_WHILE_LOOP_TRUE + '_' + symbol.parentIndex + '_'; 
+          trueBlockId += SymbolId.DO_WHILE_LOOP_TRUE + '_' + symbol.parentIndex + '_'; 
+          falseBlockId += SymbolId.DO_WHILE_LOOP_TRUE + '_' + symbol.parentIndex + '_'; 
           symbol.isInTrueLoopBlock = true;
           break;
-        default: symId += '_' + symbol.parentIndex + '_'; break;
+        default: 
+          symId += 'xxv_' + symbol.parentIndex + '_';
+          trueBlockId += 'ggg_' + symbol.parentIndex + '_';
+          falseBlockId += 'bbb_' + symbol.parentIndex + '_';
+          break;
       }
     }
-    // 4. Check what type of symbol it is (e.g. 'symComponent instanceof Declare')
+    // 4. Add symbol depth (lvl_symbolDepth)
+    let lvl = this.getSymbolDepth(document.getElementById("workspace"), 0) / 5;
+    symId += SymbolId.DEPTH_LEVEL + lvl + "_";
+    trueBlockId += SymbolId.DEPTH_LEVEL + lvl + "_";
+    falseBlockId += SymbolId.DEPTH_LEVEL + lvl + "_";
+    // 5. Check what type of symbol it is (e.g. 'symComponent instanceof Declare')
     // and build the id based on that (fc_dec_0)
     if (symbol instanceof Declare) {
       symId += SymbolId.DECLARE + '_' + symbol.symbolIndex;
@@ -177,7 +212,7 @@ export class SymbolId {
     }
     console.log("new generated id = " + symId);
 
-    // 5. Assign the generated ID to the symbol
+    // 6. Assign the generated ID to the symbol
     let syms = block.getElementsByClassName("symbol");
     for (let i=0; i<syms.length; i++) {
       if (syms[i].parentElement.className.includes('if_div') || syms[i].parentElement.className.includes('for_div') || 
@@ -213,7 +248,33 @@ export class SymbolId {
       }
       
     }
+    
     return;
+  }
+
+  public updateIds(block: HTMLElement, flowchart: Flowchart) {
+    let currentSymId = "", updateSymId = "s_update_id";
+    // 1. Get all the symbols in the flowchart with unique ids
+    let syms = block.getElementsByClassName("symbol");
+    // 2. Traverse through the symbols (foreach) -> For each symbol:
+    for(let i=0; i<syms.length; i++) {
+      if (syms[i].id != "s_start" && syms[i].id != "s_stop") {
+        if (syms[i].className.includes("s_if_case") || syms[i].className.includes("s_for_loop") || 
+        syms[i].className.includes("s_while_loop") || syms[i].className.includes("s_do_while_loop")) {
+          currentSymId = syms[i].parentElement.id;
+        } else {
+          currentSymId = syms[i].id;
+        }
+        // 3. Find that current symbol in the flowchart (backend)
+        let currentSymbol = flowchart.searchForSymbolInFlowchart(currentSymId) as Symbols;
+        // 4. Change the current symbol’s id to “s_update_id”
+        let curSymbolElement = document.getElementById(currentSymId);
+        curSymbolElement.id = updateSymId;
+        // 5. Update the ID by generating a new one using generateId(“s_update_id”, ... )
+        this.generateId(curSymbolElement.id, curSymbolElement.parentElement, currentSymbol);
+      }
+    }
+    
   }
 
 }

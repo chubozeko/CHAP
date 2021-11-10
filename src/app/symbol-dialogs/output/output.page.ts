@@ -12,7 +12,7 @@ export class OutputPage implements OnInit {
   symbol: Output;
 
   constructor(public modal: ModalController, public navP: NavParams) {
-    this.symbol = navP.get('symbol');
+    this.symbol = navP.get('symbol') as Output;
   }
 
   ngOnInit() {

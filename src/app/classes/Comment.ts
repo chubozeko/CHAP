@@ -6,7 +6,7 @@ export class Comment {
   parentIndex: number = -1;
   isInTrueLoopBlock: boolean = true;
 
-  commentText: string = '';
+  commentText: string = 'Comment';
 
   commentSymbol: any;
 

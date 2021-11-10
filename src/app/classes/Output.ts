@@ -6,7 +6,7 @@ export class Output {
   parentIndex: number = -1;
   isInTrueLoopBlock: boolean = true;
 
-  outputExp: string = '';
+  outputExp: string = 'Output';
   outputS: string = '';
 
   outputSymbol: any;

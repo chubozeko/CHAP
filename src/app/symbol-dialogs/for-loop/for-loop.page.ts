@@ -14,7 +14,7 @@ export class ForLoopPage implements OnInit {
   toolTipInfoText: string = 'INFO: Hover over any option to view more information.';
 
   constructor(public modal: ModalController, public navP: NavParams) {
-    this.symbol = navP.get('symbol');
+    this.symbol = navP.get('symbol') as ForLoop;
     this.stepDirection = this.symbol.getStepDirection();
   }
 
