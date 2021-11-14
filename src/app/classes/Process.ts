@@ -6,10 +6,13 @@ export class Process {
 
   static s_name: string = 'Process';
   id: string = 's_process';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
   variableName: string = '';
   expression: string = '';
-  processExpression: string = '';
+  processExpression: string = 'Process';
 
   processValue;
   processDataType: any;

@@ -6,18 +6,23 @@ export class DoWhileLoop {
 
   static s_name: string = 'Do';
   id: string = 's_do_while_loop';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
   doWhileExpression: string;
   doWhileSymbol: any;
 
   trueExpression: string;
   trueLoopBlock: any[];
+  trueBlockId: string = 'doWhileTrueBlock';
 
   falseExpression: string;
   falseLoopBlock: any[];
+  falseBlockId: string = '';
 
   constructor() {
-    this.doWhileExpression = '';
+    this.doWhileExpression = 'Do';
     this.trueLoopBlock = [];
     this.falseLoopBlock = [];
   }
@@ -181,6 +186,10 @@ export class DoWhileLoop {
       newExpression += exps[j] + opers[j];
     }
     newExpression += exps[exps.length - 1];
+    // Parse && and || for mathjs
+    if (newExpression.indexOf('&&') != -1 || newExpression.indexOf('||') != -1) {
+      newExpression = newExpression.replace('&&', '&').replace('||', '|');
+    }
     // Evaluate the expression and return the result
     result = math.evaluate(newExpression);
     if (result == true) return this.trueLoopBlock;

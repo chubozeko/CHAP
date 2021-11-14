@@ -11,7 +11,7 @@ export class DoWhileLoopPage implements OnInit {
 
   symbol: DoWhileLoop;
   constructor(public modal: ModalController, public navP: NavParams) {
-    this.symbol = navP.get('symbol');
+    this.symbol = navP.get('symbol') as DoWhileLoop;
   }
 
   ngOnInit() {

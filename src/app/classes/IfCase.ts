@@ -7,16 +7,21 @@ export class IfCase {
 
   static s_name: string = 'If';
   id: string = 's_if_case';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
-  ifStatement: string = '';
+  ifStatement: string = 'If';
   ifcaseSymbol: any;
 
   trueExpression: string;
   trueBlockSymbols: any[];
+  trueBlockId: string = 'ifTrueBlock';
   // trueBlock: LoopBlock;
 
   falseExpression: string;
   falseBlockSymbols: any[];
+  falseBlockId: string = 'ifFalseBlock';
   // falseBlock: LoopBlock;
 
   // TREE STRUCTURE
@@ -169,6 +174,10 @@ export class IfCase {
       newExpression += exps[j] + opers[j];
     }
     newExpression += exps[exps.length - 1];
+    // Parse && and || for mathjs
+    if (newExpression.indexOf('&&') != -1 || newExpression.indexOf('||') != -1) {
+      newExpression = newExpression.replace('&&', '&').replace('||', '|');
+    }
     // Evaluate the expression and return the result
     result = math.evaluate(newExpression);
     if (result == true) return this.trueBlockSymbols;

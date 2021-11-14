@@ -2,8 +2,11 @@ export class Output {
 
   static s_name: string = 'Output';
   id: string = 's_output';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
-  outputExp: string = '';
+  outputExp: string = 'Output';
   outputS: string = '';
 
   outputSymbol: any;

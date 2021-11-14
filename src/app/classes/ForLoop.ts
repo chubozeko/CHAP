@@ -7,8 +7,11 @@ export class ForLoop {
 
   static s_name: string = 'For';
   id: string = 's_for_loop';
+  symbolIndex: number = -1;
+  parentIndex: number = -1;
+  isInTrueLoopBlock: boolean = true;
 
-  forLoopExpression: string = '';
+  forLoopExpression: string = 'For';
   forLoopSymbol: any;
   forLoopVariable: Variable;
 
@@ -21,9 +24,11 @@ export class ForLoop {
 
   trueExpression: string;
   trueLoopBlock: any[];
+  trueBlockId: string = 'forTrueBlock';
 
   falseExpression: string;
   falseLoopBlock: any[];
+  falseBlockId: string = '';
 
   constructor() {
     this.forVariableName = '';
@@ -263,6 +268,10 @@ export class ForLoop {
       newExpression += exps[j] + opers[j];
     }
     newExpression += exps[exps.length - 1];
+    // Parse && and || for mathjs
+    if (newExpression.indexOf('&&') != -1 || newExpression.indexOf('||') != -1) {
+      newExpression = newExpression.replace('&&', '&').replace('||', '|');
+    }
     // Evaluate the expression and return the result
     result = math.evaluate(newExpression);
     if (result == true) return this.trueLoopBlock;

@@ -4,13 +4,16 @@ export class Declare {
 
     static s_name: string = 'Declare';
     id: string = 's_declare';
+    symbolIndex: number = -1;
+    parentIndex: number = -1;
+    isInTrueLoopBlock: boolean = true;
 
     text = '';
     variableName: string = '';
     data_type: string = '';
     isArray: boolean = false;
     arraySize: number = 0;
-    declareExpression: string = '';
+    declareExpression: string = 'Declare';
     declareVar: any;
     declareSymbol: any;
 
@@ -23,7 +26,7 @@ export class Declare {
         this.chapConsole.innerHTML += `<span class="` + textColourClass + `"> ` + lineOutput + "</span> \n";
     }
 
-    createDeclareSymbol(declareSym: any) {
+    createDeclareSymbol(declareSym: Declare) {
         this.text = declareSym.text;
         this.variableName = declareSym.variableName;
         this.data_type = declareSym.data_type;

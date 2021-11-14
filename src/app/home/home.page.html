@@ -40,7 +40,7 @@
     </div>
 
     <div class="tooltip">
-      <ion-button (click)="clearWorkspaceAlert()">
+      <ion-button (click)="clearWorkspaceAlert(false)">
         <ion-icon slot="icon-only"  name="close" color="danger"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 140px;">Clear Workspace</span>
@@ -82,7 +82,7 @@
           <ion-button (click)="generatePseudoCode()">
             <ion-icon slot="icon-only" name="code" class="iconsize"style="color: #AFF3CA;"></ion-icon>
           </ion-button>
-          <ion-button (click)="clearWorkspaceAlert()">
+          <ion-button (click)="clearWorkspaceAlert(false)">
             <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
           </ion-button>
           <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
@@ -117,7 +117,7 @@
               </ion-button>
             </li>
             <li>
-              <ion-button (click)="clearWorkspaceAlert()">
+              <ion-button (click)="clearWorkspaceAlert(false)">
                 <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
               </ion-button>
             </li>
@@ -332,6 +332,7 @@
           <div></div>
         </div>
       </li>
+      
       <li>
 
         <!-- <table border="1px;"  class="while_div" >
