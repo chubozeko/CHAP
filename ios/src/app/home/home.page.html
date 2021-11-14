@@ -1,0 +1,477 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
+  <div class="flb">
+    <div class="Aligner-item Aligner-item--top"></div>
+    <img src="./assets/icon/chap_logo.png" class="animation-target">
+    <!-- <ion-progress-bar value="0.5"></ion-progress-bar> -->
+    <div class="Aligner-item Aligner-item--bottom"></div>
+  </div>
+</div>
+
+<ion-header></ion-header>
+
+<ion-toolbar color="primary" class="navbar drpbar">
+
+  <ion-buttons slot="start">
+    <ion-button menuToggle="right" style="background-color: #333;" (click)="openMenu()">
+      <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/menu.png" />
+    </ion-button>
+    <ion-button>
+      <ion-img style="width: 32px; height: 32px;" src="./assets/icon/chap_logo.png"></ion-img>
+    </ion-button>
+    <!-- </ion-buttons> -->
+    <ion-input type="text"  id="fileName" class="filenametxt" placeholder="Untitled Project" value="{{fileName}}" ></ion-input>
+    <!-- id="" -->
+    <!-- Menu Toolbar Buttons -->
+    <!-- <ion-buttons slot="end"> -->
+   
+    <div class="tooltip  ">
+      <ion-button (click)="debugProgram()">
+        <ion-icon name="play" color="success"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Run Program</span>
+    </div>
+
+    <div class="tooltip ">
+      <ion-button (click)="generatePseudoCode()">
+        <ion-icon slot="icon-only" name="code" style="color: #AFF3CA;"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Generate Code</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="clearWorkspaceAlert(false)">
+        <ion-icon slot="icon-only"  name="close" color="danger"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 140px;">Clear Workspace</span>
+    </div>
+
+    <ion-input type="text" id="toolbar-tooltip" value="{{toolbarTooltip}}" readonly></ion-input>
+
+    <div class="tooltip">
+      <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
+        <ion-icon slot="icon-only" name="add-circle-outline" style="color: #54CBC9;"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 120px;">New Project</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="openProjectOptions()">
+        <ion-icon slot="icon-only" name="folder-open" color="warning"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 120px;">Open Project</span>
+    </div>
+
+    <div class="tooltip">
+      <ion-button (click)="saveProjectOptions()">
+        <ion-icon slot="icon-only" name="save" style="color: #4c8dff;"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 120px;">Save Project</span>
+    </div>
+   
+  </ion-buttons>
+
+  <ion-buttons slot="end">
+    <!-- <div class="navbar"> -->
+      <div class="subnav subnavhide"> 
+        <ion-button class="subnavbtn" style=" float: right;"> Tools </ion-button>
+        <div class="subnav-content">
+          <ion-button (click)="debugProgram()">
+            <ion-icon name="play" class="iconsize" color="success"></ion-icon>
+          </ion-button>
+          <ion-button (click)="generatePseudoCode()">
+            <ion-icon slot="icon-only" name="code" class="iconsize"style="color: #AFF3CA;"></ion-icon>
+          </ion-button>
+          <ion-button (click)="clearWorkspaceAlert(false)">
+            <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
+          </ion-button>
+          <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
+            <ion-icon slot="icon-only" name="add-circle-outline" class="iconsize"  style="color: #54CBC9;"></ion-icon>
+          </ion-button>
+          <ion-button (click)="openProjectOptions()">
+            <ion-icon slot="icon-only" class="iconsize" name="folder-open" color="warning"></ion-icon>
+          </ion-button>
+          <ion-button (click)="saveProjectOptions()">
+            <ion-icon slot="icon-only" name="save"  class="iconsize" style="color: #4c8dff;"></ion-icon>
+          </ion-button>
+          <ion-button (click)="openTutorialPage()">
+            <ion-icon slot="icon-only" name="help-circle" class="iconsize" style="color: #C180A3;"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    <!-- </div> -->
+
+    <!-- <div class="drpbar"> -->
+      <div class="drpsub dropdownmenuhide">
+        <ion-button class="drpbtn" style="float: right;" > Tools </ion-button>
+        <div class="drp-content" style="float:right; " >
+          <ul class="removebullets">
+            <li style="align-items: center;">
+              <ion-button (click)="debugProgram()">
+                <ion-icon name="play" class="iconsize" color="success"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="generatePseudoCode()">
+                <ion-icon slot="icon-only" name="code" class="iconsize"style="color: #AFF3CA;"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="clearWorkspaceAlert(false)">
+                <ion-icon slot="icon-only" name="close" class="iconsize" color="danger"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button id="tb_newProject" class="toolbar-button" (click)="newProject()">
+                <ion-icon slot="icon-only" name="add-circle-outline" class="iconsize"  style="color: #54CBC9;"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="openProjectOptions()">
+                <ion-icon slot="icon-only" class="iconsize" name="folder-open" color="warning"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="saveProjectOptions()">
+                <ion-icon slot="icon-only" name="save"  class="iconsize" style="color: #4c8dff;"></ion-icon>
+              </ion-button>
+            </li>
+            <li>
+              <ion-button (click)="openTutorialPage()">
+                <ion-icon slot="icon-only" name="help-circle" class="iconsize" style="color: #C180A3;"></ion-icon>
+              </ion-button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    <!-- </div> -->
+
+    <div class="tooltip">
+      <ion-button (click)="openTutorialPage()">
+        <ion-icon slot="icon-only" name="help-circle" style="color: #C180A3;"></ion-icon>
+      </ion-button>
+      <span class="tooltiptext" style="width: 80px;">Tutorial</span>
+    </div>
+  
+  </ion-buttons>
+  
+</ion-toolbar>
+
+<ion-content>
+
+  <div id="infoPrompt" class="infoPrompt">
+    <p class="prompttext">{{infoMessage}}</p>
+  </div>
+
+  <div class="wrapper">
+    <!-- <canvas id="canvas" style="display: none"></canvas> -->
+
+    <div id="left_symbols">
+      <ion-card id="symbolsTitle">
+        <ion-text  >SYMBOLS</ion-text>
+        <!-- style="padding: 5px; font-size: 15pt; font-weight: bold;" -->
+      </ion-card>
+      <div id="symbolsList"  dragula="symbol" >
+        <!-- class="scrollbar" -->
+        <ion-card *ngFor="let s of symbols" id="fabSymbols" no-shadow>
+          <div id="{{s.id}}" class="symbol s_tooltip {{s.id}} " (click)="addSymbol(s.id)"
+            [style.backgroundColor]="setColor(s.id)">
+            {{s.s_name}}
+          </div>
+        </ion-card>
+      </div>
+ <!-- <ion-button color="medium" id="symbolsFAB" class="symbolFABbutton" ></ion-button> -->
+       <ion-fab-button id="symbolsFAB" size="large" style="padding: 10px; width: 50px;"  color="light">
+        <img src="./assets/icon/symbols_icon.png"alt="" />
+       </ion-fab-button> 
+     <!-- <ion-button  id="symbolsFAB" class="symbolFABbutton">Symbol Menu</ion-button>class="symbolFABbutton"-->
+    </div>
+
+    <div id="right_ws">
+      <div id="workspace" appEditor>
+        <!-- <div class="s_tooltip">
+          <div id="s_start" class="symbol" style="font-size: 10pt;">START</div>
+          <span class="s_tooltiptext">START Symbol Details</span>
+        </div> -->
+
+        <div id="s_start" class="symbol s_start" style="font-size: 10pt;">START</div>
+        <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols">
+        </div>
+        <div id="s_stop" class="symbol s_stop" style="font-size: 10pt;">STOP</div>
+      </div>
+
+      <div class="sidebar">
+        <div>
+          <div id="consoleBtns">
+            <ion-button size="small" color="danger" style="float: right;" (click)="clearConsole()">
+              <ion-icon name="backspace"></ion-icon>
+            </ion-button>
+            <ion-button size="small" color="primary" style="float: right;" (click)="toggleConsole()">
+              <!-- <ion-icon name="terminal-outline"></ion-icon> -->
+              {{consoleButtonText}}
+            </ion-button>
+          </div>
+          <div id="console" class="toggleConsole" disabled="true" contenteditable="false"
+            style="display: none;"></div> <!--Burada textarea renk kodu eklend>! color: seashell;-->
+        </div>
+      </div>
+    </div>
+
+    <ul id="control_loop_list">
+      <li>
+        <div class="if_div" >
+          <div class="arrowPiece left">
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+            <div id="s_terminator"
+              style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+              False</div>
+            <div class="arrow_left dropzone" style="width: 17.5px;"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrows dropzone"></div>
+          <div id="s_if_case" class="symbol if_sym s_if_case" (click)="addSymbol('s_if_case', $event)"
+            [style.backgroundColor]="setColor('s_if_case')">If</div>
+          <div id="arrow_horizontal" class="arrows dropzone"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_right dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"
+              style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+              True</div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
+          <table class="tabif">
+            <tr>
+              <td>
+                <div id="ifFalseBlock" class="ifFalseBlock">
+                  <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <div></div>
+          <div></div>
+          <div></div>
+          <table class="tabif">
+            <tr>
+              <td>
+                <div id="ifTrueBlock" class="ifTrueBlock">
+                  <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <div class="arrowPiece left">
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+            <div id="s_terminator"></div>
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrows dropzone"></div>
+          <div class="arrowPiece bottom_center">
+            <div class="arrow_right dropzone"></div>
+            <div id="s_terminator"></div>
+            <div class="arrow_left dropzone"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrows dropzone"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"></div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class="for_div">
+          <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
+          <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
+          <div id="s_for_loop" class="symbol for_sym s_for_loop" (click)="addSymbol('s_for_loop')"
+            [style.backgroundColor]="setColor('s_for_loop')">For</div>
+          <div id="arrow_horizontal" class="arrows"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_right dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"
+              style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+              Next</div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
+          <div class="forFalseBlock"></div>
+          <div></div>
+          <div id="arrows_line_up" class="arrows" style="height: 100%;"></div>
+          <div></div>
+          <table class="tabif">
+            <tr>
+              <td>
+                <div id="forTrueBlock" class="forTrueBlock">
+                  <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+                </div>
+              </td>
+            </tr>
+          </table> 
+
+          <div></div>
+          <div></div>
+          <div class="arrowPiece bottom_center" style="grid-template-columns: 0px 70px 0px;">
+            <div class="blank_arrow_left dropzone" style="background-color: transparent; width: 0%;"></div>
+            <div id="arrows_down_down_right" class="arrows"></div>
+            <div class="arrow_horizontal dropzone" style="width: 0%;"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrows"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"></div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
+          <div></div>
+          <div></div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            Done</div>
+          <div></div>
+          <div></div>
+        </div>
+      </li>
+      
+      <li>
+
+        <!-- <table border="1px;"  class="while_div" >
+          <tr>
+            <td >  <div id="s_while_loop" class="symbol while_sym s_while_loop" (click)="addSymbol('s_while_loop')"
+              [style.backgroundColor]="setColor('s_while_loop')">While</div></td>
+              <td><div id="arrow_right" class="arrow"> </div></td>
+            <td>Next</td>
+          </tr>
+          <tr>
+            <td>
+              <div id="arrows_line_up" class="arrows" style="height: 100%; "></div>
+             
+            </td>
+            <td ></td>
+            <td>   <div id="whileTrueBlock" class="whileTrueBlock" >
+             class="whileTrueBlock"  For solution of drag& drop issue its removed near from id="whileTrueBlock"
+              <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+            </div>
+          </td>
+          </tr>
+          <tr>
+            <td> <div class="blank_arrow_left dropzone" style=" height: 100%;"></div>
+              <div id="arrows_down_down_right" class="arrows" style="height: 100%; "></div></td>
+              <td><div id="arrow_horizontal" class="arrows" ></div></td>
+          </tr>
+        </table> -->
+
+        <div class="while_div">
+          <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
+          <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
+          <div id="s_while_loop" class="symbol while_sym s_while_loop" (click)="addSymbol('s_while_loop')"
+            [style.backgroundColor]="setColor('s_while_loop')">While</div>
+          <div id="arrow_horizontal" class="arrows"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_right dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"
+              style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+              True</div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
+          <div class="whileFalseBlock"></div>
+          <div></div>
+          <div id="arrows_line_up" class="arrows" style="height: 100%;"></div>
+          <div></div>
+          <table class="tabif" >
+            <tr>
+              <td>
+                <div id="whileTrueBlock" class="whileTrueBlock" >
+                  <!-- class="whileTrueBlock"  For solution of drag& drop issue its removed near from id="whileTrueBlock" -->
+                  <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
+         
+          <div></div>
+          <div></div>
+          <div class="arrowPiece bottom_center" style="grid-template-columns: 0px 70px 0px;">
+            <div class="blank_arrow_left dropzone" style="background-color: transparent; width: 0%;"></div>
+            <div id="arrows_down_down_right" class="arrows"></div>
+            <div class="arrow_horizontal dropzone" style="width: 0%;"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrows"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"></div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
+          <div></div>
+          <div></div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            False</div>
+          <div></div>
+          <div></div>
+        </div>
+      </li>
+
+      <li>
+        <div class="do_while_div">
+          <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
+          <div style="vertical-align: middle; width: 70px; height: 35px; margin: auto;"></div>
+          <div class="arrowPiece bottom_center">
+            <div class="blank_arrow_left dropzone" style="background-color: transparent; width: 17.5px;"></div>
+            <div id="s_terminator"
+              style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+              True</div>
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+          </div>
+          <div id="arrow_horizontal" class="arrow_horizontal arrows"></div>
+          <div class="arrowPiece right">
+            <div id="arrow_right" class="arrow_right dropzone"></div>
+            <div id="s_terminator"></div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
+          <div class="doWhileFalseBlock"></div>
+          <div></div>
+          <div id="arrow_up" class="arrows" style="height: 100%;"></div>
+          <div></div>
+          <table class="tabif" >
+            <tr>
+              <td>
+                <div id="doWhileTrueBlock" class="doWhileTrueBlock" >
+                  <!-- class="doWhileTrueBlock" For solution of drag& drop issue its removed near from id="doWhileTrueBlock"-->
+                  <div id="arrow" class="arrow dropzone" dragula="symbol" (dragulaModel)="symbols"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <div></div>
+          <div></div>
+          <div id="s_do_while_loop" class="symbol do_while_sym s_do_while_loop"
+            (click)="addSymbol('s_do_while_loop')" [style.backgroundColor]="setColor('s_do_while_loop')">Do</div>
+          <div id="arrow_left" class="arrows"></div>
+          <div class="arrowPiece right">
+            <div class="arrow_horizontal dropzone" style="width: 17.5px;"></div>
+            <div id="s_terminator"></div>
+            <div class="dropzone" style="background-color: transparent; width: 17.5px;"></div>
+          </div>
+
+          <div></div>
+          <div></div>
+          <div id="arrow" class="arrow"></div>
+          <div></div>
+          <div></div>
+
+          <div></div>
+          <div></div>
+          <div id="s_terminator" style="font-size: 8pt; text-align: center; vertical-align: middle; line-height: 35px;">
+            False</div>
+          <div></div>
+          <div></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</ion-content>

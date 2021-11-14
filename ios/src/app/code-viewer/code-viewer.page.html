@@ -1,0 +1,35 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <!-- <img style="float: left; width: 24px; height: 24px; margin-left: 0; color: #AFF3
+  CA;"
+    src="./assets/icon/code-white.png" /> -->
+  <ion-icon name="code" style="color: #AFF3CA; float: left; width: 24px; height: 24px; margin-left: 0;"></ion-icon>
+  <ion-title style="float: left;">Code Viewer</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary" class="scrollbar">
+
+  <ion-item>
+    <ion-label>Language: </ion-label>
+    <ion-select id="prog_lang" [value]="" [(ngModel)]="programmingLang" ok-text="Select" cancel-text="Cancel"
+      (ionChange)="changeCode()">
+      <ion-select-option value="PseudoCode"> Pseudo Code</ion-select-option>
+      <ion-select-option value="C++"> C++</ion-select-option>
+      <ion-select-option value="Java"> Java</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-content id="codeTextContent" [scrollEvents]="true">
+    <div *ngFor="let c of code" style="padding: 0 10px;">
+      <div id="sourceCode">
+        <div id="codeLineNumbers">{{c.lineNr}}</div>
+        <div id="codeLine">{{c.codeLine}}</div>
+      </div>
+    </div>
+  </ion-content>
+
+</ion-content>
+
+<ion-footer id="code_modal_footer" color="dark">
+  <ion-button (click)="downloadCode()" color="dark" style="float: left" full>Download Code</ion-button>
+  <ion-button (click)="closeModal()" color="dark" full>Close</ion-button>
+</ion-footer>

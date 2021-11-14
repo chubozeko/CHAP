@@ -1,0 +1,86 @@
+<div id="custom-overlay" [style.display]="splash ? 'flex': 'none'">
+  <div class="flb">
+    <div class="Aligner-item Aligner-item--top"></div>
+    <img src="./assets/icon/chap_logo.png" class="animation-target">
+    <div class="Aligner-item Aligner-item--bottom"></div>
+  </div>
+</div>
+
+<ion-app>
+  <ion-menu contentId="content" swipeGesture="false">
+    <ion-toolbar color="primary">
+      <img style="width: 36px; height: 36px; margin-left: 10px;" src="./assets/icon/chap_logo.png" />
+      <ion-title style="display: inline-block; padding: 5px; margin-left: 10px;"> Menu </ion-title>
+      <button menuToggle="right" style="background-color: #333; float: right;" id="btn_closeMenu">
+        <img style="width: 36px; height: 36px; margin-left: 0;" src="./assets/icon/arrow_back.png" />
+      </button>
+    </ion-toolbar>
+
+    <ion-content color="primary">
+      <ion-list id="sidemenu_list">
+        <!-- <ion-item id="">
+          <ion-icon name=""></ion-icon>&nbsp; 'Button'
+        </ion-item> -->
+        <ion-item id="btn_newProject">
+          <ion-icon name="add-circle" style="color: #54CBC9;"></ion-icon>&nbsp; New Project
+        </ion-item>
+        <ion-item id="btn_openProject">
+          <ion-icon name="folder-open" color="warning"></ion-icon>&nbsp; Open Project
+        </ion-item>
+        <ion-item id="btn_saveProject">
+          <ion-icon name="save" style="color: #4c8dff;"></ion-icon>&nbsp; Save Project
+        </ion-item>
+        <hr />
+        <ion-item id="btn_debugProgram">
+          <ion-icon name="play" color="success"></ion-icon> &nbsp; Run Program
+        </ion-item>
+        <ion-item id="btn_generateCode">
+          <ion-icon name="code" style="color: #AFF3CA;"></ion-icon>&nbsp; Generate Code
+        </ion-item>
+        <ion-item id="btn_clearWorkspace">
+          <ion-icon name="close" color="danger"></ion-icon> &nbsp; Clear
+          Workspace
+        </ion-item>
+        <!-- <ion-item id="btn_printFlowchart">
+          <ion-icon name="print"></ion-icon>&nbsp; Print Flowchart
+        </ion-item> -->
+        <hr />
+        <!-- <ion-item > <img src="./assets/icon/survey.svg" alt="Pre Survey"> &nbsp;&nbsp; <a href="https://www.surveymonkey.com/r/WQN6QKZ" target="_blank"> Pre Survey </a> </ion-item> -->
+        <!-- <ion-item > <img src="./assets/icon/survey.svg" alt="Post Survey"> &nbsp;&nbsp; <a href="https://www.surveymonkey.com/r/DJZ3RCF" target="_blank"> Post Survey </a> </ion-item> -->
+        <!-- <ion-item id="btn_downloadAPK">
+          <ion-icon name="logo-android"></ion-icon> &nbsp; Download CHAP Mobile
+        </ion-item>
+        <hr /> -->
+        <ion-item id="btn_gettingStartedPage">
+          <ion-icon name="create"></ion-icon>&nbsp; Getting Started with CHAP
+        </ion-item>
+        <ion-item id="btn_tutorialPage">
+          <ion-icon name="help-circle"></ion-icon>&nbsp; CHAP Tutorial
+          <!-- style="color: #C180A3;" -->
+        </ion-item>
+        <ion-item id="btn_themePage">
+          <ion-icon name="color-palette"></ion-icon> &nbsp; Choose Theme...
+        </ion-item>
+        <ion-item id="btn_aboutPage">
+          <ion-icon name="information-circle"></ion-icon> &nbsp; About
+        </ion-item>
+        <ion-item id="btn_feedbackPage">
+          <ion-icon name="chatbubbles"></ion-icon> &nbsp; Feedback
+        </ion-item>
+        <hr />
+        <ion-item id="btn_logOut">
+          <ion-icon name="log-out"></ion-icon>&nbsp; Log Out
+        </ion-item>
+        <ion-item id="btn_goOnline">
+          <ion-icon name="wifi"></ion-icon>&nbsp; Go Online
+        </ion-item>
+        <hr />
+        <ion-item id="btn_backToWelcome">
+          <ion-icon name="home"></ion-icon> &nbsp; Back to Welcome Page
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="content"></ion-router-outlet>
+</ion-app>

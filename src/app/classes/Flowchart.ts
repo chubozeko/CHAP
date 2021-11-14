@@ -274,7 +274,9 @@ export class Flowchart {
 
       // COMMENT
       else if (this.tempSymbols[i] instanceof Comment) {
-        if (this.isProgramRunning) { break; }
+        if (this.isProgramRunning) { 
+          
+         }
       }
 
       // IF CASE

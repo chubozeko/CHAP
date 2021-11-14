@@ -1,0 +1,28 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <div id="if_case_sym">If-Case</div>
+  <ion-title style="float: left; margin: 5.5px;">If-Case Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ion-text style="color: #dddddd; padding: 10px;">
+      A control statement that checks a conditional expression and executes a block of statements based on the result.
+    </ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Enter a conditional expression: </ion-label>
+  </ion-item>
+
+  <div>
+    <ion-textarea id="if_expression" class="dialogTextbox" rows="4" style="background-color: cornflowerblue;" maxlength="100" placeholder=">Enter a conditional expression Here"></ion-textarea>
+  </div>
+
+</ion-content>
+
+<ion-footer id="if_case_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
+</ion-footer>

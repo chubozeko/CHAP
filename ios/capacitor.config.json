@@ -1,0 +1,7 @@
+{
+  "appId": "com.chandistudios.CHAP",
+  "appName": "CHAP",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}

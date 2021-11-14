@@ -1,0 +1,50 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <div id="process_sym">Process</div>
+  <ion-title style="float: left; margin: 5.5px;">Process Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ion-text style="color: #dddddd; padding: 10px;">
+      Carries out arithmetic operations using basic mathematical operators
+    </ion-text>
+  </ion-item>
+
+  <ion-item color="primary">
+    <ion-input type="text" id="process_tooltip_info"  value="{{toolTipInfoText}}" readonly></ion-input>
+  </ion-item>
+
+  <div style="background-color: #ffffff;">
+    <ion-input id="process_var_name" type="text" style="background-color: cornflowerblue;" placeholder=">Enter Variable Name Here" [value]=""
+      class="process_elements dialogTextbox" data-text="Enter a variable to assign a value to" maxlength="50">
+    </ion-input>
+  </div>
+
+  <ion-item>
+    <ion-label style="text-align: center; font-family: sans-serif;font-weight: bold;  color: cornflowerblue;">=</ion-label>
+  </ion-item>
+
+  <div style="background-color: #ffffff;">
+    <ion-input id="process_expression" type="text" placeholder=">Enter Expression Here"   [value]="" style="float: left; background-color: cornflowerblue; "
+      class="process_elements dialogTextbox" data-text="Enter an expression or value to assign to the variable."
+       
+      maxlength="100">
+    </ion-input>
+
+    <ion-item>
+      <p style="color:red;" ><b>Notice :</b> If You Declare 'String' as a Data Type Please Use Double Quotes to Display Value !</p>
+     
+     </ion-item>
+     
+  
+  </div>
+
+  
+</ion-content>
+
+<ion-footer id="process_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
+</ion-footer>

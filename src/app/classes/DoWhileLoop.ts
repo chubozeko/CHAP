@@ -22,7 +22,7 @@ export class DoWhileLoop {
   falseBlockId: string = '';
 
   constructor() {
-    this.doWhileExpression = 'Do';
+    this.doWhileExpression = '';
     this.trueLoopBlock = [];
     this.falseLoopBlock = [];
   }

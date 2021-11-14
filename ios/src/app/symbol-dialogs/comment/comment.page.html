@@ -1,0 +1,27 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <div id="comment_sym">Comment</div>
+  <ion-title style="float: left; margin: 5.5px;">Comment Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ion-text style="color: #dddddd; padding: 10px;">
+      Informational text within the flowchart that is ignored by the compiler
+    </ion-text>
+  </ion-item>
+
+  <div style="background-color: #fff; padding: 10px;">
+    <ion-label>Enter any text as a comment: </ion-label>
+  </div>
+  <div class="" style="height: max-content;;">
+    <ion-textarea id="comment_text" class="dialogTextbox" rows="4" autoGrow></ion-textarea>
+  </div>
+
+</ion-content>
+
+<ion-footer id="comment_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
+</ion-footer>

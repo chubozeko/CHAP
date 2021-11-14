@@ -249,16 +249,16 @@ export class HomePage {
     // printFC.addEventListener('click', (e) => this.printFlowchart());
     let quickGuide = document.getElementById("btn_gettingStartedPage");
     quickGuide.addEventListener('click', (e) => this.openIntroTutorial());
-    let feedbackBtn = document.getElementById("btn_feedbackPage");
-    feedbackBtn.addEventListener("click", (e) => this.openFeedback());
-    let logOut = document.getElementById("btn_logOut");
-    logOut.addEventListener("click", (e) => this.logOut());
-    let goOnline = document.getElementById("btn_goOnline");
-    goOnline.addEventListener("click", (e) => {
-      this.closeMenu();
-      //this.auth.mode = 'online';
-      this.navCtrl.navigateRoot("/login");
-    });
+  //  let feedbackBtn = document.getElementById("btn_feedbackPage");
+ //   feedbackBtn.addEventListener("click", (e) => this.openFeedback());
+ //   let logOut = document.getElementById("btn_logOut");
+ //   logOut.addEventListener("click", (e) => this.logOut());
+ //   let goOnline = document.getElementById("btn_goOnline");
+    // goOnline.addEventListener("click", (e) => {
+    //   this.closeMenu();
+    //   //this.auth.mode = 'online';
+    //   this.navCtrl.navigateRoot("/login");
+    // });
     let backToWelcome = document.getElementById("btn_backToWelcome");
     backToWelcome.addEventListener("click", (e) => {
       if (this.auth.isLoggedIn) {
@@ -317,11 +317,9 @@ export class HomePage {
       | DoWhileLoop
       | Comment
     >();
+//Display Andorid,IOS and Desktop Connection on Tooltips Session inside the fileName
 
-    if (this.platform.is("android")) { this.fileName = 'android'; }
-    else if (this.platform.is("ios")) { this.fileName = 'ios'; }
-    else if (this.platform.is("desktop")) { this.fileName = 'desktop'; }
-    else if (this.platform.is("pwa")) { this.fileName = 'pwa'; }
+    
 
     // FOR ANDROID: Creating Save Folder if directory does not exist
     if (this.platform.is("android")) {
@@ -334,20 +332,7 @@ export class HomePage {
           console.log("Directory does not exist");
         });
     }
-    // Check if it is Offline Mode or Trial Mode
-    if (this.auth.mode == "offline") {
-      logOut.style.display = "none";
-      goOnline.style.display = "block";
-      feedbackBtn.style.display = "none";
-    } else if (this.auth.mode == "online") {
-      logOut.style.display = "block";
-      goOnline.style.display = "none";
-      feedbackBtn.style.display = "block";
-    } else if (this.auth.mode == "trial") {
-      logOut.style.display = "none";
-      goOnline.style.display = "none";
-      feedbackBtn.style.display = "none";
-    }
+    
   }
 
   public subscribeToDragula() {

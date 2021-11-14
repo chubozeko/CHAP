@@ -1,0 +1,29 @@
+<ion-toolbar style="padding: 5px; " color="primary">
+  <div id="input_sym">Input</div>
+  <ion-title style="float: left; margin: 5.5px;">Input Properties</ion-title>
+</ion-toolbar>
+
+<ion-content padding color="secondary">
+
+  <ion-item color="primary">
+    <ion-icon name="information-circle" style="color: #dddddd;"></ion-icon> &nbsp;
+    <ion-text style="color: #dddddd; padding: 10px;">
+      Receives an input for a variable of a given data type
+    </ion-text>
+  </ion-item>
+
+  <ion-item>
+    <ion-label  >Enter a variable name to input Here: </ion-label>
+  </ion-item>
+
+  <div style="background-color: #ffffff;">
+    <ion-input id="input_var_name" class="dialogTextbox" style="background-color: cornflowerblue;" [value]="" maxlength="50" placeholder=">Enter Variable Name Here">
+    </ion-input>
+  </div>
+
+</ion-content>
+
+<ion-footer id="input_modal_footer" color="dark">
+  <ion-button (click)="closeModal()" color="dark" full>Cancel</ion-button>
+  <ion-button (click)="applyAndCloseModal()" color="dark" full>Apply</ion-button>
+</ion-footer>
