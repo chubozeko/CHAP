@@ -596,8 +596,6 @@ export class Flowchart {
               return symFromTrue;
             else if (symFromFalse != null)
               return symFromFalse;
-            else
-              return null;
           }
   
           // WHILE LOOP
@@ -608,8 +606,6 @@ export class Flowchart {
             let symFromTrue = whileBlock.searchForLoopblockInLoopBlock(loopblockId);
             if (symFromTrue != null)
               return symFromTrue;
-            else
-              return null;
           }
   
           // FOR LOOP
@@ -620,8 +616,6 @@ export class Flowchart {
             let symFromTrue = forBlock.searchForLoopblockInLoopBlock(loopblockId);
             if (symFromTrue != null)
               return symFromTrue;
-            else
-              return null;
           }
   
           // DO WHILE LOOP
@@ -632,8 +626,6 @@ export class Flowchart {
             let symFromTrue = doWhileBlock.searchForLoopblockInLoopBlock(loopblockId);
             if (symFromTrue != null)
               return symFromTrue;
-            else
-              return null;
           }
   
         }

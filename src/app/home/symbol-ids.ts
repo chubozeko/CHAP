@@ -114,15 +114,15 @@ export class SymbolId {
     return -1;
   }
 
-  public getSymbolDepth(element: Element, depth) {
+  public getSymbolDepth(element: Element, depth, symbolId) {
     let str = 0;
     let children = element.children;
     for (let i = 0; i < children.length; ++i) {
       if (children[i].nodeType != 3) {
-        if (children[i].id == "s_temp_id") {
+        if (children[i].id == symbolId) {
           return depth;
         }
-        str += this.getSymbolDepth(children[i], depth + 1);
+        str += this.getSymbolDepth(children[i], depth + 1, symbolId);
       }
     }
     return str;
@@ -180,7 +180,7 @@ export class SymbolId {
       }
     }
     // 4. Add symbol depth (lvl_symbolDepth)
-    let lvl = this.getSymbolDepth(document.getElementById("workspace"), 0) / 5;
+    let lvl = this.getSymbolDepth(document.getElementById("workspace"), 0, symbolId) / 5;
     symId += SymbolId.DEPTH_LEVEL + lvl + "_";
     trueBlockId += SymbolId.DEPTH_LEVEL + lvl + "_";
     falseBlockId += SymbolId.DEPTH_LEVEL + lvl + "_";
@@ -267,6 +267,7 @@ export class SymbolId {
         }
         // 3. Find that current symbol in the flowchart (backend)
         let currentSymbol = flowchart.searchForSymbolInFlowchart(currentSymId) as Symbols;
+        console.log(currentSymId + ". currentSymbol in updateIds: ", currentSymbol);
         // 4. Change the current symbol’s id to “s_update_id”
         let curSymbolElement = document.getElementById(currentSymId);
         curSymbolElement.id = updateSymId;
