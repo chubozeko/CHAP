@@ -1890,6 +1890,7 @@ export class HomePage {
     }
     this.loopBlockState.initialize();
     this.flowchart.isProgramRunning = true;
+    this.flowchart.isAnInputBlockRunning = false;
     this.flowchart.validateFlowchart(0, this.flowchart.SYMBOLS.length, null);
   }
 

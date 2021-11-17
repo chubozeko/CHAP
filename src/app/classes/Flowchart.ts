@@ -189,6 +189,7 @@ export class Flowchart {
   }
 
   async validateFlowchart(startIndex: number, endIndex: number, variables: any[]) {
+    console.log("==] isProgramRunning = " + this.isProgramRunning + " ; ==] isAnInputBlockRunning = " + this.isAnInputBlockRunning);
     if (variables == null) {
       this.variables.vars = [];
       this.tempSymbols = [];
@@ -485,14 +486,15 @@ export class Flowchart {
 
     }
 
-    this.updateLoopBlockState();
     this.isProgramRunning = false;
+    this.updateLoopBlockState();
   }
 
   updateLoopBlockState() {
     // Update Loop Block State (variables, isAnInputBlockRunning)
     this.loopBlockState.variables = this.variables.vars;
     this.loopBlockState.isAnInputBlockRunning = this.isAnInputBlockRunning;
+    this.loopBlockState.isProgramRunning = this.isProgramRunning;
     console.log("<== Loop Block State (from Flowchart) ==>", this.loopBlockState);
   }
 
