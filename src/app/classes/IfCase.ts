@@ -66,20 +66,14 @@ export class IfCase {
   getSymbolFromFalseBlock(index: number) { return this.falseBlockSymbols[index]; }
   removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
 
-  // async validateIfCaseNode(variables: any[]) {
-  //   this.parseIfCaseExpression(variables);
-  //   let ifLoopBlock = new LoopBlock();
-  //   ifLoopBlock.SYMBOLS = ifBlock;
-  //   ifLoopBlock.variables = this.variables.vars;
-  //   await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
-  // }
+
 
   parseIfCaseExpression(variables: any[]) {
     let opers = [], exps = [], exps1 = [];
     let op = '', oper1, oper2, result, j = 0, tempArrIndex;
     let isVarDeclared = false, isParsingStrings = false, strSplit;
 
-    strSplit = this.ifStatement.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
+    strSplit = this.ifStatement.split(/[\&\|\!\>\<\=]+/g);//HERE *,/,+,- OPERATORS REMOVED FOR STRING PARSE
     for (let i = 0; i < strSplit.length; i++) { exps[i] = strSplit[i].trim(); }
 
     // Store LOGICAL Operators: &&, ||, ! in "opers"
@@ -88,7 +82,7 @@ export class IfCase {
       || (this.ifStatement.indexOf('<=') != -1) || (this.ifStatement.indexOf('>=') != -1) || (this.ifStatement.indexOf('!=') != -1)
       || (this.ifStatement.indexOf('+') != -1) || (this.ifStatement.indexOf('-') != -1) || (this.ifStatement.indexOf('*') != -1)
       || (this.ifStatement.indexOf('/') != -1) || (this.ifStatement.indexOf('%') != -1)) {
-      opers = this.ifStatement.match(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
+      opers = this.ifStatement.match(/[\&\|\!\>\<\=\\]+/g);//HERE *,/,+,- OPERATORS REMOVED FOR STRING PARSE
     } else {
       opers = [];
     }
@@ -245,6 +239,7 @@ export class IfCase {
 
   calculateStringExpression(str1: string, str2: string, operator: string) {
     let result: any;
+   
     switch (operator) {
       case '<': result = str1 < str2; break;
       case '>': result = str1 > str2; break;
@@ -254,8 +249,21 @@ export class IfCase {
       case '==': result = str1 == str2; break;
       case '&&': result = str1 && str2; break;
       case '||': result = str1 || str2; break;
+     
       default: console.log('Invalid expression for Strings!'); break;
     }
+   /* if( str1=="+"){
+      result=str1=="+"; 
+    }else if( str2=="+"){
+      result=str2=="+";
+    }else if (str1=="-"){
+      result=str1=="-";
+    }else if( str2=="-"){
+      result=str2=="-";
+    }else{
+      console.log("NO STRING MATH PARSE OPERATION");
+    }*/
+   
     return result;
   }
 
