@@ -161,13 +161,14 @@ export class IfCase {
     }
 
     // Remove empty elements [""] from parsedValues
-    for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
+    //for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
     // Create newExpression with parsed values instead of variable names
     let newExpression = "";
     for (let j = 0; j < opers.length; j++) {
       newExpression += exps[j] + opers[j];
     }
     newExpression += exps[exps.length - 1];
+    console.log(newExpression);
     // Parse && and || for mathjs
     if (newExpression.indexOf('&&') != -1 || newExpression.indexOf('||') != -1) {
       newExpression = newExpression.replace('&&', '&').replace('||', '|');
@@ -252,17 +253,7 @@ export class IfCase {
      
       default: console.log('Invalid expression for Strings!'); break;
     }
-   /* if( str1=="+"){
-      result=str1=="+"; 
-    }else if( str2=="+"){
-      result=str2=="+";
-    }else if (str1=="-"){
-      result=str1=="-";
-    }else if( str2=="-"){
-      result=str2=="-";
-    }else{
-      console.log("NO STRING MATH PARSE OPERATION");
-    }*/
+   
    
     return result;
   }
