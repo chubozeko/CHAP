@@ -31,7 +31,8 @@ const routes: Routes = [
   // },
   { path: "welcome", loadChildren: "./welcome/welcome.module#WelcomePageModule" },
   { path: 'prompt', loadChildren: './prompt/prompt.module#PromptPageModule' },
-  { path: 'themes', loadChildren: './themes/themes.module#ThemesPageModule' },
+  { path: 'themes', loadChildren: './themes/themes.module#ThemesPageModule' },  { path: 'tutorial-q', loadChildren: './tutorial-q/tutorial-q.module#TutorialQPageModule' },
+
 
 
   // { path: 'open-project', loadChildren: './open-project/open-project.module#OpenProjectPageModule' }
