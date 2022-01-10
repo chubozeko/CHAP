@@ -134,7 +134,7 @@ export class SymbolId {
     symbol.symbolIndex = this.getSymbolIndex(symbolId, block);
     // 2. call getParentIndex() and assign it to symComponent.parentIndex
     symbol.parentIndex = this.getParentIndex(symbolId, block);
-    console.log("generateId symbol: ", symbol);
+    // console.log("generateId symbol: ", symbol);
     // 3. Check the parentIndex and parent type
     if (symbol.parentIndex == -1) {
       // In Flowchart
@@ -210,7 +210,7 @@ export class SymbolId {
       symId += SymbolId.DO_WHILE_LOOP + '_' + symbol.symbolIndex;
       trueBlockId += SymbolId.DO_WHILE_TRUE_BLOCK + '_' + symbol.symbolIndex;
     }
-    console.log("new generated id = " + symId);
+    console.log("new generated id = " + symId + "; generateId symbol: ", symbol);
 
     // 6. Assign the generated ID to the symbol
     let syms = block.getElementsByClassName("symbol");
@@ -267,7 +267,7 @@ export class SymbolId {
         }
         // 3. Find that current symbol in the flowchart (backend)
         let currentSymbol = flowchart.searchForSymbolInFlowchart(currentSymId) as Symbols;
-        console.log(currentSymId + ". currentSymbol in updateIds: ", currentSymbol);
+        // console.log(currentSymId + ". currentSymbol in updateIds: ", currentSymbol);
         // 4. Change the current symbol’s id to “s_update_id”
         let curSymbolElement = document.getElementById(currentSymId);
         curSymbolElement.id = updateSymId;
