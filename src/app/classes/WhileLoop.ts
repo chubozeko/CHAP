@@ -5,6 +5,7 @@ const math = create(all, config);
 export class WhileLoop {
 
   static s_name: string = "While";
+  s_id: string = 's_while_loop';
   id: string = "s_while_loop";
   symbolIndex: number = -1;
   parentIndex: number = -1;
@@ -39,7 +40,7 @@ export class WhileLoop {
   setWhileExpression(while_exp: string) {
     this.whileExpression = while_exp;
   }
-  getWhileExpression() {
+  getExpression() {
     return this.whileExpression;
   }
 
@@ -358,7 +359,7 @@ export class WhileLoop {
     }
     return (
       "\tWhile " +
-      this.getWhileExpression() +
+      this.getExpression() +
       " Do\n" +
       whiletrue +
       "\tEnd While\n"
@@ -372,7 +373,7 @@ export class WhileLoop {
       whiletrue += "\t" + el.cplusplusCode();
     }
     return (
-      "\twhile (" + this.getWhileExpression() + "){\n" + whiletrue + "\t} \n"
+      "\twhile (" + this.getExpression() + "){\n" + whiletrue + "\t} \n"
     );
   }
 
@@ -383,7 +384,7 @@ export class WhileLoop {
       whiletrue += "\t" + el.getJavaCode();
     }
     return (
-      "\t\twhile (" + this.getWhileExpression() + "){\n" + whiletrue + "\t\t} \n"
+      "\t\twhile (" + this.getExpression() + "){\n" + whiletrue + "\t\t} \n"
     );
   }
 

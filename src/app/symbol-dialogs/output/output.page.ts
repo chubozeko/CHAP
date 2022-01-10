@@ -17,7 +17,7 @@ export class OutputPage implements OnInit {
 
   ngOnInit() {
     let expression = (document.getElementById("output_expression") as HTMLInputElement);
-    expression.value = this.symbol.getOutputExpression();
+    expression.value = this.symbol.getExpression();
 
     // Colourful Textboxes
     let tbs = document.getElementsByClassName("dialogTextbox") as HTMLCollectionOf<HTMLElement>;

@@ -1,6 +1,7 @@
 export class Stop {
 
   static id: string = 's_stop';
+  s_id: string = 's_stop';
   static s_name: string = 'Stop';
   static startText: string = 'STOP';
 

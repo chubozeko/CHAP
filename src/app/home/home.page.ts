@@ -883,31 +883,31 @@ export class HomePage {
 
                 if (tempSym instanceof Declare) {
                   this.addSymbol("s_declare", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getDeclareExpression();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof Input) {
                   this.addSymbol("s_input", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getInputExpression();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof Output) {
                   this.addSymbol("s_output", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getOutputExpression();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof Process) {
                   this.addSymbol("s_process", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getProcessExpression();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof Comment) {
                   this.addSymbol("s_comment", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getCommentExpression();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof IfCase) {
                   this.addSymbol("s_if_case", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getIfStatement();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof ForLoop) {
                   this.addSymbol("s_for_loop", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getForExpression();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof WhileLoop) {
                   this.addSymbol("s_while_loop", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getWhileExpression();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof DoWhileLoop) {
                   this.addSymbol("s_do_while_loop", tempSym);
-                  targetArrow.nextSibling.innerHTML = tempSym.getDoWhileExpression();
+                  targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 }
 
                 this.resizer.resizeSymbols(targetArrow);
@@ -1073,6 +1073,7 @@ export class HomePage {
   }
 
   public addSymbol(id: string, currentSymbol?: Symbols) {
+    console.log('LP - 3 currentSymbol? ', currentSymbol);
     let temp, symbol, activeArrowIndex, symComponent;
 
     let arrows = document.getElementsByClassName("arrow dropzone");
@@ -1091,7 +1092,7 @@ export class HomePage {
       let dec = new Declare();
       if (currentSymbol != null) {
         dec.createDeclareSymbol(currentSymbol as Declare);
-        symbol.innerHTML = dec.getDeclareExpression();
+        symbol.innerHTML = dec.getExpression();
       }
       dec.setDeclareSymbol(symbol);  
       symComponent = dec;
@@ -1104,7 +1105,7 @@ export class HomePage {
       let input = new Input();
       if (currentSymbol != null) {
         input.createInputSymbol(currentSymbol as Input);
-        symbol.innerHTML = input.getInputExpression();
+        symbol.innerHTML = input.getExpression();
       }
       input.setInputSymbol(symbol);  
       symComponent = input;
@@ -1117,7 +1118,7 @@ export class HomePage {
       let output = new Output();
       if (currentSymbol != null) {
         output.createOutputSymbol(currentSymbol as Output);
-        symbol.innerHTML = output.getOutputExpression();
+        symbol.innerHTML = output.getExpression();
       }
       output.setOutputSymbol(symbol);  
       symComponent = output;
@@ -1130,7 +1131,7 @@ export class HomePage {
       let proc = new Process();
       if (currentSymbol != null) {
         proc.createProcessSymbol(currentSymbol as Process);
-        symbol.innerHTML = proc.getProcessExpression();
+        symbol.innerHTML = proc.getExpression();
       }
       proc.setProcessSymbol(symbol);  
       symComponent = proc;
@@ -1144,7 +1145,7 @@ export class HomePage {
       com.setCommentSymbol(symbol);
       if (currentSymbol != null) {
         com.createCommentSymbol(currentSymbol as Comment);
-        symbol.innerHTML = com.getCommentExpression();
+        symbol.innerHTML = com.getExpression();
       }
       symComponent = com;
     } else if (id == "s_if_case") {
@@ -1596,120 +1597,87 @@ export class HomePage {
 
   public loadProject(chapFileName, fileData: string) {
     this.clearWorkspace(true);
-    let dataSyms, arrowT, els, p, tlb, flb;
+    let dataSyms;
     console.log(fileData);
     dataSyms = JSON.parse(fileData);
     console.log("symbols data", dataSyms);
 
     for (let i = 0; i < dataSyms.length; i++) {
       let sym: any;
-      switch (dataSyms[i].id) {
+      console.log("LP - " + i + ". ", dataSyms[i]);
+
+      switch (dataSyms[i].s_id) {
         case "s_declare":
           sym = new Declare();
           sym.createDeclareSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          els[p].innerHTML = sym.getDeclareExpression();
           break;
         case "s_input":
           sym = new Input();
           sym.createInputSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          els[p].innerHTML = sym.getInputExpression();
           break;
         case "s_output":
           sym = new Output();
           sym.createOutputSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          let tempX = sym.getOutputExpression().replace(/`/g, '"');
-          sym.setOutputExpression(tempX);
-          els[p].innerHTML = sym.getOutputExpression();
+          // let tempX = sym.getOutputExpression().replace(/`/g, '"');
+          // sym.setOutputExpression(tempX);
+          // els[p].innerHTML = sym.getOutputExpression();
           break;
         case "s_process":
           sym = new Process();
           sym.createProcessSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          els[p].innerHTML = sym.getProcessExpression();
           break;
         case "s_comment":
           sym = new Comment();
           sym.createCommentSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          els[p].innerHTML = sym.getCommentExpression();
           break;
         case "s_if_case":
           sym = new IfCase();
           sym.createIfCaseSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          els[p].innerHTML = sym.getIfStatement();
-          tlb = els[p].parentElement.querySelector("#ifTrueBlock");
-          this.loadLoopSymbols(sym.trueBlockSymbols, tlb);
-          flb = els[p].parentElement.querySelector("#ifFalseBlock");
-          this.loadLoopSymbols(sym.falseBlockSymbols, flb);
           break;
         case "s_for_loop":
           sym = new ForLoop();
           sym.createForLoopSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          els[p].innerHTML = sym.getForExpression();
-          tlb = els[p].parentElement.querySelector("#forTrueBlock");
-          this.loadLoopSymbols(sym.trueLoopBlock, tlb);
           break;
         case "s_while_loop":
           sym = new WhileLoop();
           sym.createWhileLoopSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          els[p].innerHTML = sym.getWhileExpression();
-          tlb = els[p].parentElement.querySelector("#whileTrueBlock");
-          this.loadLoopSymbols(sym.trueLoopBlock, tlb);
           break;
         case "s_do_while_loop":
           sym = new DoWhileLoop();
           sym.createDoWhileLoopSymbol(dataSyms[i]);
-          arrowT = document.getElementsByClassName("arrow dropzone");
-          arrowT[i].classList.add("active-arrow");
-          this.addSymbol(sym.id);
-          els = document.getElementById("workspace").getElementsByClassName("symbol");
-          p = i + 1;
-          els[p].innerHTML = sym.getDoWhileExpression();
-          tlb = els[p].parentElement.querySelector("#doWhileTrueBlock");
-          this.loadLoopSymbols(sym.trueLoopBlock, tlb);
           break;
         default:
           break;
       }
-      this.flowchart.SYMBOLS.splice(i, 1, sym);
+      let arrowT = document.getElementsByClassName("arrow dropzone");
+      arrowT[i].classList.add("active-arrow");
+      this.addSymbol(dataSyms[i].s_id, sym);
+      let curSymbol = document.getElementById(dataSyms[i].id);
+      let returnedSymbol = this.flowchart.searchForSymbolInFlowchart(dataSyms[i].id);
+      switch (dataSyms[i].s_id) {
+        case "s_if_case":
+          curSymbol.getElementsByClassName("if_sym")[0].innerHTML = returnedSymbol.getExpression();
+          this.loadLoopSymbols(returnedSymbol.trueBlockSymbols, curSymbol.getElementsByClassName("ifTrueBlock")[0]);
+          this.loadLoopSymbols(returnedSymbol.falseBlockSymbols, curSymbol.getElementsByClassName("ifFalseBlock")[0]);
+          break;
+        case "s_for_loop":
+          curSymbol.getElementsByClassName("for_sym")[0].innerHTML = returnedSymbol.getExpression();
+          this.loadLoopSymbols(returnedSymbol.trueLoopBlock, curSymbol.getElementsByClassName("forTrueBlock")[0]);
+          break;
+        case "s_while_loop":
+          curSymbol.getElementsByClassName("while_sym")[0].innerHTML = returnedSymbol.getExpression();
+          this.loadLoopSymbols(returnedSymbol.trueLoopBlock, curSymbol.getElementsByClassName("whileTrueBlock")[0]);
+          break;
+        case "s_do_while_loop":
+          curSymbol.getElementsByClassName("do_while_sym")[0].innerHTML = returnedSymbol.getExpression();
+          this.loadLoopSymbols(returnedSymbol.trueLoopBlock, curSymbol.getElementsByClassName("doWhileTrueBlock")[0]);
+          break;
+        default:
+          curSymbol.innerHTML = returnedSymbol.getExpression();
+          break;
+      }
+      
+      // this.flowchart.SYMBOLS.splice(i, 1, sym);
     }
     this.fileName = chapFileName;
     let fName = document.getElementById("fileName") as HTMLInputElement;
@@ -1769,7 +1737,7 @@ export class HomePage {
           arrowT[i].classList.add("active-arrow");
           this.addSymbol(sym.id);
           els = loopBlock.getElementsByClassName("symbol");
-          els[i].innerHTML = sym.getProcessExpression();
+          els[i].innerHTML = sym.getProcExpression();
           break;
         case "s_comment":
           sym = new Comment();

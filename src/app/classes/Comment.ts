@@ -1,6 +1,7 @@
 export class Comment {
 
   static s_name: string = 'Comment';
+  s_id: string = 's_comment';
   id: string = 's_comment';
   symbolIndex: number = -1;
   parentIndex: number = -1;
@@ -23,9 +24,9 @@ export class Comment {
   setCommentText(comment_text: string) { this.commentText = comment_text; }
   getCommentText() { return this.commentText; }
 
-  getCommentExpression() { return '// ' + this.commentText; }
+  getExpression() { return '// ' + this.commentText; }
 
-  pseudoCode() { return '\t' + this.getCommentExpression() + '\n'; }
+  pseudoCode() { return '\t' + this.getExpression() + '\n'; }
 
   cplusplusCode() { return '\t/*' + this.commentText + '*/\n'; }
 

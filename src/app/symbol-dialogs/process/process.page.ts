@@ -20,7 +20,7 @@ export class ProcessPage implements OnInit {
     let var_name = (document.getElementById("process_var_name") as HTMLIonInputElement);
     var_name.value = this.symbol.getVariableName();
     let p_exp = (document.getElementById("process_expression") as HTMLIonInputElement);
-    p_exp.value = this.symbol.getExpression();
+    p_exp.value = this.symbol.getThisExpression();
 
     this.initializeHoverEvents();
     // Colourful Textboxes

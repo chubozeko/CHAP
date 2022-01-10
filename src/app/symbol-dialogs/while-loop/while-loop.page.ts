@@ -16,7 +16,7 @@ export class WhileLoopPage implements OnInit {
 
   ngOnInit() {
     let exps = (document.getElementById("while_expression") as HTMLInputElement);
-    exps.value = this.symbol.getWhileExpression();
+    exps.value = this.symbol.getExpression();
 
     // Colourful Textboxes
     let tbs = document.getElementsByClassName("dialogTextbox") as HTMLCollectionOf<HTMLElement>;

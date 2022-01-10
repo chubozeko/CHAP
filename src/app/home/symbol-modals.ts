@@ -41,7 +41,7 @@ export class SymbolModals {
   
       try {
         let dec = data.data as Declare;
-        e.target.innerHTML = dec.getDeclareExpression();
+        e.target.innerHTML = dec.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
@@ -65,7 +65,7 @@ export class SymbolModals {
   
       try {
         let input = data.data as Input;
-        e.target.innerHTML = input.getInputExpression();
+        e.target.innerHTML = input.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
@@ -89,7 +89,7 @@ export class SymbolModals {
   
       try {
         let output = data.data as Output;
-        e.target.innerHTML = output.getOutputExpression();
+        e.target.innerHTML = output.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
@@ -113,7 +113,7 @@ export class SymbolModals {
   
       try {
         let proc = data.data as Process;
-        e.target.innerHTML = proc.getProcessExpression();
+        e.target.innerHTML = proc.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
@@ -137,7 +137,7 @@ export class SymbolModals {
   
       try {
         let com = data.data as Comment;
-        e.target.innerHTML = com.getCommentExpression();
+        e.target.innerHTML = com.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
@@ -161,7 +161,7 @@ export class SymbolModals {
   
       try {
         let ifcase = data.data as IfCase;
-        e.target.innerHTML = ifcase.getIfStatement();
+        e.target.innerHTML = ifcase.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
@@ -185,7 +185,7 @@ export class SymbolModals {
   
       try {
         let whileloop = data.data as WhileLoop;
-        e.target.innerHTML = whileloop.getWhileExpression();
+        e.target.innerHTML = whileloop.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
@@ -209,7 +209,7 @@ export class SymbolModals {
   
       try {
         let forloop = data.data as ForLoop;
-        e.target.innerHTML = forloop.getForExpression();
+        e.target.innerHTML = forloop.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {
@@ -233,7 +233,7 @@ export class SymbolModals {
   
       try {
         let dowhileloop = data.data as DoWhileLoop;
-        e.target.innerHTML = dowhileloop.getDoWhileExpression();
+        e.target.innerHTML = dowhileloop.getExpression();
         this.resizer.resizeSymbols(e.target);
         console.log(data.data);
       } catch (error) {

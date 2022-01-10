@@ -6,6 +6,7 @@ const math = create(all, config);
 export class ForLoop {
 
   static s_name: string = 'For';
+  s_id: string = 's_for_loop';
   id: string = 's_for_loop';
   symbolIndex: number = -1;
   parentIndex: number = -1;
@@ -104,7 +105,7 @@ export class ForLoop {
       this.forLoopExpression += ' decrement ' + this.getStepValue();
     }
   }
-  getForExpression() { return this.forLoopExpression; }
+  getExpression() { return this.forLoopExpression; }
 
   setForSymbol(forSym: any) { this.forLoopSymbol = forSym; }
   getForSymbol() { return this.forLoopSymbol; }
@@ -124,7 +125,7 @@ export class ForLoop {
   }
 
   parseForLoopExpression(variables) {
-    let opers = [], exps = [], exps1 = [];
+    let opers = [], exps = [], exps1 = [], values = [];
     let op = "", oper1, oper2, result, j = 0, tempArrIndex;
     let isVarDeclared = false, isParsingStrings = false;
 
@@ -145,6 +146,9 @@ export class ForLoop {
       this.forLoopExpression.indexOf("/") != -1 ||
       this.forLoopExpression.indexOf("%") != -1
     ) {
+
+      
+
       // Split by logical operators
       exps1 = this.forLoopExpression.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
       for (let i = 0; i < exps1.length; i++) {
@@ -426,7 +430,7 @@ export class ForLoop {
       const el = this.trueLoopBlock[i];
       forTrue += '\t' + el.pseudoCode();
     }
-    return '\tFor ' + this.getForExpression() + ' Do\n' + forTrue + '\tEnd For\n';
+    return '\tFor ' + this.getExpression() + ' Do\n' + forTrue + '\tEnd For\n';
   }
 
   cplusplusCode() {

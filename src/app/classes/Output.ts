@@ -1,6 +1,7 @@
 export class Output {
 
   static s_name: string = 'Output';
+  s_id: string = 's_output';
   id: string = 's_output';
   symbolIndex: number = -1;
   parentIndex: number = -1;
@@ -21,7 +22,7 @@ export class Output {
   }
 
   setOutputExpression(exp: string) { this.outputExp = exp; }
-  getOutputExpression() { return this.outputExp; }
+  getExpression() { return this.outputExp; }
 
   setOutputSymbol(symbol: any) { this.outputSymbol = symbol; }
   getOutputSymbol() { return this.outputSymbol; }
@@ -35,7 +36,7 @@ export class Output {
     let isValid: boolean;
     this.outputS = "";
     // Get output expression
-    let outputStr: string = this.getOutputExpression();
+    let outputStr: string = this.getExpression();
     let oBlocks = outputStr.split("&");
     for (let i=0; i<oBlocks.length; i++) {
       let ob = oBlocks[i].trim();
@@ -156,14 +157,14 @@ export class Output {
     }
   }
 
-  pseudoCode() { return '\tOutput ' + this.getOutputExpression().replace(/\&/g, ', ') + '\n'; }
+  pseudoCode() { return '\tOutput ' + this.getExpression().replace(/\&/g, ', ') + '\n'; }
 
   cplusplusCode() {
-    return '\tcout<<' + this.getOutputExpression().replace(/\&/g, '<<') + '<<endl;\n';
+    return '\tcout<<' + this.getExpression().replace(/\&/g, '<<') + '<<endl;\n';
   }
 
   getJavaCode() {
-    return '\t\tSystem.out.println(' + this.getOutputExpression().replace(/\&/g, ' + ') + ');\n';
+    return '\t\tSystem.out.println(' + this.getExpression().replace(/\&/g, ' + ') + ');\n';
   }
 
 }

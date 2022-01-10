@@ -3,6 +3,7 @@ import { Variable } from "./Variable";
 export class Declare {
 
     static s_name: string = 'Declare';
+    s_id: string = 's_declare';
     id: string = 's_declare';
     symbolIndex: number = -1;
     parentIndex: number = -1;
@@ -26,7 +27,7 @@ export class Declare {
         this.chapConsole.innerHTML += `<span class="` + textColourClass + `"> ` + lineOutput + "</span> \n";
     }
 
-    createDeclareSymbol(declareSym: Declare) {
+    createDeclareSymbol(declareSym: any) {
         this.text = declareSym.text;
         this.variableName = declareSym.variableName;
         this.data_type = declareSym.data_type;
@@ -54,7 +55,7 @@ export class Declare {
         this.arraySize = arraySize; 
     }
 
-    getDeclareExpression() {
+    getExpression() {
         let arrayStr = '';
         if (this.isArray) { arrayStr = '[' + this.getArraySize() + ']'; }
         else { arrayStr = ''; }
@@ -109,7 +110,7 @@ export class Declare {
         return variables;
     }
 
-    pseudoCode() { return '\tDeclare ' + this.getDeclareExpression() + '\n'; }
+    pseudoCode() { return '\tDeclare ' + this.getExpression() + '\n'; }
 
     cplusplusCode() {
         let exp = '';

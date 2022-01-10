@@ -508,11 +508,11 @@ export class Flowchart {
     for (let i = 0; i < this.tempSymbols.length; i++) {
       // OUTPUT
       if (this.tempSymbols[i] instanceof Output) {
-        let tempX = this.tempSymbols[i].getOutputExpression() as string;
+        let tempX = this.tempSymbols[i].getExpression() as string;
         let y = tempX.replace(/\"/g, "`");
-        console.log('old output', this.tempSymbols[i].getOutputExpression());
+        console.log('old output', this.tempSymbols[i].getExpression());
         this.tempSymbols[i].setOutputExpression(y);
-        console.log('new output', this.tempSymbols[i].getOutputExpression());
+        console.log('new output', this.tempSymbols[i].getExpression());
       }
       // IF CASE
       else if (this.tempSymbols[i] instanceof IfCase) {
@@ -521,7 +521,7 @@ export class Flowchart {
         for (let j = 0; j < ifSymbol.trueBlockSymbols.length; j++) {
           let tempS = ifSymbol.trueBlockSymbols[j];
           if (tempS instanceof Output) {
-            let tempX = tempS.getOutputExpression() as string;
+            let tempX = tempS.getExpression() as string;
             let y = tempX.replace(/\"/g, "`");
             tempS.setOutputExpression(y);
           }
@@ -529,7 +529,7 @@ export class Flowchart {
         for (let j = 0; j < ifSymbol.falseBlockSymbols.length; j++) {
           let tempS = ifSymbol.falseBlockSymbols[j];
           if (tempS instanceof Output) {
-            let tempX = tempS.getOutputExpression() as string;
+            let tempX = tempS.getExpression() as string;
             let y = tempX.replace(/\"/g, "`");
             tempS.setOutputExpression(y);
           }
@@ -542,7 +542,7 @@ export class Flowchart {
         for (let j = 0; j < whileSymbol.trueLoopBlock.length; j++) {
           let tempS = whileSymbol.getSymbolFromTrueBlock(j);
           if (tempS instanceof Output) {
-            let tempX = tempS.getOutputExpression() as string;
+            let tempX = tempS.getExpression() as string;
             let y = tempX.replace(/\"/g, "`");
             tempS.setOutputExpression(y);
           }
@@ -555,7 +555,7 @@ export class Flowchart {
         for (let j = 0; j < forSymbol.trueLoopBlock.length; j++) {
           let tempS = forSymbol.getSymbolFromTrueBlock(j);
           if (tempS instanceof Output) {
-            let tempX = tempS.getOutputExpression() as string;
+            let tempX = tempS.getExpression() as string;
             let y = tempX.replace(/\"/g, "`");
             tempS.setOutputExpression(y);
           }
@@ -568,7 +568,7 @@ export class Flowchart {
         for (let j = 0; j < doWhileSymbol.trueLoopBlock.length; j++) {
           let tempS = doWhileSymbol.getSymbolFromTrueBlock(j);
           if (tempS instanceof Output) {
-            let tempX = tempS.getOutputExpression() as string;
+            let tempX = tempS.getExpression() as string;
             let y = tempX.replace(/\"/g, "`");
             tempS.setOutputExpression(y);
           }

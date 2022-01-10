@@ -6,6 +6,7 @@ const math = create(all, config);
 export class IfCase {
 
   static s_name: string = 'If';
+  s_id: string = 's_if_case';
   id: string = 's_if_case';
   symbolIndex: number = -1;
   parentIndex: number = -1;
@@ -53,7 +54,7 @@ export class IfCase {
   }
 
   setIfStatement(if_exp: string) { this.ifStatement = if_exp; }
-  getIfStatement() { return this.ifStatement; }
+  getExpression() { return this.ifStatement; }
 
   setIfCaseSymbol(ifSym: any) { this.ifcaseSymbol = ifSym; }
   getIfCaseSymbol() { return this.ifcaseSymbol; }
@@ -66,26 +67,69 @@ export class IfCase {
   getSymbolFromFalseBlock(index: number) { return this.falseBlockSymbols[index]; }
   removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
 
-
-
   parseIfCaseExpression(variables: any[]) {
-    let opers = [], exps = [], exps1 = [];
+    let opers = [], exps = [], values = [];
     let op = '', oper1, oper2, result, j = 0, tempArrIndex;
     let isVarDeclared = false, isParsingStrings = false, strSplit;
-
-    strSplit = this.ifStatement.split(/[\&\|\!\>\<\=]+/g);//HERE *,/,+,- OPERATORS REMOVED FOR STRING PARSE
-    for (let i = 0; i < strSplit.length; i++) { exps[i] = strSplit[i].trim(); }
-
-    // Store LOGICAL Operators: &&, ||, ! in "opers"
-    if ((this.ifStatement.indexOf('&&') != -1) || (this.ifStatement.indexOf('||') != -1) || (this.ifStatement.indexOf('!') != -1)
-      || (this.ifStatement.indexOf('<') != -1) || (this.ifStatement.indexOf('>') != -1) || (this.ifStatement.indexOf('==') != -1)
-      || (this.ifStatement.indexOf('<=') != -1) || (this.ifStatement.indexOf('>=') != -1) || (this.ifStatement.indexOf('!=') != -1)
-      || (this.ifStatement.indexOf('+') != -1) || (this.ifStatement.indexOf('-') != -1) || (this.ifStatement.indexOf('*') != -1)
-      || (this.ifStatement.indexOf('/') != -1) || (this.ifStatement.indexOf('%') != -1)) {
-      opers = this.ifStatement.match(/[\&\|\!\>\<\=\\]+/g);//HERE *,/,+,- OPERATORS REMOVED FOR STRING PARSE
+    let expr = this.ifStatement;
+    
+    // Check if the expression contains quotations 
+    if (expr.indexOf('"') != -1) {
+      let i = 0;
+      let quoteCount = 0;
+      while (i < expr.length) {
+        if (expr[i] == '"') {
+          quoteCount++;
+          if (quoteCount % 2 == 0) {
+            // If quoteCount is an even number, "split" the expression at i+1
+            values.push(expr.substring(0, i+1));
+            expr = expr.substring(i);
+            i=0;
+          } else {
+            // If quoteCount is an odd number, "split" the expression at i
+            values.push(expr.substring(0, i));
+            expr = expr.substring(i);
+            i=0;
+          }
+        }
+        i++;
+      }
     } else {
-      opers = [];
+      values.push(expr);
     }
+
+    for(let j=0; j<values.length; j++) {
+      const val = values[j];
+      if (val.indexOf('"') != -1) {
+        // contains quotes; check if it has closing parenthesis
+        if (val[val.length-1] == '"') {
+          // has closing parenthesis
+          if (val.trim() != '')
+            exps.push(val.trim());
+        } else {
+          // TODO: Missing Parenthesis Error
+          console.error("ERROR: Missing Parenthesis in If-Case expression \"" + val + "\"");
+        }
+      } else {
+        strSplit = val.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
+        for (let i = 0; i < strSplit.length; i++) { 
+          if (strSplit[i].trim() != '')
+            exps[i] = strSplit[i].trim(); 
+        }
+        // Store LOGICAL Operators: &&, ||, ! in "opers"
+        if ((val.indexOf('&&') != -1) || (val.indexOf('||') != -1) || (val.indexOf('!') != -1)
+          || (val.indexOf('<') != -1) || (val.indexOf('>') != -1) || (val.indexOf('==') != -1)
+          || (val.indexOf('<=') != -1) || (val.indexOf('>=') != -1) || (val.indexOf('!=') != -1)
+          || (val.indexOf('+') != -1) || (val.indexOf('-') != -1) || (val.indexOf('*') != -1)
+          || (val.indexOf('/') != -1) || (val.indexOf('%') != -1)) {
+          opers = val.match(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
+        } else {
+          opers = [];
+        }
+      }
+
+    }
+    
     // console.log("If Case exps: ", exps);
     // console.log("If Case opers: ", opers);
     
@@ -268,7 +312,7 @@ export class IfCase {
       const el = this.falseBlockSymbols[i];
       iffalse += '\t' + el.pseudoCode();
     }
-    return '\tIf ' + this.getIfStatement() + ' Then\n' + iftrue + '\tElse\n' + iffalse + '\tEnd If\n';
+    return '\tIf ' + this.getExpression() + ' Then\n' + iftrue + '\tElse\n' + iffalse + '\tEnd If\n';
   }
 
   cplusplusCode() {
@@ -281,7 +325,7 @@ export class IfCase {
       const el = this.falseBlockSymbols[i];
       iffalse += '\t' + el.cplusplusCode();
     }
-    return '\tif (' + this.getIfStatement() + '){\n' + iftrue + '\telse {\n' + iffalse + '\t} \n';
+    return '\tif (' + this.getExpression() + '){\n' + iftrue + '\telse {\n' + iffalse + '\t} \n';
   }
 
   getJavaCode() {
@@ -294,7 +338,7 @@ export class IfCase {
       const el = this.falseBlockSymbols[i];
       iffalse += '\t' + el.getJavaCode();
     }
-    return '\t\tif (' + this.getIfStatement() + '){\n' + iftrue + '\t\telse {\n' + iffalse + '\t\t} \n';
+    return '\t\tif (' + this.getExpression() + '){\n' + iftrue + '\t\telse {\n' + iffalse + '\t\t} \n';
   }
 
 }

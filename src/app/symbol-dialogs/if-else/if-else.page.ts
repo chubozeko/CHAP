@@ -16,7 +16,7 @@ export class IfElsePage implements OnInit {
 
   ngOnInit() {
     let ifexp = (document.getElementById("if_expression") as HTMLInputElement);
-    ifexp.value = this.symbol.getIfStatement();
+    ifexp.value = this.symbol.getExpression();
 
     // Colourful Textboxes
     let tbs = document.getElementsByClassName("dialogTextbox") as HTMLCollectionOf<HTMLElement>;

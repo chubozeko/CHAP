@@ -5,6 +5,7 @@ const math = create(all, config);
 export class DoWhileLoop {
 
   static s_name: string = 'Do';
+  s_id: string = 's_do_while_loop';
   id: string = 's_do_while_loop';
   symbolIndex: number = -1;
   parentIndex: number = -1;
@@ -37,7 +38,7 @@ export class DoWhileLoop {
   }
 
   setDoWhileExpression(do_while_exp: string) { this.doWhileExpression = do_while_exp; }
-  getDoWhileExpression() { return this.doWhileExpression; }
+  getExpression() { return this.doWhileExpression; }
 
   setDoWhileSymbol(doWhileSym: any) { this.doWhileSymbol = doWhileSym; }
   getDoWhileSymbol() { return this.doWhileSymbol; }
@@ -341,7 +342,7 @@ export class DoWhileLoop {
       const el = this.trueLoopBlock[i];
       doWhileTrue += '\t' + el.pseudoCode();
     }
-    return '\tDo\n' + doWhileTrue + '\tWhile ' + this.getDoWhileExpression() + '\n\tEnd Do While\n';
+    return '\tDo\n' + doWhileTrue + '\tWhile ' + this.getExpression() + '\n\tEnd Do While\n';
   }
 
   cplusplusCode() {
@@ -350,7 +351,7 @@ export class DoWhileLoop {
       const el = this.trueLoopBlock[i];
       doWhileTrue += '\t' + el.cplusplusCode();
     }
-    return '\tdo { \n' + doWhileTrue + '\t} while (' + this.getDoWhileExpression() + ');\n';
+    return '\tdo { \n' + doWhileTrue + '\t} while (' + this.getExpression() + ');\n';
   }
 
   getJavaCode() {
@@ -359,7 +360,7 @@ export class DoWhileLoop {
       const el = this.trueLoopBlock[i];
       doWhileTrue += '\t' + el.getJavaCode();
     }
-    return '\t\tdo { \n' + doWhileTrue + '\t\t} while (' + this.getDoWhileExpression() + ');\n';
+    return '\t\tdo { \n' + doWhileTrue + '\t\t} while (' + this.getExpression() + ');\n';
   }
 
 }

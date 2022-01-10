@@ -5,6 +5,7 @@ import { Variable } from "./Variable";
 export class Input {
 
   static s_name: string = 'Input';
+  s_id: string = 's_input';
   id: string = 's_input';
   symbolIndex: number = -1;
   parentIndex: number = -1;
@@ -38,7 +39,7 @@ export class Input {
   setInputSymbol(symbol: any) { this.inputSymbol = symbol; }
   getInputSymbol() { return this.inputSymbol; }
 
-  getInputExpression() {
+  getExpression() {
     this.inputExpression = this.getVariableName();
     return this.inputExpression;
   }
@@ -114,7 +115,7 @@ export class Input {
     }
   }
 
-  pseudoCode() { return '\tInput ' + this.getInputExpression() + '\n'; }
+  pseudoCode() { return '\tInput ' + this.getExpression() + '\n'; }
 
   cplusplusCode() {
     return '\tcin>>' + this.getVariableName() + ';\n';

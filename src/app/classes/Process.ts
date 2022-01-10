@@ -5,6 +5,7 @@ const math = create(all, config);
 export class Process {
 
   static s_name: string = 'Process';
+  s_id: string = 's_process';
   id: string = 's_process';
   symbolIndex: number = -1;
   parentIndex: number = -1;
@@ -38,10 +39,10 @@ export class Process {
   getVariableName() { return this.variableName; }
 
   setExpression(exp: string) { this.expression = exp; }
-  getExpression() { return this.expression; }
+  getThisExpression() { return this.expression; }
 
-  getProcessExpression() {
-    this.processExpression = this.getVariableName() + ' = ' + this.getExpression();
+  getExpression() {
+    this.processExpression = this.getVariableName() + ' = ' + this.getThisExpression();
     return this.processExpression;
   }
 
@@ -247,14 +248,14 @@ export class Process {
     return result;
   }
 
-  pseudoCode() { return '\tProcess ' + this.getProcessExpression() + '\n'; }
+  pseudoCode() { return '\tProcess ' + this.getExpression() + '\n'; }
 
   cplusplusCode() {
-    return '\t' + this.getProcessExpression() + ';\n';
+    return '\t' + this.getExpression() + ';\n';
   }
 
   getJavaCode() {
-    return '\t\t' + this.getProcessExpression() + ';\n';
+    return '\t\t' + this.getExpression() + ';\n';
   }
 
   async validateProcessSymbol(variables: any[], consoleLog: HTMLDivElement) {
