@@ -66,20 +66,14 @@ export class IfCase {
   getSymbolFromFalseBlock(index: number) { return this.falseBlockSymbols[index]; }
   removeSymbolFromFalseBlock(position: number) { this.falseBlockSymbols.splice(position, 1); }
 
-  // async validateIfCaseNode(variables: any[]) {
-  //   this.parseIfCaseExpression(variables);
-  //   let ifLoopBlock = new LoopBlock();
-  //   ifLoopBlock.SYMBOLS = ifBlock;
-  //   ifLoopBlock.variables = this.variables.vars;
-  //   await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
-  // }
+
 
   parseIfCaseExpression(variables: any[]) {
     let opers = [], exps = [], exps1 = [];
     let op = '', oper1, oper2, result, j = 0, tempArrIndex;
     let isVarDeclared = false, isParsingStrings = false, strSplit;
 
-    strSplit = this.ifStatement.split(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
+    strSplit = this.ifStatement.split(/[\&\|\!\>\<\=]+/g);//HERE *,/,+,- OPERATORS REMOVED FOR STRING PARSE
     for (let i = 0; i < strSplit.length; i++) { exps[i] = strSplit[i].trim(); }
 
     // Store LOGICAL Operators: &&, ||, ! in "opers"
@@ -88,7 +82,7 @@ export class IfCase {
       || (this.ifStatement.indexOf('<=') != -1) || (this.ifStatement.indexOf('>=') != -1) || (this.ifStatement.indexOf('!=') != -1)
       || (this.ifStatement.indexOf('+') != -1) || (this.ifStatement.indexOf('-') != -1) || (this.ifStatement.indexOf('*') != -1)
       || (this.ifStatement.indexOf('/') != -1) || (this.ifStatement.indexOf('%') != -1)) {
-      opers = this.ifStatement.match(/[\&\|\!\>\<\=\+\-\*\/\%]+/g);
+      opers = this.ifStatement.match(/[\&\|\!\>\<\=\\]+/g);//HERE *,/,+,- OPERATORS REMOVED FOR STRING PARSE
     } else {
       opers = [];
     }
@@ -167,13 +161,14 @@ export class IfCase {
     }
 
     // Remove empty elements [""] from parsedValues
-    for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
+    //for (let i = 0; i < exps.length; i++) { if (exps[i] == "") exps.splice(i, 1); }
     // Create newExpression with parsed values instead of variable names
     let newExpression = "";
     for (let j = 0; j < opers.length; j++) {
       newExpression += exps[j] + opers[j];
     }
     newExpression += exps[exps.length - 1];
+    console.log(newExpression);
     // Parse && and || for mathjs
     if (newExpression.indexOf('&&') != -1 || newExpression.indexOf('||') != -1) {
       newExpression = newExpression.replace('&&', '&').replace('||', '|');
@@ -245,6 +240,7 @@ export class IfCase {
 
   calculateStringExpression(str1: string, str2: string, operator: string) {
     let result: any;
+   
     switch (operator) {
       case '<': result = str1 < str2; break;
       case '>': result = str1 > str2; break;
@@ -254,8 +250,11 @@ export class IfCase {
       case '==': result = str1 == str2; break;
       case '&&': result = str1 && str2; break;
       case '||': result = str1 || str2; break;
+     
       default: console.log('Invalid expression for Strings!'); break;
     }
+   
+   
     return result;
   }
 

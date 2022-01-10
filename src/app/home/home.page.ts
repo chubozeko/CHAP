@@ -49,6 +49,7 @@ import { SymbolModals } from "./symbol-modals";
 import { Saver } from "./saver";
 import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
+import {TutorialQPage} from "../tutorial-q/tutorial-q.page";
 
 @Component({
   selector: "app-home",
@@ -238,6 +239,8 @@ export class HomePage {
     closeM.addEventListener("click", () => this.closeMenu());
     let themePage = document.getElementById("btn_themePage");
     themePage.addEventListener("click", (e) => this.openChooseTheme());
+    let tutorialQ = document.getElementById("btn_openTutorialPageQ");
+    tutorialQ.addEventListener("click", () => this.openTutorialPageQ());
     // let downloadAPK = document.getElementById("btn_downloadAPK");
     // downloadAPK.addEventListener("click", (e) => {
     //   window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
@@ -1931,7 +1934,13 @@ export class HomePage {
     });
     await modal.present();
   }
-
+  async openTutorialPageQ() {
+    this.menu.close();
+    const modal = await this.modalC.create({
+      component: TutorialQPage,
+    });
+    await modal.present();
+  }
   public printFlowchart() {
     this.closeMenu();
 
