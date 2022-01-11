@@ -1634,9 +1634,7 @@ export class HomePage {
         case "s_output":
           sym = new Output();
           sym.createOutputSymbol(syms[i]);
-          // let tempX = sym.getOutputExpression().replace(/`/g, '"');
-          // sym.setOutputExpression(tempX);
-          // els[p].innerHTML = sym.getOutputExpression();
+          sym.setOutputExpression(sym.getExpression().replace(/`/g, '"'));
           break;
         case "s_process":
           sym = new Process();
