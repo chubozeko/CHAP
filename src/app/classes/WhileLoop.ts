@@ -28,13 +28,15 @@ export class WhileLoop {
     this.falseLoopBlock = [];
   }
 
-  createWhileLoopSymbol(whileSym: any) {
+  createWhileLoopSymbol(whileSym: any, copyLoopBlocks?: boolean) {
     this.whileExpression = whileSym.whileExpression;
     this.whileSymbol = whileSym.whileSymbol;
     this.trueExpression = whileSym.trueExpression;
-    this.trueLoopBlock = whileSym.trueLoopBlock;
     this.falseExpression = whileSym.falseExpression;
-    this.falseLoopBlock = whileSym.falseLoopBlock;
+    if (copyLoopBlocks == true || copyLoopBlocks == undefined) {
+      this.trueLoopBlock = whileSym.trueLoopBlock;
+      this.falseLoopBlock = whileSym.falseLoopBlock;
+    }
   }
 
   setWhileExpression(while_exp: string) {

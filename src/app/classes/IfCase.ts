@@ -42,15 +42,15 @@ export class IfCase {
     
   }
 
-  createIfCaseSymbol(ifCaseSym: any) {
+  createIfCaseSymbol(ifCaseSym: any, copyLoopBlocks?: boolean) {
     this.ifStatement = ifCaseSym.ifStatement;
     this.ifcaseSymbol = ifCaseSym.ifcaseSymbol;
     this.trueExpression = ifCaseSym.trueExpression;
-    this.trueBlockSymbols = ifCaseSym.trueBlockSymbols;
-    // this.trueBlock.SYMBOLS = ifCaseSym.trueBlockSymbols;
     this.falseExpression = ifCaseSym.falseExpression;
-    this.falseBlockSymbols = ifCaseSym.falseBlockSymbols;
-    // this.falseBlock.SYMBOLS = ifCaseSym.falseBlockSymbols;
+    if (copyLoopBlocks == true || copyLoopBlocks == undefined) {
+      this.trueBlockSymbols = ifCaseSym.trueBlockSymbols;
+      this.falseBlockSymbols = ifCaseSym.falseBlockSymbols;
+    }
   }
 
   setIfStatement(if_exp: string) { this.ifStatement = if_exp; }

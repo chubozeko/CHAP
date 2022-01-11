@@ -28,13 +28,15 @@ export class DoWhileLoop {
     this.falseLoopBlock = [];
   }
 
-  createDoWhileLoopSymbol(doWhileSym: any) {
+  createDoWhileLoopSymbol(doWhileSym: any, copyLoopBlocks?: boolean) {
     this.doWhileExpression = doWhileSym.doWhileExpression;
     this.doWhileSymbol = doWhileSym.doWhileSymbol;
     this.trueExpression = doWhileSym.trueExpression;
-    this.trueLoopBlock = doWhileSym.trueLoopBlock;
     this.falseExpression = doWhileSym.falseExpression;
-    this.falseLoopBlock = doWhileSym.falseLoopBlock;
+    if (copyLoopBlocks == true || copyLoopBlocks == undefined) {
+      this.trueLoopBlock = doWhileSym.trueLoopBlock;
+      this.falseLoopBlock = doWhileSym.falseLoopBlock;
+    }
   }
 
   setDoWhileExpression(do_while_exp: string) { this.doWhileExpression = do_while_exp; }

@@ -210,7 +210,7 @@ export class SymbolId {
       symId += SymbolId.DO_WHILE_LOOP + '_' + symbol.symbolIndex;
       trueBlockId += SymbolId.DO_WHILE_TRUE_BLOCK + '_' + symbol.symbolIndex;
     }
-    console.log("new generated id = " + symId + "; generateId symbol: ", symbol);
+    // console.log("new generated id = " + symId + "; generateId symbol: ", symbol);
 
     // 6. Assign the generated ID to the symbol
     let syms = block.getElementsByClassName("symbol");

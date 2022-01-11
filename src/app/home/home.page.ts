@@ -897,16 +897,16 @@ export class HomePage {
                   this.addSymbol("s_comment", tempSym);
                   targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof IfCase) {
-                  this.addSymbol("s_if_case", tempSym);
+                  this.addSymbol("s_if_case", tempSym, true);
                   targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof ForLoop) {
-                  this.addSymbol("s_for_loop", tempSym);
+                  this.addSymbol("s_for_loop", tempSym, true);
                   targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof WhileLoop) {
-                  this.addSymbol("s_while_loop", tempSym);
+                  this.addSymbol("s_while_loop", tempSym, true);
                   targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 } else if (tempSym instanceof DoWhileLoop) {
-                  this.addSymbol("s_do_while_loop", tempSym);
+                  this.addSymbol("s_do_while_loop", tempSym, true);
                   targetArrow.nextSibling.innerHTML = tempSym.getExpression();
                 }
 
@@ -1072,7 +1072,7 @@ export class HomePage {
     }
   }
 
-  public addSymbol(id: string, currentSymbol?: Symbols) {
+  public addSymbol(id: string, currentSymbol?: Symbols, copyLoopBlocks?: boolean) {
     let temp, symbol, activeArrowIndex, symComponent;
 
     let arrows = document.getElementsByClassName("arrow dropzone");
@@ -1161,7 +1161,7 @@ export class HomePage {
       // backend
       let ifcase = new IfCase();
       if (currentSymbol != null) {
-        ifcase.createIfCaseSymbol(currentSymbol as IfCase);
+        ifcase.createIfCaseSymbol(currentSymbol as IfCase, copyLoopBlocks);
         // TODO: innerhtml of symbol ?
       }
       ifcase.setIfCaseSymbol(symbol);  
@@ -1180,7 +1180,7 @@ export class HomePage {
       // backend
       let whileloop = new WhileLoop();
       if (currentSymbol != null) {
-        whileloop.createWhileLoopSymbol(currentSymbol as WhileLoop);
+        whileloop.createWhileLoopSymbol(currentSymbol as WhileLoop, copyLoopBlocks);
         // TODO: innerhtml of symbol ?
       }
       whileloop.setWhileSymbol(symbol);  
@@ -1199,7 +1199,7 @@ export class HomePage {
       // backend
       let forloop = new ForLoop();
       if (currentSymbol != null) {
-        forloop.createForLoopSymbol(currentSymbol as ForLoop);
+        forloop.createForLoopSymbol(currentSymbol as ForLoop, copyLoopBlocks);
         // TODO: innerhtml of symbol ?
       }
       forloop.setForSymbol(symbol);  
@@ -1218,7 +1218,7 @@ export class HomePage {
       // backend
       let doWhileLoop = new DoWhileLoop();
       if (currentSymbol != null) {
-        doWhileLoop.createDoWhileLoopSymbol(currentSymbol as DoWhileLoop);
+        doWhileLoop.createDoWhileLoopSymbol(currentSymbol as DoWhileLoop, copyLoopBlocks);
         // TODO: innerhtml of symbol ?
       }
       doWhileLoop.setDoWhileSymbol(symbol);  
@@ -1597,7 +1597,6 @@ export class HomePage {
   public loadProject(chapFileName, fileData: string) {
     this.clearWorkspace(true);
     let dataSyms;
-    console.log(fileData);
     dataSyms = JSON.parse(fileData);
     console.log("symbols data", dataSyms);
     this.loadSymbolsIntoBlock(dataSyms, this.workspace, dataSyms.length);
@@ -1621,7 +1620,7 @@ export class HomePage {
   async loadSymbolsIntoBlock(syms, loopBlock, symCount?: number) {
     for (let i = 0; i < symCount; i++) {
       let sym: any;
-      console.log("... loading symbol (" + (i+1) + " of " + symCount + ") from " + loopBlock.id + " block: ", syms[i]);
+      // console.log("... loading symbol (" + (i+1) + " of " + symCount + ") from " + loopBlock.id + " block: ", syms[i]);
 
       switch (syms[i].s_id) {
         case "s_declare":
@@ -1668,31 +1667,31 @@ export class HomePage {
       }
       let arrowT = loopBlock.getElementsByClassName("arrow dropzone");
       arrowT[i].classList.add("active-arrow");
-      this.addSymbol(syms[i].s_id, sym);
+      this.addSymbol(syms[i].s_id, sym, false);
       let frontendSymbol = document.getElementById(syms[i].id);
       let backendSymbol = this.flowchart.searchForSymbolInFlowchart(syms[i].id);
       switch (backendSymbol.s_id) {
         case "s_if_case":
           frontendSymbol.getElementsByClassName("if_sym")[0].innerHTML = backendSymbol.getExpression();
-          this.loadSymbolsIntoBlock(backendSymbol.trueBlockSymbols, frontendSymbol.getElementsByClassName("ifTrueBlock")[0], 
-            backendSymbol.trueBlockSymbols.length);
-          this.loadSymbolsIntoBlock(backendSymbol.falseBlockSymbols, frontendSymbol.getElementsByClassName("ifFalseBlock")[0], 
-            backendSymbol.falseBlockSymbols.length);
+          this.loadSymbolsIntoBlock(syms[i].trueBlockSymbols, frontendSymbol.getElementsByClassName("ifTrueBlock")[0], 
+            syms[i].trueBlockSymbols.length);
+          this.loadSymbolsIntoBlock(syms[i].falseBlockSymbols, frontendSymbol.getElementsByClassName("ifFalseBlock")[0], 
+            syms[i].falseBlockSymbols.length);
           break;
         case "s_for_loop":
           frontendSymbol.getElementsByClassName("for_sym")[0].innerHTML = backendSymbol.getExpression();
-          this.loadSymbolsIntoBlock(backendSymbol.trueLoopBlock, frontendSymbol.getElementsByClassName("forTrueBlock")[0], 
-            backendSymbol.trueLoopBlock.length);
+          this.loadSymbolsIntoBlock(syms[i].trueLoopBlock, frontendSymbol.getElementsByClassName("forTrueBlock")[0], 
+            syms[i].trueLoopBlock.length);
           break;
         case "s_while_loop":
           frontendSymbol.getElementsByClassName("while_sym")[0].innerHTML = backendSymbol.getExpression();
-          this.loadSymbolsIntoBlock(backendSymbol.trueLoopBlock, frontendSymbol.getElementsByClassName("whileTrueBlock")[0], 
-            backendSymbol.trueLoopBlock.length);
+          this.loadSymbolsIntoBlock(syms[i].trueLoopBlock, frontendSymbol.getElementsByClassName("whileTrueBlock")[0], 
+            syms[i].trueLoopBlock.length);
           break;
         case "s_do_while_loop":
           frontendSymbol.getElementsByClassName("do_while_sym")[0].innerHTML = backendSymbol.getExpression();
-          this.loadSymbolsIntoBlock(backendSymbol.trueLoopBlock, frontendSymbol.getElementsByClassName("doWhileTrueBlock")[0], 
-            backendSymbol.trueLoopBlock.length);
+          this.loadSymbolsIntoBlock(syms[i].trueLoopBlock, frontendSymbol.getElementsByClassName("doWhileTrueBlock")[0], 
+            syms[i].trueLoopBlock.length);
           break;
         default:
           frontendSymbol.innerHTML = backendSymbol.getExpression();

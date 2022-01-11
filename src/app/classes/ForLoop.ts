@@ -41,20 +41,20 @@ export class ForLoop {
     this.forLoopVariable = new Variable();
   }
 
-  createForLoopSymbol(forSym: any) {
+  createForLoopSymbol(forSym: any, copyLoopBlocks?: boolean) {
     this.forLoopExpression = forSym.forLoopExpression;
     this.forLoopSymbol = forSym.forLoopSymbol;
     this.trueExpression = forSym.trueExpression;
-    this.trueLoopBlock = forSym.trueLoopBlock;
     this.falseExpression = forSym.falseExpression;
-    this.falseLoopBlock = forSym.falseLoopBlock;
     this.forVariableName = forSym.forVariableName;
     this.startValue = forSym.startValue;
     this.endValue = forSym.endValue;
     this.stepDirection = forSym.stepDirection;
     this.stepValue = forSym.stepValue;
-    this.trueLoopBlock = forSym.trueLoopBlock;
-    this.falseLoopBlock = forSym.falseLoopBlock;
+    if (copyLoopBlocks == true || copyLoopBlocks == undefined) {
+      this.trueLoopBlock = forSym.trueLoopBlock;
+      this.falseLoopBlock = forSym.falseLoopBlock;
+    }
   }
 
   setVariableName(var_name: string) { this.forVariableName = var_name; }
