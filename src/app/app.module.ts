@@ -49,6 +49,7 @@ import { CoverPagePageModule } from "./cover-page/cover-page.module";
 import { OperationPageModule } from "./symbol-dialogs/operation/operation.module";
 import { PromptPageModule } from "./prompt/prompt.module";
 import { ThemesPageModule } from "./themes/themes.module";
+import {TutorialQPageModule} from "./tutorial-q/tutorial-q.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -83,7 +84,8 @@ import { ThemesPageModule } from "./themes/themes.module";
     CoverPagePageModule,
     OperationPageModule,
     PromptPageModule,
-    ThemesPageModule
+    ThemesPageModule,
+    TutorialQPageModule
     // TooltipsModule
   ],
   providers: [
