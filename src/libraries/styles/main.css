@@ -31,11 +31,11 @@
 .wrapper {
     display: grid;
     /* grid-template-columns: 100px auto; */
-    grid-template-columns: 0fr 1fr;
+    grid-template-columns: 0fr 1fr 0fr;
     height: 100%;
-   
 }
-.showSymbolPanel { grid-template-columns: 100px auto; }
+
+.showSymbolPanel .showTutorialPanel { grid-template-columns: auto auto max-content; }
 #left_symbols {
     float: left; 
     /* background-color: aqua; */
@@ -51,6 +51,12 @@
     height: 100%;
     overflow: auto;
 }
+#tutorial_panel {
+    float: right; 
+    display: block;
+    align-items: center;
+}
+
 .sidebar{ 
     background: white; 
     margin: 0; 

@@ -1799,13 +1799,27 @@ export class HomePage {
     });
     await modal.present();
   }
+
   async openTutorialPageQ() {
     this.menu.close();
     const modal = await this.modalC.create({
       component: TutorialQPage,
     });
+    modal.onDidDismiss().then((data) => {
+      try {
+        if (data) {
+          this.toggleTutorialPanel();
+          let tutExercise = data.data;
+          document.getElementById("tut_exerciseTitle").innerHTML = tutExercise.title;
+          document.getElementById("tut_exerciseDescription").innerHTML = tutExercise.description;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
     await modal.present();
   }
+
   public printFlowchart() {
     this.closeMenu();
 
@@ -1918,6 +1932,53 @@ export class HomePage {
 
     modal.onDidDismiss().then((data) => { });
     await modal.present();
+  }
+
+  public toggleTutorialPanel(stayOpen?: boolean) {
+    let tutorial_panel = document.getElementById("tutorial_panel");
+    let tutorialBtns = document.getElementById("tutorialBtns");
+    let wrapper = document.getElementsByClassName("wrapper")[0];
+    if (tutorialBtns.classList.contains("toggleTutorialP")) { // && !stayOpen) {
+      // Close Tutorial Panel
+      wrapper.classList.remove("showTutorialPanel");
+      tutorialBtns.classList.remove("toggleTutorialP");
+      tutorialBtns.style.display = "none";
+      // this.isTutorialPanelOpen = false;
+
+      // if (this.isConsoleOpen) {
+      //   document.getElementById("console").style.marginLeft = "100px";
+      // }
+    } else {
+      // Open Tutorial Panel
+      wrapper.classList.add("showTutorialPanel");
+      tutorialBtns.classList.add("toggleTutorialP");
+      tutorialBtns.style.display = "block";
+      // this.isTutorialPanelOpen = true;
+
+      // if (this.isConsoleOpen) {
+      //   document.getElementById("console").style.marginLeft = "0px";
+      // }
+    }
+  }
+
+  public startOrPauseExercise() {
+    let btn_tut_startExercise = document.getElementById("btn_tut_startExercise");
+    if (btn_tut_startExercise.classList.contains('exerciseStarted')) {
+      // TODO: pause Timer
+      btn_tut_startExercise.innerHTML = "Start Exercise";
+      btn_tut_startExercise.style.backgroundColor = "green";
+      btn_tut_startExercise.classList.remove("exerciseStarted");
+    } else {
+      // TODO: resume/restart Timer
+      btn_tut_startExercise.innerHTML = "Pause Exercise";
+      btn_tut_startExercise.style.backgroundColor = "red";
+      btn_tut_startExercise.classList.add("exerciseStarted");
+    }
+  }
+  
+  public checkTutorialSolution() {
+    // TODO: compare the solutions
+    document.getElementById("tut_solutionResultsPanel").style.display = "block";
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
