@@ -1960,11 +1960,28 @@ export class HomePage {
       // }
     }
   }
+  public timer(){
+    const startingMunite =10;
+    let time =startingMunite * 60;
+    const countdownElmt=document.getElementById('value');
+   setInterval(timercountdown,1000);
+   function timercountdown(){
+      const munites=Math.floor(time/60);
+      let second=time % 60;
+      
+     
+     // second =second < 10 ? '0' + second : second;
+      
+       countdownElmt.innerHTML= munites+':' +second;
+       time--;
+
+  } 
+  }
  public animateValue(id, start, end, duration) {
     if (start === end) return;
-    var range = end + start;
+    var range = end + start;//If we made "-" its start countdown
     var current = start;
-    var increment = end > start? 1 : +1;
+    var increment = end > start? 1 : +1;//Here we can "-1" decrement "+1" and increment
     var stepTime = Math.abs(Math.floor(duration / range));
     var obj = document.getElementById(id);
     var timer = setInterval(function() {
@@ -1979,21 +1996,11 @@ export class HomePage {
   
   public startOrPauseExercise() {
     let btn_tut_startExercise = document.getElementById("btn_tut_startExercise");
-    if (btn_tut_startExercise.classList.contains('exerciseStarted')) {
-
-      // TODO: pause Timer
-      btn_tut_startExercise.innerHTML = "Start Exercise";
-      btn_tut_startExercise.style.backgroundColor = "green";
-      btn_tut_startExercise.classList.remove("exerciseStarted");
-     // let timer =document.getElementById("value");
-  this.animateValue("value", 0, 100, 9000);
     
-    } else {
-      // TODO: resume/restart Timer
-      btn_tut_startExercise.innerHTML = "Pause Exercise";
-      btn_tut_startExercise.style.backgroundColor = "red";
-      btn_tut_startExercise.classList.add("exerciseStarted");
-    }
+   this.timer();
+               
+   
+  
     
 }
 
