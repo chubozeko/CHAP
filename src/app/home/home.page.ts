@@ -1955,6 +1955,36 @@ export class HomePage {
     }
   }
 
+  public timer() {
+    const startingMunite = 10;
+    let time = startingMunite * 60;
+    // const countdownElmt = document.getElementById('value');
+    setInterval(timercountdown, 1000);
+    function timercountdown() {
+      const munites = Math.floor(time/60);
+      let second = time % 60;
+      // second =second < 10 ? '0' + second : second;
+      this.timerValue = munites + ':' + second;
+      time--;
+    } 
+  }
+ public animateValue(id, start, end, duration) {
+    if (start === end) return;
+    var range = end + start;//If we made "-" its start countdown
+    var current = start;
+    var increment = end > start? 1 : +1;//Here we can "-1" decrement "+1" and increment
+    var stepTime = Math.abs(Math.floor(duration / range));
+    var obj = document.getElementById(id);
+    var timer = setInterval(function() {
+        current += increment;
+        obj.innerHTML = current;
+        if (current == end) {
+            clearInterval(timer);
+        }
+    }, stepTime);
+}
+
+  
   public startOrPauseExercise() {
     let btnStartExercise = document.getElementById("btn_tut_startExercise");
     if (btnStartExercise.classList.contains('exerciseStarted')) {
@@ -1969,6 +1999,7 @@ export class HomePage {
       btnStartExercise.classList.add("exerciseStarted");
     }
 
+    this.timer();
     // return string.Format("{0:00}:{1:00}", minutes, seconds);
   }
   

@@ -462,6 +462,30 @@ ion-modal {
     font-family: inherit;
     margin: 0;
   }
+  .subnav-content a:hover {
+    background-color: #eee;
+    color: black;
+    margin-top: 60px;
+  }
+
+  .subnav:hover .subnav-content {
+    display: inline-block;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  .navbar {
+    overflow: hidden;
+    background-color: #333; 
+  }
+
+  .navbar a {
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+  }
 
   .navbar a:hover, .subnav:hover .subnavbtn {
     background-color:black;
