@@ -171,15 +171,14 @@ li a:hover{ color: #039be5; }
 #btn_feedbackPage:hover, #btn_logOut:hover,
 #btn_goOnline:hover, #btn_backToWelcome:hover { color: #ddd; }
 
-textarea{ 
+textarea { 
  /* position: absolute;
   justify-content: baseline;
     width: 100%; padding: 5px; float: right; 
     background-color: #333;
-     
     font-family: sans-serif; 
     resize: none; white-space: pre-wrap;Resize Edilme Açıla Bilir*/
-  }
+}
 
 /* Symbol Pop Up (.popover-content)  Değişti 200 dü*/
 .symPopUp {
@@ -188,19 +187,17 @@ textarea{
 }
 
 .symPopUp .popover-wrapper .popover-content {
-  /* top: 120px;
-  left: 600px; */
- margin: auto;
-  width: fit-content;
-
-  /* height: 450px; */
+    /* top: 120px;
+    left: 600px; */
+    margin: auto;
+    width: fit-content;
+    /* height: 450px; */
 }
 
 /* Symbol Pop Up (.popover-content) */
 .symbolPromptAS {
     width: fit-content;
-  /* height: 450px; */
-  
+    /* height: 450px; */
 }
   
 .symbolPromptAS .popover-wrapper .popover-content {
@@ -209,16 +206,14 @@ textarea{
   margin-left: 85px;
   margin-top: 5px;
   width: fit-content;
-  
- /* overflow-x: scroll; */
+  /* overflow-x: scroll; */
   /* height: 450px; */
 }
 
 /* Symbol Modal Textbox Focus */
 .dialogTextbox {
     border: 2px solid rgb(248, 246, 246);
-    
-  }
+}
 
 /* Clear Workspace Alert */
 .clearWS-yes { --background: #f04141; }
@@ -255,43 +250,44 @@ textarea{
    color:gold;
    width: fit-content;
 }
+
 @media screen and (max-width: 768px) {
-    .aalert_input{
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    border-width: 45px;
-    border-color: black;
-    border-inline-start-color: black;
-}
-.alertTitle{
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-    color:crimson;
-}
-.errorAlert{
-    font-family: sans-serif;
-    font-weight: bold;
-   color:crimson;
-   font-size: 12px;
-   word-wrap: normal;
-   width: fit-content;
-}
-.noerrorAlert{
-    font-family: sans-serif;
-    font-size: 12px;
-   color: white;
-   font-weight: bold;
-}
-.errorWAlert{
-    font-family: sans-serif;
-    font-weight: bold;
-   color:gold;
-   font-size: 12px;
-   word-wrap: normal;
-   width: fit-content;
-}
+    .aalert_input {
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 15px;
+        border-width: 45px;
+        border-color: black;
+        border-inline-start-color: black;
+    }
+    .alertTitle{
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        color:crimson;
+    }
+    .errorAlert{
+        font-family: sans-serif;
+        font-weight: bold;
+        color:crimson;
+        font-size: 12px;
+        word-wrap: normal;
+        width: fit-content;
+    }
+    .noerrorAlert{
+        font-family: sans-serif;
+        font-size: 12px;
+        color: white;
+        font-weight: bold;
+    }
+    .errorWAlert{
+        font-family: sans-serif;
+        font-weight: bold;
+        color:gold;
+        font-size: 12px;
+        word-wrap: normal;
+        width: fit-content;
+    }
 }
 @media only screen and (max-width: 600px) {
     .aalert_input{
@@ -311,26 +307,26 @@ textarea{
     .errorAlert{
         font-family: sans-serif;
         font-weight: bold;
-       color:crimson;
-       font-size: 12px;
-       word-wrap: normal;
-       width: fit-content;
+        color:crimson;
+        font-size: 12px;
+        word-wrap: normal;
+        width: fit-content;
     }
     .noerrorAlert{
         font-family: sans-serif;
         font-size: 12px;
-       color: white;
-       font-weight: bold;
-       width: fit-content;
-       overflow-x: scroll;
+        color: white;
+        font-weight: bold;
+        width: fit-content;
+        overflow-x: scroll;
     }
     .errorWAlert{
         font-family: sans-serif;
         font-weight: bold;
-       color:gold;
-       font-size: 12px;
-       word-wrap: normal;
-       width: fit-content;
-       overflow-x: scroll;
+        color:gold;
+        font-size: 12px;
+        word-wrap: normal;
+        width: fit-content;
+        overflow-x: scroll;
     }
 }

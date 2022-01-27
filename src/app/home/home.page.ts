@@ -87,6 +87,8 @@ export class HomePage {
   popOver;
   infoMessage = "";
   pasteBuffer: Array<Symbols>;
+  tutorialExercise = { title: ``, level: ``, description: `` }
+  timerValue = "00:00";
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -1809,9 +1811,9 @@ export class HomePage {
       try {
         if (data) {
           this.toggleTutorialPanel();
-          let tutExercise = data.data;
-          document.getElementById("tut_exerciseTitle").innerHTML = tutExercise.title;
-          document.getElementById("tut_exerciseDescription").innerHTML = tutExercise.description;
+          this.tutorialExercise = data.data;
+          document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialExercise.title;
+          document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialExercise.description;
         }
       } catch (error) {
         console.log(error);
@@ -1934,51 +1936,103 @@ export class HomePage {
     await modal.present();
   }
 
-  public toggleTutorialPanel(stayOpen?: boolean) {
+  public toggleTutorialPanel(hideSolution?: boolean) {
     let tutorial_panel = document.getElementById("tutorial_panel");
     let tutorialBtns = document.getElementById("tutorialBtns");
     let wrapper = document.getElementsByClassName("wrapper")[0];
-    if (tutorialBtns.classList.contains("toggleTutorialP")) { // && !stayOpen) {
+    if (tutorialBtns.classList.contains("toggleTutorialP")) {
       // Close Tutorial Panel
       wrapper.classList.remove("showTutorialPanel");
       tutorialBtns.classList.remove("toggleTutorialP");
       tutorialBtns.style.display = "none";
-      // this.isTutorialPanelOpen = false;
-
-      // if (this.isConsoleOpen) {
-      //   document.getElementById("console").style.marginLeft = "100px";
-      // }
+      
     } else {
       // Open Tutorial Panel
       wrapper.classList.add("showTutorialPanel");
       tutorialBtns.classList.add("toggleTutorialP");
       tutorialBtns.style.display = "block";
-      // this.isTutorialPanelOpen = true;
-
-      // if (this.isConsoleOpen) {
-      //   document.getElementById("console").style.marginLeft = "0px";
-      // }
+      document.getElementById("tut_solutionResultsPanel").style.display = "none";
     }
   }
 
   public startOrPauseExercise() {
-    let btn_tut_startExercise = document.getElementById("btn_tut_startExercise");
-    if (btn_tut_startExercise.classList.contains('exerciseStarted')) {
+    let btnStartExercise = document.getElementById("btn_tut_startExercise");
+    if (btnStartExercise.classList.contains('exerciseStarted')) {
       // TODO: pause Timer
-      btn_tut_startExercise.innerHTML = "Start Exercise";
-      btn_tut_startExercise.style.backgroundColor = "green";
-      btn_tut_startExercise.classList.remove("exerciseStarted");
+      btnStartExercise.innerHTML = "Start Exercise";
+      btnStartExercise.style.backgroundColor = "green";
+      btnStartExercise.classList.remove("exerciseStarted");
     } else {
       // TODO: resume/restart Timer
-      btn_tut_startExercise.innerHTML = "Pause Exercise";
-      btn_tut_startExercise.style.backgroundColor = "red";
-      btn_tut_startExercise.classList.add("exerciseStarted");
+      btnStartExercise.innerHTML = "Pause Exercise";
+      btnStartExercise.style.backgroundColor = "red";
+      btnStartExercise.classList.add("exerciseStarted");
     }
+
+    // return string.Format("{0:00}:{1:00}", minutes, seconds);
   }
   
-  public checkTutorialSolution() {
-    // TODO: compare the solutions
-    document.getElementById("tut_solutionResultsPanel").style.display = "block";
+  public checkTutorialSolution() { 
+    let tutToolbar = document.getElementById("tut_toolbar");
+    let tutExercisePanel = document.getElementById("tut_exercisePanel");
+    let btnCheckSolution = document.getElementById("btn_tut_checkSolution");
+    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    if (tutSolutionPanel.style.display == "none") {
+      // TODO: compare the solutions
+      
+      // Show Solution panel
+      tutSolutionPanel.style.display = "block";
+      // tutSolutionPanel.classList.remove('hideSolution');
+      btnCheckSolution.innerHTML = "Hide Solution";
+      if (tutToolbar.classList.contains('minimized')) {
+        tutExercisePanel.style.display = "block";
+        // Show Maximized toolbar buttons
+        document.getElementById("tut_toolbar_maxi").style.display = "block";
+        document.getElementById("tut_toolbar_mini").style.display = "none";
+        tutToolbar.classList.remove("minimized");
+      }
+    } else {
+      // Hide Solution panel
+      tutSolutionPanel.style.display = "none";
+      // tutSolutionPanel.classList.add('hideSolution');
+      btnCheckSolution.innerHTML = "Check Solution";
+      if (tutExercisePanel.style.display == "block") {
+        // tutExercisePanel.style.display = "block";
+        // Show Maximized toolbar buttons
+        document.getElementById("tut_toolbar_maxi").style.display = "block";
+        document.getElementById("tut_toolbar_mini").style.display = "none";
+        tutToolbar.classList.remove("minimized");
+      } else {
+        // Show Minimized toolbar buttons
+        document.getElementById("tut_toolbar_maxi").style.display = "none";
+        document.getElementById("tut_toolbar_mini").style.display = "block";
+        tutToolbar.classList.add("minimized");
+      }
+      
+    }
+  }
+
+  public minimizeOrMaximizeTutorialPanel() {
+    let tutToolbar = document.getElementById("tut_toolbar");
+    let tutExercisePanel = document.getElementById("tut_exercisePanel");
+    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    if (tutToolbar.classList.contains('minimized')) {
+      // Maximize
+      document.getElementById("tut_toolbar_maxi").style.display = "block";
+      document.getElementById("tut_toolbar_mini").style.display = "none";
+      tutExercisePanel.style.display = "block";
+      tutSolutionPanel.style.display = "none";
+      document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
+      tutToolbar.classList.remove("minimized");
+    } else {
+      // Minimize
+      document.getElementById("tut_toolbar_maxi").style.display = "none";
+      document.getElementById("tut_toolbar_mini").style.display = "block";
+      tutExercisePanel.style.display = "none";
+      tutSolutionPanel.style.display = "none";
+      tutToolbar.classList.add("minimized");
+    }
+    
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
