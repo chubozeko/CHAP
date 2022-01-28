@@ -224,22 +224,21 @@
         </div>
       </div>
 
-      
     </div>
 
     <div id="tutorial_panel">
       <div id="tutorialBtns" style="display: none;">        
-        <ion-card style="width: 400px; height: auto; margin-top: 5px;" color="primary" >
-          <ion-card-content >
+        <ion-card id="tut_toolbar" style="width: 400px; height: auto; margin-top: 5px;" color="primary" >
+          <ion-card-content id="tut_toolbar_maxi" style="display: block;">
             <div style="float: left; padding: 4px;">
               <ion-icon slot="icon-only" name="school" style="color: #b40615;"></ion-icon>
               &nbsp;&nbsp;&nbsp;
-              <ion-label slot="start" > CHAP Tutorial </ion-label>
+              <ion-label slot="start" > Tutorial </ion-label>
             </div>
             <ion-buttons slot="end" style="float: right; padding-bottom: 12px;">
               <div class="tooltip">
-                <ion-button slot="end" style="width: auto;">
-                  <ion-icon slot="icon-only" name="tablet-landscape" style="color: #ffffff;"></ion-icon>
+                <ion-button (click)="minimizeOrMaximizeTutorialPanel()" slot="end" style="width: auto;">
+                  <ion-icon slot="icon-only" name="contract" style="color: #dddddd;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Minimize</span>
               </div>
@@ -251,9 +250,44 @@
               </div>  
             </ion-buttons>  
           </ion-card-content>
+
+          <ion-card-content id="tut_toolbar_mini" style="display: none;">
+            <div style="float: left; padding: 4px;">
+              <ion-icon slot="icon-only" name="school" style="color: #b40615;"></ion-icon>
+              &nbsp;&nbsp;&nbsp;
+              <ion-label slot="start" > {{tutorialExercise.title}} - {{timerValue}} </ion-label>
+            </div>
+            <ion-buttons slot="end" style="float: right; padding-bottom: 12px;">
+              <div class="tooltip">
+                <ion-button (click)="startExercise()" slot="end" style="width: auto;" disabled="{{startExerciseBtnDisabled}}">
+                  <ion-icon slot="icon-only" name="refresh" style="color: #10dc60;"></ion-icon>
+                </ion-button>
+                <span class="tooltiptext" style="width: 60px;">Restart Exercise</span>
+              </div>
+              <div class="tooltip">
+                <ion-button (click)="checkTutorialSolution()" slot="end" style="width: auto;">
+                  <ion-icon slot="icon-only" name="code-working" style="color: #ffce00;"></ion-icon>
+                </ion-button>
+                <span class="tooltiptext" style="width: 60px;">Check Solution</span>
+              </div>
+              <div class="tooltip">
+                <ion-button (click)="minimizeOrMaximizeTutorialPanel()" slot="end" style="width: auto;">
+                  <ion-icon slot="icon-only" name="expand" style="color: #dddddd;"></ion-icon>
+                </ion-button>
+                <span class="tooltiptext" style="width: 60px;">Maximize</span>
+              </div>
+              <div class="tooltip">
+                <ion-button (click)="toggleTutorialPanel()" slot="end">
+                  <ion-icon slot="icon-only" name="close" style="color: #ffffff;"></ion-icon>
+                </ion-button>
+                <span class="tooltiptext" style="width: 60px;">Close Tutorial</span>
+              </div>  
+            </ion-buttons>  
+          </ion-card-content>
+
         </ion-card>
 
-        <ion-card style="width: 400px; height: auto; padding: 4px; align-items: center;">
+        <ion-card id="tut_exercisePanel" style="width: 400px; height: auto; padding: 4px; align-items: center;">
           <ion-card-content>
             <ion-card style="width: 100%; height: auto;">
               <ion-card-content>
@@ -261,8 +295,8 @@
                 <ion-label id="tut_exerciseDescription"> Display “Hello World” with using OUTPUT SYMBOL on CHAP. </ion-label>
               </ion-card-content>
             </ion-card>
-            <ion-text style="width: 100%; height: auto; padding: 2px;" > <h2 style="text-align: center;"> <b><span id="value"></span></b> </h2> </ion-text>
-            <ion-button id="btn_tut_startExercise"  color="success" expand="block" (click)="startOrPauseExercise()"> Start Exercise </ion-button>    
+            <ion-text style="width: 100%; height: auto; padding: 2px;"> <h2 style="text-align: center;"> <b>{{timerValue}}</b> </h2> </ion-text>
+            <ion-button id="btn_tut_startExercise" color="success" expand="block" (click)="startExercise()" disabled="{{startExerciseBtnDisabled}}"> Start Exercise </ion-button>    
             <ion-button id="btn_tut_checkSolution" color="warning" expand="block" (click)="checkTutorialSolution()"> Check Solution </ion-button>    
             
           </ion-card-content>

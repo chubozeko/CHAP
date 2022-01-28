@@ -87,6 +87,9 @@ export class HomePage {
   popOver;
   infoMessage = "";
   pasteBuffer: Array<Symbols>;
+  tutorialExercise = { title: ``, level: ``, description: `` }
+  timerValue = "00:00";
+  startExerciseBtnDisabled = false;
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -1809,9 +1812,9 @@ export class HomePage {
       try {
         if (data) {
           this.toggleTutorialPanel();
-          let tutExercise = data.data;
-          document.getElementById("tut_exerciseTitle").innerHTML = tutExercise.title;
-          document.getElementById("tut_exerciseDescription").innerHTML = tutExercise.description;
+          this.tutorialExercise = data.data;
+          document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialExercise.title;
+          document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialExercise.description;
         }
       } catch (error) {
         console.log(error);
@@ -1934,79 +1937,126 @@ export class HomePage {
     await modal.present();
   }
 
-  public toggleTutorialPanel(stayOpen?: boolean) {
-    let tutorial_panel = document.getElementById("tutorial_panel");
+  public toggleTutorialPanel(hideSolution?: boolean) {
     let tutorialBtns = document.getElementById("tutorialBtns");
     let wrapper = document.getElementsByClassName("wrapper")[0];
-    if (tutorialBtns.classList.contains("toggleTutorialP")) { // && !stayOpen) {
+    if (tutorialBtns.classList.contains("toggleTutorialP")) {
       // Close Tutorial Panel
       wrapper.classList.remove("showTutorialPanel");
       tutorialBtns.classList.remove("toggleTutorialP");
       tutorialBtns.style.display = "none";
-      // this.isTutorialPanelOpen = false;
-
-      // if (this.isConsoleOpen) {
-      //   document.getElementById("console").style.marginLeft = "100px";
-      // }
+      
     } else {
       // Open Tutorial Panel
       wrapper.classList.add("showTutorialPanel");
       tutorialBtns.classList.add("toggleTutorialP");
       tutorialBtns.style.display = "block";
-      // this.isTutorialPanelOpen = true;
-
-      // if (this.isConsoleOpen) {
-      //   document.getElementById("console").style.marginLeft = "0px";
-      // }
+      document.getElementById("tut_solutionResultsPanel").style.display = "none";
     }
   }
-  public timer(){
-    const startingMunite =10;
-    let time =startingMunite * 60;
-    const countdownElmt=document.getElementById('value');
-   setInterval(timercountdown,1000);
-   function timercountdown(){
-      const munites=Math.floor(time/60);
-      let second=time % 60;
-      let intsecond;  
-      intsecond =second < 10 ? '0' + second : second;
-      
-     // second=intsecond;
-       countdownElmt.innerHTML= munites+':' +intsecond;
-       time--;
 
-  } 
+  public activateTimer(startTimeInMinutes: number, endTimeInMinutes: number, stepDirection: number) {
+    let time = startTimeInMinutes * 60;
+    const timer = setInterval(() => {
+      time += stepDirection;
+      let minutes = Math.floor(time / 60);
+      let second = time % 60;
+      this.timerValue = 
+        minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
+        second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
+
+      if (time == endTimeInMinutes) {
+        clearInterval(timer);
+        this.startExerciseBtnDisabled = false;
+        this.checkTutorialSolution(true);
+      }
+    }, 1000);
   }
- public animateValue(id, start, end, duration) {
+
+  public animateValue(id, start, end, duration) {
     if (start === end) return;
-    var range = end + start;//If we made "-" its start countdown
+    var range = end + start;  // If we made "-" its start countdown
     var current = start;
-    var increment = end > start? 1 : +1;//Here we can "-1" decrement "+1" and increment
+    var increment = end > start ? 1 : +1;  // Here we can "-1" decrement "+1" and increment
     var stepTime = Math.abs(Math.floor(duration / range));
     var obj = document.getElementById(id);
-    var timer = setInterval(function() {
-        current += increment;
-        obj.innerHTML = current;
-        if (current == end) {
-            clearInterval(timer);
-        }
+    var timer = setInterval(() => {
+      current += increment;
+      obj.innerHTML = current;
+      if (current == end) {
+        clearInterval(timer);
+      }
     }, stepTime);
-}
-
+  }
   
-  public startOrPauseExercise() {
-    let btn_tut_startExercise = document.getElementById("btn_tut_startExercise");
-    
-   this.timer();
-               
-   
+  public startExercise() {
+    this.startExerciseBtnDisabled = true;
+    // Hide Solution panel
+    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    tutSolutionPanel.style.display = "none";
+    document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
+    // Start Timer
+    this.activateTimer(5, 0, -1);
+  }
   
-    
-}
+  public checkTutorialSolution(showSolution?: boolean) { 
+    let tutToolbar = document.getElementById("tut_toolbar");
+    let tutExercisePanel = document.getElementById("tut_exercisePanel");
+    let btnCheckSolution = document.getElementById("btn_tut_checkSolution");
+    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    if (tutSolutionPanel.style.display == "none" || showSolution) {
+      // TODO: compare the solutions
+      
+      // Show Solution panel
+      tutSolutionPanel.style.display = "block";
+      btnCheckSolution.innerHTML = "Hide Solution";
+      if (tutToolbar.classList.contains('minimized')) {
+        tutExercisePanel.style.display = "block";
+        // Show Maximized toolbar buttons
+        document.getElementById("tut_toolbar_maxi").style.display = "block";
+        document.getElementById("tut_toolbar_mini").style.display = "none";
+        tutToolbar.classList.remove("minimized");
+      }
+    } else {
+      // Hide Solution panel
+      tutSolutionPanel.style.display = "none";
+      btnCheckSolution.innerHTML = "Check Solution";
+      if (tutExercisePanel.style.display == "block") {
+        // Show Maximized toolbar buttons
+        document.getElementById("tut_toolbar_maxi").style.display = "block";
+        document.getElementById("tut_toolbar_mini").style.display = "none";
+        tutToolbar.classList.remove("minimized");
+      } else {
+        // Show Minimized toolbar buttons
+        document.getElementById("tut_toolbar_maxi").style.display = "none";
+        document.getElementById("tut_toolbar_mini").style.display = "block";
+        tutToolbar.classList.add("minimized");
+      }
+      
+    }
+  }
 
-  public checkTutorialSolution() {
-    // TODO: compare the solutions
-    document.getElementById("tut_solutionResultsPanel").style.display = "block";
+  public minimizeOrMaximizeTutorialPanel() {
+    let tutToolbar = document.getElementById("tut_toolbar");
+    let tutExercisePanel = document.getElementById("tut_exercisePanel");
+    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    if (tutToolbar.classList.contains('minimized')) {
+      // Maximize
+      document.getElementById("tut_toolbar_maxi").style.display = "block";
+      document.getElementById("tut_toolbar_mini").style.display = "none";
+      tutExercisePanel.style.display = "block";
+      tutSolutionPanel.style.display = "none";
+      document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
+      tutToolbar.classList.remove("minimized");
+    } else {
+      // Minimize
+      document.getElementById("tut_toolbar_maxi").style.display = "none";
+      document.getElementById("tut_toolbar_mini").style.display = "block";
+      tutExercisePanel.style.display = "none";
+      tutSolutionPanel.style.display = "none";
+      tutToolbar.classList.add("minimized");
+    }
+    
   }
 
   // To be able to use external JavaScript libraries with TypeScript, they must be loaded
