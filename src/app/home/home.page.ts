@@ -89,6 +89,7 @@ export class HomePage {
   pasteBuffer: Array<Symbols>;
   tutorialExercise = { title: ``, level: ``, description: `` }
   timerValue = "00:00";
+  startExerciseBtnDisabled = false;
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -1937,7 +1938,6 @@ export class HomePage {
   }
 
   public toggleTutorialPanel(hideSolution?: boolean) {
-    let tutorial_panel = document.getElementById("tutorial_panel");
     let tutorialBtns = document.getElementById("tutorialBtns");
     let wrapper = document.getElementsByClassName("wrapper")[0];
     if (tutorialBtns.classList.contains("toggleTutorialP")) {
@@ -1955,65 +1955,60 @@ export class HomePage {
     }
   }
 
-  public timer() {
-    const startingMunite = 10;
-    let time = startingMunite * 60;
-    // const countdownElmt = document.getElementById('value');
-    setInterval(timercountdown, 1000);
-    function timercountdown() {
-      const munites = Math.floor(time/60);
+  public activateTimer(startTimeInMinutes: number, endTimeInMinutes: number, stepDirection: number) {
+    let time = startTimeInMinutes * 60;
+    const timer = setInterval(() => {
+      time += stepDirection;
+      let minutes = Math.floor(time / 60);
       let second = time % 60;
-      // second =second < 10 ? '0' + second : second;
-      this.timerValue = munites + ':' + second;
-      time--;
-    } 
+      this.timerValue = 
+        minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
+        second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
+
+      if (time == endTimeInMinutes) {
+        clearInterval(timer);
+        this.startExerciseBtnDisabled = false;
+        this.checkTutorialSolution(true);
+      }
+    }, 1000);
   }
- public animateValue(id, start, end, duration) {
+
+  public animateValue(id, start, end, duration) {
     if (start === end) return;
-    var range = end + start;//If we made "-" its start countdown
+    var range = end + start;  // If we made "-" its start countdown
     var current = start;
-    var increment = end > start? 1 : +1;//Here we can "-1" decrement "+1" and increment
+    var increment = end > start ? 1 : +1;  // Here we can "-1" decrement "+1" and increment
     var stepTime = Math.abs(Math.floor(duration / range));
     var obj = document.getElementById(id);
-    var timer = setInterval(function() {
-        current += increment;
-        obj.innerHTML = current;
-        if (current == end) {
-            clearInterval(timer);
-        }
+    var timer = setInterval(() => {
+      current += increment;
+      obj.innerHTML = current;
+      if (current == end) {
+        clearInterval(timer);
+      }
     }, stepTime);
-}
-
-  
-  public startOrPauseExercise() {
-    let btnStartExercise = document.getElementById("btn_tut_startExercise");
-    if (btnStartExercise.classList.contains('exerciseStarted')) {
-      // TODO: pause Timer
-      btnStartExercise.innerHTML = "Start Exercise";
-      btnStartExercise.style.backgroundColor = "green";
-      btnStartExercise.classList.remove("exerciseStarted");
-    } else {
-      // TODO: resume/restart Timer
-      btnStartExercise.innerHTML = "Pause Exercise";
-      btnStartExercise.style.backgroundColor = "red";
-      btnStartExercise.classList.add("exerciseStarted");
-    }
-
-    this.timer();
-    // return string.Format("{0:00}:{1:00}", minutes, seconds);
   }
   
-  public checkTutorialSolution() { 
+  public startExercise() {
+    this.startExerciseBtnDisabled = true;
+    // Hide Solution panel
+    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    tutSolutionPanel.style.display = "none";
+    document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
+    // Start Timer
+    this.activateTimer(5, 0, -1);
+  }
+  
+  public checkTutorialSolution(showSolution?: boolean) { 
     let tutToolbar = document.getElementById("tut_toolbar");
     let tutExercisePanel = document.getElementById("tut_exercisePanel");
     let btnCheckSolution = document.getElementById("btn_tut_checkSolution");
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
-    if (tutSolutionPanel.style.display == "none") {
+    if (tutSolutionPanel.style.display == "none" || showSolution) {
       // TODO: compare the solutions
       
       // Show Solution panel
       tutSolutionPanel.style.display = "block";
-      // tutSolutionPanel.classList.remove('hideSolution');
       btnCheckSolution.innerHTML = "Hide Solution";
       if (tutToolbar.classList.contains('minimized')) {
         tutExercisePanel.style.display = "block";
@@ -2025,10 +2020,8 @@ export class HomePage {
     } else {
       // Hide Solution panel
       tutSolutionPanel.style.display = "none";
-      // tutSolutionPanel.classList.add('hideSolution');
       btnCheckSolution.innerHTML = "Check Solution";
       if (tutExercisePanel.style.display == "block") {
-        // tutExercisePanel.style.display = "block";
         // Show Maximized toolbar buttons
         document.getElementById("tut_toolbar_maxi").style.display = "block";
         document.getElementById("tut_toolbar_mini").style.display = "none";

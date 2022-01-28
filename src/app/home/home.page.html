@@ -238,7 +238,7 @@
             <ion-buttons slot="end" style="float: right; padding-bottom: 12px;">
               <div class="tooltip">
                 <ion-button (click)="minimizeOrMaximizeTutorialPanel()" slot="end" style="width: auto;">
-                  <ion-icon slot="icon-only" name="contract" style="color: #ffffff;"></ion-icon>
+                  <ion-icon slot="icon-only" name="contract" style="color: #dddddd;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Minimize</span>
               </div>
@@ -259,20 +259,20 @@
             </div>
             <ion-buttons slot="end" style="float: right; padding-bottom: 12px;">
               <div class="tooltip">
-                <ion-button slot="end" style="width: auto;">
-                  <ion-icon slot="icon-only" name="refresh" style="color: #ffffff;"></ion-icon>
+                <ion-button (click)="startExercise()" slot="end" style="width: auto;" disabled="{{startExerciseBtnDisabled}}">
+                  <ion-icon slot="icon-only" name="refresh" style="color: #10dc60;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Restart Exercise</span>
               </div>
               <div class="tooltip">
                 <ion-button (click)="checkTutorialSolution()" slot="end" style="width: auto;">
-                  <ion-icon slot="icon-only" name="code-working" style="color: #ffffff;"></ion-icon>
+                  <ion-icon slot="icon-only" name="code-working" style="color: #ffce00;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Check Solution</span>
               </div>
               <div class="tooltip">
                 <ion-button (click)="minimizeOrMaximizeTutorialPanel()" slot="end" style="width: auto;">
-                  <ion-icon slot="icon-only" name="expand" style="color: #ffffff;"></ion-icon>
+                  <ion-icon slot="icon-only" name="expand" style="color: #dddddd;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Maximize</span>
               </div>
@@ -296,7 +296,7 @@
               </ion-card-content>
             </ion-card>
             <ion-text style="width: 100%; height: auto; padding: 2px;"> <h2 style="text-align: center;"> <b>{{timerValue}}</b> </h2> </ion-text>
-            <ion-button id="btn_tut_startExercise" color="success" expand="block" (click)="startOrPauseExercise()"> Start Exercise </ion-button>    
+            <ion-button id="btn_tut_startExercise" color="success" expand="block" (click)="startExercise()" disabled="{{startExerciseBtnDisabled}}"> Start Exercise </ion-button>    
             <ion-button id="btn_tut_checkSolution" color="warning" expand="block" (click)="checkTutorialSolution()"> Check Solution </ion-button>    
             
           </ion-card-content>
