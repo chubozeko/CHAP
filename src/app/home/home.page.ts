@@ -1968,11 +1968,11 @@ export class HomePage {
    function timercountdown(){
       const munites=Math.floor(time/60);
       let second=time % 60;
+      let intsecond;  
+      intsecond =second < 10 ? '0' + second : second;
       
-     
-     // second =second < 10 ? '0' + second : second;
-      
-       countdownElmt.innerHTML= munites+':' +second;
+     // second=intsecond;
+       countdownElmt.innerHTML= munites+':' +intsecond;
        time--;
 
   } 
