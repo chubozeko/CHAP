@@ -50,6 +50,7 @@ import { Saver } from "./saver";
 import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
 import {TutorialQPage} from "../tutorial-q/tutorial-q.page";
+import { ExerciseReader } from "../tutorial-q/read-exercise-data";
 
 @Component({
   selector: "app-home",
@@ -87,9 +88,10 @@ export class HomePage {
   popOver;
   infoMessage = "";
   pasteBuffer: Array<Symbols>;
-  tutorialExercise = { title: ``, level: ``, description: `` }
+  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
   timerValue = "00:00";
   startExerciseBtnDisabled = false;
+  exReader: ExerciseReader = new ExerciseReader(this.file);
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -323,9 +325,7 @@ export class HomePage {
       | DoWhileLoop
       | Comment
     >();
-//Display Andorid,IOS and Desktop Connection on Tooltips Session inside the fileName
-
-    
+    // Display Andorid,IOS and Desktop Connection on Tooltips Session inside the fileName
 
     // FOR ANDROID: Creating Save Folder if directory does not exist
     if (this.platform.is("android")) {
@@ -1810,11 +1810,14 @@ export class HomePage {
     });
     modal.onDidDismiss().then((data) => {
       try {
-        if (data) {
+        if (data.data != undefined) {
           this.toggleTutorialPanel();
           this.tutorialExercise = data.data;
+          // this.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialExercise.filename);
           document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialExercise.title;
           document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialExercise.description;
+
+          console.log('^^^ loading exercise: ', this.tutorialExercise);
         }
       } catch (error) {
         console.log(error);
