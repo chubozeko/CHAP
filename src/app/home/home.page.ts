@@ -1939,25 +1939,7 @@ export class HomePage {
     modal.onDidDismiss().then((data) => { });
     await modal.present();
   }
-
-  public toggleTutorialPanel(hideSolution?: boolean) {
-    let tutorialBtns = document.getElementById("tutorialBtns");
-    let wrapper = document.getElementsByClassName("wrapper")[0];
-    if (tutorialBtns.classList.contains("toggleTutorialP")) {
-      // Close Tutorial Panel
-      wrapper.classList.remove("showTutorialPanel");
-      tutorialBtns.classList.remove("toggleTutorialP");
-      tutorialBtns.style.display = "none";
-      
-    } else {
-      // Open Tutorial Panel
-      wrapper.classList.add("showTutorialPanel");
-      tutorialBtns.classList.add("toggleTutorialP");
-      tutorialBtns.style.display = "block";
-      document.getElementById("tut_solutionResultsPanel").style.display = "none";
-    }
-  }
-
+ 
   public activateTimer(startTimeInMinutes: number, endTimeInMinutes: number, stepDirection: number) {
     let time = startTimeInMinutes * 60;
     const timer = setInterval(() => {
@@ -1967,14 +1949,58 @@ export class HomePage {
       this.timerValue = 
         minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
         second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
-
-      if (time == endTimeInMinutes) {
-        clearInterval(timer);
-        this.startExerciseBtnDisabled = false;
-        this.checkTutorialSolution(true);
-      }
+        if (time == endTimeInMinutes) {
+          clearInterval(timer);
+          this.startExerciseBtnDisabled = false;
+          this.checkTutorialSolution(true);
+        }
+     
     }, 1000);
+    
   }
+  public cleartimer(){
+    // let startTimeInMinutes=0;
+     let stepDirection=0;
+     let endTimeInMinutes=0;
+     let time = 0;
+     const timer = setInterval(() => {
+       time += stepDirection;
+       let minutes = Math.floor(time / 60);
+       let second = time % 60;
+       this.timerValue = 
+         minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
+         second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
+         if (time == endTimeInMinutes) {
+           clearInterval(timer);
+         //  this.startExerciseBtnDisabled = false;
+         //  this.checkTutorialSolution(true);
+         }
+      
+     }, 0);
+ 
+   }
+  public toggleTutorialPanel(hideSolution?: boolean) {
+    let debugicon=document.getElementById("play");
+   debugicon.style.display='none';
+    let tutorialBtns = document.getElementById("tutorialBtns");
+    let wrapper = document.getElementsByClassName("wrapper")[0];
+    if (tutorialBtns.classList.contains("toggleTutorialP")) {
+      // Close Tutorial Panel
+      wrapper.classList.remove("showTutorialPanel");
+      tutorialBtns.classList.remove("toggleTutorialP");
+      tutorialBtns.style.display = "none";
+      debugicon.style.display='inline';
+      this.cleartimer();
+    } else {
+      // Open Tutorial Panel
+      wrapper.classList.add("showTutorialPanel");
+      tutorialBtns.classList.add("toggleTutorialP");
+      tutorialBtns.style.display = "block";
+      document.getElementById("tut_solutionResultsPanel").style.display = "none";
+    }
+  }
+
+ 
 
   public animateValue(id, start, end, duration) {
     if (start === end) return;
@@ -1993,6 +2019,7 @@ export class HomePage {
   }
   
   public startExercise() {
+   
     this.startExerciseBtnDisabled = true;
     // Hide Solution panel
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
@@ -2001,15 +2028,38 @@ export class HomePage {
     // Start Timer
     this.activateTimer(5, 0, -1);
   }
-  
+ public exersice1_check(flowchart: Flowchart){
+    let solution_1=[{"s_id":"s_output","id":"fc_lvl_0_out_0","symbolIndex":0,"parentIndex":-1,"isInTrueLoopBlock":true,"outputExp":"`Hello World`","outputS":"Hello World","outputSymbol":{"__zone_symbol__contextmenufalse":[{"type":"eventTask","state":"scheduled","source":"HTMLDivElement.addEventListener:contextmenu","zone":"angular","runCount":0}]},"chapConsole":{}}];
+   
+    let flowchartJSON;
+ 
+
+   let controller;
+   controller=JSON.stringify(solution_1);
+console.log(controller,"test");
+console.log("-----------");
+flowchart.prepareFlowchartForSaving();
+flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
+
+  console.log(flowchartJSON,"New Json");
+   // let checkQ1=flowchartJSON.includes(solution_1);
+    if(controller==flowchartJSON){
+      console.log("Correct");
+    }else{
+     console.log("Wrong");
+    }
+   }
   public checkTutorialSolution(showSolution?: boolean) { 
+    
     let tutToolbar = document.getElementById("tut_toolbar");
     let tutExercisePanel = document.getElementById("tut_exercisePanel");
     let btnCheckSolution = document.getElementById("btn_tut_checkSolution");
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    this.debugProgram();
+  this. exersice1_check(this.flowchart);
     if (tutSolutionPanel.style.display == "none" || showSolution) {
       // TODO: compare the solutions
-      
+     
       // Show Solution panel
       tutSolutionPanel.style.display = "block";
       btnCheckSolution.innerHTML = "Hide Solution";
@@ -2024,6 +2074,7 @@ export class HomePage {
       // Hide Solution panel
       tutSolutionPanel.style.display = "none";
       btnCheckSolution.innerHTML = "Check Solution";
+     
       if (tutExercisePanel.style.display == "block") {
         // Show Maximized toolbar buttons
         document.getElementById("tut_toolbar_maxi").style.display = "block";
@@ -2073,4 +2124,7 @@ export class HomePage {
     script.type = "text/javascript";
     body.appendChild(script);
   }
+ 
+
+  
 }

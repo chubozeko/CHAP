@@ -26,9 +26,9 @@
     <!-- Menu Toolbar Buttons -->
     <!-- <ion-buttons slot="end"> -->
    
-    <div class="tooltip  ">
+    <div class="tooltip  " id="play" >
       <ion-button (click)="debugProgram()">
-        <ion-icon name="play" color="success"></ion-icon>
+        <ion-icon name="play"  color="success"></ion-icon>
       </ion-button>
       <span class="tooltiptext" style="width: 140px;">Run Program</span>
     </div>
@@ -110,7 +110,7 @@
           <ul class="removebullets">
             <li style="align-items: center;">
               <ion-button (click)="debugProgram()">
-                <ion-icon name="play" class="iconsize" color="success"></ion-icon>
+                <ion-icon name="play" id="play"class="iconsize" color="success"></ion-icon>
               </ion-button>
             </li>
             <li>
