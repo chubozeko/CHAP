@@ -1990,7 +1990,10 @@ export class HomePage {
       tutorialBtns.classList.remove("toggleTutorialP");
       tutorialBtns.style.display = "none";
       debugicon.style.display='inline';
-      this.cleartimer();
+      let timerstop=document.getElementById("timerstop");
+      
+      timerstop.innerHTML ="00:00" ;
+     
     } else {
       // Open Tutorial Panel
       wrapper.classList.add("showTutorialPanel");
@@ -2029,26 +2032,59 @@ export class HomePage {
     this.activateTimer(5, 0, -1);
   }
  public exersice1_check(flowchart: Flowchart){
-    let solution_1=[{"s_id":"s_output","id":"fc_lvl_0_out_0","symbolIndex":0,"parentIndex":-1,"isInTrueLoopBlock":true,"outputExp":"`Hello World`","outputS":"Hello World","outputSymbol":{"__zone_symbol__contextmenufalse":[{"type":"eventTask","state":"scheduled","source":"HTMLDivElement.addEventListener:contextmenu","zone":"angular","runCount":0}]},"chapConsole":{}}];
-   
-    let flowchartJSON;
- 
-
-   let controller;
-   controller=JSON.stringify(solution_1);
-console.log(controller,"test");
-console.log("-----------");
-flowchart.prepareFlowchartForSaving();
-flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
-
-  console.log(flowchartJSON,"New Json");
-   // let checkQ1=flowchartJSON.includes(solution_1);
-    if(controller==flowchartJSON){
-      console.log("Correct");
-    }else{
+  let flowchartJSON;
+  flowchart.prepareFlowchartForSaving();
+  flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
+  let new_checker;
+  new_checker=JSON.parse(flowchartJSON) ;
+  //"outputExp":"`Hello World`"
+  //TODO:Remove ' from output content
+  if(new_checker[0].id=="fc_lvl_0_out_0" && new_checker[0].outputExp=="`Hello World`"){
+    console.log("Correct");
+   }else{
      console.log("Wrong");
-    }
    }
+
+  }
+   public exersice2_check(flowchart: Flowchart){
+    let flowchartJSON;
+    flowchart.prepareFlowchartForSaving();
+    flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
+    let new_checker;
+    new_checker=JSON.parse(flowchartJSON) ;
+       
+/*
+    #Here we check the JSON STRING ELEMENT 
+    1st by converting as a stringify
+    2nd With JSON Parse 
+    Ex:
+        0: {s_id: 's_declare', id: 'fc_lvl_0_dec_0', symbolIndex: 0, parentIndex: -1, isInTrueLoopBlock: true, …}
+        1: {s_id: 's_input', id: 'fc_lvl_0_inp_1', symbolIndex: 1, parentIndex: -1, isInTrueLoopBlock: true, …}
+        2: {s_id: 's_input', id: 'fc_lvl_0_inp_2', symbolIndex: 2, parentIndex: -1, isInTrueLoopBlock: true, …}
+        3: {s_id: 's_process', id: 'fc_lvl_0_proc_3', symbolIndex: 3, parentIndex: -1, isInTrueLoopBlock: true, …}
+        4: {s_id: 's_output', id: 'fc_lvl_0_out_4', symbolInd
+    3rd With using array format to specify unique keys with key words separated
+         Ex:console.log(new_controller[1].id);-->Output : fc_lvl_0_inp_1
+    4th Write the comparison controller
+    * console.log( new_checker[1].id );
+*/ 
+ 
+  if(new_checker[0].id=="fc_lvl_0_dec_0"){
+    if(new_checker[1].id=="fc_lvl_0_inp_1"){
+      if(new_checker[2].id=="fc_lvl_0_inp_2"){
+        if(new_checker[3].id=="fc_lvl_0_proc_3"){
+          if(new_checker[4].id=="fc_lvl_0_out_4"){
+            console.log("Correct");
+          }
+        }
+      }
+    }    
+  }else{
+    console.log("Wrong");
+  }
+ 
+   }
+  
   public checkTutorialSolution(showSolution?: boolean) { 
     
     let tutToolbar = document.getElementById("tut_toolbar");
@@ -2056,7 +2092,9 @@ flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let btnCheckSolution = document.getElementById("btn_tut_checkSolution");
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
     this.debugProgram();
-  this. exersice1_check(this.flowchart);
+    //TODO: Seperate questions by selected question type!!
+   this. exersice1_check(this.flowchart);
+  // this. exersice2_check(this.flowchart);
     if (tutSolutionPanel.style.display == "none" || showSolution) {
       // TODO: compare the solutions
      
