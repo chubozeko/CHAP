@@ -51,6 +51,7 @@ import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
 import {TutorialQPage} from "../tutorial-q/tutorial-q.page";
 import { ExerciseReader } from "../tutorial-q/read-exercise-data";
+import { Console } from "console";
 
 @Component({
   selector: "app-home",
@@ -2031,6 +2032,7 @@ export class HomePage {
     // Start Timer
     this.activateTimer(5, 0, -1);
   }
+ 
  public exersice1_check(flowchart: Flowchart){
   let flowchartJSON;
   flowchart.prepareFlowchartForSaving();
@@ -2046,7 +2048,7 @@ export class HomePage {
    }
 
   }
-   public exersice2_check(flowchart: Flowchart){
+ public exersice2_check(flowchart: Flowchart){
     let flowchartJSON;
     flowchart.prepareFlowchartForSaving();
     flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
@@ -2083,7 +2085,35 @@ export class HomePage {
     console.log("Wrong");
   }
  
-   }
+ }
+   public exersice3_check(flowchart: Flowchart){
+    let flowchartJSON;
+    flowchart.prepareFlowchartForSaving();
+    flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
+    let new_checker;
+    new_checker=JSON.parse(flowchartJSON) ;
+   
+    if(new_checker[0].id=="fc_lvl_0_dec_0"){
+      if(new_checker[1].id=="fc_lvl_0_inp_1"){
+        if(new_checker[2].id=="fc_lvl_0_if_2"){
+          if(new_checker[2].trueBlockId=="lvl_0_if_true_2"){
+            if(new_checker[2].falseBlockId=="lvl_0_if_false_2"){
+              if(new_checker[2].trueBlockSymbols[0].id=="ift_2_lvl_1_out_0"){
+                if(new_checker[2].falseBlockSymbols[0].id=="iff_2_lvl_1_out_0"){
+                  console.log("Correct");
+
+                }
+
+              }
+            }
+          }
+        }
+      }
+    }
+    else{
+      console.log("Wrong");
+    }
+  }
   
   public checkTutorialSolution(showSolution?: boolean) { 
     
@@ -2093,8 +2123,9 @@ export class HomePage {
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
     this.debugProgram();
     //TODO: Seperate questions by selected question type!!
-   this. exersice1_check(this.flowchart);
+ //  this. exersice1_check(this.flowchart);
   // this. exersice2_check(this.flowchart);
+  this. exersice3_check(this.flowchart);
     if (tutSolutionPanel.style.display == "none" || showSolution) {
       // TODO: compare the solutions
      
