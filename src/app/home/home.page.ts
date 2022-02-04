@@ -2114,7 +2114,57 @@ export class HomePage {
       console.log("Wrong");
     }
   }
+  public exersice4_check(flowchart: Flowchart){
+    let flowchartJSON;
+    flowchart.prepareFlowchartForSaving();
+    flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
+    let new_checker;
+    new_checker=JSON.parse(flowchartJSON) ;
+   
+    if(new_checker[0].id=="fc_lvl_0_dec_0"){
+      if(new_checker[1].id=="fc_lvl_0_for_1"){
+        if(new_checker[1].trueBlockId=="lvl_0_for_true_1"){
+          if(new_checker[1].trueLoopBlock[0].id=="fort_1_lvl_1_out_0"){
+            console.log("Correct");
+          }
+        }
+     }          
+
+      } else{
+        console.log("Wrong");
+      }
+
+             
+    
+   
+  }
+  public exersice5_check(flowchart: Flowchart){
+    let flowchartJSON;
+    flowchart.prepareFlowchartForSaving();
+    flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
+    let new_checker;
+    new_checker=JSON.parse(flowchartJSON) ;
+   if(new_checker[0].id=="fc_lvl_0_dec_0"){
+     if(new_checker[1].id=="fc_lvl_0_proc_1"){
+       if(new_checker[2].id=="fc_lvl_0_whi_2"){
+         if(new_checker[2].trueBlockId=="lvl_0_whi_true_2"){
+           if(new_checker[2].trueLoopBlock[0].id=="whit_2_lvl_1_out_0"){
+            if(new_checker[2].trueLoopBlock[1].id=="whit_2_lvl_1_proc_1"){
+              console.log("Correct");
+            }
+           }
+         }
+       }
+     }
+   }else{
+    console.log("Wrong");
+   }
   
+
+             
+    
+   
+  }
   public checkTutorialSolution(showSolution?: boolean) { 
     
     let tutToolbar = document.getElementById("tut_toolbar");
@@ -2125,7 +2175,9 @@ export class HomePage {
     //TODO: Seperate questions by selected question type!!
  //  this. exersice1_check(this.flowchart);
   // this. exersice2_check(this.flowchart);
-  this. exersice3_check(this.flowchart);
+//  this. exersice3_check(this.flowchart);
+//  this. exersice4_check(this.flowchart);
+//  this. exersice5_check(this.flowchart);
     if (tutSolutionPanel.style.display == "none" || showSolution) {
       // TODO: compare the solutions
      
