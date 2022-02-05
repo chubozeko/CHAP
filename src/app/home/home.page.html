@@ -305,16 +305,16 @@
         <ion-card id="tut_solutionResultsPanel" style="width: 100%; height: auto; display: none;">
           <ion-card-header>
             <ion-card-subtitle>Your solution is: </ion-card-subtitle>
-            <ion-card-title>CORRECT / WRONG</ion-card-title>
+            <ion-card-title><span id="result"></span></ion-card-title>
           </ion-card-header>
           <ion-card-content>
             Check if the following symbols were used correctly: 
             <ul>
               <li>
-                <b><u> &lt; SymbolType &gt; </u></b>  : index # in Flowchart
+                <b><u>  <span id="symbolType"></span>  </u></b>  : index <span id="symbolIndex"></span> in Flowchart
               </li>
               <li>
-                <b><u> &lt; SymbolType &gt; </u></b>  : index # in Flowchart
+                <b><u> <span id="errorChecker"></span> </u></b>
               </li>
             </ul>
           </ion-card-content>

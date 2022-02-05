@@ -12,7 +12,7 @@ export class ExerciseReader {
   loadExercises() {
     this.exData.forEach(ex => {
       ex.solutionFlowchart = this.loadExerciseSolutionFromFile(ex.filename);
-      console.log('^^^ loading exercise: ', ex);
+      console.log('^^^ loading exercise: ', ex);//This line bring the exercise data from exercise-data.ts file
     });
     return this.exData;
   }

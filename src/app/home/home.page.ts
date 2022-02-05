@@ -1803,7 +1803,7 @@ export class HomePage {
     });
     await modal.present();
   }
-
+ 
   async openTutorialPageQ() {
     this.menu.close();
     const modal = await this.modalC.create({
@@ -1819,6 +1819,7 @@ export class HomePage {
           document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialExercise.description;
 
           console.log('^^^ loading exercise: ', this.tutorialExercise);
+          this.activateTimer(5, 0, -1);
         }
       } catch (error) {
         console.log(error);
@@ -1959,27 +1960,7 @@ export class HomePage {
     }, 1000);
     
   }
-  public cleartimer(){
-    // let startTimeInMinutes=0;
-     let stepDirection=0;
-     let endTimeInMinutes=0;
-     let time = 0;
-     const timer = setInterval(() => {
-       time += stepDirection;
-       let minutes = Math.floor(time / 60);
-       let second = time % 60;
-       this.timerValue = 
-         minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
-         second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
-         if (time == endTimeInMinutes) {
-           clearInterval(timer);
-         //  this.startExerciseBtnDisabled = false;
-         //  this.checkTutorialSolution(true);
-         }
-      
-     }, 0);
- 
-   }
+
   public toggleTutorialPanel(hideSolution?: boolean) {
     let debugicon=document.getElementById("play");
    debugicon.style.display='none';
@@ -2003,8 +1984,6 @@ export class HomePage {
       document.getElementById("tut_solutionResultsPanel").style.display = "none";
     }
   }
-
- 
 
   public animateValue(id, start, end, duration) {
     if (start === end) return;
@@ -2030,10 +2009,14 @@ export class HomePage {
     tutSolutionPanel.style.display = "none";
     document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
     // Start Timer
-    this.activateTimer(5, 0, -1);
+    
   }
- 
- public exersice1_check(flowchart: Flowchart){
+//Tutorial Exersice Functions Start
+public exersice1_check(flowchart: Flowchart){
+  let result=document.getElementById("result");
+  let symbolType=document.getElementById("symbolType");
+  let symbolIndex=document.getElementById("symbolIndex");
+  let errorChecker=document.getElementById("errorChecker");
   let flowchartJSON;
   flowchart.prepareFlowchartForSaving();
   flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
@@ -2042,13 +2025,26 @@ export class HomePage {
   //"outputExp":"`Hello World`"
   //TODO:Remove ' from output content
   if(new_checker[0].id=="fc_lvl_0_out_0" && new_checker[0].outputExp=="`Hello World`"){
+    errorChecker.style.display="hide";
+    symbolIndex.innerHTML="1";
+    symbolType.innerHTML="Output";
+    result.innerHTML="WELL DONE Correct Answer ✔";
     console.log("Correct");
+    this.debugProgram();
    }else{
+     symbolType.style.display="hide";
+     symbolIndex.style.display="hide";
+    result.innerHTML="SORRY Wrong Answer ❌";
+    errorChecker.innerHTML="⚠Please Use OUTPUT SYMBOL & Make Sure You Type Hello World❗";
      console.log("Wrong");
    }
 
   }
  public exersice2_check(flowchart: Flowchart){
+  let result=document.getElementById("result");
+  let symbolType=document.getElementById("symbolType");
+  let symbolIndex=document.getElementById("symbolIndex");
+  let errorChecker=document.getElementById("errorChecker");
     let flowchartJSON;
     flowchart.prepareFlowchartForSaving();
     flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
@@ -2087,6 +2083,10 @@ export class HomePage {
  
  }
    public exersice3_check(flowchart: Flowchart){
+    let result=document.getElementById("result");
+    let symbolType=document.getElementById("symbolType");
+    let symbolIndex=document.getElementById("symbolIndex");
+    let errorChecker=document.getElementById("errorChecker");
     let flowchartJSON;
     flowchart.prepareFlowchartForSaving();
     flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
@@ -2115,6 +2115,10 @@ export class HomePage {
     }
   }
   public exersice4_check(flowchart: Flowchart){
+    let result=document.getElementById("result");
+    let symbolType=document.getElementById("symbolType");
+    let symbolIndex=document.getElementById("symbolIndex");
+    let errorChecker=document.getElementById("errorChecker");
     let flowchartJSON;
     flowchart.prepareFlowchartForSaving();
     flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
@@ -2139,6 +2143,10 @@ export class HomePage {
    
   }
   public exersice5_check(flowchart: Flowchart){
+    let result=document.getElementById("result");
+    let symbolType=document.getElementById("symbolType");
+    let symbolIndex=document.getElementById("symbolIndex");
+    let errorChecker=document.getElementById("errorChecker");
     let flowchartJSON;
     flowchart.prepareFlowchartForSaving();
     flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
@@ -2165,22 +2173,31 @@ export class HomePage {
     
    
   }
+  //Tutorial Exersice Functions End
   public checkTutorialSolution(showSolution?: boolean) { 
     
     let tutToolbar = document.getElementById("tut_toolbar");
     let tutExercisePanel = document.getElementById("tut_exercisePanel");
     let btnCheckSolution = document.getElementById("btn_tut_checkSolution");
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
-    this.debugProgram();
-    //TODO: Seperate questions by selected question type!!
- //  this. exersice1_check(this.flowchart);
-  // this. exersice2_check(this.flowchart);
-//  this. exersice3_check(this.flowchart);
-//  this. exersice4_check(this.flowchart);
-//  this. exersice5_check(this.flowchart);
+    
+   
+    if(this.tutorialExercise.title=="Exercise 1") {
+      this. exersice1_check(this.flowchart);
+    }else if(this.tutorialExercise.title=="Exercise 2"){
+      this. exersice2_check(this.flowchart);
+    }else if(this.tutorialExercise.title=="Exercise 3"){
+      this. exersice3_check(this.flowchart);
+    }else if(this.tutorialExercise.title=="Exercise 4"){
+      this. exersice4_check(this.flowchart);
+    }else if(this.tutorialExercise.title=="Exercise 5"){
+      this. exersice5_check(this.flowchart);
+    }else{
+      console.log("Exercise Selection Error Please Contact Developers !!");
+    }
+
     if (tutSolutionPanel.style.display == "none" || showSolution) {
       // TODO: compare the solutions
-     
       // Show Solution panel
       tutSolutionPanel.style.display = "block";
       btnCheckSolution.innerHTML = "Hide Solution";
@@ -2234,17 +2251,7 @@ export class HomePage {
     
   }
 
-  // To be able to use external JavaScript libraries with TypeScript, they must be loaded
-  public loadScript(url: string) {
-    const body = <HTMLDivElement>document.body;
-    const script = document.createElement("script");
-    script.innerHTML = "";
-    script.src = url;
-    script.async = false;
-    script.defer = true;
-    script.type = "text/javascript";
-    body.appendChild(script);
-  }
+  
  
 
   
