@@ -2022,18 +2022,20 @@ public exersice1_check(flowchart: Flowchart){
   flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
   let new_checker;
   new_checker=JSON.parse(flowchartJSON) ;
-  //"outputExp":"`Hello World`"
-  //TODO:Remove ' from output content
-  if(new_checker[0].id=="fc_lvl_0_out_0" && new_checker[0].outputExp=="`Hello World`"){
+ 
+  console.log(new_checker[0].outputExp,"Test");
+ 
+  if(new_checker[0].id=="fc_lvl_0_out_0" && new_checker[0].outputExp=='"Hello World"'){
     errorChecker.style.display="hide";
     symbolIndex.innerHTML="1";
     symbolType.innerHTML="Output";
     result.innerHTML="WELL DONE Correct Answer ✔";
+    
     console.log("Correct");
     this.debugProgram();
    }else{
-     symbolType.style.display="hide";
-     symbolIndex.style.display="hide";
+     symbolType.style.display="none";
+     symbolIndex.style.display="none";
     result.innerHTML="SORRY Wrong Answer ❌";
     errorChecker.innerHTML="⚠Please Use OUTPUT SYMBOL & Make Sure You Type Hello World❗";
      console.log("Wrong");
@@ -2068,18 +2070,59 @@ public exersice1_check(flowchart: Flowchart){
 */ 
  
   if(new_checker[0].id=="fc_lvl_0_dec_0"){
-    if(new_checker[1].id=="fc_lvl_0_inp_1"){
-      if(new_checker[2].id=="fc_lvl_0_inp_2"){
-        if(new_checker[3].id=="fc_lvl_0_proc_3"){
-          if(new_checker[4].id=="fc_lvl_0_out_4"){
-            console.log("Correct");
-          }
-        }
+       if(new_checker[1].id=="fc_lvl_0_inp_1"){
+           if(new_checker[2].id=="fc_lvl_0_inp_2"){
+               if(new_checker[3].id=="fc_lvl_0_proc_3" && new_checker[3].expression.includes("+")==true){
+                  if(new_checker[4].id=="fc_lvl_0_out_4"){
+                    
+                    symbolIndex.style.display="hide";
+                    symbolType.innerHTML="Declare[1]✔,Input[2]✔,Input[3]✔,Process[4]✔,Output[5]✔ ";
+                    result.innerHTML="WELL DONE Correct Answer ✔";
+                    console.log("Correct");
+                    this.debugProgram();
+                    errorChecker.style.display="hide";
+                  }else{
+                          
+                         result.innerHTML="SORRY Wrong Answer ❌";
+                         errorChecker.innerHTML="⚠Please Use OUTPUT SYMBOL[5] & Make Sure You Enter Declared Variable Name Correctly❗";
+                         symbolType.style.display="none";
+                          symbolIndex.style.display="none";
+                        }
+                 }else{
+                  
+                 result.innerHTML="SORRY Wrong Answer ❌";
+                 errorChecker.innerHTML="⚠Please Use Process SYMBOL[4] & Make Sure You Use Declared Variable Name Correctly❗";
+                 symbolType.style.display="none";
+                          symbolIndex.style.display="none";
+                }
+      }else{
+        
+     
+         result.innerHTML="SORRY Wrong Answer ❌";
+         errorChecker.innerHTML="⚠Please Use Input SYMBOL[3] & Make Sure You Use Declared Variable Name Correctly❗";
+         symbolType.style.display="none";
+                          symbolIndex.style.display="none";
+        
       }
-    }    
+    } else{
+        
+      
+     result.innerHTML="SORRY Wrong Answer ❌";
+     errorChecker.innerHTML="⚠Please Use Input SYMBOL[2] & Make Sure You Use Declared Variable Name Correctly❗";
+     symbolType.style.display="none";
+                          symbolIndex.style.display="none";
+    
+  }   
   }else{
-    console.log("Wrong");
+          
+     
+     result.innerHTML="SORRY Wrong Answer ❌";
+     errorChecker.innerHTML="⚠Please Use Declare SYMBOL[1] to Declare Variable❗";
+     symbolType.style.display="hide";
+                          symbolIndex.style.display="hide";
+    
   }
+  
  
  }
    public exersice3_check(flowchart: Flowchart){
@@ -2095,22 +2138,59 @@ public exersice1_check(flowchart: Flowchart){
    
     if(new_checker[0].id=="fc_lvl_0_dec_0"){
       if(new_checker[1].id=="fc_lvl_0_inp_1"){
-        if(new_checker[2].id=="fc_lvl_0_if_2"){
+        if(new_checker[2].id=="fc_lvl_0_if_2" && new_checker[2].ifStatement.includes("%")==true ){
           if(new_checker[2].trueBlockId=="lvl_0_if_true_2"){
             if(new_checker[2].falseBlockId=="lvl_0_if_false_2"){
               if(new_checker[2].trueBlockSymbols[0].id=="ift_2_lvl_1_out_0"){
                 if(new_checker[2].falseBlockSymbols[0].id=="iff_2_lvl_1_out_0"){
+                  symbolIndex.style.display="hide";
+                  symbolType.innerHTML="Declare[1]✔,Input[2]✔,If Case[3]✔,Output[3.1]✔,Output[3.2]✔ ";
+                  result.innerHTML="WELL DONE Correct Answer ✔";
                   console.log("Correct");
+                  this.debugProgram();
+                  errorChecker.style.display="hide";
+                    }else{
+                      result.innerHTML="SORRY Wrong Answer ❌";
+                       errorChecker.innerHTML="⚠Please Use Output SYMBOL[3.2]❗";
+                      symbolType.style.display="none";
+                          symbolIndex.style.display="none";
+                    }
 
-                }
-
+              }else{
+                result.innerHTML="SORRY Wrong Answer ❌";
+                errorChecker.innerHTML="⚠Please Use Output SYMBOL[3.1]❗";
+               symbolType.style.display="none";
+                   symbolIndex.style.display="none";
+              }
+            }else{
+              result.innerHTML="SORRY Wrong Answer ❌";
+                errorChecker.innerHTML="⚠Please Use Output SYMBOL[3.1]❗";
+               symbolType.style.display="none";
+                   symbolIndex.style.display="none";
               }
             }
+          }else{ 
+              
+     result.innerHTML="SORRY Wrong Answer ❌";
+     errorChecker.innerHTML="⚠Please Use If Case SYMBOL[3] & Make Sure You Use Declared Variable Name Correctly❗";
+     symbolType.style.display="none";
+                          symbolIndex.style.display="none";
           }
+        }else{
+            
+     result.innerHTML="SORRY Wrong Answer ❌";
+     errorChecker.innerHTML="⚠Please Use Input SYMBOL[2] & Make Sure You Use Declared Variable Name Correctly❗";
+     symbolType.style.display="none";
+                          symbolIndex.style.display="none";
         }
       }
-    }
+    
     else{
+        
+     result.innerHTML="SORRY Wrong Answer ❌";
+     errorChecker.innerHTML="⚠Please Use Declare SYMBOL[1] & Make Sure You Use Declared Variable Name ❗";
+     symbolType.style.display="none";
+                          symbolIndex.style.display="none";
       console.log("Wrong");
     }
   }
