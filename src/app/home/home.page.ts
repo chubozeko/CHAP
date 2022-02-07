@@ -2209,13 +2209,37 @@ public exersice1_check(flowchart: Flowchart){
       if(new_checker[1].id=="fc_lvl_0_for_1"){
         if(new_checker[1].trueBlockId=="lvl_0_for_true_1"){
           if(new_checker[1].trueLoopBlock[0].id=="fort_1_lvl_1_out_0"){
-            console.log("Correct");
+            symbolIndex.style.display="hide";
+                  symbolType.innerHTML="Declare[1]✔,For Loop[2]✔,Output[2.1]✔ ";
+                  result.innerHTML="WELL DONE Correct Answer ✔";
+                  console.log("Correct");
+                  this.debugProgram();
+                  errorChecker.style.display="hide";
+          }else{
+            symbolType.style.display="none";
+            symbolIndex.style.display="none";
+           result.innerHTML="SORRY Wrong Answer ❌";
+           errorChecker.innerHTML="⚠Please Use OUTPUT SYMBOL & Make Sure You Type HELLO CHAP❗";
+            console.log("Wrong");
           }
+        }else{
+          
         }
+     }else{
+      symbolType.style.display="none";
+      symbolIndex.style.display="none";
+     result.innerHTML="SORRY Wrong Answer ❌";
+     errorChecker.innerHTML="⚠Please Use For Loop SYMBOL❗";
+      console.log("Wrong");
      }          
 
       } else{
-        console.log("Wrong");
+        symbolType.style.display="none";
+          symbolIndex.style.display="none";
+         result.innerHTML="SORRY Wrong Answer ❌";
+         errorChecker.innerHTML="⚠Please Use Declare SYMBOL & Make Sure You Select Correct Data Type❗";
+          console.log("Wrong");
+       
       }
 
              
@@ -2238,15 +2262,49 @@ public exersice1_check(flowchart: Flowchart){
          if(new_checker[2].trueBlockId=="lvl_0_whi_true_2"){
            if(new_checker[2].trueLoopBlock[0].id=="whit_2_lvl_1_out_0"){
             if(new_checker[2].trueLoopBlock[1].id=="whit_2_lvl_1_proc_1"){
-              console.log("Correct");
+              symbolType.innerHTML="Declare[1]✔,Process[2]✔,While Loop[3]✔,Output[3.1]✔,Process[3.2]✔, ";
+                  result.innerHTML="WELL DONE Correct Answer ✔";
+                  console.log("Correct");
+                  this.debugProgram();
+                  errorChecker.style.display="hide";
+            }else{
+              symbolType.style.display="none";
+              symbolIndex.style.display="none";
+             result.innerHTML="SORRY Wrong Answer ❌";
+             errorChecker.innerHTML="⚠Please Use Process SYMBOL to create Incrementation Process❗";
+              console.log("Wrong");
             }
+           }else{
+            symbolType.style.display="none";
+            symbolIndex.style.display="none";
+           result.innerHTML="SORRY Wrong Answer ❌";
+           errorChecker.innerHTML="⚠Please Use OUTPUT SYMBOL & Make Sure You Type HELLO CHAP❗";
+            console.log("Wrong");
            }
          }
+       }else{
+        symbolType.style.display="none";
+        symbolIndex.style.display="none";
+       result.innerHTML="SORRY Wrong Answer ❌";
+       errorChecker.innerHTML="⚠Please Use While Loop SYMBOL ❗";
+        console.log("Wrong");
        }
+     }else{
+      symbolType.style.display="none";
+      symbolIndex.style.display="none";
+     result.innerHTML="SORRY Wrong Answer ❌";
+     errorChecker.innerHTML="⚠Please Use Process SYMBOL ❗";
+      console.log("Wrong");
      }
    }else{
-    console.log("Wrong");
-   }
+    
+      symbolType.style.display="none";
+      symbolIndex.style.display="none";
+     result.innerHTML="SORRY Wrong Answer ❌";
+     errorChecker.innerHTML="⚠Please Use Declare SYMBOL & Make Sure You Select Correct Data Type❗";;
+      console.log("Wrong");
+     }
+   
   
 
              
