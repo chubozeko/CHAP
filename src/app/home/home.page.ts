@@ -1803,6 +1803,24 @@ export class HomePage {
     });
     await modal.present();
   }
+  public activateTimer(startTimeInMinutes: number, endTimeInMinutes: number, stepDirection: number) {
+    let time = startTimeInMinutes * 60;
+    let timer = setInterval(() => {
+      time += stepDirection;
+      let minutes = Math.floor(time / 60);
+      let second = time % 60;
+      this.timerValue = 
+        minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
+        second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
+      if(time==endTimeInMinutes){
+        clearInterval(timer);
+      }else if (startTimeInMinutes==endTimeInMinutes){
+        clearInterval(timer);
+      }
+      
+    }, 1000);
+    
+  }
  
   async openTutorialPageQ() {
     this.menu.close();
@@ -1819,7 +1837,7 @@ export class HomePage {
           document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialExercise.description;
 
           console.log('^^^ loading exercise: ', this.tutorialExercise);
-          this.activateTimer(5, 0, -1);
+          this.activateTimer(5, 0, -1);//Timer Start
         }
       } catch (error) {
         console.log(error);
@@ -1942,24 +1960,7 @@ export class HomePage {
     await modal.present();
   }
  
-  public activateTimer(startTimeInMinutes: number, endTimeInMinutes: number, stepDirection: number) {
-    let time = startTimeInMinutes * 60;
-    const timer = setInterval(() => {
-      time += stepDirection;
-      let minutes = Math.floor(time / 60);
-      let second = time % 60;
-      this.timerValue = 
-        minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
-        second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
-        if (time == endTimeInMinutes) {
-          clearInterval(timer);
-          this.startExerciseBtnDisabled = false;
-          this.checkTutorialSolution(true);
-        }
-     
-    }, 1000);
-    
-  }
+ 
 
   public toggleTutorialPanel(hideSolution?: boolean) {
     let debugicon=document.getElementById("play");
@@ -1984,7 +1985,7 @@ export class HomePage {
       document.getElementById("tut_solutionResultsPanel").style.display = "none";
     }
   }
-
+  
   public animateValue(id, start, end, duration) {
     if (start === end) return;
     var range = end + start;  // If we made "-" its start countdown
@@ -2252,58 +2253,39 @@ public exersice1_check(flowchart: Flowchart){
     let symbolIndex=document.getElementById("symbolIndex");
     let errorChecker=document.getElementById("errorChecker");
     let flowchartJSON;
-    flowchart.prepareFlowchartForSaving();
-    flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
+    flowchart.prepareFlowchartForSaving();//Question Going To Be Change
+    flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker;
     new_checker=JSON.parse(flowchartJSON) ;
-   if(new_checker[0].id=="fc_lvl_0_dec_0"){
-     if(new_checker[1].id=="fc_lvl_0_proc_1"){
-       if(new_checker[2].id=="fc_lvl_0_whi_2"){
-         if(new_checker[2].trueBlockId=="lvl_0_whi_true_2"){
-           if(new_checker[2].trueLoopBlock[0].id=="whit_2_lvl_1_out_0"){
-            if(new_checker[2].trueLoopBlock[1].id=="whit_2_lvl_1_proc_1"){
-              symbolType.innerHTML="Declare[1]✔,Process[2]✔,While Loop[3]✔,Output[3.1]✔,Process[3.2]✔, ";
-                  result.innerHTML="WELL DONE Correct Answer ✔";
-                  console.log("Correct");
-                  this.debugProgram();
-                  errorChecker.style.display="hide";
-            }else{
-              symbolType.style.display="none";
-              symbolIndex.style.display="none";
-             result.innerHTML="SORRY Wrong Answer ❌";
-             errorChecker.innerHTML="⚠Please Use Process SYMBOL to create Incrementation Process❗";
-              console.log("Wrong");
-            }
-           }else{
-            symbolType.style.display="none";
-            symbolIndex.style.display="none";
-           result.innerHTML="SORRY Wrong Answer ❌";
-           errorChecker.innerHTML="⚠Please Use OUTPUT SYMBOL & Make Sure You Type HELLO CHAP❗";
-            console.log("Wrong");
-           }
-         }
-       }else{
-        symbolType.style.display="none";
-        symbolIndex.style.display="none";
-       result.innerHTML="SORRY Wrong Answer ❌";
-       errorChecker.innerHTML="⚠Please Use While Loop SYMBOL ❗";
-        console.log("Wrong");
-       }
-     }else{
-      symbolType.style.display="none";
-      symbolIndex.style.display="none";
-     result.innerHTML="SORRY Wrong Answer ❌";
-     errorChecker.innerHTML="⚠Please Use Process SYMBOL ❗";
-      console.log("Wrong");
-     }
-   }else{
+  if(new_checker[0].id=="fc_lvl_0_dec_0"){
+    if(new_checker[1].id=="fc_lvl_0_proc_1"){
+      if(new_checker[2].id=="fc_lvl_0_whi_2"){
+        if(new_checker[2].trueLoopBlock[0].id=="whit_2_lvl_1_if_0"){
+          if(new_checker[2].trueLoopBlock[0].trueBlockSymbols[0].id=="ift_0_lvl_2_out_0"){
+              if(new_checker[2].trueLoopBlock[1].id=="whit_2_lvl_1_proc_1"){
+                result.innerHTML="WELL DONE Correct Answer ✔";
     
-      symbolType.style.display="none";
-      symbolIndex.style.display="none";
-     result.innerHTML="SORRY Wrong Answer ❌";
-     errorChecker.innerHTML="⚠Please Use Declare SYMBOL & Make Sure You Select Correct Data Type❗";;
-      console.log("Wrong");
-     }
+                console.log("Correct");
+                this.debugProgram();
+              }else{
+                console.log("Wrong");
+              }
+          }else{
+
+          }
+        }else{
+
+        }
+
+      }else{
+
+      }
+    }else{
+
+    }
+  }else{
+
+  }
    
   
 
@@ -2320,22 +2302,24 @@ public exersice1_check(flowchart: Flowchart){
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
     
    
-    if(this.tutorialExercise.title=="Exercise 1") {
-      this. exersice1_check(this.flowchart);
-    }else if(this.tutorialExercise.title=="Exercise 2"){
-      this. exersice2_check(this.flowchart);
-    }else if(this.tutorialExercise.title=="Exercise 3"){
-      this. exersice3_check(this.flowchart);
-    }else if(this.tutorialExercise.title=="Exercise 4"){
-      this. exersice4_check(this.flowchart);
-    }else if(this.tutorialExercise.title=="Exercise 5"){
-      this. exersice5_check(this.flowchart);
-    }else{
-      console.log("Exercise Selection Error Please Contact Developers !!");
-    }
+    
 
     if (tutSolutionPanel.style.display == "none" || showSolution) {
       // TODO: compare the solutions
+      if(this.tutorialExercise.title=="Exercise 1") {
+        this. exersice1_check(this.flowchart);
+        this.activateTimer(0, 0, 0);
+      }else if(this.tutorialExercise.title=="Exercise 2"){
+        this. exersice2_check(this.flowchart);
+      }else if(this.tutorialExercise.title=="Exercise 3"){
+        this. exersice3_check(this.flowchart);
+      }else if(this.tutorialExercise.title=="Exercise 4"){
+        this. exersice4_check(this.flowchart);
+      }else if(this.tutorialExercise.title=="Exercise 5"){
+        this. exersice5_check(this.flowchart);
+      }else{
+        console.log("Exercise Selection Error Please Contact Developers !!");
+      }
       // Show Solution panel
       tutSolutionPanel.style.display = "block";
       btnCheckSolution.innerHTML = "Hide Solution";
