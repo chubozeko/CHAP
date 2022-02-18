@@ -169,13 +169,13 @@ export class TutorialMode {
       errorChecker.style.display = "hide";
       symbolIndex.innerHTML = "1";
       symbolType.innerHTML = "Output";
-      result.innerHTML = "WELL DONE Correct Answer ✔";
+      result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
       console.log("Correct");
       this.debugTutorialExerciseProgram(flowchart, loopBlockState);
     } else {
       symbolType.style.display = "none";
       symbolIndex.style.display = "none";
-      result.innerHTML = "SORRY Wrong Answer ❌";
+      result.innerHTML = "SORRY🥉 Wrong Answer ❌";
       errorChecker.innerHTML = "⚠ Please Use OUTPUT SYMBOL & Make Sure You Type Hello World❗";
       console.log("Wrong");
     }
@@ -207,7 +207,7 @@ export class TutorialMode {
       4th Write the comparison controller
       * console.log( new_checker[1].id );
     */
- 
+ let errorScore=0;
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_inp_1") {
         if (new_checker[2].id == "fc_lvl_0_inp_2") {
@@ -215,39 +215,44 @@ export class TutorialMode {
             if (new_checker[4].id == "fc_lvl_0_out_4") {
               symbolIndex.style.display = "hide";
               symbolType.innerHTML = "Declare[1]✔, Input[2]✔, Input[3]✔, Process[4]✔, Output[5]✔ ";
-              result.innerHTML = "WELL DONE Correct Answer ✔";
+              result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
               console.log("Correct");
               this.debugTutorialExerciseProgram(flowchart, loopBlockState);
               errorChecker.style.display = "hide";
             } else {      
-              result.innerHTML = "SORRY Wrong Answer ❌";
+              result.innerHTML = "SORRY🥈 Wrong Answer ❌";
               errorChecker.innerHTML = "⚠ Please Use OUTPUT SYMBOL[5] & Make Sure You Enter Declared Variable Name Correctly❗";
               symbolType.style.display = "none";
               symbolIndex.style.display = "none";
+              
             }
           } else {
-            result.innerHTML = "SORRY Wrong Answer ❌";
+            result.innerHTML = "SORRY🥈 Wrong Answer ❌";
             errorChecker.innerHTML = "⚠ Please Use Process SYMBOL[4] & Make Sure You Use Declared Variable Name Correctly❗";
             symbolType.style.display = "none";
             symbolIndex.style.display = "none";
+            
           }
         } else {
-          result.innerHTML = "SORRY Wrong Answer ❌";
+          result.innerHTML = "SORRY🥉 Wrong Answer ❌";
           errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[3] & Make Sure You Use Declared Variable Name Correctly❗";
           symbolType.style.display = "none";
           symbolIndex.style.display = "none";
+          
         }
       } else {
-        result.innerHTML = "SORRY Wrong Answer ❌";
+        result.innerHTML = "SORRY🥉 Wrong Answer ❌";
         errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[2] & Make Sure You Use Declared Variable Name Correctly❗";
         symbolType.style.display = "none";
         symbolIndex.style.display = "none";
+        
       }
     } else {
-      result.innerHTML="SORRY Wrong Answer ❌";
+      result.innerHTML="SORRY 🥉Wrong Answer ❌";
       errorChecker.innerHTML = "⚠ Please Use Declare SYMBOL[1] to Declare Variable❗";
       symbolType.style.display = "hide";
       symbolIndex.style.display = "hide";
+      
     }
   }
 
@@ -269,43 +274,43 @@ export class TutorialMode {
                 if (new_checker[2].falseBlockSymbols[0].id == "iff_2_lvl_1_out_0") {
                   symbolIndex.style.display = "hide";
                   symbolType.innerHTML = "Declare[1] ✔ , Input[2] ✔ , If Case[3] ✔ , Output[3.1] ✔ , Output[3.2] ✔ ";
-                  result.innerHTML = "WELL DONE Correct Answer ✔ ";
+                  result.innerHTML = "WELL DONE🥇 Correct Answer ✔ ";
                   console.log("Correct");
                   this.debugTutorialExerciseProgram(flowchart, loopBlockState);
                   errorChecker.style.display = "hide";
                 } else {
-                  result.innerHTML = "SORRY Wrong Answer ❌ ";
+                  result.innerHTML = "SORRY🥈 Wrong Answer ❌ ";
                   errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.2]❗";
                   symbolType.style.display = "none";
                   symbolIndex.style.display = "none";
                 }
               } else {
-                result.innerHTML = "SORRY Wrong Answer ❌";
+                result.innerHTML = "SORRY🥈 Wrong Answer ❌";
                 errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.1]❗";
                 symbolType.style.display = "none";
                 symbolIndex.style.display = "none";
               }
             } else {
-              result.innerHTML = "SORRY Wrong Answer ❌";
+              result.innerHTML = "SORRY🥈 Wrong Answer ❌";
               errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.1]❗";
               symbolType.style.display = "none";
               symbolIndex.style.display = "none";
             }
           }
         } else {
-          result.innerHTML = "SORRY Wrong Answer ❌";
+          result.innerHTML = "SORRY🥈 Wrong Answer ❌";
           errorChecker.innerHTML = "⚠ Please Use If Case SYMBOL[3] & Make Sure You Use Declared Variable Name Correctly❗";
           symbolType.style.display = "none";
           symbolIndex.style.display = "none";
         }
       } else {
-        result.innerHTML = "SORRY Wrong Answer ❌";
+        result.innerHTML = "SORRY🥉 Wrong Answer ❌";
         errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[2] & Make Sure You Use Declared Variable Name Correctly❗";
         symbolType.style.display = "none";
         symbolIndex.style.display = "none";
       }
     } else {
-      result.innerHTML = "SORRY Wrong Answer ❌";
+      result.innerHTML = "SORRY🥉 Wrong Answer ❌";
       errorChecker.innerHTML = "⚠ Please Use Declare SYMBOL[1] & Make Sure You Use Declared Variable Name ❗";
       symbolType.style.display = "none";
       symbolIndex.style.display = "none";
@@ -325,18 +330,18 @@ export class TutorialMode {
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_for_1") {
         if (new_checker[1].trueBlockId == "lvl_0_for_true_1") {
-          if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0") {
+          if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0"&&new_checker[0].outputExp == '"HELLO CHAP"') {
             symbolIndex.style.display = "hide";
             symbolType.innerHTML = "Declare[1] ✔ , For Loop[2] ✔ , Output[2.1] ✔ ";
-            result.innerHTML="WELL DONE Correct Answer ✔";
+            result.innerHTML="WELL DONE🥇 Correct Answer ✔";
             console.log("Correct");
             this.debugTutorialExerciseProgram(flowchart, loopBlockState);
             errorChecker.style.display = "hide";
           } else {
             symbolType.style.display = "none";
             symbolIndex.style.display = "none";
-            result.innerHTML = "SORRY Wrong Answer ❌";
-            errorChecker.innerHTML = " ⚠ Please Use OUTPUT SYMBOL & Make Sure You Type HELLO CHAP❗";
+            result.innerHTML = "SORRY 🥈Wrong Answer ❌";
+            errorChecker.innerHTML = " ⚠ Please Use OUTPUT SYMBOL[2.1] & Make Sure You Type HELLO CHAP❗";
             console.log("Wrong");
           }
         } else {
@@ -345,15 +350,15 @@ export class TutorialMode {
       } else {
         symbolType.style.display = "none";
         symbolIndex.style.display = "none";
-        result.innerHTML = "SORRY Wrong Answer ❌";
-        errorChecker.innerHTML = "⚠Please Use For Loop SYMBOL❗";
+        result.innerHTML = "SORRY 🥈Wrong Answer ❌";
+        errorChecker.innerHTML = "⚠Please Use For Loop[2] SYMBOL❗";
         console.log("Wrong");
       }
     } else {
       symbolType.style.display = "none";
       symbolIndex.style.display = "none";
-      result.innerHTML = "SORRY Wrong Answer ❌";
-      errorChecker.innerHTML = " ⚠ Please Use Declare SYMBOL & Make Sure You Select Correct Data Type❗";
+      result.innerHTML = "SORRY🥉 Wrong Answer ❌";
+      errorChecker.innerHTML = " ⚠ Please Use Declare SYMBOL[1] & Make Sure You Select Correct Data Type❗";
       console.log("Wrong"); 
     }
   
@@ -375,25 +380,51 @@ export class TutorialMode {
             if (new_checker[2].trueLoopBlock[0].trueBlockSymbols[0].id == "ift_0_lvl_2_out_0") {
               if (new_checker[2].trueLoopBlock[1].id == "whit_2_lvl_1_proc_1") {
                 result.innerHTML = "WELL DONE Correct Answer ✔";
+                symbolType.innerHTML = "Declare[1] ✔ , Process[2] ✔ , While Loop[3] ✔ , If Case[3.1] ✔ , Output[3.1.0] ✔ , Process[3.2] ✔ ";
                 console.log("Correct");
                 this.debugTutorialExerciseProgram(flowchart, loopBlockState);
               } else {
+                symbolType.style.display = "none";
+                symbolIndex.style.display = "none";
+                result.innerHTML = "SORRY 🥈Wrong Answer ❌";
+                errorChecker.innerHTML = " ⚠ Please Use PROCESS SYMBOL[3.2] & Make Sure You TYPE i=i+1❗";
                 console.log("Wrong");
+               
               }
             } else {
-
+              symbolType.style.display = "none";
+              symbolIndex.style.display = "none";
+              result.innerHTML = "SORRY🥈 Wrong Answer ❌";
+              errorChecker.innerHTML = " ⚠ Please Use OUTPUT SYMBOL[3.1.0] & Make Sure You Display Even Numbers❗";
+              console.log("Wrong");
             }
           } else {
-
+            symbolType.style.display = "none";
+              symbolIndex.style.display = "none";
+              result.innerHTML = "SORRY 🥈Wrong Answer ❌";
+              errorChecker.innerHTML = " ⚠ Please Use IF CASE SYMBOL[3.1] & Make Sure You TYPE {VariableName %2==0}❗";
+              console.log("Wrong");
           }
         } else {
-
+          symbolType.style.display = "none";
+          symbolIndex.style.display = "none";
+          result.innerHTML = "SORRY🥉 Wrong Answer ❌";
+          errorChecker.innerHTML = " ⚠ Please Use WHILE LOOP SYMBOL[3] & Make Sure You TYPE {Variable Name <=10}❗";
+          console.log("Wrong");
         }
       } else {
-
+        symbolType.style.display = "none";
+        symbolIndex.style.display = "none";
+        result.innerHTML = "SORRY🥉Wrong Answer ❌";
+        errorChecker.innerHTML = " ⚠ Please Use PROCESS SYMBOL[2] & Make Sure You TYPE {Variable Name = 0}❗";
+        console.log("Wrong");
       }
     } else {
-
+      symbolType.style.display = "none";
+      symbolIndex.style.display = "none";
+      result.innerHTML = "SORRY🥉 Wrong Answer ❌";
+      errorChecker.innerHTML = " ⚠ Please Use DECLARE SYMBOL[1] Create VARIABLE NAME as an INTEGER TYPE❗";
+      console.log("Wrong");
     }
 
   }
@@ -409,6 +440,7 @@ export class TutorialMode {
     flowchart.isProgramRunning = true;
     flowchart.isAnInputBlockRunning = false;
     flowchart.validateFlowchart(0, flowchart.SYMBOLS.length, null);
+   
   }
 
 }
