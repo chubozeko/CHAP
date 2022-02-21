@@ -1823,7 +1823,7 @@ export class HomePage {
       
     }, 1000);
     
-  }public clearTimer(){ 
+  }public stopTimer(){ 
     clearInterval(this.timer);
   }
  
@@ -1982,7 +1982,7 @@ export class HomePage {
 
   public checkTutorialSolution(showSolution?: boolean) { 
     this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
-  this.clearTimer();
+  this.stopTimer();
   }
 
   public minimizeOrMaximizeTutorialPanel() {
