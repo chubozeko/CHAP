@@ -54,6 +54,7 @@ import { ExerciseReader } from "../tutorial-q/read-exercise-data";
 import { Console } from "console";
 import { TutorialMode } from "./tutorial-mode";
 
+
 @Component({
   selector: "app-home",
   templateUrl: "home.page.html",
@@ -94,6 +95,7 @@ export class HomePage {
   tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
   timerValue = "00:00";
   startExerciseBtnDisabled = false;
+  timer;
   exReader: ExerciseReader = new ExerciseReader(this.file);
 
   constructor(
@@ -1805,10 +1807,9 @@ export class HomePage {
     });
     await modal.present();
   }
-
   public activateTimer(startTimeInMinutes: number, endTimeInMinutes: number, stepDirection: number) {
     let time = startTimeInMinutes * 60;
-    let timer = setInterval(() => {
+   this. timer = setInterval(() => {
       time += stepDirection;
       let minutes = Math.floor(time / 60);
       let second = time % 60;
@@ -1816,13 +1817,14 @@ export class HomePage {
         minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
         second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
       if (time == endTimeInMinutes) {
-        clearInterval(timer);
-      } else if (startTimeInMinutes == endTimeInMinutes) {
-        clearInterval(timer);
+        clearInterval(this.timer);
+      
       }
       
     }, 1000);
     
+  }public clearTimer(){ 
+    clearInterval(this.timer);
   }
  
   async openTutorialPageQ() {
@@ -1849,6 +1851,7 @@ export class HomePage {
       }
     });
     await modal.present();
+    
   }
 
   public printFlowchart() {
@@ -1968,17 +1971,23 @@ export class HomePage {
   public toggleTutorialPanel(hideSolution?: boolean) {
     this.tutorialMode.toggleTutorialPanel();
   }
+ 
+  
+
   
   public startExercise() {
     this.tutorialMode.startExercise();
+    
   }
 
   public checkTutorialSolution(showSolution?: boolean) { 
     this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
+  this.clearTimer();
   }
 
   public minimizeOrMaximizeTutorialPanel() {
     this.tutorialMode.minimizeOrMaximizeTutorialPanel();
+   
   }
   
 }
