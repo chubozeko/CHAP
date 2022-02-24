@@ -1823,9 +1823,11 @@ export class HomePage {
       
     }, 1000);
     
-  }public stopTimer(){ 
+  }
+  public stopTimer(){ 
     clearInterval(this.timer);
   }
+  
  
   async openTutorialPageQ() {
     this.menu.close();
@@ -1982,7 +1984,8 @@ export class HomePage {
 
   public checkTutorialSolution(showSolution?: boolean) { 
     this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
-  this.stopTimer();
+    this.toggleConsole();
+    this.stopTimer();
   }
 
   public minimizeOrMaximizeTutorialPanel() {
