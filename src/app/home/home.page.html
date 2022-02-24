@@ -255,11 +255,12 @@
             <div style="float: left; padding: 4px;">
               <ion-icon slot="icon-only" name="school" style="color: #b40615;"></ion-icon>
               &nbsp;&nbsp;&nbsp;
-              <ion-label slot="start" > {{tutorialExercise.title}} - {{timerValue}} </ion-label>
+              <ion-label slot="start" id="tut_toolbar_mini_title">{{tutorialExercise.title}}</ion-label>
+              <ion-label slot="start" > - {{timerValue}} </ion-label>
             </div>
             <ion-buttons slot="end" style="float: right; padding-bottom: 12px;">
               <div class="tooltip">
-                <ion-button (click)="startExercise()" slot="end" style="width: auto;" disabled="{{startExerciseBtnDisabled}}">
+                <ion-button id="btn_tut_restartExercise_minimized" (click)="startExercise()" slot="end" style="width: auto;" disabled="{{startExerciseBtnDisabled}}">
                   <ion-icon slot="icon-only" name="refresh" style="color: #10dc60;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Restart Exercise</span>
@@ -296,8 +297,8 @@
               </ion-card-content>
             </ion-card>
             <ion-text style="width: 100%; height: auto; padding: 2px;"> <h2 style="text-align: center;"><span id="timerstop "> <b >{{timerValue}}</b></span> </h2> </ion-text>
-            <!-- <ion-button id="btn_tut_startExercise" color="success" expand="block" (click)="startExercise()" disabled="{{startExerciseBtnDisabled}}"> Start Exercise </ion-button>     -->
-            <ion-button id="btn_tut_checkSolution" color="warning" expand="block" (click)="checkTutorialSolution()"> Check Solution </ion-button>    
+            <ion-button id="btn_tut_checkSolution" color="warning" expand="block" (click)="checkTutorialSolution()"> Check Solution </ion-button>
+            <ion-button id="btn_tut_restartExercise" color="success" expand="block" (click)="startExercise()" disabled="{{startExerciseBtnDisabled}}"> Restart Exercise </ion-button>    
             
           </ion-card-content>
         </ion-card>

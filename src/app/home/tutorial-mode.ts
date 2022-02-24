@@ -1,10 +1,13 @@
+import { AlertController } from "@ionic/angular";
 import { Flowchart } from "../classes/Flowchart";
 import { LoopblockstateService } from "../loopblockstate.service";
 
 
 export class TutorialMode {
 
-  constructor(){}
+  constructor(
+    public alertC: AlertController
+  ) {}
 
   tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
   timerValue = "00:00";
@@ -67,18 +70,8 @@ export class TutorialMode {
     }, 1000);
     
   }
-  
-  public startExercise() {
-    this.startExerciseBtnDisabled = true;
-    // Hide Solution panel
-    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
-    tutSolutionPanel.style.display = "none";
-    document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
-    // Start Timer
-    
-  }
 
-  public minimizeOrMaximizeTutorialPanel() {
+  public minimizeOrMaximizeTutorialPanel(isExerciseOngoing?: boolean) {
     let tutToolbar = document.getElementById("tut_toolbar");
     let tutExercisePanel = document.getElementById("tut_exercisePanel");
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
@@ -94,9 +87,15 @@ export class TutorialMode {
       // Minimize
       document.getElementById("tut_toolbar_maxi").style.display = "none";
       document.getElementById("tut_toolbar_mini").style.display = "block";
+      if (isExerciseOngoing) {
+        document.getElementById("btn_tut_restartExercise_minimized").style.display = "none";
+      } else {
+        document.getElementById("btn_tut_restartExercise_minimized").style.display = "block";
+      }
       tutExercisePanel.style.display = "none";
       tutSolutionPanel.style.display = "none";
-      tutToolbar.classList.add("minimized");
+      tutToolbar.classList.add("minimized"); 
+      document.getElementById("tut_toolbar_mini_title").innerHTML = this.tutorialExercise.title;
     }
     
   }
@@ -108,31 +107,36 @@ export class TutorialMode {
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
 
     if (tutSolutionPanel.style.display == "none" || showSolution) {
-      // TODO: compare the solutions
-      if (this.tutorialExercise.title == "Exercise 1") {
-        this.checkExercise1(flowchart, loopBlockState);
-        this.activateTimer(0, 0, 0);
-      } else if (this.tutorialExercise.title == "Exercise 2") {
-        this.checkExercise2(flowchart, loopBlockState);
-      } else if (this.tutorialExercise.title == "Exercise 3") {
-        this.checkExercise3(flowchart, loopBlockState);
-      } else if (this.tutorialExercise.title == "Exercise 4") {
-        this.checkExercise4(flowchart, loopBlockState);
-      } else if (this.tutorialExercise.title == "Exercise 5") {
-        this.checkExercise5(flowchart, loopBlockState);
+      if (flowchart.SYMBOLS.length > 0) {
+        if (this.tutorialExercise.title == "Exercise 1") {
+          this.checkExercise1(flowchart, loopBlockState);
+          this.activateTimer(0, 0, 0);
+        } else if (this.tutorialExercise.title == "Exercise 2") {
+          this.checkExercise2(flowchart, loopBlockState);
+        } else if (this.tutorialExercise.title == "Exercise 3") {
+          this.checkExercise3(flowchart, loopBlockState);
+        } else if (this.tutorialExercise.title == "Exercise 4") {
+          this.checkExercise4(flowchart, loopBlockState);
+        } else if (this.tutorialExercise.title == "Exercise 5") {
+          this.checkExercise5(flowchart, loopBlockState);
+        } else {
+          console.error("Exercise Selection ERROR! Please contact Developers.");
+        }
+        // Show Solution panel
+        tutSolutionPanel.style.display = "block";
+        btnCheckSolution.innerHTML = "Hide Solution";
+        if (tutToolbar.classList.contains('minimized')) {
+          tutExercisePanel.style.display = "block";
+          // Show Maximized toolbar buttons
+          document.getElementById("tut_toolbar_maxi").style.display = "block";
+          document.getElementById("tut_toolbar_mini").style.display = "none";
+          tutToolbar.classList.remove("minimized");
+        }
+        return true;
       } else {
-        console.error("Exercise Selection ERROR! Please contact Developers.");
+        return false;
       }
-      // Show Solution panel
-      tutSolutionPanel.style.display = "block";
-      btnCheckSolution.innerHTML = "Hide Solution";
-      if (tutToolbar.classList.contains('minimized')) {
-        tutExercisePanel.style.display = "block";
-        // Show Maximized toolbar buttons
-        document.getElementById("tut_toolbar_maxi").style.display = "block";
-        document.getElementById("tut_toolbar_mini").style.display = "none";
-        tutToolbar.classList.remove("minimized");
-      }
+      
     } else {
       // Hide Solution panel
       tutSolutionPanel.style.display = "none";
@@ -149,7 +153,7 @@ export class TutorialMode {
         document.getElementById("tut_toolbar_mini").style.display = "block";
         tutToolbar.classList.add("minimized");
       }
-      
+      return true;
     }
   }
 
@@ -165,11 +169,11 @@ export class TutorialMode {
   
     console.log(new_checker[0].outputExp, "Test");
   
-    if (new_checker[0].id == "fc_lvl_0_out_0" && new_checker[0].outputExp == '"Hello World"') {
+    if (new_checker[0].id == "fc_lvl_0_out_0" && new_checker[0].outputExp.localeCompare('"hello world"', 'en', { sensitivity: 'base' }) === 0) {
       errorChecker.style.display = "hide";
       symbolIndex.innerHTML = "1";
       symbolType.innerHTML = "Output";
-      result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
+      result.innerHTML = "WELL DONE 🥇 Correct Answer ✔";
       console.log("Correct");
       this.debugTutorialExerciseProgram(flowchart, loopBlockState);
     } else {
@@ -189,9 +193,8 @@ export class TutorialMode {
     let errorChecker = document.getElementById("errorChecker");
     let flowchartJSON;
     flowchart.prepareFlowchartForSaving();
-    flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
-    let new_checker;
-    new_checker = JSON.parse(flowchartJSON);
+    flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
+    let new_checker = JSON.parse(flowchartJSON);
     /*
       # Here we check the JSON STRING ELEMENT 
       1st by converting as a stringify
@@ -207,7 +210,7 @@ export class TutorialMode {
       4th Write the comparison controller
       * console.log( new_checker[1].id );
     */
- let errorScore=0;
+    let errorScore=0;
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_inp_1") {
         if (new_checker[2].id == "fc_lvl_0_inp_2") {
@@ -330,7 +333,7 @@ export class TutorialMode {
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_for_1") {
         if (new_checker[1].trueBlockId == "lvl_0_for_true_1") {
-          if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0"&&new_checker[0].outputExp == '"HELLO CHAP"') {
+          if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0" && new_checker[0].outputExp.localeCompare('"hello chap"', 'en', { sensitivity: 'base' }) === 0) {
             symbolIndex.style.display = "hide";
             symbolType.innerHTML = "Declare[1] ✔ , For Loop[2] ✔ , Output[2.1] ✔ ";
             result.innerHTML="WELL DONE🥇 Correct Answer ✔";
