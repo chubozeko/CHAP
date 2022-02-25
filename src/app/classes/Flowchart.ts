@@ -149,7 +149,7 @@ export class Flowchart {
   async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
     const alert = await this.alertC.create({
      // header: alertTitle,
-      message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
+      message: '<label class="alertTitle"><b>' + alertTitle + '</b></label>',
       inputs: [
         {
           name: 'inputText',                
@@ -188,7 +188,26 @@ export class Flowchart {
     await alert.present();
   }
 
-  async validateFlowchart(startIndex: number, endIndex: number, variables: any[]) {
+  async automateInputPrompt(dummyInputs: any[], inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
+    let dummyData;
+    for (let k=0; k<dummyInputs.length; k++) {
+      if (inputSym.id == dummyInputs[k].id) {
+        dummyData = dummyInputs[k].input;
+      }
+    }
+    inputSym.inputData = dummyData;
+    inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
+    this.consoleLog("noerrorAlert", "> Input: " + dummyData);
+    console.log("> Input (entered) Complete");
+    inputSym.isInputEntered = false;
+    this.isAnInputBlockRunning = false;
+    this.loopBlockState.isAnInputBlockRunning = false;
+    this.loopBlockState.isProgramRunning = true;
+    // this.validateFlowchart(++symIndex, this.tempSymbols.length, this.variables.vars);
+    console.log("> Input (dismissed) Complete");
+  }
+
+  async validateFlowchart(startIndex: number, endIndex: number, variables: any[], dummyInputs?: any[]) {
     console.log("==] isProgramRunning = " + this.isProgramRunning + " ; ==] isAnInputBlockRunning = " + this.isAnInputBlockRunning);
     if (variables == null) {
       this.variables.vars = [];
@@ -230,12 +249,23 @@ export class Flowchart {
               this.loopBlockState.currentBlock = this;
               this.loopBlockState.inputSymbolIndex = i;
 
-              this.showInputPrompt(inputSym,
-                inputSym.inputPromptProps[0],
-                inputSym.inputPromptProps[1],
-                inputSym.inputPromptProps[2],
-                inputSym.inputPromptProps[3],
-                inputSym.inputPromptProps[4]);
+              if (dummyInputs == null || dummyInputs == undefined) {
+                this.showInputPrompt(inputSym,
+                  inputSym.inputPromptProps[0],
+                  inputSym.inputPromptProps[1],
+                  inputSym.inputPromptProps[2],
+                  inputSym.inputPromptProps[3],
+                  inputSym.inputPromptProps[4]);
+              } else {
+                this.automateInputPrompt(dummyInputs,
+                  inputSym,
+                  inputSym.inputPromptProps[0],
+                  inputSym.inputPromptProps[1],
+                  inputSym.inputPromptProps[2],
+                  inputSym.inputPromptProps[3],
+                  inputSym.inputPromptProps[4]);
+              }
+              
               console.log("< Input Symbol Complete in FC");
             }
           }

@@ -1,5 +1,6 @@
 import { AlertController } from "@ionic/angular";
 import { Flowchart } from "../classes/Flowchart";
+import { ForLoop } from "../classes/ForLoop";
 import { LoopblockstateService } from "../loopblockstate.service";
 
 
@@ -9,7 +10,7 @@ export class TutorialMode {
     public alertC: AlertController
   ) {}
 
-  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
+  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [], xp: `` }
   timerValue = "00:00";
   startExerciseBtnDisabled = false;
 
@@ -160,40 +161,32 @@ export class TutorialMode {
   /* Tutorial Exercise Functions Start */
   private checkExercise1(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
     let result = document.getElementById("result");
-    let symbolType = document.getElementById("symbolType");
-    let symbolIndex = document.getElementById("symbolIndex");
     let errorChecker = document.getElementById("errorChecker");
     flowchart.prepareFlowchartForSaving();
     let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker = JSON.parse(flowchartJSON);
-  
-    console.log(new_checker[0].outputExp, "Test");
+    // console.log(new_checker[0].outputExp, "Test");
   
     if (new_checker[0].id == "fc_lvl_0_out_0" && new_checker[0].outputExp.localeCompare('"hello world"', 'en', { sensitivity: 'base' }) === 0) {
-      errorChecker.style.display = "hide";
-      symbolIndex.innerHTML = "1";
-      symbolType.innerHTML = "Output";
-      result.innerHTML = "WELL DONE 🥇 Correct Answer ✔";
+      result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done 🥇</span>`;
+      errorChecker.innerHTML = "";
+      this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
       console.log("Correct");
-      this.debugTutorialExerciseProgram(flowchart, loopBlockState);
+      // TODO: add 100 XP points to user's account (this.tutorialExercise.xp)
     } else {
-      symbolType.style.display = "none";
-      symbolIndex.style.display = "none";
-      result.innerHTML = "SORRY🥉 Wrong Answer ❌";
-      errorChecker.innerHTML = "⚠ Please Use OUTPUT SYMBOL & Make Sure You Type Hello World❗";
+      result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
+      errorChecker.innerHTML = `❗ Make sure you use an Output Symbol to print out \"Hello World\".`;
       console.log("Wrong");
+      // TODO: add 10 XP points to user's account (this.tutorialExercise.xp / 10)
     }
 
   }
 
   private checkExercise2(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
     let result = document.getElementById("result");
-    let symbolType = document.getElementById("symbolType");
-    let symbolIndex = document.getElementById("symbolIndex");
     let errorChecker = document.getElementById("errorChecker");
-    let flowchartJSON;
     flowchart.prepareFlowchartForSaving();
-    flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
+    let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker = JSON.parse(flowchartJSON);
     /*
       # Here we check the JSON STRING ELEMENT 
@@ -210,59 +203,56 @@ export class TutorialMode {
       4th Write the comparison controller
       * console.log( new_checker[1].id );
     */
-    let errorScore=0;
+    let errorScore = 0;
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_inp_1") {
         if (new_checker[2].id == "fc_lvl_0_inp_2") {
-          if (new_checker[3].id == "fc_lvl_0_proc_3" && new_checker[3].expression.includes("+") == true) {
+          if (new_checker[3].id == "fc_lvl_0_proc_3" && new_checker[3].expression.includes("+")) {
             if (new_checker[4].id == "fc_lvl_0_out_4") {
-              symbolIndex.style.display = "hide";
-              symbolType.innerHTML = "Declare[1]✔, Input[2]✔, Input[3]✔, Process[4]✔, Output[5]✔ ";
-              result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
+              result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done 🥇</span>`;
+              errorChecker.innerHTML = `[1] Declare ✔, [2] Input ✔, [3] Input ✔, [4] Process ✔, [5] Output ✔`;
+              // Run program with dummyInputs: 2, 2
+              let dummyInputs = [
+                { id: 'fc_lvl_0_inp_1', input: 2 },
+                { id: 'fc_lvl_0_inp_2', input: 2 }
+              ];
+              this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
               console.log("Correct");
-              this.debugTutorialExerciseProgram(flowchart, loopBlockState);
-              errorChecker.style.display = "hide";
+              // TODO: add 100 XP points to user's account (this.tutorialExercise.xp)
             } else {      
-              result.innerHTML = "SORRY🥈 Wrong Answer ❌";
-              errorChecker.innerHTML = "⚠ Please Use OUTPUT SYMBOL[5] & Make Sure You Enter Declared Variable Name Correctly❗";
-              symbolType.style.display = "none";
-              symbolIndex.style.display = "none";
-              
+              result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+              errorChecker.innerHTML = `❗ Please use the Output Symbol [5] to print out the result. 
+                <br/> Make sure you have entered the declared Variables correctly.`;
+              // TODO: add 20 XP points to user's account (this.tutorialExercise.xp / 5)
             }
           } else {
-            result.innerHTML = "SORRY🥈 Wrong Answer ❌";
-            errorChecker.innerHTML = "⚠ Please Use Process SYMBOL[4] & Make Sure You Use Declared Variable Name Correctly❗";
-            symbolType.style.display = "none";
-            symbolIndex.style.display = "none";
-            
+            result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+            errorChecker.innerHTML = `❗ Please use the Process Symbol [4] to get the summation of the entered values. 
+              <br/> Make sure you have entered the declared Variables correctly.`;
+            // TODO: add 20 XP points to user's account (this.tutorialExercise.xp / 5)
           }
         } else {
-          result.innerHTML = "SORRY🥉 Wrong Answer ❌";
-          errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[3] & Make Sure You Use Declared Variable Name Correctly❗";
-          symbolType.style.display = "none";
-          symbolIndex.style.display = "none";
-          
+          result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
+          errorChecker.innerHTML = `❗ Please use the Input Symbol [3] to get a second input from the user. 
+            <br/> Make sure you have entered the declared Variables correctly.`;
+          // TODO: add 10 XP points to user's account (this.tutorialExercise.xp / 10)
         }
       } else {
-        result.innerHTML = "SORRY🥉 Wrong Answer ❌";
-        errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[2] & Make Sure You Use Declared Variable Name Correctly❗";
-        symbolType.style.display = "none";
-        symbolIndex.style.display = "none";
-        
+        result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
+        errorChecker.innerHTML = `❗ Please use the Input Symbol [2] to get a first input from the user. 
+          <br/> Make sure you have entered the declared Variables correctly.`;
+        // TODO: add 10 XP points to user's account (this.tutorialExercise.xp / 10)
       }
     } else {
-      result.innerHTML="SORRY 🥉Wrong Answer ❌";
-      errorChecker.innerHTML = "⚠ Please Use Declare SYMBOL[1] to Declare Variable❗";
-      symbolType.style.display = "hide";
-      symbolIndex.style.display = "hide";
-      
+      result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
+      errorChecker.innerHTML = `❗ Please use the Declare Symbol [1] to declare the Variables that will be used in the Flowchart.
+        <br/> Make sure you use the correct Data Type.`;
+      // TODO: add 10 XP points to user's account (this.tutorialExercise.xp / 10)
     }
   }
 
   private checkExercise3(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
     let result = document.getElementById("result");
-    let symbolType = document.getElementById("symbolType");
-    let symbolIndex = document.getElementById("symbolIndex");
     let errorChecker = document.getElementById("errorChecker");
     flowchart.prepareFlowchartForSaving();
     let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
@@ -270,98 +260,121 @@ export class TutorialMode {
    
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_inp_1") {
-        if (new_checker[2].id == "fc_lvl_0_if_2" && new_checker[2].ifStatement.includes("%") == true) {
-          if (new_checker[2].trueBlockId == "lvl_0_if_true_2") {
-            if (new_checker[2].falseBlockId == "lvl_0_if_false_2") {
-              if (new_checker[2].trueBlockSymbols[0].id == "ift_2_lvl_1_out_0") {
-                if (new_checker[2].falseBlockSymbols[0].id == "iff_2_lvl_1_out_0") {
-                  symbolIndex.style.display = "hide";
-                  symbolType.innerHTML = "Declare[1] ✔ , Input[2] ✔ , If Case[3] ✔ , Output[3.1] ✔ , Output[3.2] ✔ ";
-                  result.innerHTML = "WELL DONE🥇 Correct Answer ✔ ";
-                  console.log("Correct");
-                  this.debugTutorialExerciseProgram(flowchart, loopBlockState);
-                  errorChecker.style.display = "hide";
-                } else {
-                  result.innerHTML = "SORRY🥈 Wrong Answer ❌ ";
-                  errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.2]❗";
-                  symbolType.style.display = "none";
-                  symbolIndex.style.display = "none";
-                }
+        if (new_checker[2].id == "fc_lvl_0_if_2" && new_checker[2].trueBlockId == "lvl_0_if_true_2" && new_checker[2].falseBlockId == "lvl_0_if_false_2") {
+          if (new_checker[2].ifStatement.includes("%") == true) {
+            if (new_checker[2].trueBlockSymbols[0].id == "ift_2_lvl_1_out_0" && 
+            (new_checker[2].trueBlockSymbols[0].outputExp.localeCompare('"odd"', 'en', { sensitivity: 'base' }) === 0 || 
+            new_checker[2].trueBlockSymbols[0].outputExp.localeCompare('"even"', 'en', { sensitivity: 'base' }) === 0)) {
+              if (new_checker[2].falseBlockSymbols[0].id == "iff_2_lvl_1_out_0" && 
+              (new_checker[2].falseBlockSymbols[0].outputExp.localeCompare('"odd"', 'en', { sensitivity: 'base' }) === 0 || 
+              new_checker[2].falseBlockSymbols[0].outputExp.localeCompare('"even"', 'en', { sensitivity: 'base' }) === 0)) {
+                result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done 🥇</span>`;
+                errorChecker.innerHTML = `[1] Declare ✔, [2] Input ✔, [3] If Case ✔, [3][IfCase-True][1] Output ✔, [3][IfCase-False][1] Output ✔`;
+                console.log("Correct");
+
+                // Test 1: Run program with dummyInputs: 2
+                let dummyInputs = [
+                  { id: 'fc_lvl_0_inp_1', input: 2 }
+                ];
+                this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+                // Test 2: Run program with dummyInputs: 3
+                dummyInputs = [
+                  { id: 'fc_lvl_0_inp_1', input: 3 }
+                ];
+                this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+                // TODO: add 200 XP points to user's account (this.tutorialExercise.xp)
               } else {
-                result.innerHTML = "SORRY🥈 Wrong Answer ❌";
-                errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.1]❗";
-                symbolType.style.display = "none";
-                symbolIndex.style.display = "none";
+                result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+                errorChecker.innerHTML = `❗ Please use the Output Symbol in the If Case [3] False block to print out if the entered value is Odd or Even.
+                  <br/> Make sure you have entered the declared Variables correctly.`;
+                // TODO: add 40 XP points to user's account (this.tutorialExercise.xp / 5)
               }
             } else {
-              result.innerHTML = "SORRY🥈 Wrong Answer ❌";
-              errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.1]❗";
-              symbolType.style.display = "none";
-              symbolIndex.style.display = "none";
+              result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+              errorChecker.innerHTML = `❗ Please use the Output Symbol in the If Case [3] True block to print out if the entered value is Odd or Even.
+              <br/> Make sure you have entered the declared Variables correctly.`;
+              // TODO: add 40 XP points to user's account (this.tutorialExercise.xp / 5)
             }
+          } else {
+            result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+            errorChecker.innerHTML = `❗ Please use the If Case Symbol [3] to check whether the entered value is Odd or Even.
+            <br/> [Hint: use the Modulus operator (%) in the equation]
+            <br/> Make sure you have entered the declared Variables correctly.`;
+            // TODO: add 40 XP points to user's account (this.tutorialExercise.xp / 5)
           }
         } else {
-          result.innerHTML = "SORRY🥈 Wrong Answer ❌";
-          errorChecker.innerHTML = "⚠ Please Use If Case SYMBOL[3] & Make Sure You Use Declared Variable Name Correctly❗";
-          symbolType.style.display = "none";
-          symbolIndex.style.display = "none";
+          result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+          errorChecker.innerHTML = `❗ Please use the If Case Symbol [3] to check whether the entered value is Odd or Even.
+            <br/> Make sure you have entered the declared Variables correctly.`;
+          // TODO: add 40 XP points to user's account (this.tutorialExercise.xp / 5)
         }
       } else {
-        result.innerHTML = "SORRY🥉 Wrong Answer ❌";
-        errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[2] & Make Sure You Use Declared Variable Name Correctly❗";
-        symbolType.style.display = "none";
-        symbolIndex.style.display = "none";
+        result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
+        errorChecker.innerHTML = `❗ Please use the Input Symbol [2] to get an input from the user. 
+          <br/> Make sure you have entered the declared Variables correctly.`;
+        // TODO: add 20 XP points to user's account (this.tutorialExercise.xp / 10)
       }
     } else {
-      result.innerHTML = "SORRY🥉 Wrong Answer ❌";
-      errorChecker.innerHTML = "⚠ Please Use Declare SYMBOL[1] & Make Sure You Use Declared Variable Name ❗";
-      symbolType.style.display = "none";
-      symbolIndex.style.display = "none";
+      result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
+      errorChecker.innerHTML = `❗ Please Use Declare SYMBOL[1] to declare the Variables that will be used in the Flowchart.
+        <br/> Make sure you use the correct Data Type.`;
       console.log("Wrong");
+      // TODO: add 20 XP points to user's account (this.tutorialExercise.xp / 10)
     }
   }
 
   private checkExercise4(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
     let result = document.getElementById("result");
-    let symbolType = document.getElementById("symbolType");
-    let symbolIndex = document.getElementById("symbolIndex");
     let errorChecker = document.getElementById("errorChecker");
     flowchart.prepareFlowchartForSaving();
     let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker = JSON.parse(flowchartJSON);
    
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
-      if (new_checker[1].id == "fc_lvl_0_for_1") {
-        if (new_checker[1].trueBlockId == "lvl_0_for_true_1") {
-          if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0" && new_checker[0].outputExp.localeCompare('"hello chap"', 'en', { sensitivity: 'base' }) === 0) {
-            symbolIndex.style.display = "hide";
-            symbolType.innerHTML = "Declare[1] ✔ , For Loop[2] ✔ , Output[2.1] ✔ ";
-            result.innerHTML="WELL DONE🥇 Correct Answer ✔";
-            console.log("Correct");
-            this.debugTutorialExerciseProgram(flowchart, loopBlockState);
-            errorChecker.style.display = "hide";
+      if (new_checker[1].id == "fc_lvl_0_for_1" && new_checker[1].trueBlockId == "lvl_0_for_true_1") {
+        if (new_checker[1].forLoopVariable.getName() == new_checker[0].getVariableName()) {
+          let forSymbol = new_checker[1] as ForLoop;
+          let nrOfIterations = Math.abs((forSymbol.endValue - forSymbol.startValue) / forSymbol.stepValue);
+          if (nrOfIterations == 4) {
+            if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0" && new_checker[0].outputExp.localeCompare('"hello chap"', 'en', { sensitivity: 'base' }) === 0) {
+              result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done 🥇</span>`;
+              errorChecker.innerHTML = `[1] Declare ✔, [2] For Loop ✔, [2][ForLoop-True][1] Output ✔`;
+              console.log("Correct");
+              this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+              // TODO: add 200 XP points to user's account (this.tutorialExercise.xp)
+            } else {
+              result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+              errorChecker.innerHTML = `❗ Please use an Output Symbol in the For Loop [2] to print out the given expression: \"Hello CHAP\".`;
+              console.log("Wrong");
+              // TODO: add 40 XP points to user's account (this.tutorialExercise.xp / 5)
+            }
           } else {
-            symbolType.style.display = "none";
-            symbolIndex.style.display = "none";
-            result.innerHTML = "SORRY 🥈Wrong Answer ❌";
-            errorChecker.innerHTML = " ⚠ Please Use OUTPUT SYMBOL[2.1] & Make Sure You Type HELLO CHAP❗";
+            result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+            errorChecker.innerHTML = `❗ Please make sure the For Loop Symbol [2] runs 4 times.
+              <br/> Make sure you have assigned the Loop properties correctly: 
+              <br/> -> Start Value, End Value, Step Direction, Step Value`;
+            // TODO: add 40 XP points to user's account (this.tutorialExercise.xp / 5)
             console.log("Wrong");
           }
         } else {
-          
+          result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+          errorChecker.innerHTML = `❗ Please use the same declared variable in the For Loop Symbol [2] to use as the iterator.
+            <br/> Make sure you have assigned the declared Variables and Loop properties correctly.`;
+          // TODO: add 40 XP points to user's account (this.tutorialExercise.xp / 5)
+          console.log("Wrong");
         }
       } else {
-        symbolType.style.display = "none";
-        symbolIndex.style.display = "none";
-        result.innerHTML = "SORRY 🥈Wrong Answer ❌";
-        errorChecker.innerHTML = "⚠Please Use For Loop[2] SYMBOL❗";
+        result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+        errorChecker.innerHTML = `❗ Please use a For Loop [2] Symbol to create a loop structure with a given number of iterations.
+          <br/> Make sure you have assigned the declared Variables and Loop properties correctly.`;
+        // TODO: add 40 XP points to user's account (this.tutorialExercise.xp / 5)
         console.log("Wrong");
       }
     } else {
-      symbolType.style.display = "none";
-      symbolIndex.style.display = "none";
-      result.innerHTML = "SORRY🥉 Wrong Answer ❌";
-      errorChecker.innerHTML = " ⚠ Please Use Declare SYMBOL[1] & Make Sure You Select Correct Data Type❗";
+      result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
+      errorChecker.innerHTML = `❗ Please use a Declare Symbol [1] to declare a variable that will be used in the For Loop. 
+        <br/> Make sure you use the correct Data Type.`;
+      // TODO: add 20 XP points to user's account (this.tutorialExercise.xp / 10)
       console.log("Wrong"); 
     }
   
@@ -382,50 +395,38 @@ export class TutorialMode {
           if (new_checker[2].trueLoopBlock[0].id == "whit_2_lvl_1_if_0") {
             if (new_checker[2].trueLoopBlock[0].trueBlockSymbols[0].id == "ift_0_lvl_2_out_0") {
               if (new_checker[2].trueLoopBlock[1].id == "whit_2_lvl_1_proc_1") {
-                result.innerHTML = "WELL DONE Correct Answer ✔";
+                result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done 🥇</span>`;
                 symbolType.innerHTML = "Declare[1] ✔ , Process[2] ✔ , While Loop[3] ✔ , If Case[3.1] ✔ , Output[3.1.0] ✔ , Process[3.2] ✔ ";
                 console.log("Correct");
-                this.debugTutorialExerciseProgram(flowchart, loopBlockState);
+                // this.debugTutorialExerciseProgram(flowchart, loopBlockState);
               } else {
-                symbolType.style.display = "none";
-                symbolIndex.style.display = "none";
-                result.innerHTML = "SORRY 🥈Wrong Answer ❌";
+                result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
                 errorChecker.innerHTML = " ⚠ Please Use PROCESS SYMBOL[3.2] & Make Sure You TYPE i=i+1❗";
                 console.log("Wrong");
                
               }
             } else {
-              symbolType.style.display = "none";
-              symbolIndex.style.display = "none";
-              result.innerHTML = "SORRY🥈 Wrong Answer ❌";
+              result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
               errorChecker.innerHTML = " ⚠ Please Use OUTPUT SYMBOL[3.1.0] & Make Sure You Display Even Numbers❗";
               console.log("Wrong");
             }
           } else {
-            symbolType.style.display = "none";
-              symbolIndex.style.display = "none";
-              result.innerHTML = "SORRY 🥈Wrong Answer ❌";
-              errorChecker.innerHTML = " ⚠ Please Use IF CASE SYMBOL[3.1] & Make Sure You TYPE {VariableName %2==0}❗";
-              console.log("Wrong");
+            result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥈 Sorry, Try Again 🥈</span>`;
+            errorChecker.innerHTML = " ⚠ Please Use IF CASE SYMBOL[3.1] & Make Sure You TYPE {VariableName %2==0}❗";
+            console.log("Wrong");
           }
         } else {
-          symbolType.style.display = "none";
-          symbolIndex.style.display = "none";
-          result.innerHTML = "SORRY🥉 Wrong Answer ❌";
+          result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
           errorChecker.innerHTML = " ⚠ Please Use WHILE LOOP SYMBOL[3] & Make Sure You TYPE {Variable Name <=10}❗";
           console.log("Wrong");
         }
       } else {
-        symbolType.style.display = "none";
-        symbolIndex.style.display = "none";
-        result.innerHTML = "SORRY🥉Wrong Answer ❌";
+        result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
         errorChecker.innerHTML = " ⚠ Please Use PROCESS SYMBOL[2] & Make Sure You TYPE {Variable Name = 0}❗";
         console.log("Wrong");
       }
     } else {
-      symbolType.style.display = "none";
-      symbolIndex.style.display = "none";
-      result.innerHTML = "SORRY🥉 Wrong Answer ❌";
+      result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉</span>`;
       errorChecker.innerHTML = " ⚠ Please Use DECLARE SYMBOL[1] Create VARIABLE NAME as an INTEGER TYPE❗";
       console.log("Wrong");
     }
@@ -433,7 +434,7 @@ export class TutorialMode {
   }
   /* Tutorial Exercise Functions End */
 
-  public debugTutorialExerciseProgram(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
+  public debugTutorialExerciseProgram(flowchart: Flowchart, loopBlockState: LoopblockstateService, dummyInputs: any[]) {
     // this.menu.close();
     // this.clearConsole();
     // if (this.isConsoleOpen == false) {
@@ -442,7 +443,7 @@ export class TutorialMode {
     loopBlockState.initialize();
     flowchart.isProgramRunning = true;
     flowchart.isAnInputBlockRunning = false;
-    flowchart.validateFlowchart(0, flowchart.SYMBOLS.length, null);
+    flowchart.validateFlowchart(0, flowchart.SYMBOLS.length, null, dummyInputs);
    
   }
 

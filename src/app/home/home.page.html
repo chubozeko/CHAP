@@ -243,7 +243,7 @@
                 <span class="tooltiptext" style="width: 60px;">Minimize</span>
               </div>
               <div class="tooltip">
-                <ion-button (click)="toggleTutorialPanel()" slot="end">
+                <ion-button (click)="closeTutorialPanel()" slot="end">
                   <ion-icon slot="icon-only" name="close" style="color: #ffffff;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Close Tutorial</span>
@@ -278,7 +278,7 @@
                 <span class="tooltiptext" style="width: 60px;">Maximize</span>
               </div>
               <div class="tooltip">
-                <ion-button (click)="toggleTutorialPanel()" slot="end">
+                <ion-button (click)="closeTutorialPanel()" slot="end">
                   <ion-icon slot="icon-only" name="close" style="color: #ffffff;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Close Tutorial</span>
@@ -306,13 +306,12 @@
         <ion-card id="tut_solutionResultsPanel" style="width: 100%; height: auto; display: none;">
           <ion-card-header>
             <ion-card-subtitle>Your solution is: </ion-card-subtitle>
-            <ion-card-title><span id="result"></span></ion-card-title>
+            <ion-card-title id="result"></ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            Check if the following symbols were used correctly: 
-              <span id="symbolType"></span>   : index <span id="symbolIndex"></span> in Flowchart
-               <span id="errorChecker"></span> 
-             
+            <!-- Check if the following symbols were used correctly: 
+              <span id="symbolType"></span>   : index <span id="symbolIndex"></span> in Flowchart -->
+            <span id="errorChecker" style="max-height: 48px; overflow-y: scroll;"></span>
           </ion-card-content>
         </ion-card>
 

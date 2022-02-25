@@ -49,9 +49,8 @@ import { SymbolModals } from "./symbol-modals";
 import { Saver } from "./saver";
 import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
-import {TutorialQPage} from "../tutorial-q/tutorial-q.page";
+import { TutorialQPage } from "../tutorial-q/tutorial-q.page";
 import { ExerciseReader } from "../tutorial-q/read-exercise-data";
-import { Console } from "console";
 import { TutorialMode } from "./tutorial-mode";
 
 
@@ -92,7 +91,7 @@ export class HomePage {
   infoMessage = "";
   pasteBuffer: Array<Symbols>;
   tutorialMode: TutorialMode;
-  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
+  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [], xp: `` }
   timerValue = "00:00";
   startExerciseBtnDisabled = false;
   timer;
@@ -1850,7 +1849,6 @@ export class HomePage {
           let btnRestartExerciseMini = document.getElementById("btn_tut_restartExercise_minimized");
           btnRestartExerciseMini.style.display = "block";
         }
-        
       }
       
     }, 1000);
@@ -1997,7 +1995,8 @@ export class HomePage {
     await modal.present();
   }
 
-  public toggleTutorialPanel(hideSolution?: boolean) {
+  public closeTutorialPanel() {
+    this.stopTimer();
     this.tutorialMode.toggleTutorialPanel();
   }
   
@@ -2006,6 +2005,7 @@ export class HomePage {
     document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
     document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
 
+    document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
     let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
     btnRestartExercise.style.display = "none";
     let btnRestartExerciseMinimized = document.getElementById("btn_tut_restartExercise_minimized");
@@ -2018,13 +2018,26 @@ export class HomePage {
 
   async checkTutorialSolution(showSolution?: boolean) { 
     this.stopTimer();
+    // Clear and open Console
+    this.clearConsole();
+    if (this.isConsoleOpen == false) {
+      this.toggleConsole();
+    }
     // Get pausedTime from this.timerValue
     let mins = Number.parseInt(this.timerValue.substring(0, 2));
     let secs = Number.parseInt(this.timerValue.substring(3)) / 60;
     let pausedTime = mins + secs;
     console.log(" || : pausedTime = " + pausedTime);
     let wasSolutionChecked = this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
-    if (!wasSolutionChecked) {
+    if (wasSolutionChecked) {
+      // Show Restart Exercise buttons
+      let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
+      btnRestartExercise.style.display = "block";
+      if (document.getElementById("tut_toolbar").classList.contains('minimized')) {
+        let btnRestartExerciseMini = document.getElementById("btn_tut_restartExercise_minimized");
+        btnRestartExerciseMini.style.display = "block";
+      }
+    } else {
       const alert = await this.alertC.create({
         cssClass: '',
         header: 'ERROR: No Solution to Check',
