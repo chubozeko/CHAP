@@ -305,9 +305,7 @@ export class Flowchart {
 
       // COMMENT
       else if (this.tempSymbols[i] instanceof Comment) {
-        if (this.isProgramRunning) { 
-          
-         }
+        if (this.isProgramRunning) { }
       }
 
       // IF CASE
@@ -327,7 +325,7 @@ export class Flowchart {
               let ifLoopBlock = new LoopBlock(this.loopBlockState);
               ifLoopBlock.SYMBOLS = ifBlock;
               ifLoopBlock.variables = this.variables.vars;
-              let props = await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+              let props = await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, ifLoopBlock.SYMBOLS.length);
               this.variables.vars = props.variables;
               this.isAnInputBlockRunning = props.isAnInputBlockRunning;
               if (this.isAnInputBlockRunning) {
@@ -361,7 +359,7 @@ export class Flowchart {
               console.log("While Loop Block: ", whileLoopBlock);
   
               while (whileBoolean) {
-                let props = await whileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, whileLoopBlock.SYMBOLS.length);
+                let props = await whileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, whileLoopBlock.SYMBOLS.length);
                 // Check whileBoolean after validating While Loop Block symbols
                 this.variables.vars = props.variables;
                 this.isAnInputBlockRunning = props.isAnInputBlockRunning;
@@ -410,7 +408,7 @@ export class Flowchart {
                     // Validate forBlock symbols only
                     this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
                     this.loopBlockState.loopSymbolType = "ForLoop";
-                    let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
+                    let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, forLoopBlock.SYMBOLS.length);
                     this.variables.vars = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     if (this.isAnInputBlockRunning) {
@@ -432,7 +430,7 @@ export class Flowchart {
                     // Validate forBlock symbols only
                     this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
                     this.loopBlockState.loopSymbolType = "ForLoop";
-                    let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
+                    let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, forLoopBlock.SYMBOLS.length);
                     this.variables.vars = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     if (this.isAnInputBlockRunning) {
@@ -490,7 +488,7 @@ export class Flowchart {
                   else { doWhileBoolean = false; }
                   continue;
                 } else {
-                  let props = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
+                  let props = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, doWhileLoopBlock.SYMBOLS.length);
                   // Check doWhileBoolean after validating Do While Loop Block symbols
                   this.variables.vars = props.variables;
                   this.isAnInputBlockRunning = props.isAnInputBlockRunning;
@@ -517,10 +515,10 @@ export class Flowchart {
     }
 
     this.isProgramRunning = false;
-    this.updateLoopBlockState();
+    this.updateLoopBlockState(dummyInputs);
   }
 
-  updateLoopBlockState() {
+  updateLoopBlockState(dummyInputs?: any[]) {
     // Update Loop Block State (variables, isAnInputBlockRunning)
     this.loopBlockState.variables = this.variables.vars;
     this.loopBlockState.isAnInputBlockRunning = this.isAnInputBlockRunning;
