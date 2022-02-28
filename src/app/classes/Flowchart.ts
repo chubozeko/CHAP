@@ -109,15 +109,11 @@ export class Flowchart {
   updateVariables(variable: Variable, arrayIndex?: number) {
     for (let j = 0; j < this.variables.vars.length; j++) {
       if (variable.getIsArray()) {
-        if (
-          variable.getName() == this.variables.vars[j].getName()
-        ) {
+        if (variable.getName() == this.variables.vars[j].getName()) {
           this.variables.vars[j].variable[arrayIndex] = variable.getValue();
         }
       } else {
-        if (
-          variable.getName() == this.variables.vars[j].getName()
-        ) {
+        if (variable.getName() == this.variables.vars[j].getName()) {
           this.variables.vars[j].setValue(variable.getValue());
         }
       }
@@ -127,15 +123,11 @@ export class Flowchart {
   findVariable(variable: Variable, arrayIndex?: number) : Variable {
     for (let j = 0; j < this.variables.vars.length; j++) {
       if (variable.getIsArray()) {
-        if (
-          variable.getName() == this.variables.vars[j].getName()
-        ) {
+        if (variable.getName() == this.variables.vars[j].getName()) {
           return this.variables.vars[j].variable[arrayIndex];
         }
       } else {
-        if (
-          variable.getName() == this.variables.vars[j].getName()
-        ) {
+        if (variable.getName() == this.variables.vars[j].getName()) {
           return this.variables.vars[j];
         }
       }
@@ -189,12 +181,7 @@ export class Flowchart {
   }
 
   async automateInputPrompt(dummyInputs: any[], inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
-    let dummyData;
-    for (let k=0; k<dummyInputs.length; k++) {
-      if (inputSym.id == dummyInputs[k].id) {
-        dummyData = dummyInputs[k].input;
-      }
-    }
+    let dummyData = dummyInputs[this.loopBlockState.inputCount].input;
     inputSym.inputData = dummyData;
     inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
     this.consoleLog("noerrorAlert", "> Input: " + dummyData);
@@ -203,6 +190,7 @@ export class Flowchart {
     this.isAnInputBlockRunning = false;
     this.loopBlockState.isAnInputBlockRunning = false;
     this.loopBlockState.isProgramRunning = true;
+    this.loopBlockState.inputCount++;
     // this.validateFlowchart(++symIndex, this.tempSymbols.length, this.variables.vars);
     console.log("> Input (dismissed) Complete");
   }

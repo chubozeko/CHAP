@@ -178,12 +178,7 @@ export class LoopBlock {
   }
 
   async automateInputPrompt(dummyInputs: any[], inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
-    let dummyData;
-    for (let k=0; k<dummyInputs.length; k++) {
-      if (inputSym.id == dummyInputs[k].id) {
-        dummyData = dummyInputs[k].input;
-      }
-    }
+    let dummyData = dummyInputs[this.loopBlockState.inputCount].input;
     inputSym.inputData = dummyData;
     inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
     this.consoleLog("noerrorAlert", "> Input: " + dummyData);
@@ -192,6 +187,7 @@ export class LoopBlock {
     this.isAnInputBlockRunning = false;
     this.loopBlockState.isAnInputBlockRunning = false;
     this.loopBlockState.isProgramRunning = true;
+    this.loopBlockState.inputCount++;
     // this.validateFlowchart(++symIndex, this.tempSymbols.length, this.variables.vars);
     console.log("> [LoopBlock] Input (dismissed) Complete");
   }

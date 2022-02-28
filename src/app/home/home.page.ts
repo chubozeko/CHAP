@@ -70,6 +70,7 @@ export class HomePage {
 
   flowchart: Flowchart;
   flowchartSymbolList: Flowchart;
+  referenceFC: Flowchart;
   title = "CHAP";
   fileName = "";
   toolbarTooltip = "";
@@ -1414,31 +1415,33 @@ export class HomePage {
     consoleCHAP.innerHTML = "";
   }
 
-  async clearWorkspaceAlert(newProject: boolean) {
+  async clearWorkspaceAlert(newProject: boolean, startTutorialExercise?: boolean) {
+    let messageDefault = `Any unsaved projects will be cleared. Are you sure?`;
+    let messageTutorial = `Any unsaved projects will be cleared before starting an exercise. Are you sure?`;
     const alert = await this.alertC.create({
       cssClass: '',
-      header: 'Clear Workspace...',
-      message: 'Are you sure?',
+      header: 'Clearing Workspace...',
+      message: startTutorialExercise ? messageTutorial : messageDefault,
       buttons: [
         {
           text: 'Yes',
           cssClass: 'danger',
           handler: () => {
-            this.clearWorkspace(newProject);
+            this.clearWorkspace(newProject, startTutorialExercise);
           }
         },
         {
           text: 'No',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => { }
+          handler: () => {  }
         }
       ]
     });
     await alert.present();
   }
 
-  public clearWorkspace(clearProjectName: boolean) {
+  public clearWorkspace(clearProjectName: boolean, startTutorialExercise?: boolean) {
     this.menu.close();
     this.clearConsole();
     let startSym, stopSym, arrowInit;
@@ -1469,6 +1472,9 @@ export class HomePage {
       let fileN = document.getElementById("fileName") as HTMLInputElement;
       fileN.value = "";
     }
+
+    if (startTutorialExercise != null && startTutorialExercise == true) 
+      this.startExercise();
 
   }
 
@@ -1869,8 +1875,8 @@ export class HomePage {
       try {
         if (data.data != undefined) {
           this.tutorialMode = new TutorialMode(this.alertC);
-          this.tutorialMode.toggleTutorialPanel();
           this.tutorialMode.tutorialExercise = data.data;
+          // this.clearWorkspace(true, true);
           this.startExercise();
         }
       } catch (error) {
@@ -1878,7 +1884,6 @@ export class HomePage {
       }
     });
     await modal.present();
-    
   }
 
   public printFlowchart() {
@@ -2001,10 +2006,11 @@ export class HomePage {
   }
   
   public startExercise() {
+    this.tutorialMode.toggleTutorialPanel();
+    // Load Exercise into Tutorial Panel
     // this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
     document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
     document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
-
     document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
     let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
     btnRestartExercise.style.display = "none";
@@ -2012,7 +2018,12 @@ export class HomePage {
     btnRestartExerciseMinimized.style.display = "none";
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
     tutSolutionPanel.style.display = "none";
-    this.activateTimer(1, 0, -1); // Start Timer
+    // Load 'this.tutorialExercise.solution' and create a reference Flowchart (referenceFC)
+    this.loadSymbolsIntoBlock(this.tutorialMode.tutorialExercise.solution, this.workspace, this.tutorialMode.tutorialExercise.solution.length);
+    this.referenceFC = this.flowchart;
+    this.clearWorkspace(true);
+    // Start Timer
+    this.activateTimer(3, 0, -1);
     this.isTutorialExerciseOngoing = true;
   }
 
@@ -2028,7 +2039,7 @@ export class HomePage {
     let secs = Number.parseInt(this.timerValue.substring(3)) / 60;
     let pausedTime = mins + secs;
     console.log(" || : pausedTime = " + pausedTime);
-    let wasSolutionChecked = this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
+    let wasSolutionChecked = this.tutorialMode.checkTutorialSolution(this.flowchart, this.referenceFC, this.loopBlockState, showSolution);
     if (wasSolutionChecked) {
       // Show Restart Exercise buttons
       let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
