@@ -317,11 +317,11 @@ export class TutorialMode {
         if (userFCSyms[2].id == referenceFCSyms[2].id && userFCSyms[2].trueBlockId == referenceFCSyms[2].trueBlockId && userFCSyms[2].falseBlockId == referenceFCSyms[2].falseBlockId) {
           if (userFCSyms[2].ifStatement.includes("%") == true) {
             if (userFCSyms[2].trueBlockSymbols[0].id == referenceFCSyms[2].trueBlockSymbols[0].id && 
-            (userFCSyms[2].trueBlockSymbols[0].outputExp.localeCompare('"odd"', 'en', { sensitivity: 'base' }) === 0 || 
-            userFCSyms[2].trueBlockSymbols[0].outputExp.localeCompare('"even"', 'en', { sensitivity: 'base' }) === 0)) {
+            (userFCSyms[2].trueBlockSymbols[0].outputExp.localeCompare('"Number is Odd"', 'en', { sensitivity: 'base' }) === 0 || 
+            userFCSyms[2].trueBlockSymbols[0].outputExp.localeCompare('"Number is Even"', 'en', { sensitivity: 'base' }) === 0)) {
               if (userFCSyms[2].falseBlockSymbols[0].id == referenceFCSyms[2].falseBlockSymbols[0].id && 
-              (userFCSyms[2].falseBlockSymbols[0].outputExp.localeCompare('"odd"', 'en', { sensitivity: 'base' }) === 0 || 
-              userFCSyms[2].falseBlockSymbols[0].outputExp.localeCompare('"even"', 'en', { sensitivity: 'base' }) === 0)) {
+              (userFCSyms[2].falseBlockSymbols[0].outputExp.localeCompare('"number is odd"', 'en', { sensitivity: 'base' }) === 0 || 
+              userFCSyms[2].falseBlockSymbols[0].outputExp.localeCompare('"number is even"', 'en', { sensitivity: 'base' }) === 0)) {
                 marks++;
                 errorChecker.innerHTML = `[1] Declare ✔, [2] Input ✔, [3] If Case ✔, [3][IfCase-True][1] Output ✔, [3][IfCase-False][1] Output ✔`;
               } else {
