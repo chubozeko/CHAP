@@ -31,8 +31,7 @@ export class TutorialQPage implements OnInit {
       level: this.exercises[id].level,
       description: this.exercises[id].description,
       filename: this.exercises[id].filename,
-      solution: this.exercises[id].solutionFlowchart,
-      xp: this.exercises[id].xp
+      solution: this.exercises[id].solutionFlowchart
     };
     this.modal.dismiss(tutExercise);
   }

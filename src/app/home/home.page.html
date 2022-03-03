@@ -253,7 +253,7 @@
                 <span class="tooltiptext" style="width: 60px;">Minimize</span>
               </div>
               <div class="tooltip">
-                <ion-button (click)="closeTutorialPanel()" slot="end">
+                <ion-button (click)="toggleTutorialPanel()" slot="end">
                   <ion-icon slot="icon-only" name="close" style="color: #ffffff;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Close Tutorial</span>
@@ -265,12 +265,11 @@
             <div style="float: left; padding: 4px;">
               <ion-icon slot="icon-only" name="school" style="color: #b40615;"></ion-icon>
               &nbsp;&nbsp;&nbsp;
-              <ion-label slot="start" id="tut_toolbar_mini_title">{{tutorialExercise.title}}</ion-label>
-              <ion-label slot="start" > - {{timerValue}} </ion-label>
+              <ion-label slot="start" > {{tutorialExercise.title}} - {{timerValue}} </ion-label>
             </div>
             <ion-buttons slot="end" style="float: right; padding-bottom: 12px;">
               <div class="tooltip">
-                <ion-button id="btn_tut_restartExercise_minimized" (click)="startExercise()" slot="end" style="width: auto;" disabled="{{startExerciseBtnDisabled}}">
+                <ion-button (click)="startExercise()" slot="end" style="width: auto;" disabled="{{startExerciseBtnDisabled}}">
                   <ion-icon slot="icon-only" name="refresh" style="color: #10dc60;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Restart Exercise</span>
@@ -288,7 +287,7 @@
                 <span class="tooltiptext" style="width: 60px;">Maximize</span>
               </div>
               <div class="tooltip">
-                <ion-button (click)="closeTutorialPanel()" slot="end">
+                <ion-button (click)="toggleTutorialPanel()" slot="end">
                   <ion-icon slot="icon-only" name="close" style="color: #ffffff;"></ion-icon>
                 </ion-button>
                 <span class="tooltiptext" style="width: 60px;">Close Tutorial</span>
@@ -307,8 +306,8 @@
               </ion-card-content>
             </ion-card>
             <ion-text style="width: 100%; height: auto; padding: 2px;"> <h2 style="text-align: center;"><span id="timerstop "> <b >{{timerValue}}</b></span> </h2> </ion-text>
-            <ion-button id="btn_tut_checkSolution" color="warning" expand="block" (click)="checkTutorialSolution()"> Check Solution </ion-button>
-            <ion-button id="btn_tut_restartExercise" color="success" expand="block" (click)="startExercise()" disabled="{{startExerciseBtnDisabled}}"> Restart Exercise </ion-button>    
+            <!-- <ion-button id="btn_tut_startExercise" color="success" expand="block" (click)="startExercise()" disabled="{{startExerciseBtnDisabled}}"> Start Exercise </ion-button>     -->
+            <ion-button id="btn_tut_checkSolution" color="warning" expand="block" (click)="checkTutorialSolution()"> Check Solution </ion-button>    
             
           </ion-card-content>
         </ion-card>
@@ -316,12 +315,13 @@
         <ion-card id="tut_solutionResultsPanel" style="width: 100%; height: auto; display: none;">
           <ion-card-header>
             <ion-card-subtitle>Your solution is: </ion-card-subtitle>
-            <ion-card-title id="result"></ion-card-title>
+            <ion-card-title><span id="result"></span></ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <!-- Check if the following symbols were used correctly: 
-              <span id="symbolType"></span>   : index <span id="symbolIndex"></span> in Flowchart -->
-            <span id="errorChecker" style="max-height: 48px; overflow-y: scroll;"></span>
+            Check if the following symbols were used correctly: 
+              <span id="symbolType"></span>   : index <span id="symbolIndex"></span> in Flowchart
+               <span id="errorChecker"></span> 
+             
           </ion-card-content>
         </ion-card>
 
