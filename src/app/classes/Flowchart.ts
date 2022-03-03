@@ -109,11 +109,15 @@ export class Flowchart {
   updateVariables(variable: Variable, arrayIndex?: number) {
     for (let j = 0; j < this.variables.vars.length; j++) {
       if (variable.getIsArray()) {
-        if (variable.getName() == this.variables.vars[j].getName()) {
+        if (
+          variable.getName() == this.variables.vars[j].getName()
+        ) {
           this.variables.vars[j].variable[arrayIndex] = variable.getValue();
         }
       } else {
-        if (variable.getName() == this.variables.vars[j].getName()) {
+        if (
+          variable.getName() == this.variables.vars[j].getName()
+        ) {
           this.variables.vars[j].setValue(variable.getValue());
         }
       }
@@ -123,11 +127,15 @@ export class Flowchart {
   findVariable(variable: Variable, arrayIndex?: number) : Variable {
     for (let j = 0; j < this.variables.vars.length; j++) {
       if (variable.getIsArray()) {
-        if (variable.getName() == this.variables.vars[j].getName()) {
+        if (
+          variable.getName() == this.variables.vars[j].getName()
+        ) {
           return this.variables.vars[j].variable[arrayIndex];
         }
       } else {
-        if (variable.getName() == this.variables.vars[j].getName()) {
+        if (
+          variable.getName() == this.variables.vars[j].getName()
+        ) {
           return this.variables.vars[j];
         }
       }
@@ -141,7 +149,7 @@ export class Flowchart {
   async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
     const alert = await this.alertC.create({
      // header: alertTitle,
-      message: '<label class="alertTitle"><b>' + alertTitle + '</b></label>',
+      message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
       inputs: [
         {
           name: 'inputText',                
@@ -180,22 +188,7 @@ export class Flowchart {
     await alert.present();
   }
 
-  async automateInputPrompt(dummyInputs: any[], inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
-    let dummyData = dummyInputs[this.loopBlockState.inputCount].input;
-    inputSym.inputData = dummyData;
-    inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
-    this.consoleLog("noerrorAlert", "> Input: " + dummyData);
-    console.log("> Input (entered) Complete");
-    inputSym.isInputEntered = false;
-    this.isAnInputBlockRunning = false;
-    this.loopBlockState.isAnInputBlockRunning = false;
-    this.loopBlockState.isProgramRunning = true;
-    this.loopBlockState.inputCount++;
-    // this.validateFlowchart(++symIndex, this.tempSymbols.length, this.variables.vars);
-    console.log("> Input (dismissed) Complete");
-  }
-
-  async validateFlowchart(startIndex: number, endIndex: number, variables: any[], dummyInputs?: any[]) {
+  async validateFlowchart(startIndex: number, endIndex: number, variables: any[]) {
     console.log("==] isProgramRunning = " + this.isProgramRunning + " ; ==] isAnInputBlockRunning = " + this.isAnInputBlockRunning);
     if (variables == null) {
       this.variables.vars = [];
@@ -237,23 +230,12 @@ export class Flowchart {
               this.loopBlockState.currentBlock = this;
               this.loopBlockState.inputSymbolIndex = i;
 
-              if (dummyInputs == null || dummyInputs == undefined) {
-                this.showInputPrompt(inputSym,
-                  inputSym.inputPromptProps[0],
-                  inputSym.inputPromptProps[1],
-                  inputSym.inputPromptProps[2],
-                  inputSym.inputPromptProps[3],
-                  inputSym.inputPromptProps[4]);
-              } else {
-                this.automateInputPrompt(dummyInputs,
-                  inputSym,
-                  inputSym.inputPromptProps[0],
-                  inputSym.inputPromptProps[1],
-                  inputSym.inputPromptProps[2],
-                  inputSym.inputPromptProps[3],
-                  inputSym.inputPromptProps[4]);
-              }
-              
+              this.showInputPrompt(inputSym,
+                inputSym.inputPromptProps[0],
+                inputSym.inputPromptProps[1],
+                inputSym.inputPromptProps[2],
+                inputSym.inputPromptProps[3],
+                inputSym.inputPromptProps[4]);
               console.log("< Input Symbol Complete in FC");
             }
           }
@@ -293,7 +275,9 @@ export class Flowchart {
 
       // COMMENT
       else if (this.tempSymbols[i] instanceof Comment) {
-        if (this.isProgramRunning) { }
+        if (this.isProgramRunning) { 
+          
+         }
       }
 
       // IF CASE
@@ -313,7 +297,7 @@ export class Flowchart {
               let ifLoopBlock = new LoopBlock(this.loopBlockState);
               ifLoopBlock.SYMBOLS = ifBlock;
               ifLoopBlock.variables = this.variables.vars;
-              let props = await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, ifLoopBlock.SYMBOLS.length);
+              let props = await ifLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
               this.variables.vars = props.variables;
               this.isAnInputBlockRunning = props.isAnInputBlockRunning;
               if (this.isAnInputBlockRunning) {
@@ -347,7 +331,7 @@ export class Flowchart {
               console.log("While Loop Block: ", whileLoopBlock);
   
               while (whileBoolean) {
-                let props = await whileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, whileLoopBlock.SYMBOLS.length);
+                let props = await whileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, whileLoopBlock.SYMBOLS.length);
                 // Check whileBoolean after validating While Loop Block symbols
                 this.variables.vars = props.variables;
                 this.isAnInputBlockRunning = props.isAnInputBlockRunning;
@@ -396,7 +380,7 @@ export class Flowchart {
                     // Validate forBlock symbols only
                     this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
                     this.loopBlockState.loopSymbolType = "ForLoop";
-                    let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, forLoopBlock.SYMBOLS.length);
+                    let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
                     this.variables.vars = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     if (this.isAnInputBlockRunning) {
@@ -418,7 +402,7 @@ export class Flowchart {
                     // Validate forBlock symbols only
                     this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
                     this.loopBlockState.loopSymbolType = "ForLoop";
-                    let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, forLoopBlock.SYMBOLS.length);
+                    let props = await forLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
                     this.variables.vars = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     if (this.isAnInputBlockRunning) {
@@ -476,7 +460,7 @@ export class Flowchart {
                   else { doWhileBoolean = false; }
                   continue;
                 } else {
-                  let props = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, dummyInputs, 0, doWhileLoopBlock.SYMBOLS.length);
+                  let props = await doWhileLoopBlock.validateLoopBlock(this.variables.vars, this.isAnInputBlockRunning, 0, doWhileLoopBlock.SYMBOLS.length);
                   // Check doWhileBoolean after validating Do While Loop Block symbols
                   this.variables.vars = props.variables;
                   this.isAnInputBlockRunning = props.isAnInputBlockRunning;
@@ -503,10 +487,10 @@ export class Flowchart {
     }
 
     this.isProgramRunning = false;
-    this.updateLoopBlockState(dummyInputs);
+    this.updateLoopBlockState();
   }
 
-  updateLoopBlockState(dummyInputs?: any[]) {
+  updateLoopBlockState() {
     // Update Loop Block State (variables, isAnInputBlockRunning)
     this.loopBlockState.variables = this.variables.vars;
     this.loopBlockState.isAnInputBlockRunning = this.isAnInputBlockRunning;

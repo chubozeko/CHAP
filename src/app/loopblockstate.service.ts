@@ -17,7 +17,6 @@ export class LoopblockstateService {
 
   currentBlock: LoopBlock | Flowchart;
   inputSymbolIndex: number;
-  inputCount: number;
 
   parentBlock: LoopBlock | Flowchart;
   loopSymbolIndex: number;
@@ -35,7 +34,6 @@ export class LoopblockstateService {
     this.isProgramRunning = false;
     this.currentBlock = null;
     this.inputSymbolIndex = null;
-    this.inputCount = 0;
     this.parentBlock = null;
     this.loopSymbolIndex = null;
     this.passDoWhile = true;
