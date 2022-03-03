@@ -1764,7 +1764,7 @@ export class HomePage {
     await actionSheet.present();
   }
 
-  public debugProgram() {
+  async debugProgram() {
     this.menu.close();
     this.clearConsole();
     if (this.isConsoleOpen == false) {
@@ -1870,17 +1870,18 @@ export class HomePage {
     this.menu.close();
     const modal = await this.modalC.create({
       component: TutorialQPage,
+      componentProps: { isExerciseRunning: this.isTutorialExerciseOngoing }
     });
     modal.onDidDismiss().then((data) => {
       try {
         if (data.data != undefined) {
           this.tutorialMode = new TutorialMode(this.alertC);
           this.tutorialMode.tutorialExercise = data.data;
-          // this.clearWorkspace(true, true);
+          this.tutorialMode.toggleTutorialPanel();
           this.startExercise();
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     });
     await modal.present();
@@ -2006,7 +2007,7 @@ export class HomePage {
   }
   
   public startExercise() {
-    this.tutorialMode.toggleTutorialPanel();
+    this.stopTimer();
     // Load Exercise into Tutorial Panel
     // this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
     document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;

@@ -162,7 +162,8 @@ export class Flowchart {
           text: "OK",
           handler: data => {
             inputSym.inputData = data.inputText;
-            inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+            let updatedVar = inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+            this.loopBlockState.enteredInputs.push(updatedVar);
             this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
             console.log("> Input (entered) Complete");
           }
@@ -183,7 +184,8 @@ export class Flowchart {
   async automateInputPrompt(dummyInputs: any[], inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
     let dummyData = dummyInputs[this.loopBlockState.inputCount].input;
     inputSym.inputData = dummyData;
-    inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
+    let updatedVar = inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
+    this.loopBlockState.enteredInputs.push(updatedVar);
     this.consoleLog("noerrorAlert", "> Input: " + dummyData);
     console.log("> Input (entered) Complete");
     inputSym.isInputEntered = false;
@@ -227,7 +229,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let inputSym = this.tempSymbols[i] as Input;
-            let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, i);
+            let didInputRun = inputSym.validateInputSymbol(this.variables.vars, i);
             if (!didInputRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;

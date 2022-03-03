@@ -159,7 +159,8 @@ export class LoopBlock {
           text: "OK",
           handler: data => {
             inputSym.inputData = data.inputText;
-            inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+            let updatedVar = inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+            this.loopBlockState.enteredInputs.push(updatedVar);
             this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
             console.log("> Input (entered) Complete");
           }
@@ -180,7 +181,8 @@ export class LoopBlock {
   async automateInputPrompt(dummyInputs: any[], inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
     let dummyData = dummyInputs[this.loopBlockState.inputCount].input;
     inputSym.inputData = dummyData;
-    inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
+    let updatedVar = inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
+    this.loopBlockState.enteredInputs.push(updatedVar);
     this.consoleLog("noerrorAlert", "> Input: " + dummyData);
     console.log("> Input (entered) Complete");
     inputSym.isInputEntered = false;

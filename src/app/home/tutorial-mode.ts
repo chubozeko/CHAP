@@ -108,27 +108,38 @@ export class TutorialMode {
     let tutToolbar = document.getElementById("tut_toolbar");
     let tutExercisePanel = document.getElementById("tut_exercisePanel");
     let btnCheckSolution = document.getElementById("btn_tut_checkSolution");
+    let btnRunSolution = document.getElementById("btn_tut_runSolution");
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    let marksObtained = 0;
 
     if (tutSolutionPanel.style.display == "none" || showSolution) {
       if (flowchart.SYMBOLS.length > 0) {
         if (this.tutorialExercise.title == "Exercise 1") {
-          this.checkExercise1(flowchart, loopBlockState);
+          marksObtained = this.checkExercise1(flowchart, loopBlockState);
           this.activateTimer(0, 0, 0);
         } else if (this.tutorialExercise.title == "Exercise 2") {
-          this.checkExercise2(flowchart, loopBlockState);
+          marksObtained = this.checkExercise2(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 3") {
-          this.checkExercise3(flowchart, loopBlockState);
+          marksObtained = this.checkExercise3(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 4") {
-          this.checkExercise4(flowchart, loopBlockState);
+          marksObtained = this.checkExercise4(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 5") {
-          this.checkExercise5(flowchart, loopBlockState);
+          marksObtained = this.checkExercise5(flowchart, loopBlockState);
         } else {
           console.error("Exercise Selection ERROR! Please contact Developers.");
         }
         // Show Solution panel
         tutSolutionPanel.style.display = "block";
-        btnCheckSolution.innerHTML = "Hide Solution";
+        if (marksObtained >= 1) {
+          btnRunSolution.style.display = "block";
+          btnCheckSolution.style.display = "none";
+          btnCheckSolution.innerHTML = "Check Solution";
+        } else {
+          btnRunSolution.style.display = "none";
+          btnCheckSolution.style.display = "block";
+          btnCheckSolution.innerHTML = "Hide Solution";
+        }
+        
         if (tutToolbar.classList.contains('minimized')) {
           tutExercisePanel.style.display = "block";
           // Show Maximized toolbar buttons
@@ -144,6 +155,8 @@ export class TutorialMode {
     } else {
       // Hide Solution panel
       tutSolutionPanel.style.display = "none";
+      btnRunSolution.style.display = "none";
+      btnCheckSolution.style.display = "none";
       btnCheckSolution.innerHTML = "Check Solution";
      
       if (tutExercisePanel.style.display == "block") {
@@ -202,6 +215,7 @@ export class TutorialMode {
       default: break;
     }
 
+    return marks;
   }
 
   private checkExercise2(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
@@ -230,19 +244,21 @@ export class TutorialMode {
       { inputIndex: 0, input: 2 },
       { inputIndex: 1, input: 2 }
     ];
-    let referenceCO = this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, dummyInputs);
+    this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, dummyInputs);
+    let referenceCO = document.getElementById("console").innerHTML.toLowerCase().toString();
     this.clearConsole();
-    let userCO = this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
+    this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
+    let userCO = document.getElementById("console").innerHTML.toLowerCase();
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
-    if (userCO == referenceCO) {
+    if (userCO == referenceCO && userCO != '') {
       marks++;
     }
     // 2. Compare Flowchart Structure
     if (userFCSyms[0].id == referenceFCSyms[0].id) {
       if (userFCSyms[1].id == referenceFCSyms[1].id) {
         if (userFCSyms[2].id == referenceFCSyms[2].id) {
-          if (userFCSyms[3].id == referenceFCSyms[3].id && userFCSyms[3].expression.includes("+")) {
+          if (userFCSyms[3].id == referenceFCSyms[3].id && userFCSyms[3].getExpression().includes("+")) {
             if (userFCSyms[4].id == referenceFCSyms[4].id) {
               marks++;
               errorChecker.innerHTML = `[1] Declare ✔, [2] Input ✔, [3] Input ✔, [4] Process ✔, [5] Output ✔`;
@@ -283,6 +299,8 @@ export class TutorialMode {
       break;
       default: break;
     }
+
+    return marks;
   }
 
   private checkExercise3(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
@@ -296,15 +314,19 @@ export class TutorialMode {
     let dummyInputs = [
       { inputIndex: 0, input: 2 }
     ];
-    let referenceCO = this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, dummyInputs);
+    this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, dummyInputs);
+    let referenceCO = document.getElementById("console").innerHTML.toLowerCase();
     this.clearConsole();
-    let userCO = this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
+    this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
+    let userCO = document.getElementById("console").innerHTML.toLowerCase();
     // ** Test 2: Run program with dummyInputs: 3 -> odd**
     dummyInputs = [
       { inputIndex: 3, input: 3 }
     ];
+    this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, dummyInputs);
     referenceCO += this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, dummyInputs);
     this.clearConsole();
+    this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
     userCO += this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
@@ -366,6 +388,8 @@ export class TutorialMode {
       break;
       default: break;
     }
+
+    return marks;
   }
 
   private checkExercise4(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
@@ -375,9 +399,12 @@ export class TutorialMode {
     let referenceFCSyms = this.referenceFC.SYMBOLS;
     let marks = 0;
     // 1. Compare Console Outputs (CO)
-    let referenceCO = this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, null);
+    this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, null);
+    let referenceCO = document.getElementById("console").innerHTML.toLowerCase();
     this.clearConsole();
-    let userCO = this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+    this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+    let userCO = document.getElementById("console").innerHTML.toLowerCase();
+    
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
     if (userCO == referenceCO) {
@@ -430,6 +457,8 @@ export class TutorialMode {
       break;
       default: break;
     }
+
+    return marks;
   }
 
   private checkExercise5(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
@@ -439,9 +468,11 @@ export class TutorialMode {
     let referenceFCSyms = this.referenceFC.SYMBOLS;
     let marks = 0;
     // 1. Compare Console Outputs (CO)
-    let referenceCO = this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, null);
+    this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, null);
+    let referenceCO = document.getElementById("console").innerHTML.toLowerCase();
     this.clearConsole();
-    let userCO = this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+    this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+    let userCO = document.getElementById("console").innerHTML.toLowerCase();
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
     if (userCO == referenceCO) {
@@ -492,6 +523,7 @@ export class TutorialMode {
       default: break;
     }
 
+    return marks;
   }
   /* Tutorial Exercise Functions End */
 
@@ -505,9 +537,6 @@ export class TutorialMode {
     flowchart.isProgramRunning = true;
     flowchart.isAnInputBlockRunning = false;
     flowchart.validateFlowchart(0, flowchart.SYMBOLS.length, null, dummyInputs);
-    // Return the Console outputs
-    let chapConsole = document.getElementById("console");
-    return chapConsole.innerHTML.toLowerCase();
   }
 
   public clearConsole() {
