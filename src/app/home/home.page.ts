@@ -2013,6 +2013,8 @@ export class HomePage {
     document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
     document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
     document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
+    document.getElementById("btn_tut_checkSolution").style.display = "block";
+    document.getElementById("btn_tut_runSolution").style.display = "none";
     let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
     btnRestartExercise.style.display = "none";
     let btnRestartExerciseMinimized = document.getElementById("btn_tut_restartExercise_minimized");

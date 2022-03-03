@@ -13,31 +13,43 @@
 <ion-content padding color="secondary">
 <ion-list>
   <ion-item>
-    <p style="overflow: visible;"><b>Exercise {{exercises[0].exer_id}}:</b> {{exercises[0].description}} </p>
+    <p style="white-space: pre-wrap;">
+      <b>Exercise {{exercises[0].exer_id}}:</b> {{exercises[0].description}} <br/>
+      &nbsp; <i><b>Difficulty:</b> {{exercises[0].level}}</i>
+    </p>
     <ion-button id="level1" color="success" (click)="applyAndCloseModal(0)">Start</ion-button>
   </ion-item>
   <ion-item>
-    <p ><b>Exercise {{exercises[1].exer_id}}:</b> {{exercises[1].description}} </p>
+    <p style="white-space: pre-wrap;">
+      <b>Exercise {{exercises[1].exer_id}}:</b> {{exercises[1].description}} <br/>
+      &nbsp; <i><b>Difficulty:</b> {{exercises[1].level}}</i>
+    </p>
     <ion-button id="level2" color="success" (click)="applyAndCloseModal(1)">Start</ion-button>
   </ion-item>
   <ion-item>
-    <p ><b>Exercise {{exercises[2].exer_id}}:</b> {{exercises[2].description}} </p>
+    <p style="white-space: pre-wrap;">
+      <b>Exercise {{exercises[2].exer_id}}:</b> {{exercises[2].description}} <br/>
+      &nbsp; <i><b>Difficulty:</b> {{exercises[2].level}}</i>
+    </p>
     <ion-button id="level3"color="success" (click)="applyAndCloseModal(2)">Start</ion-button>
   </ion-item>
   <ion-item>
-    <p ><b>Exercise {{exercises[3].exer_id}}:</b> {{exercises[3].description}} </p>
+    <p style="white-space: pre-wrap;">
+      <b>Exercise {{exercises[3].exer_id}}:</b> {{exercises[3].description}} <br/>
+      &nbsp; <i><b>Difficulty:</b> {{exercises[3].level}}</i>
+    </p>
     <ion-button id="level4" color="success" (click)="applyAndCloseModal(3)">Start</ion-button>
   </ion-item>
   <ion-item>
-    <p ><b>Exercise {{exercises[4].exer_id}}:</b> {{exercises[4].description}} </p>
+    <p style="white-space: pre-wrap;">
+      <b>Exercise {{exercises[4].exer_id}}:</b> {{exercises[4].description}} <br/>
+      &nbsp; <i><b>Difficulty:</b> {{exercises[4].level}}</i>
+    </p>
     <ion-button id="level5"color="success" (click)="applyAndCloseModal(4)">Start</ion-button>
      
   </ion-item>
 </ion-list>
   
-
-  
-
 </ion-content>
 
 <ion-footer  >

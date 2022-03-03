@@ -219,7 +219,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let declareSym = this.tempSymbols[i] as Declare;
-            this.variables.vars = await declareSym.parseDeclareExp(this.variables.vars);
+            this.variables.vars = declareSym.parseDeclareExp(this.variables.vars);
           }
         }
       }
@@ -267,7 +267,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let processSym = this.tempSymbols[i] as Process;
-            let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars, this.chapConsole);
+            let didProcessRun = processSym.validateProcessSymbol(this.variables.vars, this.chapConsole);
             if (!didProcessRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -378,7 +378,7 @@ export class Flowchart {
             // TODO: Refactor For Loop Validation
             let tempArrIndex: number;
             let forSymbol = this.tempSymbols[i] as ForLoop;
-            let didForLoopRun = await forSymbol.validateForLoop(this.variables.vars, this.chapConsole);
+            let didForLoopRun = forSymbol.validateForLoop(this.variables.vars, this.chapConsole);
             if (didForLoopRun) {
               forSymbol.setCurrentValue(forSymbol.forLoopVariable.getValue());
               // Add forBlock symbols to a LoopBlock

@@ -224,7 +224,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let declareSym = this.tempSymbols[i] as Declare;
-            this.variables = await declareSym.parseDeclareExp(this.variables);
+            this.variables = declareSym.parseDeclareExp(this.variables);
           }
         }
       }
@@ -234,7 +234,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let inputSym = this.tempSymbols[i] as Input;
-            let didInputRun = await inputSym.validateInputSymbol(this.variables, i);
+            let didInputRun = inputSym.validateInputSymbol(this.variables, i);
             if (!didInputRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -271,7 +271,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let processSym = this.tempSymbols[i] as Process;
-            let didProcessRun = await processSym.validateProcessSymbol(this.variables, this.chapConsole);
+            let didProcessRun = processSym.validateProcessSymbol(this.variables, this.chapConsole);
             if (!didProcessRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -286,7 +286,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let outputSym = this.tempSymbols[i] as Output;
-            let didOutputRun = await outputSym.validateOutputSymbol(this.variables);
+            let didOutputRun = outputSym.validateOutputSymbol(this.variables);
             if (!didOutputRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -383,7 +383,7 @@ export class LoopBlock {
             // TODO: Refactor For Loop Validation
             let tempArrIndex: number;
             let forSymbol = this.tempSymbols[i] as ForLoop;
-            let didForLoopRun = await forSymbol.validateForLoop(this.variables, this.chapConsole);
+            let didForLoopRun = forSymbol.validateForLoop(this.variables, this.chapConsole);
             if (didForLoopRun) {
               forSymbol.setCurrentValue(forSymbol.forLoopVariable.getValue());
               // Add forBlock symbols to a LoopBlock
