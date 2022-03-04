@@ -107,19 +107,20 @@ export class TutorialMode {
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
     let marksObtained = 0;
 
-    if (tutSolutionPanel.style.display == "none" || showSolution) {
-      if (flowchart.SYMBOLS.length > 0) {
+  
+      if (tutSolutionPanel.style.display == "none" || showSolution) {
+        // TODO: compare the solutions
         if (this.tutorialExercise.title == "Exercise 1") {
-          marksObtained = this.checkExercise1(flowchart, loopBlockState);
+          this.checkExercise1(flowchart, loopBlockState);
           this.activateTimer(0, 0, 0);
         } else if (this.tutorialExercise.title == "Exercise 2") {
-          marksObtained = this.checkExercise2(flowchart, loopBlockState);
+          this.checkExercise2(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 3") {
-          marksObtained = this.checkExercise3(flowchart, loopBlockState);
+          this.checkExercise3(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 4") {
-          marksObtained = this.checkExercise4(flowchart, loopBlockState);
+          this.checkExercise4(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 5") {
-          marksObtained = this.checkExercise5(flowchart, loopBlockState);
+          this.checkExercise5(flowchart, loopBlockState);
         } else {
           console.error("Exercise Selection ERROR! Please contact Developers.");
         }
@@ -143,9 +144,7 @@ export class TutorialMode {
           tutToolbar.classList.remove("minimized");
         }
         return true;
-      } else {
-        return false;
-      }
+     
       
     } else {
       // Hide Solution panel
