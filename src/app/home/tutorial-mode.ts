@@ -264,40 +264,32 @@ export class TutorialMode {
             marks++;
             if (new_checker[4].id == "fc_lvl_0_out_4") {
              
-              result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
+             // result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
               console.log("Correct");
               marks++;
               this.debugTutorialExerciseProgram(flowchart, loopBlockState);
-              errorChecker.style.display = "hide";
+              errorChecker.innerHTML = `[1] Declare ✔, [2] Input ✔, [3] Input ✔, [4] Process ✔, [5] Output ✔`;
             } else {      
-             
-              errorChecker.innerHTML = "⚠ Please Use OUTPUT SYMBOL[5] & Make Sure You Enter Declared Variable Name Correctly❗";
-              
-              
+              errorChecker.innerHTML = `⚠ Please use the Output Symbol [5] to print out the result. 
+                <br/> ⚠ Make sure you have entered the declared Variables correctly.`;
             }
           } else {
-            
-            errorChecker.innerHTML = "⚠ Please Use Process SYMBOL[4] & Make Sure You Use Declared Variable Name Correctly❗";
-            
-            
+            errorChecker.innerHTML = `⚠ Please use the Process Symbol [4] to get the summation of the entered values. 
+              <br/> ⚠ Make sure you have entered the declared Variables correctly.`;
           }
         } else {
-          
-          errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[3] & Make Sure You Use Declared Variable Name Correctly❗";
-          
-          
+          errorChecker.innerHTML = `⚠ Please use the Input Symbol [3] to get a second input from the user. 
+            <br/> ⚠ Make sure you have entered the declared Variables correctly.`;
         }
       } else {
-        
-        errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[2] & Make Sure You Use Declared Variable Name Correctly❗";
-        
-        
+        errorChecker.innerHTML = `⚠ Please use the Input Symbol [2] to get a first input from the user. 
+          <br/> ⚠ Make sure you have entered the declared Variables correctly.`;
       }
     } else {
-      
-      errorChecker.innerHTML = "⚠ Please Use Declare SYMBOL[1] to Declare Variable❗";
-     
+      errorChecker.innerHTML = `⚠ Please use the Declare Symbol [1] to declare the Variables that will be used in the Flowchart.
+        <br/> ⚠ Make sure you use the correct Data Type.`;
     }
+
     switch (marks) {
       case 2:
         result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks: ${marks}/2 </span>`;
