@@ -394,31 +394,33 @@ export class TutorialMode {
       if (new_checker[1].id == "fc_lvl_0_for_1") {
         if (new_checker[1].trueBlockId == "lvl_0_for_true_1") {
           if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0" && new_checker[0].outputExp == '"HELLO CHAP"') {
-            symbolIndex.style.display = "hide";
+          /*  symbolIndex.style.display = "hide";
             symbolType.innerHTML = "Declare[1] ✔ , For Loop[2] ✔ , Output[2.1] ✔ ";
-            result.innerHTML="WELL DONE🥇 Correct Answer ✔";
+            result.innerHTML="WELL DONE🥇 Correct Answer ✔";*/
             console.log("Correct");
             this.debugTutorialExerciseProgram(flowchart, loopBlockState);
             marks++;
-            errorChecker.style.display = "hide";
+            errorChecker.innerHTML = `[1] Declare ✔, [2] For Loop ✔, [2][ForLoop-True][1] Output ✔`;
           } else {
-       
-            errorChecker.innerHTML = " ⚠ Please Use OUTPUT SYMBOL[2.1] & Make Sure You Type HELLO CHAP❗";
-            console.log("Wrong");
+            errorChecker.innerHTML = `⚠ Please use an Output Symbol in the For Loop [2] to print out the given expression: \"Hello CHAP\".`;
           }
         } else {
-          
+          errorChecker.innerHTML = `⚠ Please make sure the For Loop Symbol [2] runs 4 times.
+            <br/> ⚠ Make sure you have assigned the Loop properties correctly: 
+            <br/> -> Start Value, End Value, Step Direction, Step Value`;
         }
       } else {
-        
-        errorChecker.innerHTML = "⚠Please Use For Loop[2] SYMBOL❗";
-        console.log("Wrong");
+        errorChecker.innerHTML = `⚠ Please use a For Loop [2] Symbol to create a loop structure with a given number of iterations.
+        <br/> ⚠ Make sure you have assigned the declared Variables and Loop properties correctly.`;
       }
     } else {
      
-      errorChecker.innerHTML = " ⚠ Please Use Declare SYMBOL[1] & Make Sure You Select Correct Data Type❗";
-      console.log("Wrong"); 
+        
+          errorChecker.innerHTML = `⚠ Please use a Declare Symbol [1] to declare a variable that will be used in the For Loop. 
+            <br/> ⚠ Make sure you use the correct Data Type.`;
+        
     }
+  
     switch (marks) {
       case 2:
         result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks: ${marks}/2 </span>`;
