@@ -126,15 +126,15 @@ export class TutorialMode {
         }
         // Show Solution panel
         tutSolutionPanel.style.display = "block";
-        if (marksObtained >= 1) {
+       
           btnRunSolution.style.display = "block";
           btnCheckSolution.style.display = "none";
           btnCheckSolution.innerHTML = "Check Solution";
-        } else {
+        
           btnRunSolution.style.display = "none";
           btnCheckSolution.style.display = "block";
           btnCheckSolution.innerHTML = "Hide Solution";
-        }
+        
         
         if (tutToolbar.classList.contains('minimized')) {
           tutExercisePanel.style.display = "block";
@@ -143,7 +143,7 @@ export class TutorialMode {
           document.getElementById("tut_toolbar_mini").style.display = "none";
           tutToolbar.classList.remove("minimized");
         }
-        return true;
+        //return true;
      
       
     } else {
