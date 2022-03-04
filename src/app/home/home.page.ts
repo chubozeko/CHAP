@@ -52,7 +52,7 @@ import { SymbolId } from "./symbol-ids";
 import { TutorialQPage } from "../tutorial-q/tutorial-q.page";
 import { ExerciseReader } from "../tutorial-q/read-exercise-data";
 import { TutorialMode } from "./tutorial-mode";
-
+import{loopblockstate}from ".";
 
 @Component({
   selector: "app-home",
