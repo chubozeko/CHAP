@@ -4,9 +4,8 @@ import { LoopblockstateService } from "../loopblockstate.service";
 
 export class TutorialMode {
 
-  constructor(){}
-
-  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
+  referenceFC: Flowchart;
+  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [], xp: `` }
   timerValue = "00:00";
   startExerciseBtnDisabled = false;
 
@@ -67,18 +66,8 @@ export class TutorialMode {
     }, 1000);
     
   }
-  
-  public startExercise() {
-    this.startExerciseBtnDisabled = true;
-    // Hide Solution panel
-    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
-    tutSolutionPanel.style.display = "none";
-    document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
-    // Start Timer
-    
-  }
 
-  public minimizeOrMaximizeTutorialPanel() {
+  public minimizeOrMaximizeTutorialPanel(isExerciseOngoing?: boolean) {
     let tutToolbar = document.getElementById("tut_toolbar");
     let tutExercisePanel = document.getElementById("tut_exercisePanel");
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
@@ -94,48 +83,73 @@ export class TutorialMode {
       // Minimize
       document.getElementById("tut_toolbar_maxi").style.display = "none";
       document.getElementById("tut_toolbar_mini").style.display = "block";
+      if (isExerciseOngoing) {
+        document.getElementById("btn_tut_restartExercise_minimized").style.display = "none";
+      } else {
+        document.getElementById("btn_tut_restartExercise_minimized").style.display = "block";
+      }
       tutExercisePanel.style.display = "none";
       tutSolutionPanel.style.display = "none";
-      tutToolbar.classList.add("minimized");
+      tutToolbar.classList.add("minimized"); 
+      document.getElementById("tut_toolbar_mini_title").innerHTML = this.tutorialExercise.title;
     }
     
   }
 
-  public checkTutorialSolution(flowchart: Flowchart, loopBlockState: LoopblockstateService, showSolution?: boolean) { 
+  public checkTutorialSolution(flowchart: Flowchart, referenceFC: Flowchart, loopBlockState: LoopblockstateService, showSolution?: boolean) { 
+    this.referenceFC = referenceFC;
     let tutToolbar = document.getElementById("tut_toolbar");
     let tutExercisePanel = document.getElementById("tut_exercisePanel");
     let btnCheckSolution = document.getElementById("btn_tut_checkSolution");
+    let btnRunSolution = document.getElementById("btn_tut_runSolution");
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    let marksObtained = 0;
 
     if (tutSolutionPanel.style.display == "none" || showSolution) {
-      // TODO: compare the solutions
-      if (this.tutorialExercise.title == "Exercise 1") {
-        this.checkExercise1(flowchart, loopBlockState);
-        this.activateTimer(0, 0, 0);
-      } else if (this.tutorialExercise.title == "Exercise 2") {
-        this.checkExercise2(flowchart, loopBlockState);
-      } else if (this.tutorialExercise.title == "Exercise 3") {
-        this.checkExercise3(flowchart, loopBlockState);
-      } else if (this.tutorialExercise.title == "Exercise 4") {
-        this.checkExercise4(flowchart, loopBlockState);
-      } else if (this.tutorialExercise.title == "Exercise 5") {
-        this.checkExercise5(flowchart, loopBlockState);
+      if (flowchart.SYMBOLS.length > 0) {
+        if (this.tutorialExercise.title == "Exercise 1") {
+          marksObtained = this.checkExercise1(flowchart, loopBlockState);
+          this.activateTimer(0, 0, 0);
+        } else if (this.tutorialExercise.title == "Exercise 2") {
+          marksObtained = this.checkExercise2(flowchart, loopBlockState);
+        } else if (this.tutorialExercise.title == "Exercise 3") {
+          marksObtained = this.checkExercise3(flowchart, loopBlockState);
+        } else if (this.tutorialExercise.title == "Exercise 4") {
+          marksObtained = this.checkExercise4(flowchart, loopBlockState);
+        } else if (this.tutorialExercise.title == "Exercise 5") {
+          marksObtained = this.checkExercise5(flowchart, loopBlockState);
+        } else {
+          console.error("Exercise Selection ERROR! Please contact Developers.");
+        }
+        // Show Solution panel
+        tutSolutionPanel.style.display = "block";
+        if (marksObtained >= 1) {
+          btnRunSolution.style.display = "block";
+          btnCheckSolution.style.display = "none";
+          btnCheckSolution.innerHTML = "Check Solution";
+        } else {
+          btnRunSolution.style.display = "none";
+          btnCheckSolution.style.display = "block";
+          btnCheckSolution.innerHTML = "Hide Solution";
+        }
+        
+        if (tutToolbar.classList.contains('minimized')) {
+          tutExercisePanel.style.display = "block";
+          // Show Maximized toolbar buttons
+          document.getElementById("tut_toolbar_maxi").style.display = "block";
+          document.getElementById("tut_toolbar_mini").style.display = "none";
+          tutToolbar.classList.remove("minimized");
+        }
+        return true;
       } else {
-        console.error("Exercise Selection ERROR! Please contact Developers.");
+        return false;
       }
-      // Show Solution panel
-      tutSolutionPanel.style.display = "block";
-      btnCheckSolution.innerHTML = "Hide Solution";
-      if (tutToolbar.classList.contains('minimized')) {
-        tutExercisePanel.style.display = "block";
-        // Show Maximized toolbar buttons
-        document.getElementById("tut_toolbar_maxi").style.display = "block";
-        document.getElementById("tut_toolbar_mini").style.display = "none";
-        tutToolbar.classList.remove("minimized");
-      }
+      
     } else {
       // Hide Solution panel
       tutSolutionPanel.style.display = "none";
+      btnRunSolution.style.display = "none";
+      btnCheckSolution.style.display = "none";
       btnCheckSolution.innerHTML = "Check Solution";
      
       if (tutExercisePanel.style.display == "block") {
@@ -149,7 +163,7 @@ export class TutorialMode {
         document.getElementById("tut_toolbar_mini").style.display = "block";
         tutToolbar.classList.add("minimized");
       }
-      
+      return true;
     }
   }
 
