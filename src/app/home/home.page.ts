@@ -2031,6 +2031,9 @@ export class HomePage {
   }
 
   async checkTutorialSolution(showSolution?: boolean) { 
+   // this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
+  //  this.toggleConsole();
+ //   this.stopTimer();
     this.stopTimer();
     // Clear and open Console
     this.clearConsole();
@@ -2042,7 +2045,7 @@ export class HomePage {
     let secs = Number.parseInt(this.timerValue.substring(3)) / 60;
     let pausedTime = mins + secs;
     console.log(" || : pausedTime = " + pausedTime);
-    let wasSolutionChecked = this.tutorialMode.checkTutorialSolution(this.flowchart, this.referenceFC, this.loopBlockState, showSolution);
+    let wasSolutionChecked = this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
     if (wasSolutionChecked) {
       // Show Restart Exercise buttons
       let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
