@@ -1,6 +1,6 @@
 import { Flowchart } from "../classes/Flowchart";
 import { LoopblockstateService } from "../loopblockstate.service";
-import{AlertController}
+import { AlertController } from "@ionic/angular";
 
 export class TutorialMode {
   constructor(
