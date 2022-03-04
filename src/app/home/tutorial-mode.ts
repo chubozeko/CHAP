@@ -182,8 +182,7 @@ export class TutorialMode {
   
     if (new_checker[0].id == "fc_lvl_0_out_0" && new_checker[0].outputExp == '"Hello World"') {
       errorChecker.style.display = "hide";
-      symbolIndex.innerHTML = "1";
-      symbolType.innerHTML = "Output";
+     
      // result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks:${marks} /2 </span>`;//${marks}
         errorChecker.innerHTML = "";
         marks++;
@@ -192,8 +191,7 @@ export class TutorialMode {
     } 
    if (new_checker[0].id == "fc_lvl_0_out_0" &&  new_checker[0].outputExp.toLowerCase().includes('"hello world"')) {
       errorChecker.style.display = "hide";
-      symbolIndex.innerHTML = "1";
-      symbolType.innerHTML = "Output";
+     
      // result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks:${marks} /2 </span>`;//${marks}
         errorChecker.innerHTML = "";
         marks++;
@@ -264,8 +262,7 @@ export class TutorialMode {
           if (new_checker[3].id == "fc_lvl_0_proc_3" && new_checker[3].expression.includes("+") == true) {
             marks++;
             if (new_checker[4].id == "fc_lvl_0_out_4") {
-              symbolIndex.style.display = "hide";
-              symbolType.innerHTML = "Declare[1]✔, Input[2]✔, Input[3]✔, Process[4]✔, Output[5]✔ ";
+             
               result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
               console.log("Correct");
               marks++;
