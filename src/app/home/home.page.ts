@@ -52,7 +52,7 @@ import { SymbolId } from "./symbol-ids";
 import { TutorialQPage } from "../tutorial-q/tutorial-q.page";
 import { ExerciseReader } from "../tutorial-q/read-exercise-data";
 import { TutorialMode } from "./tutorial-mode";
-import{loopblockstate}from ".";
+
 
 @Component({
   selector: "app-home",
@@ -2045,7 +2045,8 @@ export class HomePage {
     let secs = Number.parseInt(this.timerValue.substring(3)) / 60;
     let pausedTime = mins + secs;
     console.log(" || : pausedTime = " + pausedTime);
-    let wasSolutionChecked = this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
+    let wasSolutionChecked = 
+    this.tutorialMode.checkTutorialSolution(this.flowchart: Flowchart, this.referenceFC: Flowchart,this.loopBlockState: LoopblockstateService, showSolution?: boolean);
     if (wasSolutionChecked) {
       // Show Restart Exercise buttons
       let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
