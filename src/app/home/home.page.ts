@@ -49,9 +49,8 @@ import { SymbolModals } from "./symbol-modals";
 import { Saver } from "./saver";
 import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
-import {TutorialQPage} from "../tutorial-q/tutorial-q.page";
+import { TutorialQPage } from "../tutorial-q/tutorial-q.page";
 import { ExerciseReader } from "../tutorial-q/read-exercise-data";
-import { Console } from "console";
 import { TutorialMode } from "./tutorial-mode";
 
 
@@ -71,6 +70,7 @@ export class HomePage {
 
   flowchart: Flowchart;
   flowchartSymbolList: Flowchart;
+  referenceFC: Flowchart;
   title = "CHAP";
   fileName = "";
   toolbarTooltip = "";
@@ -92,11 +92,12 @@ export class HomePage {
   infoMessage = "";
   pasteBuffer: Array<Symbols>;
   tutorialMode: TutorialMode;
-  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
+  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [], xp: `` }
   timerValue = "00:00";
   startExerciseBtnDisabled = false;
   timer;
   exReader: ExerciseReader = new ExerciseReader(this.file);
+  isTutorialExerciseOngoing: boolean = false;
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -1414,31 +1415,33 @@ export class HomePage {
     consoleCHAP.innerHTML = "";
   }
 
-  async clearWorkspaceAlert(newProject: boolean) {
+  async clearWorkspaceAlert(newProject: boolean, startTutorialExercise?: boolean) {
+    let messageDefault = `Any unsaved projects will be cleared. Are you sure?`;
+    let messageTutorial = `Any unsaved projects will be cleared before starting an exercise. Are you sure?`;
     const alert = await this.alertC.create({
       cssClass: '',
-      header: 'Clear Workspace...',
-      message: 'Are you sure?',
+      header: 'Clearing Workspace...',
+      message: startTutorialExercise ? messageTutorial : messageDefault,
       buttons: [
         {
           text: 'Yes',
           cssClass: 'danger',
           handler: () => {
-            this.clearWorkspace(newProject);
+            this.clearWorkspace(newProject, startTutorialExercise);
           }
         },
         {
           text: 'No',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => { }
+          handler: () => {  }
         }
       ]
     });
     await alert.present();
   }
 
-  public clearWorkspace(clearProjectName: boolean) {
+  public clearWorkspace(clearProjectName: boolean, startTutorialExercise?: boolean) {
     this.menu.close();
     this.clearConsole();
     let startSym, stopSym, arrowInit;
@@ -1469,6 +1472,9 @@ export class HomePage {
       let fileN = document.getElementById("fileName") as HTMLInputElement;
       fileN.value = "";
     }
+
+    if (startTutorialExercise != null && startTutorialExercise == true) 
+      this.startExercise();
 
   }
 
@@ -1758,7 +1764,7 @@ export class HomePage {
     await actionSheet.present();
   }
 
-  public debugProgram() {
+  async debugProgram() {
     this.menu.close();
     this.clearConsole();
     if (this.isConsoleOpen == false) {
@@ -1807,9 +1813,10 @@ export class HomePage {
     });
     await modal.present();
   }
+
   public activateTimer(startTimeInMinutes: number, endTimeInMinutes: number, stepDirection: number) {
     let time = startTimeInMinutes * 60;
-   this. timer = setInterval(() => {
+    this.timer = setInterval(async () => {
       time += stepDirection;
       let minutes = Math.floor(time / 60);
       let second = time % 60;
@@ -1817,43 +1824,67 @@ export class HomePage {
         minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
         second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
       if (time == endTimeInMinutes) {
-        clearInterval(this.timer);
-      
+        this.stopTimer();
+        const alert = await this.alertC.create({
+          cssClass: '',
+          header: 'Time is UP!',
+          message: `Your time for completing the exercise has finished! \nYou can review your solution.`,
+          buttons: [
+            {
+              text: 'Check Solution',
+              role: 'submit',
+              cssClass: 'primary',
+              handler: () => {
+                this.checkTutorialSolution(true);
+              }
+            },
+            {
+              text: 'Close',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: () => {}
+            }
+          ]
+        });
+        await alert.present();
+
+        // Show Restart Exercise buttons
+        let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
+        btnRestartExercise.style.display = "block";
+        if (document.getElementById("tut_toolbar").classList.contains('minimized')) {
+          let btnRestartExerciseMini = document.getElementById("btn_tut_restartExercise_minimized");
+          btnRestartExerciseMini.style.display = "block";
+        }
       }
       
     }, 1000);
     
   }
-  public stopTimer(){ 
-    clearInterval(this.timer);
-  }
   
+  public stopTimer() {
+    clearInterval(this.timer);
+    this.isTutorialExerciseOngoing = false;
+  }
  
   async openTutorialPageQ() {
     this.menu.close();
     const modal = await this.modalC.create({
       component: TutorialQPage,
+      componentProps: { isExerciseRunning: this.isTutorialExerciseOngoing }
     });
     modal.onDidDismiss().then((data) => {
       try {
         if (data.data != undefined) {
-          this.tutorialMode = new TutorialMode();
-          this.tutorialMode.toggleTutorialPanel();
+          this.tutorialMode = new TutorialMode(this.alertC);
           this.tutorialMode.tutorialExercise = data.data;
-          // this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
-          document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
-          document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
-
-          console.log('^^^ loading exercise: ', this.tutorialMode.tutorialExercise);
-          this.activateTimer(5, 0, -1); // Start Timer
-          // this.tutorialMode.activateTimer(5, 0, -1); // Start Timer
+          this.tutorialMode.toggleTutorialPanel();
+          this.startExercise();
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     });
     await modal.present();
-    
   }
 
   public printFlowchart() {
@@ -1970,13 +2001,6 @@ export class HomePage {
     await modal.present();
   }
 
-  public toggleTutorialPanel(hideSolution?: boolean) {
-    this.tutorialMode.toggleTutorialPanel();
-  }
- 
-  
-
-  
   public closeTutorialPanel() {
     this.stopTimer();
     this.tutorialMode.toggleTutorialPanel();
