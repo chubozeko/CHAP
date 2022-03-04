@@ -1977,19 +1977,82 @@ export class HomePage {
   
 
   
+  public closeTutorialPanel() {
+    this.stopTimer();
+    this.tutorialMode.toggleTutorialPanel();
+  }
+  
   public startExercise() {
-    this.tutorialMode.startExercise();
+    this.stopTimer();
+    // Load Exercise into Tutorial Panel
+    // this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
+    document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
+    document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
+    document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
+    document.getElementById("btn_tut_checkSolution").style.display = "block";
+    document.getElementById("btn_tut_runSolution").style.display = "none";
+    let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
+    btnRestartExercise.style.display = "none";
+    let btnRestartExerciseMinimized = document.getElementById("btn_tut_restartExercise_minimized");
+    btnRestartExerciseMinimized.style.display = "none";
+    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    tutSolutionPanel.style.display = "none";
+    // Load 'this.tutorialExercise.solution' and create a reference Flowchart (referenceFC)
+    this.loadSymbolsIntoBlock(this.tutorialMode.tutorialExercise.solution, this.workspace, this.tutorialMode.tutorialExercise.solution.length);
+    this.referenceFC = this.flowchart;
+    this.clearWorkspace(true);
+    // Start Timer
+    this.activateTimer(3, 0, -1);
+    this.isTutorialExerciseOngoing = true;
+  }
+
+  async checkTutorialSolution(showSolution?: boolean) { 
+    this.stopTimer();
+    // Clear and open Console
+    this.clearConsole();
+    if (this.isConsoleOpen == false) {
+      this.toggleConsole();
+    }
+    // Get pausedTime from this.timerValue
+    let mins = Number.parseInt(this.timerValue.substring(0, 2));
+    let secs = Number.parseInt(this.timerValue.substring(3)) / 60;
+    let pausedTime = mins + secs;
+    console.log(" || : pausedTime = " + pausedTime);
+    let wasSolutionChecked = this.tutorialMode.checkTutorialSolution(this.flowchart, this.referenceFC, this.loopBlockState, showSolution);
+    if (wasSolutionChecked) {
+      // Show Restart Exercise buttons
+      let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
+      btnRestartExercise.style.display = "block";
+      if (document.getElementById("tut_toolbar").classList.contains('minimized')) {
+        let btnRestartExerciseMini = document.getElementById("btn_tut_restartExercise_minimized");
+        btnRestartExerciseMini.style.display = "block";
+      }
+    } else {
+      const alert = await this.alertC.create({
+        cssClass: '',
+        header: 'ERROR: No Solution to Check',
+        message: `You cannot check the solution of an empty Flowchart! \nPlease add symbols before checking the solution.`,
+        buttons: [
+          {
+            text: 'OK',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              // Resume timer
+              if (pausedTime != 0) {
+                this.activateTimer(pausedTime, 0, -1);
+              }
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }
     
   }
 
-  public checkTutorialSolution(showSolution?: boolean) { 
-    this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
-    this.toggleConsole();
-    this.stopTimer();
-  }
-
   public minimizeOrMaximizeTutorialPanel() {
-    this.tutorialMode.minimizeOrMaximizeTutorialPanel();
+    this.tutorialMode.minimizeOrMaximizeTutorialPanel(this.isTutorialExerciseOngoing);
    
   }
   
