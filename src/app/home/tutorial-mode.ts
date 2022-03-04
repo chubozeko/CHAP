@@ -457,41 +457,36 @@ let marks=0;
             marks++;
             if (new_checker[2].trueLoopBlock[0].trueBlockSymbols[0].id == "ift_0_lvl_2_out_0") {
               if (new_checker[2].trueLoopBlock[1].id == "whit_2_lvl_1_proc_1") {
-                result.innerHTML = "WELL DONE Correct Answer ✔";
+              /*  result.innerHTML = "WELL DONE Correct Answer ✔";
                 symbolType.innerHTML = "Declare[1] ✔ , Process[2] ✔ , While Loop[3] ✔ , If Case[3.1] ✔ , Output[3.1.0] ✔ , Process[3.2] ✔ ";
-                console.log("Correct");
+                console.log("Correct");*/
                 marks++;
                 this.debugTutorialExerciseProgram(flowchart, loopBlockState);
+                errorChecker.innerHTML = "[1] Declare ✔, [2] Process ✔, [3] While Loop ✔, [3.1] If Case ✔, [3.1.0] Output ✔ , [3.2] Process ✔";
               } else {
-               
-                errorChecker.innerHTML = " ⚠ Please Use PROCESS SYMBOL[3.2] & Make Sure You TYPE i=i+1❗";
-                console.log("Wrong");
-               
+                errorChecker.innerHTML = `❗⚠❗ Please use a Process Symbol after the If Case Symbol [3.2] to iterate the declared variable after each loop.
+                <br/> ❗⚠❗ Make sure you iterate the variable to prevent an Infinite Loop❗ { e.g. i = i + 1 }`;
               }
             } else {
-              
-              errorChecker.innerHTML = " ⚠ Please Use OUTPUT SYMBOL[3.1.0] & Make Sure You Display Even Numbers❗";
-              console.log("Wrong");
+              errorChecker.innerHTML = `⚠ Please use an Output Symbol in the If Case Symbol [3.1] to print the even value.
+              <br/> ⚠ Make sure you ONLY output the Even numbers.`;
             }
           } else {
-            
-              errorChecker.innerHTML = " ⚠ Please Use IF CASE SYMBOL[3.1] & Make Sure You TYPE {VariableName %2==0}❗";
-              console.log("Wrong");
+            errorChecker.innerHTML = `⚠ Please use an If Case Symbol within a While Loop Symbol [3] to check whether the value is Even or Odd.
+            <br/> ⚠ Make sure you have entered the declared Variables correctly.
+            <br/> ⚠ [Hint: use the Modulus operator (%) in the expression { e.g. variable_name % 2 == 0 }]`
           }
         } else {
-          
-          errorChecker.innerHTML = " ⚠ Please Use WHILE LOOP SYMBOL[3] & Make Sure You TYPE {Variable Name <=10}❗";
-          console.log("Wrong");
+          errorChecker.innerHTML = `⚠ Please use a While Loop Symbol [3] to loop through an iterated variable.
+           <br/> ⚠ Make sure the While Loop has an expression that checks the value of the declared variable { variable_name <= value }`;
         }
       } else {
-       
-        errorChecker.innerHTML = " ⚠ Please Use PROCESS SYMBOL[2] & Make Sure You TYPE {Variable Name = 0}❗";
-        console.log("Wrong");
+        errorChecker.innerHTML = `⚠ Please use a Process Symbol [2] to assign a value to the declared variable. 
+        <br/> ⚠ Make sure you assign the variable to a starting value of 0 { variable_name = 0 }`;
       }
     } else {
-      
-      errorChecker.innerHTML = " ⚠ Please Use DECLARE SYMBOL[1] Create VARIABLE NAME as an INTEGER TYPE❗";
-      console.log("Wrong");
+      errorChecker.innerHTML = `⚠ Please use a Declare Symbol [1] to declare an Integer variable that will be used in the While Loop. 
+      <br/> ⚠ Make sure you use the correct Data Type.`;
     }
     switch (marks) {
       case 2:
