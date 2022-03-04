@@ -1,7 +1,6 @@
 import { AlertController } from "@ionic/angular";
 import { Flowchart } from "../classes/Flowchart";
 import { ForLoop } from "../classes/ForLoop";
-import { Output } from "../classes/Output";
 import { LoopblockstateService } from "../loopblockstate.service";
 
 
@@ -185,6 +184,7 @@ export class TutorialMode {
     let referenceCO = this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, null);
     this.clearConsole();
     let userCO = this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+    this.clearConsole();
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
     if (userCO == referenceCO) {
@@ -249,6 +249,7 @@ export class TutorialMode {
     this.clearConsole();
     this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
     let userCO = document.getElementById("console").innerHTML.toLowerCase();
+    this.clearConsole();
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
     if (userCO == referenceCO && userCO != '') {
@@ -319,6 +320,7 @@ export class TutorialMode {
     this.clearConsole();
     this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
     let userCO = document.getElementById("console").innerHTML.toLowerCase();
+    this.clearConsole();
     // ** Test 2: Run program with dummyInputs: 3 -> odd**
     dummyInputs = [
       { inputIndex: 3, input: 3 }
@@ -328,6 +330,7 @@ export class TutorialMode {
     this.clearConsole();
     this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
     userCO += this.debugTutorialExerciseProgram(flowchart, loopBlockState, dummyInputs);
+    this.clearConsole();
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
     if (userCO == referenceCO) {
@@ -404,7 +407,7 @@ export class TutorialMode {
     this.clearConsole();
     this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
     let userCO = document.getElementById("console").innerHTML.toLowerCase();
-    
+    this.clearConsole();
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
     if (userCO == referenceCO) {
@@ -473,6 +476,7 @@ export class TutorialMode {
     this.clearConsole();
     this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
     let userCO = document.getElementById("console").innerHTML.toLowerCase();
+    this.clearConsole();
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
     if (userCO == referenceCO) {
