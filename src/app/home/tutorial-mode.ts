@@ -162,23 +162,57 @@ export class TutorialMode {
     flowchart.prepareFlowchartForSaving();
     let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker = JSON.parse(flowchartJSON);
-  
+    let marks=0;
     console.log(new_checker[0].outputExp, "Test");
   
     if (new_checker[0].id == "fc_lvl_0_out_0" && new_checker[0].outputExp == '"Hello World"') {
       errorChecker.style.display = "hide";
       symbolIndex.innerHTML = "1";
       symbolType.innerHTML = "Output";
-      result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
+     // result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks:${marks} /2 </span>`;//${marks}
+        errorChecker.innerHTML = "";
+        marks++;
+      console.log("Correct");
+     // this.debugTutorialExerciseProgram(flowchart, loopBlockState);
+    } 
+   if (new_checker[0].id == "fc_lvl_0_out_0" &&  new_checker[0].outputExp.toLowerCase().includes('"hello world"')) {
+      errorChecker.style.display = "hide";
+      symbolIndex.innerHTML = "1";
+      symbolType.innerHTML = "Output";
+     // result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks:${marks} /2 </span>`;//${marks}
+        errorChecker.innerHTML = "";
+        marks++;
       console.log("Correct");
       this.debugTutorialExerciseProgram(flowchart, loopBlockState);
-    } else {
-      symbolType.style.display = "none";
+    } 
+      switch (marks) {
+        case 2:
+          result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks: ${marks}/2 </span>`;
+          errorChecker.innerHTML = "";
+          // TODO: add 100 XP points to user's account (this.tutorialExercise.xp)
+        break;
+        case 1:
+          result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥈 Good Job! 🥈 Marks: ${marks}/2 </span>`;
+          errorChecker.innerHTML = `<span> ⚠ Make sure you print out \"Hello World\" (case-insensitive) in the Output symbol. </span> <br/>
+            <span> ⚠ Try to use as few Symbols as possible to gain more Marks and XP points. </span>`;
+          // TODO: add 50 XP points to user's account (this.tutorialExercise.xp / 2)
+        break;
+        case 0:
+          result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉 Marks: ${marks}/2 </span>`;
+          errorChecker.innerHTML = `❗ Make sure you use an Output Symbol to print out \"Hello World\".`;
+          // TODO: add 10 XP points to user's account (this.tutorialExercise.xp / 10)
+        break;
+        default: break;
+      }
+  
+      return marks;
+    
+      /*symbolType.style.display = "none";
       symbolIndex.style.display = "none";
       result.innerHTML = "SORRY🥉 Wrong Answer ❌";
       errorChecker.innerHTML = "⚠ Please Use OUTPUT SYMBOL & Make Sure You Type Hello World❗";
-      console.log("Wrong");
-    }
+      console.log("Wrong");*/
+    
 
   }
 
@@ -191,6 +225,7 @@ export class TutorialMode {
     flowchart.prepareFlowchartForSaving();
     flowchartJSON = JSON.stringify(flowchart.SYMBOLS)   ;
     let new_checker;
+    let marks = 0;
     new_checker = JSON.parse(flowchartJSON);
     /*
       # Here we check the JSON STRING ELEMENT 
@@ -207,16 +242,18 @@ export class TutorialMode {
       4th Write the comparison controller
       * console.log( new_checker[1].id );
     */
- let errorScore=0;
+
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_inp_1") {
         if (new_checker[2].id == "fc_lvl_0_inp_2") {
           if (new_checker[3].id == "fc_lvl_0_proc_3" && new_checker[3].expression.includes("+") == true) {
+            marks++;
             if (new_checker[4].id == "fc_lvl_0_out_4") {
               symbolIndex.style.display = "hide";
               symbolType.innerHTML = "Declare[1]✔, Input[2]✔, Input[3]✔, Process[4]✔, Output[5]✔ ";
               result.innerHTML = "WELL DONE 🥇Correct Answer ✔";
               console.log("Correct");
+              marks++;
               this.debugTutorialExerciseProgram(flowchart, loopBlockState);
               errorChecker.style.display = "hide";
             } else {      
@@ -254,6 +291,24 @@ export class TutorialMode {
       symbolIndex.style.display = "hide";
       
     }
+    switch (marks) {
+      case 2:
+        result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks: ${marks}/2 </span>`;
+        // TODO: add 100 XP points to user's account (this.tutorialExercise.xp)
+      break;
+      case 1:
+        result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥈 Good Job! 🥈 Marks: ${marks}/2 </span>`;
+        errorChecker.innerHTML += `<br/><span> ⚠ Try to use as few Symbols as possible to gain more Marks and XP points. </span>`;
+        // TODO: add 50 XP points to user's account (this.tutorialExercise.xp / 2)
+      break;
+      case 0:
+        result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉 Marks: ${marks}/2 </span>`;
+        // TODO: add 10 XP points to user's account (this.tutorialExercise.xp / 10)
+      break;
+      default: break;
+    }
+
+    return marks;
   }
 
   private checkExercise3(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
@@ -264,10 +319,11 @@ export class TutorialMode {
     flowchart.prepareFlowchartForSaving();
     let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker = JSON.parse(flowchartJSON);
-   
+   let marks=0;
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_inp_1") {
         if (new_checker[2].id == "fc_lvl_0_if_2" && new_checker[2].ifStatement.includes("%") == true) {
+          marks++;
           if (new_checker[2].trueBlockId == "lvl_0_if_true_2") {
             if (new_checker[2].falseBlockId == "lvl_0_if_false_2") {
               if (new_checker[2].trueBlockSymbols[0].id == "ift_2_lvl_1_out_0") {
@@ -276,6 +332,7 @@ export class TutorialMode {
                   symbolType.innerHTML = "Declare[1] ✔ , Input[2] ✔ , If Case[3] ✔ , Output[3.1] ✔ , Output[3.2] ✔ ";
                   result.innerHTML = "WELL DONE🥇 Correct Answer ✔ ";
                   console.log("Correct");
+                  marks++;
                   this.debugTutorialExerciseProgram(flowchart, loopBlockState);
                   errorChecker.style.display = "hide";
                 } else {
@@ -316,6 +373,24 @@ export class TutorialMode {
       symbolIndex.style.display = "none";
       console.log("Wrong");
     }
+    switch (marks) {
+      case 2:
+        result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks: ${marks}/2 </span>`;
+        // TODO: add 200 XP points to user's account (this.tutorialExercise.xp)
+      break;
+      case 1:
+        result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥈 Good Job! 🥈 Marks: ${marks}/2 </span>`;
+        errorChecker.innerHTML += `<br/><span> ⚠ Try to use as few Symbols as possible to gain more Marks and XP points. </span>`;
+        // TODO: add 100 XP points to user's account (this.tutorialExercise.xp / 2)
+      break;
+      case 0:
+        result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉 Marks: ${marks}/2 </span>`;
+        // TODO: add 20 XP points to user's account (this.tutorialExercise.xp / 10)
+      break;
+      default: break;
+    }
+
+    return marks;
   }
 
   private checkExercise4(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
@@ -326,7 +401,8 @@ export class TutorialMode {
     flowchart.prepareFlowchartForSaving();
     let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker = JSON.parse(flowchartJSON);
-   
+   let marks=0;
+   marks++;//Dummy Marks
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_for_1") {
         if (new_checker[1].trueBlockId == "lvl_0_for_true_1") {
@@ -336,6 +412,7 @@ export class TutorialMode {
             result.innerHTML="WELL DONE🥇 Correct Answer ✔";
             console.log("Correct");
             this.debugTutorialExerciseProgram(flowchart, loopBlockState);
+            marks++;
             errorChecker.style.display = "hide";
           } else {
             symbolType.style.display = "none";
@@ -361,7 +438,24 @@ export class TutorialMode {
       errorChecker.innerHTML = " ⚠ Please Use Declare SYMBOL[1] & Make Sure You Select Correct Data Type❗";
       console.log("Wrong"); 
     }
-  
+    switch (marks) {
+      case 2:
+        result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks: ${marks}/2 </span>`;
+        // TODO: add 200 XP points to user's account (this.tutorialExercise.xp)
+      break;
+      case 1:
+        result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥈 Good Job! 🥈 Marks: ${marks}/2 </span>`;
+        errorChecker.innerHTML += `<br/><span> ⚠ Try to use as few Symbols as possible to gain more Marks and XP points. </span>`;
+        // TODO: add 100 XP points to user's account (this.tutorialExercise.xp / 2)
+      break;
+      case 0:
+        result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉 Marks: ${marks}/2 </span>`;
+        // TODO: add 20 XP points to user's account (this.tutorialExercise.xp / 10)
+      break;
+      default: break;
+    }
+
+    return marks;
   }
 
   private checkExercise5(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
@@ -372,16 +466,18 @@ export class TutorialMode {
     flowchart.prepareFlowchartForSaving(); // Question Going To Be Changed
     let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker=JSON.parse(flowchartJSON);
-
+let marks=0;
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_proc_1") {
         if (new_checker[2].id == "fc_lvl_0_whi_2") {
-          if (new_checker[2].trueLoopBlock[0].id == "whit_2_lvl_1_if_0") {
+          if (new_checker[2].trueLoopBlock[0].id == "whit_2_lvl_1_if_0"&&new_checker[2].trueLoopBlock[0].id.ifStatement.includes("%") == true) {
+            marks++;
             if (new_checker[2].trueLoopBlock[0].trueBlockSymbols[0].id == "ift_0_lvl_2_out_0") {
               if (new_checker[2].trueLoopBlock[1].id == "whit_2_lvl_1_proc_1") {
                 result.innerHTML = "WELL DONE Correct Answer ✔";
                 symbolType.innerHTML = "Declare[1] ✔ , Process[2] ✔ , While Loop[3] ✔ , If Case[3.1] ✔ , Output[3.1.0] ✔ , Process[3.2] ✔ ";
                 console.log("Correct");
+                marks++;
                 this.debugTutorialExerciseProgram(flowchart, loopBlockState);
               } else {
                 symbolType.style.display = "none";
@@ -426,7 +522,24 @@ export class TutorialMode {
       errorChecker.innerHTML = " ⚠ Please Use DECLARE SYMBOL[1] Create VARIABLE NAME as an INTEGER TYPE❗";
       console.log("Wrong");
     }
+    switch (marks) {
+      case 2:
+        result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥇 Well Done! 🥇 Marks: ${marks}/2 </span>`;
+        // TODO: add 200 XP points to user's account (this.tutorialExercise.xp)
+      break;
+      case 1:
+        result.innerHTML = `<span style="color: #10dc60">✔ CORRECT!</span> <br/> <span style="font-size: medium">🥈 Good Job! 🥈 Marks: ${marks}/2 </span>`;
+        errorChecker.innerHTML += `<br/><span> ⚠ Try to use as few Symbols as possible to gain more Marks and XP points. </span>`;
+        // TODO: add 100 XP points to user's account (this.tutorialExercise.xp / 2)
+      break;
+      case 0:
+        result.innerHTML = `<span style="color: #f04141">❌ WRONG!</span> <br/> <span style="font-size: medium">🥉 Sorry, Try Again 🥉 Marks: ${marks}/2 </span>`;
+        // TODO: add 20 XP points to user's account (this.tutorialExercise.xp / 10)
+      break;
+      default: break;
+    }
 
+    return marks;
   }
   /* Tutorial Exercise Functions End */
 
