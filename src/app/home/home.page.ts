@@ -2036,7 +2036,7 @@ export class HomePage {
  //   this.stopTimer();
     this.stopTimer();
     // Clear and open Console
-    this.clearConsole();
+   // this.clearConsole();
     if (this.isConsoleOpen == false) {
       this.toggleConsole();
     }
@@ -2045,8 +2045,8 @@ export class HomePage {
     let secs = Number.parseInt(this.timerValue.substring(3)) / 60;
     let pausedTime = mins + secs;
     console.log(" || : pausedTime = " + pausedTime);
-    let wasSolutionChecked = 
-    this.tutorialMode.checkTutorialSolution(this.flowchart: Flowchart, this.referenceFC: Flowchart,this.loopBlockState: LoopblockstateService, showSolution?: boolean);
+    let wasSolutionChecked = this.tutorialMode.checkTutorialSolution(this.flowchart, this.referenceFC,this.loopBlockState, showSolution);
+    
     if (wasSolutionChecked) {
       // Show Restart Exercise buttons
       let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
