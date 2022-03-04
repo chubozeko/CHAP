@@ -107,34 +107,33 @@ export class TutorialMode {
     let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
     let marksObtained = 0;
 
-  
-      if (tutSolutionPanel.style.display == "none" || showSolution) {
-        // TODO: compare the solutions
+    if (tutSolutionPanel.style.display == "none" || showSolution) {
+      if (flowchart.SYMBOLS.length > 0) {
         if (this.tutorialExercise.title == "Exercise 1") {
-          this.checkExercise1(flowchart, loopBlockState);
+          marksObtained = this.checkExercise1(flowchart, loopBlockState);
           this.activateTimer(0, 0, 0);
         } else if (this.tutorialExercise.title == "Exercise 2") {
-          this.checkExercise2(flowchart, loopBlockState);
+          marksObtained = this.checkExercise2(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 3") {
-          this.checkExercise3(flowchart, loopBlockState);
+          marksObtained = this.checkExercise3(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 4") {
-          this.checkExercise4(flowchart, loopBlockState);
+          marksObtained = this.checkExercise4(flowchart, loopBlockState);
         } else if (this.tutorialExercise.title == "Exercise 5") {
-          this.checkExercise5(flowchart, loopBlockState);
+          marksObtained = this.checkExercise5(flowchart, loopBlockState);
         } else {
           console.error("Exercise Selection ERROR! Please contact Developers.");
         }
         // Show Solution panel
         tutSolutionPanel.style.display = "block";
-       
+        if (marksObtained >= 1) {
           btnRunSolution.style.display = "block";
           btnCheckSolution.style.display = "none";
           btnCheckSolution.innerHTML = "Check Solution";
-        
+        } else {
           btnRunSolution.style.display = "none";
           btnCheckSolution.style.display = "block";
           btnCheckSolution.innerHTML = "Hide Solution";
-        
+        }
         
         if (tutToolbar.classList.contains('minimized')) {
           tutExercisePanel.style.display = "block";
@@ -143,8 +142,10 @@ export class TutorialMode {
           document.getElementById("tut_toolbar_mini").style.display = "none";
           tutToolbar.classList.remove("minimized");
         }
-        //return true;
-     
+        return true;
+      } else {
+        return false;
+      }
       
     } else {
       // Hide Solution panel
