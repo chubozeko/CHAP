@@ -337,41 +337,36 @@ export class TutorialMode {
                 if (new_checker[2].falseBlockSymbols[0].id == "iff_2_lvl_1_out_0") {
                   symbolIndex.style.display = "hide";
                   symbolType.innerHTML = "Declare[1] ✔ , Input[2] ✔ , If Case[3] ✔ , Output[3.1] ✔ , Output[3.2] ✔ ";
-                  result.innerHTML = "WELL DONE🥇 Correct Answer ✔ ";
+                 //result.innerHTML = "WELL DONE🥇 Correct Answer ✔ ";
                   console.log("Correct");
                   marks++;
                   this.debugTutorialExerciseProgram(flowchart, loopBlockState);
-                  errorChecker.style.display = "hide";
+                  errorChecker.innerHTML = `[1] Declare ✔, [2] Input ✔, [3] If Case ✔, [3][IfCase-True][1] Output ✔, [3][IfCase-False][1] Output ✔`;
                 } else {
-                 
-                  errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.2]❗";
-                } 
+                  errorChecker.innerHTML = `⚠ Please use the Output Symbol in the If Case [3] False block to print out if the entered value is Odd or Even.
+                    <br/> ⚠ Make sure you have entered the declared Variables correctly.`;
+                }
               } else {
-               
-                errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.1]❗";
-               
+                errorChecker.innerHTML = `⚠ Please use the Output Symbol in the If Case [3] True block to print out if the entered value is Odd or Even.
+                <br/> ⚠ Make sure you have entered the declared Variables correctly.`;
               }
             } else {
-              
-              errorChecker.innerHTML = "⚠ Please Use Output SYMBOL[3.1]❗";
-              
+              errorChecker.innerHTML = `⚠ Please use the If Case Symbol [3] to check whether the entered value is Odd or Even.
+              <br/> ⚠ Make sure you have entered the declared Variables correctly.
+              <br/> ⚠ [Hint: use the Modulus operator (%) in the equation]`;
             }
+          } else {
+            errorChecker.innerHTML = `⚠ Please use the If Case Symbol [3] to check whether the entered value is Odd or Even.
+              <br/> ⚠ Make sure you have entered the declared Variables correctly.`;
           }
         } else {
-          
-          errorChecker.innerHTML = "⚠ Please Use If Case SYMBOL[3] & Make Sure You Use Declared Variable Name Correctly❗";
-         
+          errorChecker.innerHTML = `⚠ Please use the Input Symbol [2] to get an input from the user. 
+            <br/> ⚠ Make sure you have entered the declared Variables correctly.`;
         }
       } else {
-        
-        errorChecker.innerHTML = "⚠ Please Use Input SYMBOL[2] & Make Sure You Use Declared Variable Name Correctly❗";
-        
+        errorChecker.innerHTML = `⚠ Please Use Declare SYMBOL[1] to declare the Variables that will be used in the Flowchart.
+          <br/> ⚠ Make sure you use the correct Data Type.`;
       }
-    } else {
-     
-      errorChecker.innerHTML = "⚠ Please Use Declare SYMBOL[1] & Make Sure You Use Declared Variable Name ❗";
-     
-      console.log("Wrong");
     }
     switch (marks) {
       case 2:
