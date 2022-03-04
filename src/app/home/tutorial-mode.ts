@@ -1,9 +1,11 @@
 import { Flowchart } from "../classes/Flowchart";
 import { LoopblockstateService } from "../loopblockstate.service";
-
+import{AlertController}
 
 export class TutorialMode {
-
+  constructor(
+    public alertC: AlertController
+  ) {}
   referenceFC: Flowchart;
   tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [], xp: `` }
   timerValue = "00:00";
