@@ -474,27 +474,29 @@ export class TutorialMode {
     let referenceFCSyms = this.referenceFC.SYMBOLS;
     let marks = 0;
     // 1. Compare Console Outputs (CO)
-    this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, null);
+   // this.debugTutorialExerciseProgram(this.referenceFC, loopBlockState, null);
     let referenceCO = document.getElementById("console").innerHTML.toLowerCase();
-    this.clearConsole();
-    this.debugTutorialExerciseProgram(flowchart, loopBlockState, null);
+   // this.clearConsole();
+    //
     let userCO = document.getElementById("console").innerHTML.toLowerCase();
-    this.clearConsole();
+   // this.clearConsole();
     // console.log("userCO: ", userCO);
     // console.log("referenceCO: ", referenceCO);
     if (userCO == referenceCO) {
       marks++;
     }
     // 2. Compare Flowchart Structure *
-    if (userFCSyms[0].id == referenceFCSyms[0].id) {
-      if (userFCSyms[1].id == referenceFCSyms[1].id) {
+    if (userFCSyms[0].id == referenceFCSyms[0].id) {//Declare
+      if (userFCSyms[1].id == referenceFCSyms[1].id) {//Process
         if (userFCSyms[2].id == referenceFCSyms[2].id && 
-          (userFCSyms[2].getExpression().replace(' ','').includes('<=10') || userFCSyms[2].getExpression().replaceAll(' ','').includes('<11')) ) {
-          if (userFCSyms[2].trueLoopBlock[0].id == referenceFCSyms[2].trueLoopBlock[0].id && userFCSyms[2].ifStatement.includes("%")) {
+          (userFCSyms[2].whileExpression.includes("<=10")==true || userFCSyms[2].whileExpression.includes("<11")==true) ) {//While
+          if (userFCSyms[2].trueLoopBlock[0].id == referenceFCSyms[2].trueLoopBlock[0].id && userFCSyms[2].trueLoopBlock[0].ifStatement.includes("%")==true) {//if case
             if (userFCSyms[2].trueLoopBlock[0].trueBlockSymbols[0].id == referenceFCSyms[2].trueLoopBlock[0].trueBlockSymbols[0].id || 
-              userFCSyms[2].trueLoopBlock[0].falseBlockSymbols[0].id == referenceFCSyms[2].trueLoopBlock[0].trueBlockSymbols[0].id) {
-              if (userFCSyms[2].trueLoopBlock[1].id == referenceFCSyms[2].trueLoopBlock[1].id && 
-                userFCSyms[2].trueLoopBlock[1].getExpression().replaceAll(' ','').includes('+1')) {
+              userFCSyms[2].trueLoopBlock[0].falseBlockSymbols[0].id == referenceFCSyms[2].trueLoopBlock[0].trueBlockSymbols[0].id) {//Output
+                //console.log(userFCSyms[2].trueLoopBlock[1].id,"TEST" );
+              if (referenceFCSyms[2].trueLoopBlock[1].id=="whit_2_lvl_1_proc_1" && //Error is here it has referenceFCSyms not match with userFCsyms
+                userFCSyms[2].trueLoopBlock[1].expression.includes("+1")==true) {//Process
+               
                 marks++;
                 errorChecker.innerHTML = "[1] Declare ✔, [2] Process ✔, [3] While Loop ✔, [3.1] If Case ✔, [3.1.0] Output ✔ , [3.2] Process ✔";
               } else {
