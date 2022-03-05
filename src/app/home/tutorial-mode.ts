@@ -389,20 +389,19 @@ export class TutorialMode {
     let flowchartJSON = JSON.stringify(flowchart.SYMBOLS);
     let new_checker = JSON.parse(flowchartJSON);
    let marks=0;
-   marks++;//Dummy Marks
+   //Dummy Marks
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
+      marks++;
       if (new_checker[1].id == "fc_lvl_0_for_1") {
         if (new_checker[1].trueBlockId == "lvl_0_for_true_1") {
-          if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0" && new_checker[0].outputExp == '"HELLO CHAP"') {
-          /*  symbolIndex.style.display = "hide";
-            symbolType.innerHTML = "Declare[1] ✔ , For Loop[2] ✔ , Output[2.1] ✔ ";
-            result.innerHTML="WELL DONE🥇 Correct Answer ✔";*/
+          if (new_checker[1].trueLoopBlock[0].id == "fort_1_lvl_1_out_0" && new_checker[1].trueLoopBlock[0].outputExp == '"HELLO CHAP"') {
+          
             console.log("Correct");
             this.debugTutorialExerciseProgram(flowchart, loopBlockState);
             marks++;
             errorChecker.innerHTML = `[1] Declare ✔, [2] For Loop ✔, [2][ForLoop-True][1] Output ✔`;
           } else {
-            errorChecker.innerHTML = `⚠ Please use an Output Symbol in the For Loop [2] to print out the given expression: \"Hello CHAP\".`;
+            errorChecker.innerHTML = `⚠ Please use an Output Symbol in the For Loop [2] to print out the given expression: \"HELLO CHAP\".`;
           }
         } else {
           errorChecker.innerHTML = `⚠ Please make sure the For Loop Symbol [2] runs 4 times.
@@ -453,7 +452,7 @@ let marks=0;
     if (new_checker[0].id == "fc_lvl_0_dec_0") {
       if (new_checker[1].id == "fc_lvl_0_proc_1") {
         if (new_checker[2].id == "fc_lvl_0_whi_2") {
-          if (new_checker[2].trueLoopBlock[0].id == "whit_2_lvl_1_if_0"&&new_checker[2].trueLoopBlock[0].id.ifStatement.includes("%") == true) {
+          if (new_checker[2].trueLoopBlock[0].id == "whit_2_lvl_1_if_0"&&new_checker[2].trueLoopBlock[0].ifStatement.includes("%") == true) {
             marks++;
             if (new_checker[2].trueLoopBlock[0].trueBlockSymbols[0].id == "ift_0_lvl_2_out_0") {
               if (new_checker[2].trueLoopBlock[1].id == "whit_2_lvl_1_proc_1") {
