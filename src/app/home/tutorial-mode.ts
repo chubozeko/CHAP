@@ -327,8 +327,8 @@ export class TutorialMode {
             if (new_checker[2].falseBlockId == "lvl_0_if_false_2") {
               if (new_checker[2].trueBlockSymbols[0].id == "ift_2_lvl_1_out_0") {
                 if (new_checker[2].falseBlockSymbols[0].id == "iff_2_lvl_1_out_0") {
-                  symbolIndex.style.display = "hide";
-                  symbolType.innerHTML = "Declare[1] ✔ , Input[2] ✔ , If Case[3] ✔ , Output[3.1] ✔ , Output[3.2] ✔ ";
+                 // symbolIndex.style.display = "hide";
+                  //symbolType.innerHTML = "Declare[1] ✔ , Input[2] ✔ , If Case[3] ✔ , Output[3.1] ✔ , Output[3.2] ✔ ";
                  //result.innerHTML = "WELL DONE🥇 Correct Answer ✔ ";
                   console.log("Correct");
                   marks++;
