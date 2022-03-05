@@ -420,7 +420,7 @@ export class TutorialMode {
           let forSymbol = userFCSyms[1] as ForLoop;
           let nrOfIterations = Math.abs((forSymbol.endValue - forSymbol.startValue) / forSymbol.stepValue);
           if (nrOfIterations == 4) {
-            if (userFCSyms[1].trueLoopBlock[0].id == referenceFCSyms[1].trueLoopBlock[0].id && userFCSyms[0].outputExp.localeCompare('"hello chap"', 'en', { sensitivity: 'base' }) === 0) {
+            if (userFCSyms[1].trueLoopBlock[0].id == referenceFCSyms[1].trueLoopBlock[0].id && userFCSyms[1].trueLoopBlock[0].outputExp.toLowerCase().includes('hello chap')) {
               marks++;
               errorChecker.innerHTML = `[1] Declare ✔, [2] For Loop ✔, [2][ForLoop-True][1] Output ✔`;
             } else {
