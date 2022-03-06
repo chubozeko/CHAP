@@ -63,7 +63,7 @@ export class Declare {
         return this.declareExpression;
     }
 
-    async parseDeclareExp(variables) {
+    parseDeclareExp(variables) {
         // let vars: Variable[] = [];
         let varNames = this.getVariableName().split(",");
         for (let i = 0; i < varNames.length; i++) {

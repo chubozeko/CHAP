@@ -138,34 +138,35 @@ export class LoopBlock {
   async showInputPrompt(inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
     const alert = await this.alertC.create({
      // header: alertTitle,
-     message: '<label class="alertTitle"><b>'+alertTitle+'</b></label>',
-     inputs: [
-      {
-        name: 'inputText',               
-        placeholder: '❗ Enter Input Value To Here ❗',                           
-        type: 'text',
-      }
-     ],
-     buttons: [
-       {
-         text: "Cancel",
-         role: "cancel",
-         cssClass: "secondary",
-         handler: () => { 
-           console.log("> Input (canceled) Complete");
-         }
-       },
-       {
-         text: "OK",
-         handler: data => {
-           inputSym.inputData = data.inputText;
-           inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
-           this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
-           console.log("> Input (entered) Complete");
-         }
-       }
-     ]
-   });
+      message: '<label class="alertTitle"><b>' + alertTitle + '</b></label>',
+      inputs: [
+        {
+          name: 'inputText',               
+          placeholder: '❗ Enter Input Value To Here ❗',                           
+          type: 'text',
+        }
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          cssClass: "secondary",
+          handler: () => { 
+            console.log("> Input (canceled) Complete");
+          }
+        },
+        {
+          text: "OK",
+          handler: data => {
+            inputSym.inputData = data.inputText;
+            let updatedVar = inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+            this.loopBlockState.enteredInputs.push(updatedVar);
+            this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
+            console.log("> Input (entered) Complete");
+          }
+        }
+      ]
+    });
     alert.onDidDismiss().then(() => {
       inputSym.isInputEntered = false;
       this.isAnInputBlockRunning = false;
@@ -177,7 +178,23 @@ export class LoopBlock {
     await alert.present();
   }
 
-  async validateLoopBlock(variables: any[], isAnInputBlockRunning: boolean, startIndex?: number, endIndex?: number) {
+  async automateInputPrompt(dummyInputs: any[], inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
+    let dummyData = dummyInputs[this.loopBlockState.inputCount].input;
+    inputSym.inputData = dummyData;
+    let updatedVar = inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
+    this.loopBlockState.enteredInputs.push(updatedVar);
+    this.consoleLog("noerrorAlert", "> Input: " + dummyData);
+    console.log("> Input (entered) Complete");
+    inputSym.isInputEntered = false;
+    this.isAnInputBlockRunning = false;
+    this.loopBlockState.isAnInputBlockRunning = false;
+    this.loopBlockState.isProgramRunning = true;
+    this.loopBlockState.inputCount++;
+    // this.validateFlowchart(++symIndex, this.tempSymbols.length, this.variables.vars);
+    console.log("> [LoopBlock] Input (dismissed) Complete");
+  }
+
+  async validateLoopBlock(variables: any[], isAnInputBlockRunning: boolean, dummyInputs?: any[], startIndex?: number, endIndex?: number) {
     if (startIndex == undefined) {
       this.variables = [];
       for (let q = 0; q < variables.length; q++) {
@@ -207,7 +224,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let declareSym = this.tempSymbols[i] as Declare;
-            this.variables = await declareSym.parseDeclareExp(this.variables);
+            this.variables = declareSym.parseDeclareExp(this.variables);
           }
         }
       }
@@ -217,7 +234,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let inputSym = this.tempSymbols[i] as Input;
-            let didInputRun = await inputSym.validateInputSymbol(this.variables, i);
+            let didInputRun = inputSym.validateInputSymbol(this.variables, i);
             if (!didInputRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -244,7 +261,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let processSym = this.tempSymbols[i] as Process;
-            let didProcessRun = await processSym.validateProcessSymbol(this.variables, this.chapConsole);
+            let didProcessRun = processSym.validateProcessSymbol(this.variables, this.chapConsole);
             if (!didProcessRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -259,7 +276,7 @@ export class LoopBlock {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let outputSym = this.tempSymbols[i] as Output;
-            let didOutputRun = await outputSym.validateOutputSymbol(this.variables);
+            let didOutputRun = outputSym.validateOutputSymbol(this.variables);
             if (!didOutputRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -356,7 +373,7 @@ export class LoopBlock {
             // TODO: Refactor For Loop Validation
             let tempArrIndex: number;
             let forSymbol = this.tempSymbols[i] as ForLoop;
-            let didForLoopRun = await forSymbol.validateForLoop(this.variables, this.chapConsole);
+            let didForLoopRun = forSymbol.validateForLoop(this.variables, this.chapConsole);
             if (didForLoopRun) {
               forSymbol.setCurrentValue(forSymbol.forLoopVariable.getValue());
               // Add forBlock symbols to a LoopBlock

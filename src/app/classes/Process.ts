@@ -258,7 +258,7 @@ export class Process {
     return '\t\t' + this.getExpression() + ';\n';
   }
 
-  async validateProcessSymbol(variables: any[], consoleLog: HTMLDivElement) {
+  validateProcessSymbol(variables: any[], consoleLog: HTMLDivElement) {
     this.consoleLog = consoleLog;
     let isValid = this.checkIfVariable(this.getVariableName(), variables, false, null);
     if (!isValid) {

@@ -113,6 +113,8 @@ export class Input {
         
       }
     }
+
+    return var1;
   }
 
   pseudoCode() { return '\tInput ' + this.getExpression() + '\n'; }
@@ -125,16 +127,14 @@ export class Input {
     return '\t\t' + this.getVariableName() + ' = System.console().readLine();\n';
   }
 
-  async validateInputSymbol(variables: any[], symIndex: number) {
+  public validateInputSymbol(variables: any[], symIndex: number) {
     let isVarDeclared = false, isVarAnArray = false;
     let tempArrIndex: number, varIndex, continueDebugIndex;
     for (let j = 0; j < variables.length; j++) {
       // Check if the input variable is an array
       if (variables[j].getIsArray()) {
         let tempVarName = this.getVariableName().split('[');
-        if (
-          tempVarName[0] == variables[j].getName()
-        ) {
+        if (tempVarName[0] == variables[j].getName()) {
           isVarDeclared = true;
           isVarAnArray = true;
           varIndex = j;
@@ -152,16 +152,14 @@ export class Input {
           }
         }
       } else {
-        if (
-          this.getVariableName() == variables[j].getName()
-        ) {
+        if (this.getVariableName() == variables[j].getName()) {
           isVarDeclared = true;
           varIndex = j;
         }
       }
     }
     if (!isVarDeclared) {
-      this.consoleLog("errorAlert", "ERROR CODE I-01: Variable" + this.getVariableName() + " is not declared at 'INPUT'");
+      this.consoleLog("errorAlert", "ERROR CODE I-01: Variable " + this.getVariableName() + " is not declared at 'INPUT'");
       return false;
     } else {
       // Show Input prompt

@@ -301,13 +301,14 @@
           <ion-card-content>
             <ion-card style="width: 100%; height: auto;">
               <ion-card-content>
-                <ion-card-title id="tut_exerciseTitle">Level #</ion-card-title>
-                <ion-label id="tut_exerciseDescription"> Display “Hello World” with using OUTPUT SYMBOL on CHAP. </ion-label>
+                <ion-card-title id="tut_exerciseTitle">Exercise #</ion-card-title>
+                <ion-label id="tut_exerciseDescription" style="white-space: pre-wrap;"> Description </ion-label>
               </ion-card-content>
             </ion-card>
             <ion-text style="width: 100%; height: auto; padding: 2px;"> <h2 style="text-align: center;"><span id="timerstop "> <b >{{timerValue}}</b></span> </h2> </ion-text>
-            <!-- <ion-button id="btn_tut_startExercise" color="success" expand="block" (click)="startExercise()" disabled="{{startExerciseBtnDisabled}}"> Start Exercise </ion-button>     -->
-            <ion-button id="btn_tut_checkSolution" color="warning" expand="block" (click)="checkTutorialSolution()"> Check Solution </ion-button>    
+            <ion-button id="btn_tut_checkSolution" color="warning" expand="block" (click)="checkTutorialSolution()"> Check Solution </ion-button>
+            <ion-button id="btn_tut_runSolution" color="success" expand="block" (click)="debugProgram()" style="display: none;"> Run Solution </ion-button>
+            <ion-button id="btn_tut_restartExercise" color="danger" expand="block" (click)="startExercise()" disabled="{{startExerciseBtnDisabled}}"> Restart Exercise </ion-button>    
             
           </ion-card-content>
         </ion-card>
