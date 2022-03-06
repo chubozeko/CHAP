@@ -418,12 +418,11 @@ export class TutorialMode {
     // 2. Compare Flowchart Structure
     if (userFCSyms[0].id == referenceFCSyms[0].id) {
       if (userFCSyms[1].id == referenceFCSyms[1].id && userFCSyms[1].trueBlockId == referenceFCSyms[1].trueBlockId) {
-      //  if (userFCSyms[1].forLoopVariable.getName() == userFCSyms[0].getVariableName()) {
-         let forSymbol = userFCSyms[1] as ForLoop;
-         // let nrOfIterations = Math.abs((forSymbol.endValue - forSymbol.startValue) / forSymbol.stepValue);
-          //console.log(nrOfIterations,"test");
-          if (forSymbol.endValue==4 && forSymbol.startValue==1||forSymbol.endValue==3 && forSymbol.startValue==0) {
-            if (userFCSyms[1].trueLoopBlock[0].id == referenceFCSyms[1].trueLoopBlock[0].id && userFCSyms[1].trueLoopBlock[0].outputExp.includes('"HELLO CHAP"') == true) {
+        if (userFCSyms[1].forLoopVariable.getName() == userFCSyms[0].getVariableName()) {
+          let forSymbol = userFCSyms[1] as ForLoop;
+          let nrOfIterations = Math.abs((forSymbol.endValue - forSymbol.startValue) / forSymbol.stepValue);
+          if (nrOfIterations == 4) {
+            if (userFCSyms[1].trueLoopBlock[0].id == referenceFCSyms[1].trueLoopBlock[0].id && userFCSyms[1].trueLoopBlock[0].outputExp.toLowerCase().includes('hello chap')) {
               marks++;
               errorChecker.innerHTML = `[1] Declare ✔, [2] For Loop ✔, [2][ForLoop-True][1] Output ✔`;
             } else {
@@ -465,6 +464,7 @@ export class TutorialMode {
     }
 
     return marks;
+  }
   }
 
   private checkExercise5(flowchart: Flowchart, loopBlockState: LoopblockstateService) {
