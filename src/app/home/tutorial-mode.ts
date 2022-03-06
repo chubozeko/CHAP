@@ -259,7 +259,7 @@ export class TutorialMode {
     if (userFCSyms[0].id == referenceFCSyms[0].id) {
       if (userFCSyms[1].id == referenceFCSyms[1].id) {
         if (userFCSyms[2].id == referenceFCSyms[2].id) {
-          if (userFCSyms[3].id == referenceFCSyms[3].id && userFCSyms[3].expression.includes("+")) {
+          if (userFCSyms[3].id == referenceFCSyms[3].id && userFCSyms[3].expression.includes("+")==true) {
             if (userFCSyms[4].id == referenceFCSyms[4].id) {
               marks++;
               errorChecker.innerHTML = `[1] Declare ✔, [2] Input ✔, [3] Input ✔, [4] Process ✔, [5] Output ✔`;
@@ -494,7 +494,7 @@ export class TutorialMode {
             if (userFCSyms[2].trueLoopBlock[0].trueBlockSymbols[0].id == referenceFCSyms[2].trueLoopBlock[0].trueBlockSymbols[0].id || 
               userFCSyms[2].trueLoopBlock[0].falseBlockSymbols[0].id == referenceFCSyms[2].trueLoopBlock[0].trueBlockSymbols[0].id) {//Output
                 //console.log(userFCSyms[2].trueLoopBlock[1].id,"TEST" );
-              if (referenceFCSyms[2].trueLoopBlock[1].id=="whit_2_lvl_1_proc_1" && //Error is here it has referenceFCSyms not match with userFCsyms REFENCE HAS MISS LOADING ISSUES
+              if (userFCSyms[2].trueLoopBlock[1].id=="whit_2_lvl_1_proc_1" && //Error is here it has referenceFCSyms not match with userFCsyms REFENCE HAS MISS LOADING ISSUES
                 userFCSyms[2].trueLoopBlock[1].expression.includes("+1")==true) {//Process
                
                 marks++;
