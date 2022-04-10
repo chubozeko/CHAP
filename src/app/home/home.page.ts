@@ -50,6 +50,10 @@ import { Saver } from "./saver";
 import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
 import {TutorialQPage} from "../tutorial-q/tutorial-q.page";
+import { ExerciseReader } from "../tutorial-q/read-exercise-data";
+import { Console } from "console";
+import { TutorialMode } from "./tutorial-mode";
+
 
 @Component({
   selector: "app-home",
@@ -87,6 +91,12 @@ export class HomePage {
   popOver;
   infoMessage = "";
   pasteBuffer: Array<Symbols>;
+  tutorialMode: TutorialMode;
+  tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
+  timerValue = "00:00";
+  startExerciseBtnDisabled = false;
+  timer;
+  exReader: ExerciseReader = new ExerciseReader(this.file);
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -320,9 +330,7 @@ export class HomePage {
       | DoWhileLoop
       | Comment
     >();
-//Display Andorid,IOS and Desktop Connection on Tooltips Session inside the fileName
-
-    
+    // Display Andorid,IOS and Desktop Connection on Tooltips Session inside the fileName
 
     // FOR ANDROID: Creating Save Folder if directory does not exist
     if (this.platform.is("android")) {
@@ -1799,7 +1807,28 @@ export class HomePage {
     });
     await modal.present();
   }
-
+  public activateTimer(startTimeInMinutes: number, endTimeInMinutes: number, stepDirection: number) {
+    let time = startTimeInMinutes * 60;
+   this. timer = setInterval(() => {
+      time += stepDirection;
+      let minutes = Math.floor(time / 60);
+      let second = time % 60;
+      this.timerValue = 
+        minutes.toLocaleString('en-US', { minimumIntegerDigits: 2 }) + ':' + 
+        second.toLocaleString('en-US', { minimumIntegerDigits: 2 });
+      if (time == endTimeInMinutes) {
+        clearInterval(this.timer);
+      
+      }
+      
+    }, 1000);
+    
+  }
+  public stopTimer(){ 
+    clearInterval(this.timer);
+  }
+  
+ 
   async openTutorialPageQ() {
     this.menu.close();
     const modal = await this.modalC.create({
@@ -1807,17 +1836,24 @@ export class HomePage {
     });
     modal.onDidDismiss().then((data) => {
       try {
-        if (data) {
-          this.toggleTutorialPanel();
-          let tutExercise = data.data;
-          document.getElementById("tut_exerciseTitle").innerHTML = tutExercise.title;
-          document.getElementById("tut_exerciseDescription").innerHTML = tutExercise.description;
+        if (data.data != undefined) {
+          this.tutorialMode = new TutorialMode();
+          this.tutorialMode.toggleTutorialPanel();
+          this.tutorialMode.tutorialExercise = data.data;
+          // this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
+          document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
+          document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
+
+          console.log('^^^ loading exercise: ', this.tutorialMode.tutorialExercise);
+          this.activateTimer(5, 0, -1); // Start Timer
+          // this.tutorialMode.activateTimer(5, 0, -1); // Start Timer
         }
       } catch (error) {
         console.log(error);
       }
     });
     await modal.present();
+    
   }
 
   public printFlowchart() {
@@ -1934,62 +1970,27 @@ export class HomePage {
     await modal.present();
   }
 
-  public toggleTutorialPanel(stayOpen?: boolean) {
-    let tutorial_panel = document.getElementById("tutorial_panel");
-    let tutorialBtns = document.getElementById("tutorialBtns");
-    let wrapper = document.getElementsByClassName("wrapper")[0];
-    if (tutorialBtns.classList.contains("toggleTutorialP")) { // && !stayOpen) {
-      // Close Tutorial Panel
-      wrapper.classList.remove("showTutorialPanel");
-      tutorialBtns.classList.remove("toggleTutorialP");
-      tutorialBtns.style.display = "none";
-      // this.isTutorialPanelOpen = false;
+  public toggleTutorialPanel(hideSolution?: boolean) {
+    this.tutorialMode.toggleTutorialPanel();
+  }
+ 
+  
 
-      // if (this.isConsoleOpen) {
-      //   document.getElementById("console").style.marginLeft = "100px";
-      // }
-    } else {
-      // Open Tutorial Panel
-      wrapper.classList.add("showTutorialPanel");
-      tutorialBtns.classList.add("toggleTutorialP");
-      tutorialBtns.style.display = "block";
-      // this.isTutorialPanelOpen = true;
-
-      // if (this.isConsoleOpen) {
-      //   document.getElementById("console").style.marginLeft = "0px";
-      // }
-    }
+  
+  public startExercise() {
+    this.tutorialMode.startExercise();
+    
   }
 
-  public startOrPauseExercise() {
-    let btn_tut_startExercise = document.getElementById("btn_tut_startExercise");
-    if (btn_tut_startExercise.classList.contains('exerciseStarted')) {
-      // TODO: pause Timer
-      btn_tut_startExercise.innerHTML = "Start Exercise";
-      btn_tut_startExercise.style.backgroundColor = "green";
-      btn_tut_startExercise.classList.remove("exerciseStarted");
-    } else {
-      // TODO: resume/restart Timer
-      btn_tut_startExercise.innerHTML = "Pause Exercise";
-      btn_tut_startExercise.style.backgroundColor = "red";
-      btn_tut_startExercise.classList.add("exerciseStarted");
-    }
+  public checkTutorialSolution(showSolution?: boolean) { 
+    this.tutorialMode.checkTutorialSolution(this.flowchart, this.loopBlockState, showSolution);
+    this.toggleConsole();
+    this.stopTimer();
+  }
+
+  public minimizeOrMaximizeTutorialPanel() {
+    this.tutorialMode.minimizeOrMaximizeTutorialPanel();
+   
   }
   
-  public checkTutorialSolution() {
-    // TODO: compare the solutions
-    document.getElementById("tut_solutionResultsPanel").style.display = "block";
-  }
-
-  // To be able to use external JavaScript libraries with TypeScript, they must be loaded
-  public loadScript(url: string) {
-    const body = <HTMLDivElement>document.body;
-    const script = document.createElement("script");
-    script.innerHTML = "";
-    script.src = url;
-    script.async = false;
-    script.defer = true;
-    script.type = "text/javascript";
-    body.appendChild(script);
-  }
 }

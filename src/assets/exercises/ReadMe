@@ -1,0 +1,15 @@
+
+#     Here we check the JSON STRING ELEMENT 
+#     1st by converting as a stringify
+#     2nd With JSON Parse 
+#     Ex:
+#         0: {s_id: 's_declare', id: 'fc_lvl_0_dec_0', symbolIndex: 0, parentIndex: -1, isInTrueLoopBlock: true, …}
+#         1: {s_id: 's_input', id: 'fc_lvl_0_inp_1', symbolIndex: 1, parentIndex: -1, isInTrueLoopBlock: true, …}
+#         2: {s_id: 's_input', id: 'fc_lvl_0_inp_2', symbolIndex: 2, parentIndex: -1, isInTrueLoopBlock: true, …}
+#         3: {s_id: 's_process', id: 'fc_lvl_0_proc_3', symbolIndex: 3, parentIndex: -1, isInTrueLoopBlock: true, …}
+#         4: {s_id: 's_output', id: 'fc_lvl_0_out_4', symbolInd
+#     3rd With using array format to specify unique keys with key words separated
+#          Ex:console.log(new_controller[1].id);-->Output : fc_lvl_0_inp_1
+#     4th Write the comparison controller
+#      console.log( new_checker[1].id );
+ 
