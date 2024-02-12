@@ -49,7 +49,7 @@ import { SymbolModals } from "./symbol-modals";
 import { Saver } from "./saver";
 import { Opener } from "./opener";
 import { SymbolId } from "./symbol-ids";
-import {TutorialQPage} from "../tutorial-q/tutorial-q.page";
+import { TutorialQPage } from "../tutorial-q/tutorial-q.page";
 import { ExerciseReader } from "../tutorial-q/read-exercise-data";
 import { Console } from "console";
 import { TutorialMode } from "./tutorial-mode";
@@ -96,7 +96,7 @@ export class HomePage {
   timerValue = "00:00";
   startExerciseBtnDisabled = false;
   timer;
-  exReader: ExerciseReader = new ExerciseReader(this.file);
+  
 
   constructor(
     public symbolOptionsAS: ActionSheetController,
@@ -1838,7 +1838,7 @@ export class HomePage {
     modal.onDidDismiss().then((data) => {
       try {
         if (data.data != undefined) {
-          // this.tutorialMode = new TutorialMode();
+          this.tutorialMode = new TutorialMode(this.file);
           this.tutorialMode.toggleTutorialPanel();
           this.tutorialMode.tutorialExercise = data.data;
           this.tutorialMode.toggleTutorialPanel();
@@ -1976,7 +1976,8 @@ export class HomePage {
   public startExercise() {
     this.stopTimer();
     // Load Exercise into Tutorial Panel
-    this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
+    // let exerciseData = this.exReader.loadExercises();
+    // this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
     document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
     document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
     document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";

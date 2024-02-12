@@ -172,7 +172,7 @@ export class LoopBlock {
       this.isAnInputBlockRunning = false;
       this.loopBlockState.isAnInputBlockRunning = false;
       this.loopBlockState.isProgramRunning = true;
-      this.validateLoopBlock(this.variables, this.isAnInputBlockRunning, ++symIndex, this.tempSymbols.length);
+      this.validateLoopBlock(this.variables, this.isAnInputBlockRunning, {startIndex: ++symIndex, endIndex: this.tempSymbols.length});
       console.log("> [LoopBlock] Input (dismissed) Complete");
     });
     await alert.present();
@@ -194,8 +194,8 @@ export class LoopBlock {
     console.log("> [LoopBlock] Input (dismissed) Complete");
   }
 
-  async validateLoopBlock(variables: any[], isAnInputBlockRunning: boolean, dummyInputs?: any[], startIndex?: number, endIndex?: number) {
-    if (startIndex == undefined) {
+  async validateLoopBlock(variables: any[], isAnInputBlockRunning: boolean, options?: {startIndex?: number, endIndex?: number, dummyInputs?: any[]}) {
+    if (options.startIndex == undefined) {
       this.variables = [];
       for (let q = 0; q < variables.length; q++) {
         this.variables.splice(q, 0, variables[q]);
@@ -218,7 +218,7 @@ export class LoopBlock {
     this.isAnInputBlockRunning = isAnInputBlockRunning;
     this.variables = variables;
 
-    for (let i = startIndex; i < this.tempSymbols.length; i++) {
+    for (let i = options.startIndex; i < this.tempSymbols.length; i++) {
       // DECLARE
       if (this.tempSymbols[i] instanceof Declare) {
         if (this.isProgramRunning) {
@@ -310,7 +310,7 @@ export class LoopBlock {
               let ifLoopBlock = new LoopBlock(this.loopBlockState);
               ifLoopBlock.SYMBOLS = ifBlock;
               ifLoopBlock.variables = this.variables;
-              let props = await ifLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, ifLoopBlock.SYMBOLS.length);
+              let props = await ifLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, {startIndex: 0, endIndex: ifLoopBlock.SYMBOLS.length});
               this.variables = props.variables;
               this.isAnInputBlockRunning = props.isAnInputBlockRunning;
               if (this.isAnInputBlockRunning) {
@@ -393,7 +393,7 @@ export class LoopBlock {
                     // Validate forBlock symbols only
                     this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
                     this.loopBlockState.loopSymbolType = "ForLoop";
-                    let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
+                    let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning,{startIndex: 0, endIndex: forLoopBlock.SYMBOLS.length});
                     this.variables = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     if (this.isAnInputBlockRunning) {
@@ -415,7 +415,7 @@ export class LoopBlock {
                     // Validate forBlock symbols only
                     this.updateVariables(forSymbol.getForVariable(), tempArrIndex);
                     this.loopBlockState.loopSymbolType = "ForLoop";
-                    let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, 0, forLoopBlock.SYMBOLS.length);
+                    let props = await forLoopBlock.validateLoopBlock(this.variables, this.isAnInputBlockRunning, {startIndex: 0, endIndex: forLoopBlock.SYMBOLS.length});
                     this.variables = props.variables;
                     this.isAnInputBlockRunning = props.isAnInputBlockRunning;
                     if (this.isAnInputBlockRunning) {
@@ -506,6 +506,7 @@ export class LoopBlock {
     this.loopBlockState.isAnInputBlockRunning = this.isAnInputBlockRunning;
     
     if (!this.loopBlockState.isAnInputBlockRunning) {
+      // TODO: fix Circular dependency of Flowchart & LoopBlock
       // Resume (restart) Loop Block from parent Flowchart/LoopBlock [parentFlowchartLoopBlock.validateLoopBlock()]
       if (this.loopBlockState.parentBlock instanceof Flowchart) {
         if (this.loopBlockState.loopSymbolType == "DoWhileLoop")
@@ -522,6 +523,7 @@ export class LoopBlock {
           this.loopBlockState.parentBlock.updateVariables(this.loopBlockState.forLoopVariable);
           console.log("Loop B var: " + this.loopBlockState.forLoopVariable.getValue());
         }
+        // TODO: fix Circular dependency of Flowchart & LoopBlock
         this.loopBlockState.parentBlock.validateFlowchart(
           this.loopBlockState.loopSymbolIndex, 
           this.loopBlockState.parentBlock.tempSymbols.length,
@@ -543,8 +545,8 @@ export class LoopBlock {
         this.loopBlockState.parentBlock.validateLoopBlock(
           this.loopBlockState.variables,
           this.loopBlockState.isAnInputBlockRunning,
-          this.loopBlockState.loopSymbolIndex, 
-          this.loopBlockState.parentBlock.tempSymbols.length);
+          { startIndex: this.loopBlockState.loopSymbolIndex, 
+           endIndex: this.loopBlockState.parentBlock.tempSymbols.length });
       }
     }
 

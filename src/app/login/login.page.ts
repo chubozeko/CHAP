@@ -27,8 +27,8 @@ const cors = require("cors");
   styleUrls: ["./login.page.scss"],
 })
 export class LoginPage implements OnInit {
-  @ViewChild("email", {static: false}) username;
-  @ViewChild("password", {static: false}) password;
+  @ViewChild("email") username;
+  @ViewChild("password") password;
 
   data: string;
   loginForm: FormGroup;

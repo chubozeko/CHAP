@@ -14,13 +14,13 @@ import "rxjs/add/operator/map";
   styleUrls: ["./signup.page.scss"],
 })
 export class SignupPage implements OnInit {
-  @ViewChild("fullname", {static: false}) fullname;
-  @ViewChild("surname", {static: false}) surname;
-  @ViewChild("gender", {static: false}) gender;
-  @ViewChild("cntry", {static: false}) cntry;
-  @ViewChild("email", {static: false}) email;
-  @ViewChild("password", {static: false}) password;
-  @ViewChild("CNFRPASS", {static: false}) CNFRPASS;
+  @ViewChild("fullname") fullname;
+  @ViewChild("surname") surname;
+  @ViewChild("gender") gender;
+  @ViewChild("cntry") cntry;
+  @ViewChild("email") email;
+  @ViewChild("password") password;
+  @ViewChild("CNFRPASS") CNFRPASS;
 
   corsOptions;
 

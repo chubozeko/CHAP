@@ -1,16 +1,24 @@
+import { File } from "@ionic-native/file/ngx";
 import { Flowchart } from "../classes/Flowchart";
 import { ForLoop } from "../classes/ForLoop";
 import { LoopblockstateService } from "../loopblockstate.service";
+import { ExerciseReader } from "../tutorial-q/read-exercise-data";
 
 
 export class TutorialMode {
-
-  constructor(){}
-
+  exReader: ExerciseReader;
   referenceFC: Flowchart;
   tutorialExercise = { title: ``, level: ``, description: ``, filename: ``, solution: [] }
   timerValue = "00:00";
   startExerciseBtnDisabled = false;
+
+  constructor(
+    file: File
+  ) {
+    this.exReader = new ExerciseReader(file);
+    let exData = this.exReader.loadExercises();
+    // this.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
+  }
 
   public toggleTutorialPanel(hideSolution?: boolean) {
     let debugicon = document.getElementById("play");
