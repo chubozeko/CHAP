@@ -170,7 +170,8 @@ export class Flowchart {
           text: "OK",
           handler: data => {
             inputSym.inputData = data.inputText;
-            inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+            let updatedVar = inputSym.inputParsing(vars[varIndex], data.inputText, arrayIndex);
+            this.loopBlockState.enteredInputs.push(updatedVar);
             this.consoleLog("noerrorAlert", "> Input: " + data.inputText);
             console.log("> Input (entered) Complete");
           }
@@ -188,7 +189,23 @@ export class Flowchart {
     await alert.present();
   }
 
-  async validateFlowchart(startIndex: number, endIndex: number, variables: any[]) {
+  async automateInputPrompt(dummyInputs: any[], inputSym: Input, alertTitle: string, varIndex: number, symIndex: number, vars: any[], arrayIndex?: number) {
+    let dummyData = dummyInputs[this.loopBlockState.inputCount].input;
+    inputSym.inputData = dummyData;
+    let updatedVar = inputSym.inputParsing(vars[varIndex], dummyData, arrayIndex);
+    this.loopBlockState.enteredInputs.push(updatedVar);
+    this.consoleLog("noerrorAlert", "> Input: " + dummyData);
+    console.log("> Input (entered) Complete");
+    inputSym.isInputEntered = false;
+    this.isAnInputBlockRunning = false;
+    this.loopBlockState.isAnInputBlockRunning = false;
+    this.loopBlockState.isProgramRunning = true;
+    this.loopBlockState.inputCount++;
+    // this.validateFlowchart(++symIndex, this.tempSymbols.length, this.variables.vars);
+    console.log("> Input (dismissed) Complete");
+  }
+
+  async validateFlowchart(startIndex: number, endIndex: number, variables: any[], dummyInputs?: any[]) {
     console.log("==] isProgramRunning = " + this.isProgramRunning + " ; ==] isAnInputBlockRunning = " + this.isAnInputBlockRunning);
     if (variables == null) {
       this.variables.vars = [];
@@ -210,7 +227,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let declareSym = this.tempSymbols[i] as Declare;
-            this.variables.vars = await declareSym.parseDeclareExp(this.variables.vars);
+            this.variables.vars = declareSym.parseDeclareExp(this.variables.vars);
           }
         }
       }
@@ -220,7 +237,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let inputSym = this.tempSymbols[i] as Input;
-            let didInputRun = await inputSym.validateInputSymbol(this.variables.vars, i);
+            let didInputRun = inputSym.validateInputSymbol(this.variables.vars, i);
             if (!didInputRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -247,7 +264,7 @@ export class Flowchart {
         if (this.isProgramRunning) {
           if (!this.isAnInputBlockRunning) {
             let processSym = this.tempSymbols[i] as Process;
-            let didProcessRun = await processSym.validateProcessSymbol(this.variables.vars, this.chapConsole);
+            let didProcessRun = processSym.validateProcessSymbol(this.variables.vars, this.chapConsole);
             if (!didProcessRun) {
               this.isProgramRunning = false;
               this.loopBlockState.isProgramRunning = this.isProgramRunning;
@@ -360,7 +377,7 @@ export class Flowchart {
             // TODO: Refactor For Loop Validation
             let tempArrIndex: number;
             let forSymbol = this.tempSymbols[i] as ForLoop;
-            let didForLoopRun = await forSymbol.validateForLoop(this.variables.vars, this.chapConsole);
+            let didForLoopRun = forSymbol.validateForLoop(this.variables.vars, this.chapConsole);
             if (didForLoopRun) {
               forSymbol.setCurrentValue(forSymbol.forLoopVariable.getValue());
               // Add forBlock symbols to a LoopBlock

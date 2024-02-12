@@ -465,7 +465,7 @@ export class ForLoop {
     return '\t\tfor (' + forExp + '){\n' + forTrue + '\t\t} \n';
   }
 
-  async validateForLoop(variables: any[], consoleLog: HTMLDivElement) {
+  validateForLoop(variables: any[], consoleLog: HTMLDivElement) {
     let isVarDeclared = false, isVarAnArray = false;
     let tempArrIndex: number;
 

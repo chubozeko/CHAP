@@ -62,7 +62,7 @@ import { TutorialMode } from "./tutorial-mode";
 })
 @Injectable()
 export class HomePage {
-  @ViewChild("symbolsFAB", {static: false}) symbolsFAB: Fab;
+  @ViewChild("symbolsFAB") symbolsFAB: Fab;
   symModals: SymbolModals = new SymbolModals(this.modalC);
   resizer: Resizer = new Resizer();
   saver: Saver = new Saver(this.alertC, this.arrowsOptionsAS, this.auth, this.file, this.http, this.menu, this.navCtrl, this.toast);
@@ -249,8 +249,8 @@ export class HomePage {
     closeM.addEventListener("click", () => this.closeMenu());
     let themePage = document.getElementById("btn_themePage");
     themePage.addEventListener("click", (e) => this.openChooseTheme());
-    let tutorialQ = document.getElementById("btn_openTutorialPageQ");
-    tutorialQ.addEventListener("click", () => this.openTutorialPageQ());
+    // let tutorialQ = document.getElementById("btn_openTutorialPageQ");
+    // tutorialQ.addEventListener("click", () => this.openTutorialPageQ());
     // let downloadAPK = document.getElementById("btn_downloadAPK");
     // downloadAPK.addEventListener("click", (e) => {
     //   window.open("https://drive.google.com/open?id=1iIYNSe-IuyAbd63iCE94GprxtDCQHqtS", "_blank");
@@ -1758,7 +1758,7 @@ export class HomePage {
     await actionSheet.present();
   }
 
-  public debugProgram() {
+  async debugProgram() {
     this.menu.close();
     this.clearConsole();
     if (this.isConsoleOpen == false) {
@@ -1833,23 +1833,19 @@ export class HomePage {
     this.menu.close();
     const modal = await this.modalC.create({
       component: TutorialQPage,
+      // componentProps: { isExerciseRunning: this.isTutorialExerciseOngoing }
     });
     modal.onDidDismiss().then((data) => {
       try {
         if (data.data != undefined) {
-          this.tutorialMode = new TutorialMode();
+          // this.tutorialMode = new TutorialMode();
           this.tutorialMode.toggleTutorialPanel();
           this.tutorialMode.tutorialExercise = data.data;
-          // this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
-          document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
-          document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
-
-          console.log('^^^ loading exercise: ', this.tutorialMode.tutorialExercise);
-          this.activateTimer(5, 0, -1); // Start Timer
-          // this.tutorialMode.activateTimer(5, 0, -1); // Start Timer
+          this.tutorialMode.toggleTutorialPanel();
+          this.startExercise();
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     });
     await modal.present();
@@ -1978,8 +1974,27 @@ export class HomePage {
 
   
   public startExercise() {
-    this.tutorialMode.startExercise();
-    
+    this.stopTimer();
+    // Load Exercise into Tutorial Panel
+    this.tutorialMode.tutorialExercise.solution = this.exReader.loadExerciseSolutionFromFile(this.tutorialMode.tutorialExercise.filename);
+    document.getElementById("tut_exerciseTitle").innerHTML = this.tutorialMode.tutorialExercise.title;
+    document.getElementById("tut_exerciseDescription").innerHTML = this.tutorialMode.tutorialExercise.description;
+    document.getElementById("btn_tut_checkSolution").innerHTML = "Check Solution";
+    document.getElementById("btn_tut_checkSolution").style.display = "block";
+    document.getElementById("btn_tut_runSolution").style.display = "none";
+    let btnRestartExercise = document.getElementById("btn_tut_restartExercise");
+    btnRestartExercise.style.display = "none";
+    let btnRestartExerciseMinimized = document.getElementById("btn_tut_restartExercise_minimized");
+    btnRestartExerciseMinimized.style.display = "none";
+    let tutSolutionPanel = document.getElementById("tut_solutionResultsPanel");
+    tutSolutionPanel.style.display = "none";
+    // Load 'this.tutorialExercise.solution' and create a reference Flowchart (referenceFC)
+    this.loadSymbolsIntoBlock(this.tutorialMode.tutorialExercise.solution, this.workspace, this.tutorialMode.tutorialExercise.solution.length);
+    this.tutorialMode.referenceFC = this.flowchart;
+    this.clearWorkspace(true);
+    // Start Timer
+    this.activateTimer(3, 0, -1);
+    // this.isTutorialExerciseOngoing = true;
   }
 
   public checkTutorialSolution(showSolution?: boolean) { 
